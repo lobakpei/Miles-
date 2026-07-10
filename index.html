@@ -1,14 +1,70 @@
-<!-- build: 2026-07-09T08:15 UK — v2.2：資訊管家版。①修 root cause bug：optInputNoExclude 之前有 call 冇定義，令「唔要呢張」撳落去 renderResults 靜靜 throw、冇反應——已補定義。②卡詳情面板（撳優化器登機證或卡庫任何一張卡 → 彈 overlay）：上半卡本身事實（賺率連上限條件／迎新／年費／年薪／管家點評風險位／官方連結），下半渠道優惠（里先生・小斯・MoneyHero 各自獨家送咩，同卡詳情完全分開，掛平台名、預留 referral 位）。③卡庫改成唔可改數字、淨睇＋撳入詳情。④verify.js 加 UI lint 捉「call 咗冇定義」類 bug。原 v2.1.3：唔要呢張改成即撳即返開關 -->
+<!-- build: 2026-07-10T06:40 UK — v2.5.0：九樣一次過＋深度清理。①全局錯誤 banner＋Sentry DSN 留位（head，Robert 填）②深色模式：自動跟系統＋header 手動掣（🌗→🌙→☀️）③合規標語「借定唔借？還得到先好借！」入開場 modal＋footer④PWA：manifest.json＋sw.js＋icon×2（另交，同 index.html 擺同一層）⑤靜態卡頁 cards/（另交，SEO）⑥分享 plan（Web Share／複製）⑦儲存計劃（存部機、可存多個、開返用最新數據重計）⑧功能二家庭化：A/B 各自揀卡、同卡兩張上限各計、超上限提示改簽另一半⑨右下角🤖助手：規則式 FAQ 十條＋CS_EMAIL 留位（Robert 填）。深度清理：移除卡庫覆寫殘留機制（靜靜蓋住官方新數＝自相矛盾）、dead code（editing／FIELD_LABELS／saveOverride／EDITABLE）、「去卡庫更新數字」過時文案、inline hardcode 色轉 CSS 變量。原 v2.4.2：文案清理 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#00594E">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
 <meta name="description" content="BigMiles — 香港大額消費里數優化器。結婚、裝修、大旅行，一次過計清楚用邊幾張卡儲盡 Asia Miles / Avios。">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>BigMiles — 大額消費里數優化器</title>
+<script>
+/* v2.5 深色模式提早套用（避免開頁閃白）；正式邏輯喺頁尾 UI script */
+try{
+  var _bmT = JSON.parse(localStorage.getItem('bm_theme'));
+  if (_bmT === 'dark' || (_bmT !== 'light' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)){
+    document.documentElement.classList.add('dark');
+  }
+}catch(e){}
+</script>
+<script>
+/* v2.5 全局錯誤捕捉：任何 JS 出錯即刻彈紅色 banner，唔會再靜默死機 */
+(function(){
+  var shown = false;
+  function showErr(){
+    if (shown) return;
+    shown = true;
+    function paint(){
+      var d = document.createElement('div');
+      d.setAttribute('role', 'alert');
+      d.style.cssText = 'position:fixed;left:10px;right:10px;bottom:12px;z-index:200;background:#B0472F;color:#fff;padding:12px 44px 12px 14px;border-radius:12px;font-size:14px;line-height:1.45;box-shadow:0 6px 20px rgba(0,0,0,.35);font-family:sans-serif';
+      d.innerHTML = '<b>出錯咗。</b>唔好意思——麻煩截圖成個畫面留底回報，等我哋修返。' +
+        '<button aria-label="關閉" style="position:absolute;top:5px;right:5px;width:34px;height:34px;border:none;background:none;color:#fff;font-size:18px;cursor:pointer">✕</button>';
+      d.querySelector('button').addEventListener('click', function(){ d.remove(); shown = false; });
+      document.body.appendChild(d);
+    }
+    if (document.body) paint();
+    else document.addEventListener('DOMContentLoaded', paint);
+  }
+  window.addEventListener('error', function(e){
+    if (e && e.message === 'Script error.') return; /* 跨域／瀏覽器擴充嘅雜音，唔嘈用戶 */
+    showErr();
+    if (window.Sentry && window.Sentry.captureException){ try{ Sentry.captureException(e.error || new Error(e.message)); }catch(_){} }
+  });
+  window.addEventListener('unhandledrejection', function(e){
+    showErr();
+    if (window.Sentry && window.Sentry.captureException){ try{ Sentry.captureException(e.reason); }catch(_){} }
+  });
+})();
+</script>
+<script>
+/* ══ Robert：Sentry 位 ══
+   開好 Sentry account 之後，將個 DSN（樣：https://xxxx@oxxxx.ingest.sentry.io/xxxx）
+   貼入下面對引號入面就自動駁通。留空＝唔載入 Sentry，app 一切照常。
+   如果 Sentry 網站畀咗你成段 loader script，都可以成段換走呢個 block。 */
+var SENTRY_DSN = '';
+(function(){
+  if (!SENTRY_DSN) return;
+  var s = document.createElement('script');
+  s.src = 'https://browser.sentry-cdn.com/8.55.0/bundle.min.js';
+  s.crossOrigin = 'anonymous';
+  s.onload = function(){ try{ window.Sentry && Sentry.init({ dsn: SENTRY_DSN }); }catch(e){} };
+  document.head.appendChild(s);
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -28,8 +84,31 @@
   --red:#B0472F;
   --red-bg:#FBEFE9;
   --ok:#1E7A4F;
+  --field:#FBFCFB;
+  --chip-bg:var(--chip-bg);
+  --chip-ink:var(--chip-ink);
   --mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
   --sans:'Noto Sans TC',-apple-system,BlinkMacSystemFont,'PingFang HK','Microsoft JhengHei',sans-serif;
+}
+/* ---------- 深色模式（v2.5）：html.dark 由 JS 控制（自動跟系統／手動掣） ---------- */
+html.dark{
+  --jade:#2F9280;
+  --jade-deep:#0C2823;
+  --jade-soft:#173730;
+  --gold:#D8B876;
+  --gold-deep:#E3C98F;
+  --gold-soft:#332F1E;
+  --ink:#E7EFEA;
+  --mut:#9AAEA5;
+  --paper:#0F1613;
+  --card:#1A241F;
+  --line:#2C3A33;
+  --red:#E2825F;
+  --red-bg:#3A241C;
+  --ok:#57C08D;
+  --field:#202B26;
+  --chip-bg:#242F2A;
+  --chip-ink:#B7C4BD;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 [hidden]{display:none!important}
@@ -45,6 +124,7 @@ input{font-family:inherit;font-size:inherit;color:inherit}
 .logo{width:46px;height:46px;border-radius:12px;background:linear-gradient(140deg,#E3C98D,var(--gold) 60%,var(--gold-deep));color:var(--jade-deep);font-family:var(--mono);font-weight:700;font-size:19px;display:flex;align-items:center;justify-content:center;letter-spacing:-1px;flex:none}
 .hdr h1{font-size:24px;font-weight:900;letter-spacing:1px;line-height:1.1}
 .hdr p{font-size:13px;color:#CBDDD7;margin-top:2px}
+.theme-btn{margin-left:auto;flex:none;width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.16);color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center}
 
 /* ---------- tabs ---------- */
 .tabs{position:sticky;top:0;z-index:40;background:var(--paper);padding:10px 14px;border-bottom:1px solid var(--line)}
@@ -60,7 +140,7 @@ main{max-width:680px;margin:0 auto;padding:16px 14px 40px}
 .hint{font-size:12.5px;color:var(--mut);margin-top:6px}
 
 /* ---------- inputs ---------- */
-.amt-wrap{display:flex;align-items:center;gap:8px;border:2px solid var(--line);border-radius:12px;padding:10px 14px;background:#FBFCFB}
+.amt-wrap{display:flex;align-items:center;gap:8px;border:2px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--field)}
 .amt-wrap:focus-within{border-color:var(--jade)}
 .amt-wrap .cur{font-family:var(--mono);font-weight:700;color:var(--mut);font-size:15px}
 #amount{border:none;outline:none;background:none;width:100%;font-family:var(--mono);font-weight:700;font-size:26px;color:var(--ink)}
@@ -199,7 +279,7 @@ input[type=range]{width:100%;accent-color:var(--jade);height:28px}
 .daily-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
 .daily-row:last-child{border-bottom:none}
 .daily-row .lbl{font-weight:700;font-size:14.5px;flex:none;width:88px}
-.daily-in{flex:1;display:flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:10px;padding:7px 11px;background:#FBFCFB}
+.daily-in{flex:1;display:flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:10px;padding:7px 11px;background:var(--field)}
 .daily-in:focus-within{border-color:var(--jade)}
 .daily-in .cur{font-family:var(--mono);font-size:13px;color:var(--mut);font-weight:700}
 .daily-in input{border:none;outline:none;background:none;width:100%;font-family:var(--mono);font-weight:700;font-size:16px;color:var(--ink)}
@@ -214,6 +294,30 @@ input[type=range]{width:100%;accent-color:var(--jade);height:28px}
 .dbreak .r .mi{font-family:var(--mono);font-weight:700;font-size:16px;color:var(--ink)}
 .dbreak .r .sub{font-size:11px;color:var(--mut)}
 .dbreak.zero{opacity:.5}
+
+/* ---------- v2.5：分享／儲存計劃／助手氣泡／toast／合規標語 ---------- */
+.act-row{display:flex;gap:8px;margin:0 0 14px}
+.act-row button{flex:1;min-height:46px;padding:10px 8px;border-radius:12px;font-weight:700;font-size:14.5px;border:1.5px solid var(--jade);color:var(--jade);background:var(--card)}
+.saved-row{display:flex;align-items:center;gap:8px;padding:10px 2px;border-bottom:1px solid var(--line)}
+.saved-row:last-child{border-bottom:none}
+.saved-row .nm{font-weight:700;font-size:14.5px}
+.saved-row .mt{font-size:12px;color:var(--mut);margin-top:1px}
+.saved-row .ld{margin-left:auto;flex:none;min-height:40px;padding:8px 13px;border-radius:10px;background:var(--jade);color:#fff;font-weight:700;font-size:13.5px}
+.saved-row .dl{flex:none;width:40px;height:40px;color:var(--red);font-size:16px}
+.slogan-box{font-size:13.5px;font-weight:700;color:var(--jade);border:1.5px solid var(--jade);border-radius:10px;padding:9px 11px;margin-bottom:16px;text-align:center}
+.slogan-line{font-weight:700;color:var(--ink)}
+.robot-btn{position:fixed;right:14px;bottom:16px;z-index:90;width:56px;height:56px;border-radius:50%;background:linear-gradient(150deg,var(--jade-deep),var(--jade));color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,30,22,.35)}
+.robot-panel{position:fixed;right:10px;left:10px;bottom:82px;z-index:91;max-width:430px;margin-left:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 34px rgba(0,18,13,.35);max-height:min(68vh,560px);display:flex;flex-direction:column;overflow:hidden}
+.robot-head{background:linear-gradient(150deg,var(--jade-deep),var(--jade));color:#fff;padding:11px 14px;display:flex;align-items:center;gap:8px}
+.robot-head b{font-size:15.5px}
+.robot-head button{margin-left:auto;color:#fff;font-size:17px;width:38px;height:38px}
+.robot-body{overflow:auto;padding:4px 12px 10px;-webkit-overflow-scrolling:touch}
+.faq-q{width:100%;text-align:left;padding:12px 2px;border-bottom:1px solid var(--line);font-weight:700;font-size:14.5px;display:flex;gap:8px;align-items:flex-start;color:var(--ink)}
+.faq-q .tw{margin-left:auto;color:var(--mut);flex:none}
+.faq-a{font-size:13.5px;color:var(--ink);padding:9px 2px 13px;border-bottom:1px solid var(--line);line-height:1.65}
+.robot-foot{padding:11px 14px;border-top:1px solid var(--line);font-size:13px;color:var(--mut);line-height:1.5}
+#bmToast{position:fixed;left:50%;transform:translateX(-50%);bottom:88px;z-index:120;background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s;max-width:86vw;text-align:center}
+#bmToast.show{opacity:.95}
 
 /* ---------- about / footer / modal ---------- */
 .about p{margin-bottom:12px;font-size:14.5px}
@@ -244,6 +348,7 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
       <li><b>申請信用卡會影響信貸紀錄（TU）。</b>請量力而為——一旦找唔清卡數，利息開支會遠遠超過里數價值。</li>
     </ul>
     <p style="font-size:13px;color:var(--mut);margin-bottom:16px">利益披露：本 app 目前<b>冇任何</b> referral 或聯盟收益。日後如有，會喺當眼位置清楚標明。</p>
+    <p class="slogan-box">優惠受條款及細則約束，資料只供參考。<br>借定唔借？還得到先好借！</p>
     <button class="cta" id="dc-ok">我明白，開始用</button>
   </div>
 </div>
@@ -262,6 +367,7 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
       <h1>BigMiles</h1>
       <p>大額消費，一次過儲盡里數</p>
     </div>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切換深淺外觀">☀️</button>
   </div>
 </header>
 
@@ -279,6 +385,11 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
 
 <!-- ============ TAB：優化器 ============ -->
 <section id="tab-opt">
+  <div class="panel" id="savedPlansPanel" hidden>
+    <div class="eyebrow">我儲低嘅計劃</div>
+    <div id="savedPlansList"></div>
+    <div class="hint">開返會用最新卡數據重新計，數字可能同儲嗰陣唔同——迎新成日變。</div>
+  </div>
   <div class="panel">
     <div class="field">
       <div class="eyebrow">今次大約簽幾多？</div>
@@ -300,17 +411,18 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
       <div class="amt-wrap"><span class="cur">HK$</span><input id="incomeB" type="text" inputmode="numeric" placeholder="240,000" aria-label="申請人B年薪（港幣）"></div>
     </div>
     <div class="field">
-      <div class="eyebrow">幾多個月內簽完？</div>
-      <div class="chips" id="monthChips"></div>
-    </div>
-    <div class="field">
-      <div class="eyebrow">呢筆錢係點洗？</div>
+      <div class="eyebrow">呢筆錢會點洗？</div>
       <div class="chips" id="patternChips"></div>
-      <div class="hint">好緊要：好似買車、一次過畀清嘅裝修尾數，通常一炮過洗；婚禮訂金、請帖、回禮就自然分幾期。呢個會影響抵率有上限（月／季／全期）嘅卡計出嚟嘅數。</div>
+      <div class="hint" id="patternHint">一炮過（買錶、買車、一次過畀清）＝一日簽晒，抵率有上限嘅卡淨計一個月／一季上限，容易爆頂；分幾個月（婚禮訂金、裝修分期）＝可以攤開，貼住上限計。呢個唔係「幾時開卡」——就算一炮過，都可以提早幾個月開卡籌備（見下面）。</div>
+    </div>
+    <div class="field" id="spreadMonthsField" hidden>
+      <div class="eyebrow">分幾多個月洗？</div>
+      <div class="chips" id="monthChips"></div>
     </div>
     <div class="field">
       <div class="eyebrow">想儲邊種里數？</div>
       <div class="chips" id="goalChips"></div>
+      <div class="hint">Asia Miles 同 Avios 係二揀一——出嚟嘅組合一係全部儲 Asia Miles、一係全部儲 Avios，唔會溝埋。揀「兩樣都睇」會出兩個 plan 畀你並排比較。</div>
     </div>
     <div class="field">
       <div class="eyebrow">每人最多開幾多張新卡？</div>
@@ -345,6 +457,11 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
       <div class="how-detail" id="howDetail" hidden></div>
     </div>
 
+    <div class="act-row">
+      <button id="sharePlanBtn" type="button">📤 分享呢個 plan</button>
+      <button id="savePlanBtn" type="button">💾 儲存呢次計劃</button>
+    </div>
+
     <div class="panel whatif">
       <div class="eyebrow">WHAT-IF：拉下試唔同情景</div>
       <div class="row"><span>簽賬額</span><span class="val" id="wifAmtVal">–</span></div>
@@ -356,7 +473,12 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
           <button id="wifMUp" aria-label="加一個月">＋</button>
         </div>
       </div>
+      <div class="row" style="margin-top:12px"><span>睇邊種里數</span>
+        <div class="chips" id="progToggle" style="margin:0"></div>
+      </div>
     </div>
+
+    <div id="progCompare"></div>
 
     <div id="resWarnings"></div>
 
@@ -378,11 +500,21 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
 <section id="tab-daily" hidden>
   <div class="panel">
     <div class="field" style="margin-bottom:14px">
-      <div class="eyebrow">你手上有邊幾張卡？</div>
+      <div class="eyebrow">一個人計，定二人家庭？</div>
+      <div class="chips" id="dailyFamilyChips"></div>
+      <div class="hint" id="dailyFamilyHint" hidden>二人家庭＝A、B 各自揀返自己手上嘅卡。同一張卡兩份各有一張嘅話，賺里上限係各自計，唔會撞。</div>
+    </div>
+    <div class="field" style="margin-bottom:14px">
+      <div class="eyebrow" id="dailyOwnedLab">你手上有邊幾張卡？</div>
       <div class="chips" id="dailyOwnedChips"></div>
       <div class="hint">大額消費做完，留低嘅卡日常點用先盡其利。唔揀就當睇全市場最抵。</div>
     </div>
+    <div class="field" id="dailyOwnedBField" hidden style="margin-bottom:14px">
+      <div class="eyebrow">B 手上有邊幾張卡？</div>
+      <div class="chips" id="dailyOwnedChipsB"></div>
+    </div>
     <div class="eyebrow">你每月大約使幾多？（唔使精確）</div>
+    <div class="hint" id="dailySpendHint" hidden style="margin-bottom:6px">二人家庭：呢度入你哋<b>成頭家每月加埋</b>嘅數，結果會話你知每類簽邊個人嗰張卡。</div>
     <div id="dailyInputs"></div>
   </div>
 
@@ -436,7 +568,7 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
     <ul>
       <li><b>超短途（台北等）</b>：通常 Avios 抵，里數要求低。</li>
       <li><b>區域１商務（首爾、新加坡）</b>：2026 新制下 Asia Miles 多數有優勢。</li>
-      <li><b>環球票</b>：得 Asia Miles（寰宇一家）先做到一張票遊多站——用戶當年就係換 11 段全商務。</li>
+      <li><b>環球票</b>：得 Asia Miles（寰宇一家）先做到一張票遊多站——一張票最多 5 停、9-11 個航段，全程商務艙。</li>
       <li><b>心法</b>：主力儲喺可轉換嘅彈性點數卡（滙豐／Citi／AMEX），唔好太早鎖死入某一邊，臨出發先轉平嗰邊。</li>
     </ul>
     <h3>分有效期（示範，以官網為準）</h3>
@@ -466,7 +598,7 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
       <li>假設大部分為本地／網上簽賬，每張卡用佢最抵嗰個賺里率計基本里。</li>
       <li>填咗年薪，就會自動隔走你申請唔到嘅卡（年薪門檻以官網為準）。</li>
       <li>迎新簽賬同時計基本賺里（大部分卡係咁，個別例外以官網為準）。</li>
-      <li>「呢筆錢係點洗？」好緊要：一次過（例如買車、裝修尾數）嘅話，抵率有上限嘅卡淨計一個月／一季嘅上限就爆頂，超出部分即刻跌落基本率；分幾期（例如婚禮訂金／請帖／回禮自然分開）先可以攤開成個計劃嘅月數，貼住個上限計。兩個模式嘅總數會唔同，唔係計錯，係假設唔同。</li>
+      <li>「呢筆錢會點洗？」分兩件事：<b>洗錢期</b>——一炮過（買錶／買車／一次過畀清）＝一日簽晒，抵率有上限嘅卡淨計一個月／一季上限，超出即刻跌基本率；分幾個月（訂金／裝修分期）＝攤開貼住上限計。<b>籌備期</b>——就算一炮過洗，你都可以提早幾個月開卡（例：7月開始申請、12月先買錶），所以啲卡唔會因為「一日洗晒」就趕唔切，全部照用。呢兩樣係獨立嘅。</li>
       <li>部分卡嘅高賺里率有上限——有啲按月（例：中銀 Cheers 類）、有啲按季（例：AE Explorer 本地 $3/里 每季首 $15,000）、有啲成個期間一個數（例：AE 白金 Turbo 每年首 $16 萬）。超過上限嘅簽賬會跌落基本率計，唔會假設成張卡無限量都係嗰個靚 rate。大額簽賬去到上限，會自動溢去下一張最抵嘅卡，唔會死頂一張。</li>
       <li>同一發卡機構第二張卡起，迎新按官方政策打折或歸零計算——Citibank 成間銀行計、通常歸零；滙豐成間銀行計但仍有折讓（約1/4）；美國運通跟卡種計（約65%）。已有嘅卡都計入呢個「機構計數」。</li>
       <li>新卡申請逐月排開，最多 6 張，貼近實際「榨盡迎新」做法。重點分清楚：<b>自己查</b>環聯（TransUnion／TU）信貸評分係「軟查詢」，唔會扣分，開卡前應該查定心裏有底；<b>銀行喺你申請時查</b>先係「硬查詢」，短時間太多次會影響批核。所以要慳嘅係申請次數，唔係查詢——時間表每人每月最多兩張、逐對排開，開幾多張你自己揀。</li>
@@ -483,15 +615,25 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
     </ul>
     <p><button class="link-btn" id="showDc">重睇免責聲明</button></p>
     <h3>資料</h3>
-    <p style="font-size:13.5px">所有輸入同卡庫改動只儲存喺你部機（localStorage），唔會上傳。</p>
+    <p style="font-size:13.5px">所有輸入、儲低嘅計劃同外觀設定只儲存喺你部機（localStorage），唔會上傳。</p>
+    <p style="font-size:13.5px">每張卡都有<a href="./cards/" style="color:var(--jade);font-weight:700">獨立網頁版</a>，方便直接 share 畀朋友。</p>
+    <p style="font-size:13.5px">見到「出錯咗」紅色橫額？麻煩截圖成個畫面留底——右下角🤖助手嘅「電郵我哋」開通後可以直接寄畀我哋。</p>
     <p><button class="btn-sm danger" id="resetAll">重設所有資料</button></p>
-    <p class="meta">BigMiles v2.1 · build 2026-07-09 · 卡數據截至 <span class="dataAsOf"></span></p>
+    <p class="meta">BigMiles <span id="metaVer"></span> · 卡數據截至 <span class="dataAsOf"></span></p>
   </div>
 </section>
 
 </main>
 
-<footer>BigMiles 唔係財務建議。卡資料只供參考，以銀行官網為準。申請信用卡會影響信貸紀錄，請量力而為。</footer>
+<footer><span class="slogan-line">優惠受條款及細則約束，資料只供參考。借定唔借？還得到先好借！</span><br>BigMiles 唔係財務建議。卡資料只供參考，以銀行官網為準。申請信用卡會影響信貸紀錄，請量力而為。</footer>
+
+<!-- BigMiles 助手（規則式 FAQ 氣泡，v2.5）。CS email 喺 UI script 搵 CS_EMAIL 填。 -->
+<button class="robot-btn" id="robotBtn" type="button" aria-label="開啟 BigMiles 助手">🤖</button>
+<div class="robot-panel" id="robotPanel" hidden>
+  <div class="robot-head"><span aria-hidden="true">🤖</span><b>BigMiles 助手</b><button id="robotClose" type="button" aria-label="閂埋助手">✕</button></div>
+  <div class="robot-body" id="robotBody"></div>
+  <div class="robot-foot" id="robotFoot"></div>
+</div>
 
 <!-- ============ 核心邏輯（純函數，唔掂 DOM） ============ -->
 <script id="bm-core">
@@ -618,7 +760,7 @@ var BM = (function(){
     {id:'lhr-j', route:'香港 ⇄ 倫敦／巴黎',    cabin:'商務', trip:'單程', asiaMiles:91000,  avios:null,  cashCost:1600,  note:'長途商務改表後加至 91,000（來回 ×2）。單程 YQ 約$1,164＋稅'},
     {id:'jfk-j', route:'香港 ⇄ 紐約／多倫多',  cabin:'商務', trip:'單程', asiaMiles:119000, avios:null,  cashCost:1800,  note:'超長途商務改表後加至 119,000'},
     {id:'upg',   route:'國泰航班・經濟升商務',  cabin:'升艙', trip:'單程', asiaMiles:27000,  avios:null,  cashCost:0,     note:'升艙須符合指定票價條件，實際里數睇航段。原機票已含稅費'},
-    {id:'rtw',   route:'環遊世界（寰宇一家）',  cabin:'商務', trip:'最多5停9-11程', asiaMiles:168000, avios:null, cashCost:8000, note:'oneworld 環球票未受改表影響。20,000哩檔約168,000起，用盡50,000哩上限約230,000。YQ 每航段計，多段累加隨時上萬。用戶當年就係換呢個', highlight:true}
+    {id:'rtw',   route:'環遊世界（寰宇一家）',  cabin:'商務', trip:'最多5停9-11程', asiaMiles:168000, avios:null, cashCost:8000, note:'oneworld 環球票未受改表影響。20,000哩檔約168,000起，用盡50,000哩上限約230,000。YQ 每航段計，多段累加隨時上萬。呢張就係傳說中「一張飛遊勻全世界」嘅玩法', highlight:true}
   ];
 
   /* 邊個計劃抵：返回 {best:'am'|'avios'|'tie', save:兩者差額} */
@@ -714,7 +856,7 @@ var BM = (function(){
   function welcomeEff(c){ return c.welcomeSpend > 0 ? c.welcomeMiles / c.welcomeSpend : 0; }
   function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
 
-  var MAX_NEW_CARDS = 6; /* 貼近用戶當年做法：最多開到 6 張榨盡迎新 */
+  var MAX_NEW_CARDS = 6; /* 上限最多開 6 張榨盡迎新（實戰常見做法） */
 
   /* 同一發卡機構「第二張卡起」迎新政策：
      卡層 secondCardMult 優先（官方 T&C 有明文嗰啲）：
@@ -739,15 +881,20 @@ var BM = (function(){
      goal 指定某計劃時，直入嗰個計劃嘅卡有優先權。 */
   function optimize(input, cards){
     var goal = input.goal || 'any';
-    var months = Math.max(1, Math.floor(input.months) || 1);
     var amount = Math.max(0, Number(input.amount) || 0);
     var income = Number(input.income) || 0; /* 0 = 未填，唔篩 */
     var spendPattern = input.spendPattern === 'lump' ? 'lump' : 'spread';
-    /* 抵率有上限嘅卡，上限容量計幾多個月：
-       分幾期（如婚禮訂金/請帖/回禮自然拆開）→ 用成個計劃月數，靠平均攤開先貼近上限。
-       一次過（如買車、裝修尾數一炮清）→ 淨計 1 個月，因為錢實際上响一個月內過晒卡，
-       超過嗰個月嘅上限即刻跌落基本率，唔可以假設攤到後面月份。 */
+    /* ★ 兩個獨立時間概念（呢個係之前搞亂咗嘅核心）：
+       (1) 洗錢期：錢實際幾耐內簽晒 → 影響「抵率有上限」嘅卡爆唔爆頂。
+           一炮過（買錶／買車）＝一日簽晒，上限淨計 1 個月／1 季 → capSpan=1。
+           分幾個月（婚禮訂金／裝修分期）＝攤開，貼住上限 → capSpan=月數。
+       (2) 籌備開卡期：由今日到洗錢嗰日，你有幾耐去逐張申請、食迎新。
+           就算一炮過洗錢，都可以提早幾個月開卡（例：7月開始籌備、12月先買錶）。
+           所以「邊張卡入唔入到組合」唔應該受洗錢期限制——現實上籌備時間充裕。
+           呢度用一個寬鬆 prepMonths（預設 12），等啲卡唔會因為「一日洗晒」而被屈死。 */
+    var months = Math.max(1, Math.floor(input.months) || 6); /* 分期洗嘅月數；一炮過時淨用嚟做上限 span 唔重要 */
     var capSpan = spendPattern === 'lump' ? 1 : months;
+    var prepMonths = 12; /* 籌備開卡期：迎新窗口 gate 用呢個，唔用洗錢期 */
 
     /* 每人最多開幾多張新卡（用戶自選；'唔限' 由 UI 傳 99） */
     var maxNewPerPerson = Math.max(1, Math.min(99, Math.floor(input.maxNewCards) || 6));
@@ -859,7 +1006,7 @@ var BM = (function(){
         /* 迎新窗口可行性：唔用貪心 slot 嘅月份（嗰個係揀嘅次序、唔係最終申請月）。
            排程階段（後面 schedulable.sort）會將迎新期最長嗰張排最前（第 1 月），
            所以一張卡塞唔塞得落，睇「排喺最早位（第 1 月）」係咪夠鐘完成迎新。 */
-        if (1 + c.welcomeMonths > months) continue;
+        if (1 + c.welcomeMonths > prepMonths) continue;
         if (c.welcomeSpend > remaining) continue;
         var isSecond = (bankCount[c.bank] || 0) > 0;
         var mult = isSecond ? secondCardMultiplier(c) : 1;
@@ -882,7 +1029,7 @@ var BM = (function(){
           if (m2 === bestIdx) continue;
           var d = pending[m2];
           if (d.bank !== firstPick.bank) continue;
-          if (1 + d.welcomeMonths > months) continue;
+          if (1 + d.welcomeMonths > prepMonths) continue;
           if (firstPick.welcomeSpend + d.welcomeSpend > remaining) continue;
           if (mateIdx === -1 || welcomeEff(d) > welcomeEff(pending[mateIdx])) mateIdx = m2;
         }
@@ -891,8 +1038,8 @@ var BM = (function(){
           /* 兩張都要開嘅話，排程階段（後面 schedulable.sort）會將佢哋擺喺最前、迎新期長嗰張優先，
              所以可行性用「最早申請月 = 1」判斷，唔係用當前貪心 slot 嘅月份（嗰個係揀嘅次序、唔係申請月）。
              只要喺成個計劃 months 入面塞得落一個迎新窗口就當有。 */
-          var mateFits  = 1 + mate.welcomeMonths <= months;
-          var firstFits = 1 + firstPick.welcomeMonths <= months;
+          var mateFits  = 1 + mate.welcomeMonths <= prepMonths;
+          var firstFits = 1 + firstPick.welcomeMonths <= prepMonths;
           var orderA = firstPick.welcomeMiles + (mateFits  ? mate.welcomeMiles * secondCardMultiplier(mate) : 0);      /* firstPick 先 */
           var orderB = mate.welcomeMiles      + (firstFits ? firstPick.welcomeMiles * secondCardMultiplier(firstPick) : 0); /* mate 先 */
           if (orderB > orderA){ bestIdx = mateIdx; bestMult = 1; }
@@ -1038,9 +1185,9 @@ var BM = (function(){
         return b.card.applyWeeks - a.card.applyWeeks;
       });
       g.forEach(function(r, idx){
-        var am = Math.min(months, Math.floor(idx / 2) + 1);
+        var am = Math.floor(idx / 2) + 1; /* 每月最多兩張，逐對排開；籌備期充裕，唔 clamp 落洗錢期 */
         r.applyMonth = am;
-        r.deadlineMonth = Math.min(months, am + r.card.welcomeMonths);
+        r.deadlineMonth = am + r.card.welcomeMonths;
       });
     });
     schedulable.sort(function(a, b){
@@ -1075,6 +1222,16 @@ var BM = (function(){
       warnings.push('⚠ ' + note + '——同機構已有卡，官方「新客戶」定義通常按成間銀行或卡種計，已按政策下調計算。');
     });
 
+    /* ★ 守恆硬檢查：所有 rows 嘅 spend 加埋必須等於輸入 amount（容 $1 浮點誤差）。
+       破咗＝計錯數（例如二人家庭 11萬+11萬=22萬 呢種），即刻 console.error 現形，唔畀靜靜錯數出去。 */
+    var _spendSum = rows.reduce(function(s, r){ return s + r.spend; }, 0);
+    if (Math.abs(_spendSum - amount) > 1.5){
+      if (typeof console !== 'undefined' && console.error){
+        console.error('[BigMiles 守恆錯誤] 輸入 ' + amount + ' 但 rows 加埋 ' + Math.round(_spendSum) + '（差 ' + Math.round(_spendSum - amount) + '）', rows.map(function(r){ return (r.card._person||'') + ':' + (r.card._baseId||r.card.id) + '=' + Math.round(r.spend); }));
+      }
+      warnings.unshift('⚠ 內部計算異常（簽賬分配總數對唔上），數字可能唔準——請截圖回報。');
+    }
+
     return {
       rows:rows, total:total, welcomeTotal:welcomeTotal,
       costPerMile: total > 0 ? amount / total : 0,
@@ -1082,7 +1239,7 @@ var BM = (function(){
       warnings:warnings, unverified:unverified,
       excludedByIncome:excludedByIncome, welcomeCapture:welcomeCapture,
       amount:amount, months:months, capSpan:capSpan, spendPattern:spendPattern,
-      family:familyMode
+      family:familyMode, spendSum:_spendSum
     };
   }
 
@@ -1121,29 +1278,42 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   BM.DEFAULT_CARDS.forEach(function(c){ _cardById[c.id] = c; });
 
   function rateRow(label, val, cond){
-    return '<div style="display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dotted #E4DCCF">' +
+    return '<div style="display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dotted var(--line)">' +
       '<span style="color:var(--mut)">' + label + '</span>' +
       '<span style="text-align:right"><b>HK$' + BM.fmt(val) + '/里</b>' +
       (cond ? '<br><span style="font-size:11.5px;color:var(--mut)">' + cond + '</span>' : '') + '</span></div>';
   }
 
+  function sec(title){
+    return '<div style="font-weight:800;font-size:13px;color:var(--jade);margin:18px 0 8px;padding-left:9px;border-left:3px solid var(--jade)">' + title + '</div>';
+  }
   function openCardDetail(cardId){
     var c = _cardById[cardId] || _cardById[(cardId||'').split('@')[0]];
     if (!c) return;
     var esc2 = esc;
+    var firstFee = c.annualFeeFirst || 0, nextFee = c.feeRenewal || 0;
 
-    /* ── 上半：卡本身詳情（固定事實）── */
-    var head = '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:4px">' +
-      '<div><h2 id="cd-name" style="font-size:20px;font-weight:900;line-height:1.2">' + esc2(c.name) + '</h2>' +
-      '<div style="font-size:13px;color:var(--mut);margin-top:2px">' + esc2(c.bank) + ' · ' + programTag(c.program) + ' · 批核約 ' + c.applyWeeks + ' 週</div></div>' +
-      '<span class="vbadge ' + (c.verified ? 'yes">✓ 已核實' : 'no">⚠ 示範數據') + '</span></div>';
+    /* 頭：卡名 + banner */
+    var head = '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">' +
+      '<div><h2 id="cd-name" style="font-size:21px;font-weight:900;line-height:1.2">' + esc2(c.name) + '</h2>' +
+      '<div style="font-size:13px;color:var(--mut);margin-top:3px">' + esc2(c.bank) + ' · ' + programTag(c.program) + ' · 批核約 ' + c.applyWeeks + ' 週</div></div>' +
+      '<span class="vbadge ' + (c.verified ? 'yes">✓ 已核實' : 'no">⚠ 示範') + '</span></div>';
 
-    /* 賺里率（cat object 顯示條件） */
-    var rates = '<div style="margin:12px 0 4px;font-weight:800;font-size:14px">賺里率</div>';
+    /* 產品特色（快覽 3-4 點，一眼睇晒重點） */
+    var feats = [];
+    if (c.welcomeMiles > 0) feats.push('迎新高達 <b>' + BM.fmt(c.welcomeMiles) + ' 里</b>（簽 HK$' + BM.fmt(c.welcomeSpend) + '／' + c.welcomeMonths + '個月）');
+    feats.push('本地簽賬 <b>HK$' + BM.fmt(c.rateLocal) + '/里</b>' + (c.capQuarterly || c.capTotal ? '（有上限，詳見下面）' : ''));
+    var ovf = c.cat && c.cat.overseas;
+    feats.push('外幣簽賬 <b>HK$' + BM.fmt(ovf && typeof ovf === 'object' ? ovf.rate : c.rateOverseas) + '/里</b>');
+    feats.push(firstFee > 0 ? '首年年費 <b style="color:var(--red)">HK$' + BM.fmt(firstFee) + '</b>' : '<b>首年免年費</b>');
+    var featBlock = sec('產品特色') +
+      '<ul style="margin:0;padding-left:18px;font-size:13.5px;line-height:1.7">' + feats.map(function(f){ return '<li>' + f + '</li>'; }).join('') + '</ul>';
+
+    /* 賺里率（表） */
+    var rates = sec('賺里率');
     rates += rateRow('本地簽賬', c.rateLocal, c.capQuarterly ? '額外率每季首 HK$' + BM.fmt(c.capQuarterly) + '，超過 HK$' + BM.fmt(c.excessRate||c.rateLocal) + '/里' : (c.capTotal ? '首 HK$' + BM.fmt(c.capTotal) + '，超過 HK$' + BM.fmt(c.excessRate||c.rateLocal) + '/里' : ''));
     if (c.rateOnline !== c.rateLocal) rates += rateRow('網上簽賬', c.rateOnline, '');
-    var ov = c.cat && c.cat.overseas;
-    if (ov && typeof ov === 'object') rates += rateRow('外幣簽賬', ov.rate, '每月首 HK$' + BM.fmt(ov.capMonthly) + '，超過 HK$' + BM.fmt(ov.excessRate) + '/里');
+    if (ovf && typeof ovf === 'object') rates += rateRow('外幣簽賬', ovf.rate, '每月首 HK$' + BM.fmt(ovf.capMonthly) + '，超過 HK$' + BM.fmt(ovf.excessRate) + '/里');
     else rates += rateRow('外幣簽賬', c.rateOverseas, '');
     if (c.cat) Object.keys(c.cat).forEach(function(k){
       if (k === 'overseas') return;
@@ -1153,44 +1323,39 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     });
 
     /* 迎新 */
-    var wc = '<div style="margin:14px 0 4px;font-weight:800;font-size:14px">迎新</div>';
-    if (c.welcomeMiles > 0){
-      wc += '<div style="font-size:14px;line-height:1.55">簽夠 <b>HK$' + BM.fmt(c.welcomeSpend) + '</b>（' + c.welcomeMonths + ' 個月內）→ <b style="color:var(--jade)">' + BM.fmt(c.welcomeMiles) + ' 里</b></div>';
-    } else {
-      wc += '<div style="font-size:14px;color:var(--mut)">呢張暫時冇迎新（或已過期／要按官網最新）。</div>';
-    }
+    var wc = sec('迎新獎賞');
+    wc += c.welcomeMiles > 0
+      ? '<div style="padding:12px 14px;background:var(--jade-soft);border-radius:11px;font-size:14px;line-height:1.55">簽夠 <b>HK$' + BM.fmt(c.welcomeSpend) + '</b>（批卡後 ' + c.welcomeMonths + ' 個月內）<br>→ 賺 <b style="color:var(--jade);font-size:16px">' + BM.fmt(c.welcomeMiles) + ' 里</b></div>'
+      : '<div style="font-size:14px;color:var(--mut)">呢張暫時冇迎新（或已過期／要按官網最新）。</div>';
 
-    /* 年費 */
-    var firstFee = c.annualFeeFirst || 0, nextFee = c.feeRenewal || 0;
-    var fee = '<div style="margin:14px 0 4px;font-weight:800;font-size:14px">年費</div>' +
-      '<div style="font-size:14px;line-height:1.55">首年：' + (firstFee > 0 ? '<b style="color:var(--red)">HK$' + BM.fmt(firstFee) + '</b>（即刻收）' : '<b>免</b>') +
-      '　·　次年起：HK$' + BM.fmt(nextFee) + '　' +
-      (c.feeWaivable ? '<span style="color:var(--jade)">' + esc2(c.waiveNote || '可 waive') + '</span>' : '<span style="color:var(--red)">硬收唔 waive</span>') + '</div>';
-    if (firstFee >= 3000) fee += '<div style="margin-top:6px;padding:8px 10px;background:var(--red-bg);border:1px solid var(--red);border-radius:8px;font-size:12.5px;color:var(--red)">⚠ 第一年就要畀 HK$' + BM.fmt(firstFee) + ' 年費——諗清楚為咗迎新值唔值。</div>';
+    /* 申請資格 */
+    var meta = sec('申請資格') +
+      '<div style="font-size:14px">最低年薪：<b>HK$' + BM.fmt(c.minIncome) + '</b>' + (c.incomeVerified ? '' : ' <span style="color:var(--red);font-size:12px">*待核</span>') + '</div>';
 
-    /* 年薪 + 管家點評（note）+ 來源 */
-    var meta = '<div style="margin:14px 0 4px;font-weight:800;font-size:14px">申請門檻</div>' +
-      '<div style="font-size:14px">年薪要求：<b>HK$' + BM.fmt(c.minIncome) + '</b>' + (c.incomeVerified ? '' : ' <span style="color:var(--red);font-size:12px">*待核</span>') + '</div>';
+    /* 費用 */
+    var fee = sec('費用') +
+      '<div style="font-size:14px;line-height:1.7">' +
+      '年費（首年）：' + (firstFee > 0 ? '<b style="color:var(--red)">HK$' + BM.fmt(firstFee) + '</b>' : '<b>免</b>') + '<br>' +
+      '年費（次年起）：HK$' + BM.fmt(nextFee) + '　' + (c.feeWaivable ? '<span style="color:var(--jade)">' + esc2(c.waiveNote || '可 waive') + '</span>' : '<span style="color:var(--red)">硬收唔 waive</span>') + '<br>' +
+      '轉里數手續費：' + (c.convertFee > 0 ? 'HK$' + BM.fmt(c.convertFee) + '/次' : '免') + '</div>';
+    if (firstFee >= 3000) fee += '<div style="margin-top:8px;padding:9px 11px;background:var(--red-bg);border:1px solid var(--red);border-radius:9px;font-size:12.5px;color:var(--red)">⚠ 第一年就要畀 HK$' + BM.fmt(firstFee) + ' 年費，唔係下年先算——諗清楚為咗迎新值唔值。</div>';
 
-    var note = '<div style="margin:14px 0 4px;font-weight:800;font-size:14px">管家點評 · 風險位</div>' +
-      '<div style="font-size:13.5px;line-height:1.6;color:#3A4A44">' + esc2(c.note || '') + '</div>';
+    /* 管家點評 + 風險位 */
+    var note = sec('管家點評 · 風險位') +
+      '<div style="font-size:13.5px;line-height:1.65;color:#3A4A44">' + esc2(c.note || '') + '</div>';
 
-    var src = '<div style="margin-top:14px;padding-top:10px;border-top:1px solid #E4DCCF;font-size:12px;color:var(--mut)">' +
-      '資料基準：' + esc2(BM.DATA_AS_OF) + '　·　' +
-      (c.verified ? '已對官網核實' : '示範數據，申請前請以銀行官網最新條款為準') + '</div>';
+    var official = c.url ? '<div style="margin-top:12px"><a class="link-btn" href="' + esc2(c.url) + '" target="_blank" rel="noopener">睇卡嘅官方／詳細資料 ↗</a></div>' : '';
 
-    var official = c.url ? '<div style="margin-top:10px"><a class="link-btn" href="' + esc2(c.url) + '" target="_blank" rel="noopener">睇卡嘅官方／詳細資料 ↗</a></div>' : '';
-
-    /* ── 下半：渠道優惠（完全分開，明確標示係額外、經平台先有）── */
+    /* 渠道優惠（完全分開） */
     var offers = BM.CHANNEL_OFFERS[c.id] || [];
-    var offerBlock = '<div style="margin-top:18px;padding-top:14px;border-top:2px solid var(--jade-soft)">' +
-      '<div style="font-weight:800;font-size:14px;color:var(--jade)">經邊個平台申請，仲有額外優惠？</div>' +
-      '<div style="font-size:12px;color:var(--mut);margin:3px 0 8px">呢啲係<b>平台獨家</b>嘅【額外】著數，同上面張卡本身嘅迎新分開計——經下面個連結申請先有。</div>';
+    var offerBlock = '<div style="margin-top:20px;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--jade-soft),var(--chip-bg))">' +
+      '<div style="font-weight:800;font-size:14px;color:var(--jade)">💳 經邊個平台申請，仲有額外優惠？</div>' +
+      '<div style="font-size:12px;color:var(--mut);margin:4px 0 10px">呢啲係<b>平台獨家</b>嘅【額外】著數，同上面張卡本身嘅迎新<b>分開計</b>——經下面連結申請先有。</div>';
     if (offers.length){
       offerBlock += offers.map(function(o){
-        return '<div style="padding:10px 12px;background:var(--jade-soft);border-radius:10px;margin-bottom:8px">' +
+        return '<div style="padding:11px 13px;background:var(--card);border-radius:10px;margin-bottom:8px">' +
           '<div style="font-weight:700;font-size:13.5px">' + esc2(o.platform) + '</div>' +
-          '<div style="font-size:13px;margin:2px 0 6px">' + esc2(o.bonus) + (o.expiry ? '　<span style="color:var(--red);font-size:11.5px">到期 ' + esc2(o.expiry) + '</span>' : '') + '</div>' +
+          '<div style="font-size:13px;margin:3px 0 7px;color:var(--jade)">' + esc2(o.bonus) + (o.expiry ? '　<span style="color:var(--red);font-size:11.5px">到期 ' + esc2(o.expiry) + '</span>' : '') + '</div>' +
           '<a class="link-btn" href="' + esc2(o.link) + '" target="_blank" rel="noopener">經 ' + esc2(o.platform) + ' 睇／申請 ↗</a></div>';
       }).join('');
       offerBlock += '<div style="font-size:11.5px;color:var(--mut);margin-top:4px">BigMiles 暫時係資訊管家，以上係中立資訊連結、<b>唔賺你嘅 referral</b>。</div>';
@@ -1199,9 +1364,10 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     }
     offerBlock += '</div>';
 
-    $('cardDetailBody').innerHTML = head + rates + wc + fee + meta + note + official + offerBlock + src;
+    var src = '<div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-size:12px;color:var(--mut)">資料基準：' + esc2(BM.DATA_AS_OF) + '　·　' + (c.verified ? '已對官網核實' : '示範數據，申請前請以銀行官網最新條款為準') + '</div>';
+
+    $('cardDetailBody').innerHTML = head + featBlock + rates + wc + meta + fee + note + official + offerBlock + src;
     var m = $('cardDetail'); m.hidden = false;
-    m.scrollTop = 0;
     var mc = m.querySelector('.modal'); if (mc) mc.scrollTop = 0;
   }
   (function(){
@@ -1210,23 +1376,16 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     m.addEventListener('click', function(e){ if (e.target === m) m.hidden = true; });
   })();
 
-  /* ---------- 卡庫（預設＋本機覆寫） ---------- */
-  var EDITABLE = ['minIncome','welcomeSpend','welcomeMiles','welcomeMonths','rateLocal','rateOnline','rateOverseas','feeRenewal','convertFee'];
+  /* ---------- 卡庫（v2.5 起純唯讀） ----------
+     舊「本機覆寫」機制成個移除：卡庫轉唯讀後 saveOverride 冇晒入口，
+     但殘留覆寫仍會靜靜蓋住官方新數＝同資料誠信自相矛盾。唔再套用，舊 key 清埋。 */
+  store.del('bm_card_overrides');
   function loadCards(){
-    var ov = store.get('bm_card_overrides') || {};
     return BM.DEFAULT_CARDS.filter(function(d){ return !d.pending; }).map(function(d){
-      var c = {}, o = ov[d.id] || {};
+      var c = {};
       Object.keys(d).forEach(function(k){ c[k] = d[k]; });
-      EDITABLE.forEach(function(k){ if (typeof o[k] === 'number' && isFinite(o[k])) c[k] = o[k]; });
-      if (typeof o.verified === 'boolean') c.verified = o.verified;
       return c;
     });
-  }
-  function saveOverride(id, patch){
-    var ov = store.get('bm_card_overrides') || {};
-    ov[id] = ov[id] || {};
-    Object.keys(patch).forEach(function(k){ ov[id][k] = patch[k]; });
-    store.set('bm_card_overrides', ov);
   }
   var cards = loadCards();
 
@@ -1243,7 +1402,8 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     income2: typeof saved.income2 === 'number' ? saved.income2 : 0,
     owned2: Array.isArray(saved.owned2) ? saved.owned2 : [],
     maxNewCards: typeof saved.maxNewCards === 'number' ? saved.maxNewCards : 6,
-    excludedCards: Array.isArray(saved.excludedCards) ? saved.excludedCards : []
+    excludedCards: Array.isArray(saved.excludedCards) ? saved.excludedCards : [],
+    preferProgram: saved.preferProgram === 'avios' ? 'avios' : 'am'
   };
   var lastRes = null;
 
@@ -1267,14 +1427,18 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   }
   function renderPatternChips(){
     chipRow($('patternChips'),
-      [{id:'spread', label:'分幾期洗', sub:'訂金/單據自然分開'},
-       {id:'lump', label:'一次過洗晒', sub:'例如買車、一炮清'}],
+      [{id:'lump', label:'一炮過洗晒', sub:'買錶／買車／一次過'},
+       {id:'spread', label:'分幾個月洗', sub:'訂金／裝修分期'}],
       function(it){ return it.id === state.spendPattern; },
-      function(id){ state.spendPattern = id; renderPatternChips(); });
+      function(id){
+        state.spendPattern = id;
+        $('spreadMonthsField').hidden = (id === 'lump');
+        renderPatternChips();
+      });
   }
   function renderGoalChips(){
     chipRow($('goalChips'),
-      [{id:'am', label:'Asia Miles'},{id:'avios', label:'Avios'},{id:'any', label:'兩樣都得'}],
+      [{id:'am', label:'淨儲 Asia Miles'},{id:'avios', label:'淨儲 Avios'},{id:'any', label:'兩樣都睇', sub:'並排比較'}],
       function(it){ return it.id === state.goal; },
       function(id){ state.goal = id; renderGoalChips(); });
   }
@@ -1305,7 +1469,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   }
   function renderMaxCardChips(){
     chipRow($('maxCardChips'),
-      [{id:'2', label:'2 張'},{id:'4', label:'4 張'},{id:'6', label:'6 張', sub:'當年實戰'},{id:'99', label:'唔限'}],
+      [{id:'2', label:'2 張'},{id:'4', label:'4 張'},{id:'6', label:'6 張', sub:'榨盡迎新'},{id:'99', label:'唔限'}],
       function(it){ return Number(it.id) === state.maxNewCards; },
       function(id){ state.maxNewCards = Number(id); renderMaxCardChips(); });
   }
@@ -1362,15 +1526,18 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   }
 
   /* 統一組裝 optimize 輸入（主計算＋what-if 共用） */
-  function optInput(amt, months){
-    return {amount:amt, months:months, goal:state.goal, owned:state.owned, income:state.income,
+  /* goal='any'（兩樣都睇）時，主組合都要 either/or——用 preferProgram 決定出 AM plan 定 Avios plan。
+     goalOverride 畀 renderProgCompare 行「另一個 plan」攞總數比較。 */
+  function effectiveGoal(){
+    return state.goal === 'any' ? state.preferProgram : state.goal;
+  }
+  function optInput(amt, months, goalOverride){
+    return {amount:amt, months:months, goal:goalOverride || effectiveGoal(), owned:state.owned, income:state.income,
             spendPattern:state.spendPattern, family:state.family, income2:state.income2,
             owned2:state.owned2, maxNewCards:state.maxNewCards, excludedCards:state.excludedCards};
   }
-  /* 同 optInput 但唔剔任何卡——攞「停用卡本身喺完整組合嘅樣」去灰住顯示。
-     （之前漏咗呢個定義，令 renderResults 撞未定義而靜靜哋 throw，撳「唔要呢張」冇反應——root cause） */
-  function optInputNoExclude(amt, months){
-    var o = optInput(amt, months);
+  function optInputNoExclude(amt, months, goalOverride){
+    var o = optInput(amt, months, goalOverride);
     o.excludedCards = [];
     return o;
   }
@@ -1423,7 +1590,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     $('results').hidden = false;
 
     $('dataWarn').innerHTML = res.unverified
-      ? '<b>注意：以下結果基於示範卡數據（截至 ' + esc(BM.DATA_AS_OF) + '，未核實）。</b>申請前必須上銀行官網核對迎新、賺里率同年費。去「卡庫」可以更新數字。'
+      ? '<b>注意：以下結果基於示範卡數據（截至 ' + esc(BM.DATA_AS_OF) + '，未核實）。</b>申請前必須上銀行官網核對迎新、賺里率同年費。喺「卡庫」撳入每張卡有詳情同官方連結。'
       : '結果基於你已核實嘅卡數據（截至 ' + esc(BM.DATA_AS_OF) + '）。條款隨時會改，申請前建議再對一次官網。';
 
     var approx = roundApprox(res.total);
@@ -1468,7 +1635,34 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
     $('resWarnings').innerHTML = res.warnings.map(function(w){
       return '<div class="warn">' + esc(w) + '</div>';
-    }).join('');
+    }).join('') + butlerTipsTop(res);
+
+    /* 結果頂：加人建議（大額＋單人先提） */
+    function butlerTipsTop(res){
+      if (!res.family && res.amount >= 200000){
+        return '<div style="padding:11px 13px;background:var(--gold-soft);border:1px solid var(--gold);border-radius:10px;font-size:13px;line-height:1.55;margin-bottom:8px;color:var(--gold-deep)">' +
+          '👥 <b>你今次簽 HK$' + BM.fmt(res.amount) + '，唔細數——不如叫另一半或屋企人一齊申請？</b>' +
+          '同一張卡，兩個人各自申請就各食一份迎新。喺上面「一個人／二人家庭」揀「二人家庭」再填多份年薪，睇下多一個人可以多賺幾多里。</div>';
+      }
+      return '';
+    }
+
+    /* 登機證之後（最底）：一炮過分卡提醒 ＋ 多卡欺詐提醒 */
+    function butlerTipsBottom(res){
+      var cardCount = res.rows.filter(function(r){ return r.isNew; }).length;
+      var tips = '';
+      if (res.spendPattern === 'lump' && cardCount >= 2){
+        tips += '<div style="padding:11px 13px;background:#FFF6E9;border:1px solid var(--gold);border-radius:10px;font-size:13px;line-height:1.55;margin-bottom:8px">' +
+          '🏪 <b>一炮過洗一筆大錢，但唔係間間店肯畀你用幾張卡找同一單。</b>' +
+          '呢個 plan 要用 ' + cardCount + ' 張卡分開找先食到晒啲迎新——落訂或畀錢前，<b>先問商戶可唔可以分開幾張卡碌</b>（分單／分次過數）。問定就唔會到時得一張卡找唔到，打亂晒個 plan。</div>';
+      }
+      if (cardCount >= 3){
+        tips += '<div style="padding:11px 13px;background:var(--red-bg);border:1px solid var(--red);border-radius:10px;font-size:13px;line-height:1.55;margin-bottom:8px;color:var(--red)">' +
+          '🔒 <b>一個鐘內用多張新卡碌大額，銀行反詐系統可能會 flag。</b>' +
+          '你可能接到銀行來電核實、甚至暫時凍結張卡——<b>呢個好正常，唔使驚</b>。照實講你買緊乜（買錶／裝修／旅行），有合理解釋通常即刻解封。建議：大額前開通銀行 App 通知、電話唔好熄機、保留收據。</div>';
+      }
+      return tips ? '<div style="margin-top:14px">' + tips + '</div>' : '';
+    }
 
     function passCard(r, disabled){
       var c = r.card;
@@ -1496,6 +1690,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
             (hasWelcome ? '迎新 <b>' + BM.fmt(r.welcomeMiles) + '</b> ＋ ' : '') +
             '基本 <b>' + BM.fmt(r.baseMiles) + '</b>' +
             (hasWelcome ? '' : '（主力簽賬卡）') +
+            (!hasWelcome && r.spend > 0 ? '<br><span style="color:var(--jade)">💡 淨返嘅尾數 HK$' + BM.fmt(r.spend) + ' 擺呢張——食晒各卡迎新後，佢基本率 HK$' + BM.effRate(c) + '/里係手上最抵。</span>' : '') +
             (overCap ? '<br><span style="color:var(--red)">已包括超出抵率上限（' + BM.capLabel(c) + '）嘅部分，跌落 HK$' + BM.fmt(c.excessRate || c.rateLocal) + '/里計' +
               (res.spendPattern === 'lump' ? '——因為你揀咗「一次過洗晒」，上限淨計一個月／一季，好易爆頂' : '') + '</span>' : '') +
           '</div>' +
@@ -1537,12 +1732,23 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       '</div>';
     }
     var passHtml = '';
-    /* 停用嘅卡要「灰住留喺畫面」畀人隨時撳返——行多次 optimize（唔剔任何卡）攞返佢哋本身嘅位／迎新／簽賬去顯示。
-       生效組合＝res（已剔走停用卡）；停用卡資訊＝fullRes 入面搵返。 */
+    /* 停用嘅卡「灰住留喺原位」＋緊接標示邊張頂上咗。
+       生效組合＝res（已剔走停用卡）；完整組合＝fullRes（唔剔）。
+       替代卡＝res 入面有、但 fullRes 冇嘅（即因為停用先補上嚟嗰啲）。 */
     var disabledIds = state.excludedCards.slice();
     var fullRes = disabledIds.length
       ? BM.optimize(optInputNoExclude(res.amount, res.months), cards)
       : res;
+    /* fullRes 每個人本來用邊啲卡（base id 集合）——用嚟認出「新頂上」嘅卡 */
+    var fullBaseByP = {};
+    fullRes.rows.forEach(function(r){
+      var p = r.card._person || '_';
+      (fullBaseByP[p] = fullBaseByP[p] || {})[r.card._baseId || r.card.id] = true;
+    });
+    function isReplacement(r){
+      var p = r.card._person || '_';
+      return disabledIds.length && !(fullBaseByP[p] && fullBaseByP[p][r.card._baseId || r.card.id]);
+    }
     function disabledRowsFor(personFilter){
       if (!disabledIds.length) return [];
       return fullRes.rows.filter(function(r){
@@ -1551,6 +1757,18 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         if (personFilter === undefined) return true;
         return (r.card._person || null) === personFilter;
       });
+    }
+    /* 一組 row：生效卡順住畫，遇到「新頂上」嘅卡加個綠色標；停用卡灰住擺喺呢組最後 */
+    function renderGroup(activeRows, disabledRows){
+      var html = '';
+      activeRows.forEach(function(r){
+        if (isReplacement(r)){
+          html += '<div style="font-size:11.5px;color:var(--jade);font-weight:700;margin:6px 0 -2px;padding-left:2px">↑ 頂上嘅替代卡（你停用咗其他卡，呢張補上）</div>';
+        }
+        html += passCard(r, false);
+      });
+      disabledRows.forEach(function(r){ html += passCard(r, true); });
+      return html;
     }
     if (res.family){
       var byP = {};
@@ -1563,15 +1781,14 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         var dis = disabledRowsFor(p);
         if (!g.length && !dis.length) return;
         var pSpend = g.reduce(function(s, r){ return s + r.spend; }, 0);
-        passHtml += '<div class="eyebrow" style="margin:16px 0 6px;font-size:13px">申請人 ' + p + '（' + g.length + ' 張・分到簽 HK$' + BM.fmt(pSpend) + '）</div>' +
-          g.map(function(r){ return passCard(r, false); }).join('') +
-          dis.map(function(r){ return passCard(r, true); }).join('');
+        passHtml += '<div style="margin:20px 0 8px"><div style="font-size:17px;font-weight:900;color:var(--ink)">申請人 ' + p + '</div>' +
+          '<div style="font-size:13px;color:var(--mut);margin-top:1px">' + g.length + ' 張卡・分到簽 <b style="color:var(--jade)">HK$' + BM.fmt(pSpend) + '</b></div></div>' +
+          renderGroup(g, dis);
       });
     } else {
-      passHtml = res.rows.map(function(r){ return passCard(r, false); }).join('') +
-                 disabledRowsFor(undefined).map(function(r){ return passCard(r, true); }).join('');
+      passHtml = renderGroup(res.rows, disabledRowsFor(undefined));
     }
-    $('passList').innerHTML = (res.rows.length || disabledIds.length) ? passHtml : '<p class="empty">計唔到組合，試下調整金額或簽賬期。</p>';
+    $('passList').innerHTML = ((res.rows.length || disabledIds.length) ? passHtml : '<p class="empty">計唔到組合，試下調整金額或簽賬期。</p>') + butlerTipsBottom(res);
     /* toggle：停用／加返，即時重計（簽賬會自動轉移去替代卡或現有卡） */
     Array.prototype.forEach.call(document.querySelectorAll('#passList [data-toggle]'), function(btn){
       btn.addEventListener('click', function(){
@@ -1717,6 +1934,76 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     } else {
       $('excludedBox').innerHTML = '';
     }
+
+    renderProgToggle();
+    renderProgCompare(res);
+  }
+
+  /* WHAT-IF 區嘅 Asia Miles / Avios 切換掣 */
+  function renderProgToggle(){
+    var el = $('progToggle'); if (!el) return;
+    el.innerHTML = [['am','Asia Miles'],['avios','Avios']].map(function(p){
+      return '<button type="button" class="chip' + (state.preferProgram === p[0] ? ' on' : '') + '" data-prog="' + p[0] + '">' + p[1] + '</button>';
+    }).join('');
+    Array.prototype.forEach.call(el.querySelectorAll('[data-prog]'), function(b){
+      b.addEventListener('click', function(){
+        state.preferProgram = b.getAttribute('data-prog');
+        store.set('bm_input', state);
+        /* goal='any' 時主組合係 either/or 跟 preferProgram，要重新計；
+           goal 已鎖定 am/avios 就淨係更新比較區。 */
+        if (state.goal === 'any' && lastRes){ runCalc(false); }
+        else { renderProgToggle(); if (lastRes) renderProgCompare(lastRes); }
+      });
+    });
+  }
+
+  /* AM vs Avios 並排比較（either/or 兩個獨立組合）——
+     唔係「同一堆卡分兩種換法」，而係各自行一次 optimize：
+     AM plan＝淨用能儲 Asia Miles 嘅卡（am + flex）；Avios plan＝淨用 avios + flex 卡。
+     兩個 plan 嘅卡組合可以唔同，總里數亦唔同——呢個先係真正 either/or。 */
+  function renderProgCompare(res){
+    var el = $('progCompare'); if (!el) return;
+    var amt = res.amount, mo = res.months;
+    var amPlan = BM.optimize(optInput(amt, mo, 'am'), cards);
+    var aviosPlan = BM.optimize(optInput(amt, mo, 'avios'), cards);
+    function topRoutes(maxMi, key, n){
+      var a = BM.REDEMPTIONS.filter(function(x){ return x[key] != null && maxMi >= x[key]; });
+      a.sort(function(p, q){ return q[key] - p[key]; });
+      return a.slice(0, n);
+    }
+    var cfg = {
+      am:    {label:'Asia Miles', plan:amPlan,    key:'asiaMiles'},
+      avios: {label:'Avios',      plan:aviosPlan, key:'avios'}
+    };
+    var pref = state.preferProgram;
+    var main = cfg[pref], other = cfg[pref === 'am' ? 'avios' : 'am'];
+
+    function card(c, isMain){
+      var mi = c.plan.total;
+      var routes = topRoutes(mi, c.key, isMain ? 3 : 2);
+      var nCards = c.plan.rows.filter(function(r){ return r.isNew; }).length;
+      return '<div style="flex:1;min-width:0;padding:13px 14px;border-radius:14px;border:' +
+        (isMain ? '2px solid var(--jade)' : '1.5px solid var(--line)') + ';background:' + (isMain ? 'var(--jade-soft)' : 'var(--card)') + '">' +
+        '<div style="font-size:12px;color:var(--mut);font-weight:700">' + (isMain ? '你而家揀緊' : '撳上面掣睇') + '</div>' +
+        '<div style="font-size:15px;font-weight:900;margin:2px 0">' + c.label + ' plan</div>' +
+        '<div style="font-size:22px;font-weight:900;color:var(--jade);line-height:1.1">' + BM.fmt(mi) + '<span style="font-size:12px;font-weight:600;color:var(--mut)"> 里</span></div>' +
+        '<div style="font-size:11.5px;color:var(--mut);margin-top:2px">用 ' + nCards + ' 張卡</div>' +
+        '<div style="font-size:12.5px;margin-top:8px;line-height:1.5">' +
+          (routes.length ? '夠換：<br>' + routes.map(function(x){ return '· ' + esc(x.route) + '（' + esc(x.cabin) + '）' + BM.fmt(x[c.key]); }).join('<br>') : '參考航線未夠換，繼續儲') +
+        '</div></div>';
+    }
+
+    var diff = main.plan.total - other.plan.total;
+    var diffNote = diff === 0 ? '兩個 plan 儲到嘅里數一樣。'
+      : (diff > 0 ? '你而家揀緊嘅 ' + main.label + ' plan 多 ' + BM.fmt(Math.abs(diff)) + ' 里。'
+                  : '另一個 ' + other.label + ' plan 多 ' + BM.fmt(Math.abs(diff)) + ' 里，撳上面個掣睇下。');
+
+    el.innerHTML = '<div class="panel" style="margin-top:14px">' +
+      '<div class="eyebrow">Asia Miles vs Avios · 兩個 plan 並排比較</div>' +
+      '<div style="font-size:12.5px;color:var(--mut);margin:2px 0 10px">兩個係<b>唔同嘅卡組合</b>（唔會溝埋）：一個淨儲 Asia Miles、一個淨儲 Avios。' + diffNote + '</div>' +
+      '<div style="display:flex;gap:10px;align-items:stretch">' + card(main, true) + card(other, false) + '</div>' +
+      '<div style="font-size:12px;color:var(--mut);margin-top:10px">👉 一般嚟講：<b>短途（東京／台北／首爾）Avios 甜蜜點抵</b>，<b>長途（歐洲／美洲）同商務艙 Asia Miles 選擇多</b>。詳細每條航線去「用里數」頁。</div>' +
+      '</div>';
   }
 
   /* ---------- What-If ---------- */
@@ -1792,7 +2079,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         '<div class="pbar"><span style="width:' + pct.toFixed(1) + '%"></span></div>' +
         '<div class="pmsg' + (done ? ' done' : '') + '">' +
           (have <= 0 ? '入你嘅里數，睇下仲差幾遠。' :
-           done ? '✓ 夠喇！你已經儲夠換環球商務——就好似用戶當年咁。' :
+           done ? '✓ 夠喇！你已經儲夠換一張寰宇一家環球商務票。' :
            '仲差 ' + BM.fmt(gap) + ' 里。') +
         '</div>' +
         '<div class="pmsg" style="margin-top:8px;font-size:12.5px;color:#E4D6BC">⚠ 里數唔等於免費：環球票每個航段都要俾燃油附加費＋稅，全程隨時 <b style="color:var(--gold)">HK$' + BM.fmt(rtw.cashCost) + '+</b> 現金。長途每航段 YQ 約 HK$1,164，轉幾程就幾倍。</div>';
@@ -1854,9 +2141,12 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   });
 
   /* ---------- 「日常儲分」邏輯（功能二） ---------- */
+  var _d0 = store.get('bm_daily') || {};
   var dailyState = {
-    owned: Array.isArray((store.get('bm_daily') || {}).owned) ? store.get('bm_daily').owned : [],
-    spend: (store.get('bm_daily') || {}).spend || {}
+    owned: Array.isArray(_d0.owned) ? _d0.owned : [],
+    owned2: Array.isArray(_d0.owned2) ? _d0.owned2 : [],
+    family: !!_d0.family,
+    spend: _d0.spend || {}
   };
   function saveDailyState(){ store.set('bm_daily', dailyState); }
 
@@ -1873,6 +2163,37 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       });
   }
 
+  function renderDailyOwnedChipsB(){
+    chipRow($('dailyOwnedChipsB'),
+      cards.map(function(c){ return {id:c.id, label:c.name}; }),
+      function(it){ return dailyState.owned2.indexOf(it.id) >= 0; },
+      function(id){
+        var i = dailyState.owned2.indexOf(id);
+        if (i >= 0) dailyState.owned2.splice(i, 1); else dailyState.owned2.push(id);
+        saveDailyState();
+        renderDailyOwnedChipsB();
+        renderDaily();
+      });
+  }
+  function renderDailyFamilyChips(){
+    chipRow($('dailyFamilyChips'),
+      [{id:'solo', label:'一個人'}, {id:'family', label:'二人家庭'}],
+      function(it){ return (it.id === 'family') === !!dailyState.family; },
+      function(id){
+        dailyState.family = (id === 'family');
+        saveDailyState();
+        renderDailyFamilyChips();
+        syncDailyFamilyUI();
+        renderDaily();
+      });
+  }
+  function syncDailyFamilyUI(){
+    var fam = !!dailyState.family;
+    $('dailyOwnedBField').hidden = !fam;
+    $('dailyFamilyHint').hidden = !fam;
+    $('dailySpendHint').hidden = !fam;
+    $('dailyOwnedLab').textContent = fam ? 'A 手上有邊幾張卡？' : '你手上有邊幾張卡？';
+  }
   function renderDailyInputs(){
     $('dailyInputs').innerHTML = BM.CATEGORIES.map(function(cat){
       var v = dailyState.spend[cat.key] || '';
@@ -1895,9 +2216,32 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   }
 
   function renderDaily(){
-    var avail = dailyState.owned.length
-      ? cards.filter(function(c){ return dailyState.owned.indexOf(c.id) >= 0; })
-      : cards.slice();
+    var avail;
+    if (dailyState.family){
+      /* 二人家庭：A/B 各自嘅卡 clone 一份（id 加 @A/@B），byCard 上限自然每人每張各自計。
+         兩邊都未揀＝照睇全市場；殘留舊 id 跳過唔 crash。 */
+      var _byId = {};
+      cards.forEach(function(c){ _byId[c.id] = c; });
+      var tagClone = function(id, tag){
+        var c0 = _byId[id];
+        if (!c0) return null;
+        var c = {};
+        Object.keys(c0).forEach(function(k){ c[k] = c0[k]; });
+        c.id = c0.id + '@' + tag;
+        c._baseId = c0.id;
+        c._person = tag;
+        c.name = c0.name + '（' + tag + '）';
+        return c;
+      };
+      var pool = [];
+      dailyState.owned.forEach(function(id){ var c = tagClone(id, 'A'); if (c) pool.push(c); });
+      dailyState.owned2.forEach(function(id){ var c = tagClone(id, 'B'); if (c) pool.push(c); });
+      avail = pool.length ? pool : cards.slice();
+    } else {
+      avail = dailyState.owned.length
+        ? cards.filter(function(c){ return dailyState.owned.indexOf(c.id) >= 0; })
+        : cards.slice();
+    }
 
     var totalMonthSpend = 0, any = false;
     var perCat = BM.CATEGORIES.map(function(cat){
@@ -1969,10 +2313,17 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
                '<div class="card">未填</div></div><div class="r"><div class="mi">–</div></div></div>';
       }
       var cardName = b.best ? b.best.card.name : '—';
+      var mateHint = '';
+      if (b.overCap && dailyState.family && b.best && b.best.card._person){
+        var mateOwned = b.best.card._person === 'A' ? dailyState.owned2 : dailyState.owned;
+        if (mateOwned.indexOf(b.best.card._baseId) >= 0){
+          mateHint = '另一半都有呢張卡——超上限嗰截可以改簽佢嗰張，兩張卡嘅上限係分開計。';
+        }
+      }
       return '<div class="dbreak"><div class="l">' +
         '<div class="cat">' + esc(b.cat.label) + '　<span style="font-size:12px;color:var(--mut);font-weight:400">HK$' + BM.fmt(b.monthSpend) + '/月</span></div>' +
         '<div class="card">' + esc(cardName) + ' <span class="rate">HK$' + (b.best ? b.best.rate : '?') + '/里</span></div>' +
-        (b.overCap ? '<div style="font-size:11.5px;color:var(--gold-deep);margin-top:2px">呢張卡連埋其他類別月簽超過上限，部分已跌落基本率</div>' : '') +
+        (b.overCap ? '<div style="font-size:11.5px;color:var(--gold-deep);margin-top:2px">呢張卡連埋其他類別月簽超過上限，部分已跌落基本率。' + mateHint + '</div>' : '') +
         '</div><div class="r"><div class="mi">' + BM.fmt(b.yearMiles) + ' 里</div><div class="sub">一年</div></div></div>';
     }).join('');
 
@@ -1991,13 +2342,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     }
   }
 
-  /* ---------- 卡庫 render ---------- */
-  var editing = {};
-  var FIELD_LABELS = [
-    ['minIncome','年薪門檻 HK$'], ['welcomeSpend','迎新簽賬 HK$'], ['welcomeMiles','迎新里數'],
-    ['welcomeMonths','迎新期（月）'], ['rateLocal','本地 HK$/里'], ['rateOnline','網上 HK$/里'],
-    ['rateOverseas','海外 HK$/里'], ['feeRenewal','次年年費 HK$']
-  ];
+  /* ---------- 卡庫 render（v2.5 起純唯讀，舊 editable table 殘留已清） ---------- */
   function programTag(p){
     if (p === 'am') return '<span class="tag am">Asia Miles</span>';
     if (p === 'avios') return '<span class="tag avios">Avios</span>';
@@ -2008,14 +2353,14 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       var wLine = c.welcomeMiles > 0 ? '迎新 ' + BM.fmt(c.welcomeMiles) + ' 里（簽 HK$' + BM.fmt(c.welcomeSpend) + '）' : '暫無迎新';
       var feeLine = (c.annualFeeFirst > 0 ? '首年 HK$' + BM.fmt(c.annualFeeFirst) : '首年免年費');
       var offers = BM.CHANNEL_OFFERS[c.id] || [];
-      return '<button type="button" class="lib-card" data-detail="' + esc(c.id) + '" style="display:block;width:100%;text-align:left;cursor:pointer;border:1px solid #E4DCCF;background:var(--card)">' +
+      return '<button type="button" class="lib-card" data-detail="' + esc(c.id) + '" style="display:block;width:100%;text-align:left;cursor:pointer;border:1px solid var(--line);background:var(--card)">' +
         '<div class="lib-top"><div><div class="lib-name">' + esc(c.name) + '</div>' +
         '<div class="lib-bank">' + esc(c.bank) + ' · ' + programTag(c.program) + '</div></div>' +
         '<span class="vbadge ' + (c.verified ? 'yes">✓ 已核實' : 'no">⚠ 示範') + '</span></div>' +
         '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 6px">' +
           '<span class="badge" style="background:var(--jade-soft);color:var(--jade)">' + wLine + '</span>' +
-          '<span class="badge" style="background:#F0EAE0;color:#6B6155">本地 HK$' + BM.fmt(c.rateLocal) + '/里</span>' +
-          '<span class="badge" style="background:#F0EAE0;color:#6B6155">' + feeLine + '</span>' +
+          '<span class="badge" style="background:var(--chip-bg);color:var(--chip-ink)">本地 HK$' + BM.fmt(c.rateLocal) + '/里</span>' +
+          '<span class="badge" style="background:var(--chip-bg);color:var(--chip-ink)">' + feeLine + '</span>' +
           (offers.length ? '<span class="badge" style="background:var(--gold-soft);color:var(--gold-deep)">' + offers.length + ' 個平台獨家優惠</span>' : '') +
         '</div>' +
         '<div style="font-size:12.5px;color:var(--jade);font-weight:600">撳入去睇詳情、風險位、點申請 →</div>' +
@@ -2058,10 +2403,224 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   $('showDc').addEventListener('click', showDc);
   if (!store.get('bm_ok')) showDc();
 
+  /* ══════════ v2.5 新功能模組 ══════════ */
+
+  var APP_VERSION = 'v2.5.0 · build 2026-07-09'; /* 同第一行 build marker 一齊改 */
+
+  /* ---------- toast ---------- */
+  var toastTimer = null;
+  function toast(msg){
+    var t = document.getElementById('bmToast');
+    if (!t){ t = document.createElement('div'); t.id = 'bmToast'; document.body.appendChild(t); }
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2400);
+  }
+
+  /* ---------- 深色模式：自動（跟系統）→ 深色 → 淺色，儲 bm_theme ---------- */
+  var themeMq = null;
+  try{ themeMq = window.matchMedia('(prefers-color-scheme: dark)'); }catch(e){}
+  function themePref(){
+    var t = store.get('bm_theme');
+    return (t === 'light' || t === 'dark') ? t : 'auto';
+  }
+  function applyTheme(){
+    var p = themePref();
+    var dark = p === 'dark' || (p === 'auto' && !!(themeMq && themeMq.matches));
+    document.documentElement.classList.toggle('dark', dark);
+    var tc = document.querySelector('meta[name="theme-color"]');
+    if (tc) tc.setAttribute('content', dark ? '#0F1613' : '#00594E');
+    var btn = $('themeBtn');
+    if (btn){
+      btn.textContent = p === 'auto' ? '🌗' : (dark ? '🌙' : '☀️');
+      btn.title = '外觀：' + (p === 'auto' ? '自動（跟系統）' : (dark ? '深色' : '淺色'));
+      btn.setAttribute('aria-label', btn.title + '，撳一下轉');
+    }
+  }
+  if (themeMq){
+    var _mqCb = function(){ if (themePref() === 'auto') applyTheme(); };
+    if (themeMq.addEventListener) themeMq.addEventListener('change', _mqCb);
+    else if (themeMq.addListener) themeMq.addListener(_mqCb);
+  }
+  $('themeBtn').addEventListener('click', function(){
+    var order = ['auto', 'dark', 'light'];
+    var next = order[(order.indexOf(themePref()) + 1) % order.length];
+    store.set('bm_theme', next);
+    applyTheme();
+    toast('外觀：' + (next === 'auto' ? '自動（跟系統）' : (next === 'dark' ? '深色' : '淺色')));
+  });
+
+  /* ---------- 分享 plan（Web Share，冇就複製） ---------- */
+  function currentProgLabel(){
+    if (state.goal === 'am') return 'Asia Miles';
+    if (state.goal === 'avios') return 'Avios';
+    return state.preferProgram === 'avios' ? 'Avios' : 'Asia Miles';
+  }
+  function planShareText(){
+    var miles = $('totalMiles').textContent;
+    var nCards = (lastRes && lastRes.rows) ? lastRes.rows.length : 0;
+    return 'BigMiles 幫我計咗個大額簽賬 plan：' +
+      (state.family ? '二人家庭' : '一個人') + '簽 HK$' + BM.fmt(state.amount) +
+      '，用 ' + nCards + ' 張卡，估計儲到約 ' + miles + ' ' + currentProgLabel() +
+      '。你都可以免費計自己嗰份 →';
+  }
+  $('sharePlanBtn').addEventListener('click', function(){
+    if (!lastRes) return;
+    var text = planShareText();
+    var url = location.href.split('#')[0];
+    if (navigator.share){
+      navigator.share({title:'BigMiles', text:text, url:url}).catch(function(){});
+    } else if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text + ' ' + url).then(
+        function(){ toast('已複製，貼去 WhatsApp 就得'); },
+        function(){ window.prompt('複製呢段文字分享：', text + ' ' + url); });
+    } else {
+      window.prompt('複製呢段文字分享：', text + ' ' + url);
+    }
+  });
+
+  /* ---------- 儲存計劃（存喺部機 localStorage，可存多個） ---------- */
+  function getSavedPlans(){
+    var a = store.get('bm_saved_plans');
+    return Array.isArray(a) ? a : [];
+  }
+  function renderSavedPlans(){
+    var plans = getSavedPlans();
+    $('savedPlansPanel').hidden = plans.length === 0;
+    if (!plans.length){ $('savedPlansList').innerHTML = ''; return; }
+    $('savedPlansList').innerHTML = plans.map(function(p){
+      var d = new Date(p.ts);
+      return '<div class="saved-row">' +
+        '<div><div class="nm">' + esc(p.name) + '</div>' +
+        '<div class="mt">' + (d.getMonth() + 1) + '月' + d.getDate() + '日 · HK$' + BM.fmt(p.amount) + ' → 約 ' + esc(String(p.miles)) + ' 里</div></div>' +
+        '<button type="button" class="ld" data-load="' + p.id + '">開返</button>' +
+        '<button type="button" class="dl" data-del="' + p.id + '" aria-label="刪除 ' + esc(p.name) + '">✕</button>' +
+      '</div>';
+    }).join('');
+    Array.prototype.forEach.call($('savedPlansList').querySelectorAll('[data-load]'), function(b){
+      b.addEventListener('click', function(){ loadPlan(Number(b.getAttribute('data-load'))); });
+    });
+    Array.prototype.forEach.call($('savedPlansList').querySelectorAll('[data-del]'), function(b){
+      b.addEventListener('click', function(){
+        if (!window.confirm('刪除呢個儲低嘅計劃？')) return;
+        store.set('bm_saved_plans', getSavedPlans().filter(function(p){ return p.id !== Number(b.getAttribute('data-del')); }));
+        renderSavedPlans();
+      });
+    });
+  }
+  $('savePlanBtn').addEventListener('click', function(){
+    if (!lastRes) return;
+    var now = new Date();
+    var defName = '計劃 ' + (now.getMonth() + 1) + '月' + now.getDate() + '日';
+    var name = window.prompt('幫呢個計劃改個名（例：買錶、裝修）：', defName);
+    if (name === null) return;
+    name = String(name).trim() || defName;
+    var plans = getSavedPlans();
+    plans.unshift({
+      id: Date.now(),
+      name: name,
+      ts: Date.now(),
+      amount: state.amount,
+      miles: $('totalMiles').textContent,
+      snap: JSON.parse(JSON.stringify(state))
+    });
+    if (plans.length > 20) plans = plans.slice(0, 20);
+    store.set('bm_saved_plans', plans);
+    renderSavedPlans();
+    toast('儲低咗 ✓ 喺「優化器」頁頂搵返');
+  });
+  function loadPlan(id){
+    var p = null;
+    getSavedPlans().forEach(function(x){ if (x.id === id) p = x; });
+    if (!p || !p.snap) return;
+    var sn = p.snap;
+    state.amount = typeof sn.amount === 'number' ? sn.amount : 0;
+    state.income = typeof sn.income === 'number' ? sn.income : 0;
+    state.months = typeof sn.months === 'number' ? sn.months : 6;
+    state.goal = sn.goal || 'any';
+    state.spendPattern = sn.spendPattern === 'lump' ? 'lump' : 'spread';
+    state.family = !!sn.family;
+    state.income2 = typeof sn.income2 === 'number' ? sn.income2 : 0;
+    state.maxNewCards = typeof sn.maxNewCards === 'number' ? sn.maxNewCards : 6;
+    state.preferProgram = sn.preferProgram === 'avios' ? 'avios' : 'am';
+    state.owned = Array.isArray(sn.owned) ? sn.owned.slice() : [];
+    state.owned2 = Array.isArray(sn.owned2) ? sn.owned2.slice() : [];
+    state.excludedCards = Array.isArray(sn.excludedCards) ? sn.excludedCards.slice() : [];
+    $('amount').value = state.amount ? BM.fmt(state.amount) : '';
+    $('income').value = state.income ? BM.fmt(state.income) : '';
+    $('incomeB').value = state.income2 ? BM.fmt(state.income2) : '';
+    renderMonthChips(); renderPatternChips(); renderGoalChips(); renderMaxCardChips();
+    renderFamilyChips(); renderOwnedChips(); renderOwnedChipsB();
+    $('incomeBField').hidden = !state.family;
+    $('ownedBField').hidden = !state.family;
+    $('spreadMonthsField').hidden = (state.spendPattern === 'lump');
+    store.set('bm_input', state);
+    runCalc(true);
+    toast('開返「' + p.name + '」，已用最新卡數據重新計');
+  }
+
+  /* ---------- BigMiles 助手（右下角規則式 FAQ） ----------
+     ══ Robert：申請好客服 email 之後，貼入下面對引號（例：'hello@bigmiles.hk'）══
+     留空＝面板照用，會見「客服電郵開通中」；一填即自動變「電郵我哋」掣。 */
+  var CS_EMAIL = '';
+  var FAQS = [
+    {q:'Asia Miles 同 Avios 有咩分別？',
+     a:'兩個都係航空里數計劃。<b>Asia Miles</b> 係國泰嗰邊，長途、商務艙同環球票玩法多；<b>Avios</b> 係英航／伊比利亞嗰邊，短途（香港⇌台北、日本呢類）特別抵換。有啲卡兩邊都轉到、有啲只入一邊，所以個 app 出結果係「二揀一」兩個 plan 畀你並排比，唔會溝埋。'},
+    {q:'迎新係咪一定攞到？',
+     a:'唔係。迎新多數要「指定時間內簽夠指定金額」，可能仲要登記，同埋會剔除某啲簽賬（保費、八達通增值、繳費一類）。個 app 計嘅係「照條款做齊就攞到」嘅數——申請前一定要上官網對返<b>今期</b>迎新，呢啲數月月變。'},
+    {q:'點解時間表要逐月分開申請？',
+     a:'每次申請＝銀行做一次 TU（環聯）硬查詢，短時間狂 apply 會影響批核。所以時間表每人每月最多兩張、逐對排開——穩陣攞盡，好過一日撳晒。'},
+    {q:'一炮過洗大錢，點解仲叫我提早開卡？',
+     a:'「幾時洗錢」同「幾時開卡」係兩件獨立嘅事。就算 12 月先一炮過畀錢，你 7 月已經可以逐張申請，卡到手、登記妥當先嚟簽。個時間表就係幫你做呢個籌備。'},
+    {q:'二人家庭個金額係咩意思？',
+     a:'係你哋兩個人<b>加埋</b>簽嘅總數，唔係每人各簽咁多。系統會自動分配邊個簽幾多——通常批到高迎新卡嗰位會分多啲，結果頁有分擔明細畀你自己加得返。'},
+    {q:'「已核實」係咩意思？',
+     a:'代表嗰張卡嘅數字對過官方 T&C／產品頁，並記低咗資料日期（卡詳情最底見到）。無論核實與否，申請前都應該再對一次官網——銀行條款隨時改。'},
+    {q:'申請信用卡會唔會影響信貸評分（TU）？',
+     a:'分清楚兩樣嘢：<b>自己查自己</b>（環聯 transunion.hk）係軟查詢，唔扣分，開卡前應該查定心裏有底；<b>銀行處理你申請</b>嗰下先係硬查詢。所以要慳嘅係申請次數，唔係自己查。'},
+    {q:'高年費嘅卡值唔值得申請？',
+     a:'睇「每 1 里迎新成本」——結果頁見到高年費卡會有紅色警告框，連成本一齊計畀你。畀唔起年費就唔好硬上：蝕迎新，好過白畀幾千蚊年費。'},
+    {q:'我啲資料會唔會上傳？',
+     a:'唔會。所有輸入、儲低嘅計劃全部只儲喺你部機（localStorage），冇後台、冇帳戶。「關於」頁撳重設就即刻清晒。'},
+    {q:'BigMiles 收唔收錢？有冇 referral？',
+     a:'免費。而家<b>零</b> referral／聯盟收益；日後如有推薦連結，會逐條清楚標明「呢條係推薦連結」，唔會靜雞收。'}
+  ];
+  var robotBuilt = false;
+  function buildRobot(){
+    $('robotBody').innerHTML = FAQS.map(function(f, i){
+      return '<button type="button" class="faq-q" data-fq="' + i + '">' + esc(f.q) + '<span class="tw">▾</span></button>' +
+             '<div class="faq-a" id="faqA' + i + '" hidden>' + f.a + '</div>';
+    }).join('');
+    Array.prototype.forEach.call($('robotBody').querySelectorAll('.faq-q'), function(btn){
+      btn.addEventListener('click', function(){
+        var a = $('faqA' + btn.getAttribute('data-fq'));
+        var open = a.hidden;
+        a.hidden = !open;
+        btn.querySelector('.tw').textContent = open ? '▴' : '▾';
+      });
+    });
+    if (CS_EMAIL){
+      $('robotFoot').innerHTML = '仲有問題解決唔到？<a href="mailto:' + esc(CS_EMAIL) + '?subject=' + encodeURIComponent('BigMiles 查詢') + '" style="color:var(--jade);font-weight:700">📧 電郵我哋</a>，會親自覆你。';
+    } else {
+      $('robotFoot').textContent = '仲有問題解決唔到？客服電郵開通中——申請好之後，呢度會自動變「電郵我哋」掣。';
+    }
+  }
+  $('robotBtn').addEventListener('click', function(){
+    var pnl = $('robotPanel');
+    if (pnl.hidden){
+      if (!robotBuilt){ buildRobot(); robotBuilt = true; }
+      pnl.hidden = false;
+    } else {
+      pnl.hidden = true;
+    }
+  });
+  $('robotClose').addEventListener('click', function(){ $('robotPanel').hidden = true; });
+
   /* ---------- 重設 ---------- */
   $('resetAll').addEventListener('click', function(){
-    if (!window.confirm('確定重設？會清走輸入、卡庫改動同核實狀態。')) return;
-    store.del('bm_input'); store.del('bm_card_overrides'); store.del('bm_ok'); store.del('bm_daily');
+    if (!window.confirm('確定重設？會清走輸入、日常儲分設定、儲低嘅計劃同免責確認。（深淺外觀設定會保留）')) return;
+    store.del('bm_input'); store.del('bm_card_overrides'); store.del('bm_ok'); store.del('bm_daily'); store.del('bm_saved_plans');
     window.location.reload();
   });
 
@@ -2071,6 +2630,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   });
   renderMonthChips();
   renderPatternChips();
+  $('spreadMonthsField').hidden = (state.spendPattern === 'lump');
   renderGoalChips();
   renderOwnedChips();
   renderFamilyChips();
@@ -2078,9 +2638,19 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   renderOwnedChipsB();
   renderCardLib();
   renderRedeem();
+  renderDailyFamilyChips();
   renderDailyOwnedChips();
+  renderDailyOwnedChipsB();
+  syncDailyFamilyUI();
   renderDailyInputs();
   renderDaily();
+  applyTheme();
+  renderSavedPlans();
+  $('metaVer').textContent = APP_VERSION;
+  /* PWA：service worker（sw.js 同 index.html 擺埋同一層） */
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')){
+    window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js').catch(function(){}); });
+  }
 })();
 </script>
 </body>

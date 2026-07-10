@@ -1,4 +1,4 @@
-<!-- build: 2026-07-10T06:40 UK — v2.5.0：九樣一次過＋深度清理。①全局錯誤 banner＋Sentry DSN 留位（head，Robert 填）②深色模式：自動跟系統＋header 手動掣（🌗→🌙→☀️）③合規標語「借定唔借？還得到先好借！」入開場 modal＋footer④PWA：manifest.json＋sw.js＋icon×2（另交，同 index.html 擺同一層）⑤靜態卡頁 cards/（另交，SEO）⑥分享 plan（Web Share／複製）⑦儲存計劃（存部機、可存多個、開返用最新數據重計）⑧功能二家庭化：A/B 各自揀卡、同卡兩張上限各計、超上限提示改簽另一半⑨右下角🤖助手：規則式 FAQ 十條＋CS_EMAIL 留位（Robert 填）。深度清理：移除卡庫覆寫殘留機制（靜靜蓋住官方新數＝自相矛盾）、dead code（editing／FIELD_LABELS／saveOverride／EDITABLE）、「去卡庫更新數字」過時文案、inline hardcode 色轉 CSS 變量。原 v2.4.2：文案清理 -->
+<!-- build: 2026-07-10T07:20 UK — v2.5.1（同日修訂）：robot 改「打字問→規則式對答」（keyword 對 FAQ，冇 match 出電郵轉發／開通中提示）；刪 WHAT-IF「簽賬期」stepper＋「分幾多個月洗」揀項（Robert 拍板冇用；分幾個月一律以 6 個月攤開估算，hint 講明）。原 v2.5.0：九樣一次過＋深度清理。①全局錯誤 banner＋Sentry DSN 留位（head，Robert 填）②深色模式：自動跟系統＋header 手動掣（🌗→🌙→☀️）③合規標語「借定唔借？還得到先好借！」入開場 modal＋footer④PWA：manifest.json＋sw.js＋icon×2（另交，同 index.html 擺同一層）⑤靜態卡頁 cards/（另交，SEO）⑥分享 plan（Web Share／複製）⑦儲存計劃（存部機、可存多個、開返用最新數據重計）⑧功能二家庭化：A/B 各自揀卡、同卡兩張上限各計、超上限提示改簽另一半⑨右下角🤖助手：規則式 FAQ 十條＋CS_EMAIL 留位（Robert 填）。深度清理：移除卡庫覆寫殘留機制（靜靜蓋住官方新數＝自相矛盾）、dead code（editing／FIELD_LABELS／saveOverride／EDITABLE）、「去卡庫更新數字」過時文案、inline hardcode 色轉 CSS 變量。原 v2.4.2：文案清理 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -174,9 +174,6 @@ main{max-width:680px;margin:0 auto;padding:16px 14px 40px}
 .whatif .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
 .whatif .val{font-family:var(--mono);font-weight:700;font-size:17px;color:var(--jade)}
 input[type=range]{width:100%;accent-color:var(--jade);height:28px}
-.stepper{display:flex;align-items:center;gap:12px}
-.stepper button{width:36px;height:36px;border-radius:10px;border:1.5px solid var(--line);font-size:20px;font-weight:700;color:var(--jade);line-height:1}
-.stepper .mv{font-family:var(--mono);font-weight:700;font-size:17px;min-width:74px;text-align:center}
 
 /* ---------- boarding pass ---------- */
 .sec-title{font-size:17px;font-weight:900;margin:20px 2px 10px;letter-spacing:.5px}
@@ -311,6 +308,11 @@ input[type=range]{width:100%;accent-color:var(--jade);height:28px}
 .robot-head{background:linear-gradient(150deg,var(--jade-deep),var(--jade));color:#fff;padding:11px 14px;display:flex;align-items:center;gap:8px}
 .robot-head b{font-size:15.5px}
 .robot-head button{margin-left:auto;color:#fff;font-size:17px;width:38px;height:38px}
+.robot-ask{display:flex;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.robot-ask input{flex:1;min-width:0;border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;background:var(--field);color:var(--ink);font-size:14px;outline:none}
+.robot-ask input:focus{border-color:var(--jade)}
+.robot-ask button{flex:none;min-width:56px;background:var(--jade);color:#fff;border-radius:10px;font-weight:700;font-size:14px}
+#robotMiss{padding:9px 12px;font-size:13px;border-bottom:1px solid var(--line);background:var(--gold-soft);color:var(--ink);line-height:1.5}
 .robot-body{overflow:auto;padding:4px 12px 10px;-webkit-overflow-scrolling:touch}
 .faq-q{width:100%;text-align:left;padding:12px 2px;border-bottom:1px solid var(--line);font-weight:700;font-size:14.5px;display:flex;gap:8px;align-items:flex-start;color:var(--ink)}
 .faq-q .tw{margin-left:auto;color:var(--mut);flex:none}
@@ -413,11 +415,7 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
     <div class="field">
       <div class="eyebrow">呢筆錢會點洗？</div>
       <div class="chips" id="patternChips"></div>
-      <div class="hint" id="patternHint">一炮過（買錶、買車、一次過畀清）＝一日簽晒，抵率有上限嘅卡淨計一個月／一季上限，容易爆頂；分幾個月（婚禮訂金、裝修分期）＝可以攤開，貼住上限計。呢個唔係「幾時開卡」——就算一炮過，都可以提早幾個月開卡籌備（見下面）。</div>
-    </div>
-    <div class="field" id="spreadMonthsField" hidden>
-      <div class="eyebrow">分幾多個月洗？</div>
-      <div class="chips" id="monthChips"></div>
+      <div class="hint" id="patternHint">一炮過（買錶、買車、一次過畀清）＝一日簽晒，抵率有上限嘅卡淨計一個月／一季上限，容易爆頂；分幾個月（婚禮訂金、裝修分期）＝可以攤開，貼住上限計。呢個唔係「幾時開卡」——就算一炮過，都可以提早幾個月開卡籌備（見下面）。分幾個月嘅情況，系統以約 6 個月攤開估算上限。</div>
     </div>
     <div class="field">
       <div class="eyebrow">想儲邊種里數？</div>
@@ -466,13 +464,6 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
       <div class="eyebrow">WHAT-IF：拉下試唔同情景</div>
       <div class="row"><span>簽賬額</span><span class="val" id="wifAmtVal">–</span></div>
       <input type="range" id="wifAmt" min="0" max="100" step="1" aria-label="What-If 簽賬額">
-      <div class="row" style="margin-top:12px"><span>簽賬期</span>
-        <div class="stepper">
-          <button id="wifMDown" aria-label="減一個月">−</button>
-          <span class="mv" id="wifMVal">6 個月</span>
-          <button id="wifMUp" aria-label="加一個月">＋</button>
-        </div>
-      </div>
       <div class="row" style="margin-top:12px"><span>睇邊種里數</span>
         <div class="chips" id="progToggle" style="margin:0"></div>
       </div>
@@ -631,6 +622,8 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
 <button class="robot-btn" id="robotBtn" type="button" aria-label="開啟 BigMiles 助手">🤖</button>
 <div class="robot-panel" id="robotPanel" hidden>
   <div class="robot-head"><span aria-hidden="true">🤖</span><b>BigMiles 助手</b><button id="robotClose" type="button" aria-label="閂埋助手">✕</button></div>
+  <div class="robot-ask"><input id="robotQ" type="text" placeholder="打你嘅問題，例：迎新一定攞到？" aria-label="問 BigMiles 助手"><button id="robotGo" type="button">問</button></div>
+  <div id="robotMiss" hidden></div>
   <div class="robot-body" id="robotBody"></div>
   <div class="robot-foot" id="robotFoot"></div>
 </div>
@@ -1419,12 +1412,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       btn.addEventListener('click', function(){ onTap(btn.getAttribute('data-id')); });
     });
   }
-  function renderMonthChips(){
-    chipRow($('monthChips'),
-      [3,6,9,12].map(function(m){ return {id:String(m), label:m + ' 個月'}; }),
-      function(it){ return Number(it.id) === state.months; },
-      function(id){ state.months = Number(id); renderMonthChips(); });
-  }
+  /* v2.5.1：「分幾多個月洗」揀項已刪（Robert 拍板冇用）；spread 一律以 state.months（預設 6）攤開估算 */
   function renderPatternChips(){
     chipRow($('patternChips'),
       [{id:'lump', label:'一炮過洗晒', sub:'買錶／買車／一次過'},
@@ -1432,7 +1420,6 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       function(it){ return it.id === state.spendPattern; },
       function(id){
         state.spendPattern = id;
-        $('spreadMonthsField').hidden = (id === 'lump');
         renderPatternChips();
       });
   }
@@ -2016,11 +2003,9 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     slider.step = '1000';
     slider.value = String(res.amount);
     $('wifAmtVal').textContent = 'HK$' + BM.fmt(res.amount);
-    $('wifMVal').textContent = res.months + ' 個月';
   }
   function rerunWhatIf(){
     $('wifAmtVal').textContent = 'HK$' + BM.fmt(wif.amt);
-    $('wifMVal').textContent = wif.months + ' 個月';
     var res = BM.optimize(optInput(wif.amt, wif.months), cards);
     renderResults(res, false);
   }
@@ -2028,12 +2013,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     wif.amt = Number(this.value) || 0;
     rerunWhatIf();
   });
-  $('wifMDown').addEventListener('click', function(){
-    if (wif.months > 1){ wif.months--; rerunWhatIf(); }
-  });
-  $('wifMUp').addEventListener('click', function(){
-    if (wif.months < 24){ wif.months++; rerunWhatIf(); }
-  });
+  /* v2.5.1：WHAT-IF「簽賬期」stepper 已刪（Robert 拍板冇用）；wif.months 固定跟計算時嘅 months */
 
   function runCalc(scroll){
     var amt = parseAmount();
@@ -2405,7 +2385,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
   /* ══════════ v2.5 新功能模組 ══════════ */
 
-  var APP_VERSION = 'v2.5.0 · build 2026-07-09'; /* 同第一行 build marker 一齊改 */
+  var APP_VERSION = 'v2.5.1 · build 2026-07-10'; /* 同第一行 build marker 一齊改 */
 
   /* ---------- toast ---------- */
   var toastTimer = null;
@@ -2550,11 +2530,10 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     $('amount').value = state.amount ? BM.fmt(state.amount) : '';
     $('income').value = state.income ? BM.fmt(state.income) : '';
     $('incomeB').value = state.income2 ? BM.fmt(state.income2) : '';
-    renderMonthChips(); renderPatternChips(); renderGoalChips(); renderMaxCardChips();
+    renderPatternChips(); renderGoalChips(); renderMaxCardChips();
     renderFamilyChips(); renderOwnedChips(); renderOwnedChipsB();
     $('incomeBField').hidden = !state.family;
     $('ownedBField').hidden = !state.family;
-    $('spreadMonthsField').hidden = (state.spendPattern === 'lump');
     store.set('bm_input', state);
     runCalc(true);
     toast('開返「' + p.name + '」，已用最新卡數據重新計');
@@ -2586,6 +2565,49 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     {q:'BigMiles 收唔收錢？有冇 referral？',
      a:'免費。而家<b>零</b> referral／聯盟收益；日後如有推薦連結，會逐條清楚標明「呢條係推薦連結」，唔會靜雞收。'}
   ];
+  var FAQ_KW = [
+    ['avios','asia miles','asiamiles','分別','邊種','里數計劃','英航','國泰','轉'],
+    ['迎新','welcome','簽夠','攞到','一定','登記'],
+    ['逐月','分開申請','時間表','每月','兩張','排'],
+    ['一炮過','提早','籌備','幾時開卡','趕唔切','開卡'],
+    ['家庭','兩個人','夾','總數','老婆','老公','另一半','金額','分配'],
+    ['核實','準','信','來源','過時','更新'],
+    ['tu','環聯','信貸','評分','硬查','軟查','transunion','查詢'],
+    ['年費','annual','貴','值唔值','蝕'],
+    ['私隱','上傳','儲存','privacy','資料會','後台','帳戶'],
+    ['收錢','免費','referral','推薦','廣告','賺','聯盟']
+  ];
+  function robotAnswer(q){
+    var t = String(q || '').toLowerCase().trim();
+    if (!t) return -1;
+    var best = -1, bestScore = 0;
+    FAQ_KW.forEach(function(kws, i){
+      var sc = 0;
+      kws.forEach(function(k){ if (t.indexOf(k) >= 0) sc++; });
+      if (sc > bestScore){ bestScore = sc; best = i; }
+    });
+    return best;
+  }
+  function robotAsk(){
+    var q = $('robotQ').value;
+    var hit = robotAnswer(q);
+    var miss = $('robotMiss');
+    if (hit >= 0){
+      miss.hidden = true;
+      var a = $('faqA' + hit);
+      a.hidden = false;
+      var btn = $('robotBody').querySelector('[data-fq="' + hit + '"]');
+      if (btn){
+        btn.querySelector('.tw').textContent = '▴';
+        btn.scrollIntoView({block:'start'});
+      }
+    } else {
+      miss.innerHTML = '呢條我暫時答唔到。' + (CS_EMAIL
+        ? '<a href="mailto:' + esc(CS_EMAIL) + '?subject=' + encodeURIComponent('BigMiles 查詢') + '&body=' + encodeURIComponent(String(q || '')) + '" style="color:var(--jade);font-weight:700">📧 電郵問我哋</a>，會親自覆你。'
+        : '客服電郵開通中——開通後一撳就轉發到你條問題俾我哋。下面常見問題都可以睇睇。');
+      miss.hidden = false;
+    }
+  }
   var robotBuilt = false;
   function buildRobot(){
     $('robotBody').innerHTML = FAQS.map(function(f, i){
@@ -2616,6 +2638,8 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     }
   });
   $('robotClose').addEventListener('click', function(){ $('robotPanel').hidden = true; });
+  $('robotGo').addEventListener('click', robotAsk);
+  $('robotQ').addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); robotAsk(); } });
 
   /* ---------- 重設 ---------- */
   $('resetAll').addEventListener('click', function(){
@@ -2628,9 +2652,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   Array.prototype.forEach.call(document.querySelectorAll('.dataAsOf'), function(el){
     el.textContent = BM.DATA_AS_OF;
   });
-  renderMonthChips();
   renderPatternChips();
-  $('spreadMonthsField').hidden = (state.spendPattern === 'lump');
   renderGoalChips();
   renderOwnedChips();
   renderFamilyChips();

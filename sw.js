@@ -1,7 +1,7 @@
 /* BigMiles service worker
    策略：同源 network-first（卡數據要最新，斷網先食 cache）；跨域（字體）cache-first。
    ⚠️ 每次改版：CACHE 名跟 index.html 版本號一齊升。 */
-var CACHE = 'bigmiles-v2.5.0';
+var CACHE = 'bigmiles-v2.5.1';
 var CORE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', function(e){
   e.waitUntil(caches.open(CACHE).then(function(c){ return c.addAll(CORE); }).then(function(){ return self.skipWaiting(); }));

@@ -1,4 +1,4 @@
-<!-- build: 2026-07-10 UK — v2.9.1：航司合理性過濾（照 cxplanner）——每間航司掛樞紐城市（OW_CARRIERS.h），段嘅任一端係佢樞紐先出佢揀；已知第五航權白名單 OW_EXTRA_ROUTES（澳航新加坡→倫敦）；揀緊嘅航司唔喀新點對點→自動轉名單第一間；冇直航→出全部＋提示「要經樞紐拆段」；HKG→LHR 實測淨出 CX＋BA 同 cxplanner 一致；T14 七條測試。原 v2.9.0：規劃器重建（自動鎖開口＋配額條＋區界導航＋三艙並排） -->
+<!-- build: 2026-07-11 UK — v3.0.0：「用里數」子頁架構＋單程計算機（全 Level 1）：①子頁膠囊（換咩好？／單程來回／環球票），記住上次揀邊頁；環球票規劃器欲入去子頁三②單程計算機：SA_CHART 6區×4艙 24 格全部 Robert 官方計算機逐格查證（來回×2 交叉核對）；類別1/2 分界＝官方「修訂飛行距離區域」頁（日本／印尼／斯里蘭卡／尼泊爾／孟加拉／印度＝類2）；升艙表 SA_UPGRADE 6區×4 官方 T&C；saEvaluate 純函數 T15 十六條全綠③環球票 13區表升 Level 1（39 格逐格對官方換算表全中）④REDEMPTIONS 官方化：首爾曼谷來回 18,000、升艙例改 23,000、終極目標 168,000→官方 230,000（區10 經典線）⑤banner 轉綠：官方已核實項目同參考項目分開講。原 v2.9.1：航司樞紐過濾 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -220,6 +220,15 @@ html.dark .pass{box-shadow:none}
 .pass-verdict{background:var(--jade-soft);border-radius:11px;padding:11px 14px;font-size:13.5px;line-height:1.6;color:var(--ink);margin:-6px 0 12px}
 .pass-verdict.bad{background:var(--red-bg);border:1px solid var(--red);color:var(--red)}
 .pass-verdict b{font-weight:900}
+/* ---------- 用里數子頁膠囊 ---------- */
+.subtabs{display:flex;gap:5px;background:var(--field);border:1px solid var(--line);border-radius:13px;padding:4px;margin-bottom:14px}
+.subtabs button{flex:1;padding:10px 4px;border-radius:10px;font-size:14px;font-weight:800;color:var(--mut);letter-spacing:.3px}
+.subtabs button.on{background:var(--jade);color:#fff}
+.sa-zone{margin-top:10px;padding:12px 14px;background:var(--jade-soft);border-radius:12px;font-size:13.5px;line-height:1.6}
+.sa-zone b{font-family:var(--mono)}
+.sa-afford{font-size:12px;font-weight:700;margin-top:3px}
+.sa-afford.ok{color:var(--ok)}
+.sa-afford.no{color:var(--red)}
 /* ---------- 寰宇一家規劃器（cxplanner 式緊湊表格） ---------- */
 .ow-head{display:grid;grid-template-columns:18px 1fr 14px 1fr 74px 62px;gap:5px;align-items:center;font-size:10.5px;font-weight:700;color:var(--mut);letter-spacing:.5px;padding:0 2px 5px}
 .ow-row{display:grid;grid-template-columns:18px 1fr 14px 1fr 74px 62px;gap:5px;align-items:center;padding:5px 2px;border-bottom:1px dashed var(--line)}
@@ -585,7 +594,11 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
 
 <!-- ============ TAB：用里數（功能三） ============ -->
 <section id="tab-redeem" hidden>
-  <div class="warn"><b>兌換數字係示範參考（截至 <span class="dataAsOf"></span>，反映 2026 年 5 月國泰改表後，全部未核實）。</b>航空公司兌換表隨時變，換之前一定要上國泰 Asia Miles／英航 Executive Club 官網睇實際里數同有無放位。</div>
+  <div class="warn" style="background:var(--jade-soft);border-color:var(--jade);color:var(--ink)"><b>✅ 國泰標準獎勵（單程／來回）、升艙同寰宇一家環球票嘅里數，已逐格對官方核實（2026-07-11：官方計算機＋官方換算表＋官方 T&C）。</b>Avios 數字、現金稅費同其他參考項目仍未核實——實際換票前，上國泰 Asia Miles／英航 Executive Club 官網確認放位同稅費。</div>
+
+  <div class="subtabs" id="redeemSub"><button type="button" class="on" data-rsub="ideas">換咩好？</button><button type="button" data-rsub="oneway">單程／來回</button><button type="button" data-rsub="rtw">環球票</button></div>
+
+  <div id="rsub-ideas">
 
   <div class="panel">
     <div class="field" style="margin-bottom:0">
@@ -598,8 +611,54 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
 
   <!-- 環球商務 highlight（故事高潮） -->
   <div class="rtw" id="rtwCard"></div>
+  <button type="button" class="btn-sm" id="goRtwPlanner" style="margin:-4px 0 12px">🌍 自己椌條環球線？去「環球票」規劃器 →</button>
 
-  <!-- ============ 寰宇一家環球票規劃器 ============ -->
+    <h2 class="sec-title">熱門航線・邊個計劃抵？</h2>
+  <p class="fee-note" style="margin:-4px 2px 10px">同一條線，改表後 Asia Miles 同 Avios 各有各抵。呢個係 2026 年核心玩法：分暫存喺「彈性點數卡」，臨出發睇邊邊平先轉。</p>
+  <div id="routeList"></div>
+
+  <div class="panel about" style="margin-top:14px">
+    <h3>換票唔止俾里數：仲有現金</h3>
+    <ul>
+      <li>用里數只係免咗「機票價格」，你仲要俾<b>燃油附加費（YQ）＋政府稅費</b>，呢啲唔用得里數找。</li>
+      <li>YQ 按航段計，越長途越貴：官方 2026 年 7 月起，短途約 HK$290／航段、長途約 HK$1,164／航段。轉機／環球票多航段就幾倍咁疊上去。</li>
+      <li>YQ 每月中會變（跟油價），以出票當日計。知道下月減就遲啲出、下月加就快啲出。</li>
+    </ul>
+    <h3>Asia Miles vs Avios：點揀？</h3>
+    <ul>
+      <li><b>超短途（台北等）</b>：通常 Avios 抵，里數要求低。</li>
+      <li><b>區域１商務（首爾、新加坡）</b>：2026 新制下 Asia Miles 多數有優勢。</li>
+      <li><b>環球票</b>：得 Asia Miles（寰宇一家）先做到一張票遊多站——一張票最多 5 停、9-11 個航段，全程商務艙。</li>
+      <li><b>心法</b>：主力儲喺可轉換嘅彈性點數卡（滙豐／Citi／AMEX），唔好太早鎖死入某一邊，臨出發先轉平嗰邊。</li>
+    </ul>
+    <h3>分有效期（示範，以官網為準）</h3>
+    <ul>
+      <li><b>Asia Miles</b>：一般設有效期，但可透過賺取或使用活動延續——長期唔郁會過期，記得留意戶口。</li>
+      <li><b>Avios</b>：只要戶口 36 個月內有任何賺／用紀錄，通常唔會過期。</li>
+      <li><b>彈性點數（獎賞錢／MR／DBS$）</b>：多數永久有效，所以「遲啲先轉」係安全策略。</li>
+    </ul>
+    <p class="fee-note">以上有效期規則會變，換分或大額消費前請以各計劃官網最新條款為準。</p>
+  </div>
+  </div><!-- /rsub-ideas -->
+
+  <div id="rsub-oneway" hidden>
+    <div class="panel">
+      <div class="eyebrow">單程／來回計算機 · 國泰標準獎勵</div>
+      <p style="font-size:13.5px;color:var(--mut);line-height:1.6;margin-bottom:12px">香港 ⇄ 目的地，換<b>國泰航空自己航班</b>要幾多里。全部數字經官方核實（2026-07-11）：入目的地，即刻出四個艙。</p>
+      <div class="field" style="margin-bottom:10px">
+        <input list="owAirportList" class="ow-in" id="saDest" style="text-align:left;font-size:16px;padding:11px 13px" placeholder="目的地機場，例 TPE／LHR／JFK" autocapitalize="characters" autocomplete="off" aria-label="目的地機場">
+      </div>
+      <div class="chips" id="saTrip" style="margin-bottom:6px">
+        <button type="button" class="chip on" data-satrip="ow">單程</button>
+        <button type="button" class="chip" data-satrip="rt">來回（×2）</button>
+      </div>
+      <div id="saResult"></div>
+      <div class="fee-note" style="margin-top:12px">來源（全部官方，2026-07-11）：24 格里數＝官方計算機逐格查證（單程；來回＝×2 已交叉核對）；距離區間＋類別1/2 國家分界＝國泰官方「修訂飛行距離區域」頁；大圓距離＝官方標準獎勵條款第 3 條明文計法。呢張表淨係換<b>國泰自營航班</b>——日航／英航等 oneworld 夥伴係另一套（睇「環球票」子頁或官方夥伴獎勵）。里數以外仲要畀 YQ＋稅費現金。</div>
+    </div>
+  </div>
+
+  <div id="rsub-rtw" hidden>
+<!-- ============ 寰宇一家環球票規劃器 ============ -->
   <div class="panel" id="owPanel">
     <div class="eyebrow">寰宇一家環球票規劃器 · Beta</div>
     <div class="field" style="margin-bottom:8px">
@@ -626,35 +685,10 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
         <li>里數只係免機票價：<b>燃油附加費（YQ）＋稅費要另外畀現金</b>，英航／卡塔爾段 YQ 特別重，芬蘭／日航相對輕。</li>
       </ul>
     </details>
-    <div class="fee-note" style="margin-top:10px">里數表：官方公開（國泰獎勵表頁），數值經 Suitesmile（2026-05-02，5 月調價後）抄錄、Prince of Travel 交叉核對。規則六條已對官方 T&C 原文（會員條款「Flight Awards – oneworld Multi-carrier Awards」，2026-01-01 生效版）；24 小時停留／轉機界線＝客服熱線確認；「返到出發國家」＝cxplanner／論壇轉述。距離係大圓估算，同官方計法可能有輕微出入——<b>貼近區界嘅行程，出票前打熱線問準</b>。</div>
+    <div class="fee-note" style="margin-top:10px">里數表：13 區 × 3 艙共 39 格已逐格對過官方換算表原文（2026-07-11 截圖），全部一致 ✅。規則六條已對官方 T&C 原文（會員條款「Flight Awards – oneworld Multi-carrier Awards」）；24 小時停留／轉機界線＝客服熱線確認；「返到出發國家」＝cxplanner／論壇轉述（官方六條冇明文）。距離係大圓計法（官方標準獎勵條款第 3 條明文採用）——<b>貼近區界嘅行程，出票前打熱線問準</b>。</div>
+  </div>
   </div>
 
-  <h2 class="sec-title">熱門航線・邊個計劃抵？</h2>
-  <p class="fee-note" style="margin:-4px 2px 10px">同一條線，改表後 Asia Miles 同 Avios 各有各抵。呢個係 2026 年核心玩法：分暫存喺「彈性點數卡」，臨出發睇邊邊平先轉。</p>
-  <div id="routeList"></div>
-
-  <div class="panel about" style="margin-top:14px">
-    <h3>換票唔止俾里數：仲有現金</h3>
-    <ul>
-      <li>用里數只係免咗「機票價格」，你仲要俾<b>燃油附加費（YQ）＋政府稅費</b>，呢啲唔用得里數找。</li>
-      <li>YQ 按航段計，越長途越貴：官方 2026 年 7 月起，短途約 HK$290／航段、長途約 HK$1,164／航段。轉機／環球票多航段就幾倍咁疊上去。</li>
-      <li>YQ 每月中會變（跟油價），以出票當日計。知道下月減就遲啲出、下月加就快啲出。</li>
-    </ul>
-    <h3>Asia Miles vs Avios：點揀？</h3>
-    <ul>
-      <li><b>超短途（台北等）</b>：通常 Avios 抵，里數要求低。</li>
-      <li><b>區域１商務（首爾、新加坡）</b>：2026 新制下 Asia Miles 多數有優勢。</li>
-      <li><b>環球票</b>：得 Asia Miles（寰宇一家）先做到一張票遊多站——一張票最多 5 停、9-11 個航段，全程商務艙。</li>
-      <li><b>心法</b>：主力儲喺可轉換嘅彈性點數卡（滙豐／Citi／AMEX），唔好太早鎖死入某一邊，臨出發先轉平嗰邊。</li>
-    </ul>
-    <h3>分有效期（示範，以官網為準）</h3>
-    <ul>
-      <li><b>Asia Miles</b>：一般設有效期，但可透過賺取或使用活動延續——長期唔郁會過期，記得留意戶口。</li>
-      <li><b>Avios</b>：只要戶口 36 個月內有任何賺／用紀錄，通常唔會過期。</li>
-      <li><b>彈性點數（獎賞錢／MR／DBS$）</b>：多數永久有效，所以「遲啲先轉」係安全策略。</li>
-    </ul>
-    <p class="fee-note">以上有效期規則會變，換分或大額消費前請以各計劃官網最新條款為準。</p>
-  </div>
 </section>
 
 <!-- ============ TAB：卡庫 ============ -->
@@ -717,7 +751,7 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
 <script id="bm-core">
 var BM = (function(){
   'use strict';
-  var DATA_AS_OF = '2026-07-10（官方文件基準日）';
+  var DATA_AS_OF = '2026-07-11（官方文件基準日）';
 
   /* 卡數據 v2 官方核實版（基準 2026-07-10）——來源＝Robert 親自搜集嘅官方 T&C／KFS／官網頁（詳見 cards/ 卡檔）。
      迎新一律用 welcome.tiers 階梯結構：【累積簽賬門檻 → 累積「額外」里數】（唔包基本賺里，基本另計）。
@@ -853,15 +887,15 @@ var BM = (function(){
   };
   var REDEMPTIONS = [
     {id:'tpe',   route:'香港 ⇄ 台北／高雄',    cabin:'經濟', trip:'來回', asiaMiles:14000,  avios:12000,  cashCost:900,   note:'超短途。改表後經濟不變，Avios 甜蜜點通常最抵。稅費較平'},
-    {id:'icn-y', route:'香港 ⇄ 首爾／曼谷',    cabin:'經濟', trip:'來回', asiaMiles:20000,  avios:18000,  cashCost:1000,  note:'短途類別1經濟，兩者接近'},
+    {id:'icn-y', route:'香港 ⇄ 首爾／曼谷',    cabin:'經濟', trip:'來回', asiaMiles:18000,  avios:18000,  cashCost:1000,  note:'短途類別1經濟，兩者接近'},
     {id:'icn-j', route:'香港 ⇄ 首爾／新加坡',  cabin:'商務', trip:'單程', asiaMiles:27000,  avios:35000,  cashCost:600,   note:'類別1商務改表後減至 27,000，Asia Miles 佔優。單程 YQ 約$290＋稅'},
     {id:'nrt-y', route:'香港 ⇄ 東京／大阪',    cabin:'經濟', trip:'來回', asiaMiles:26000,  avios:24000,  cashCost:1200,  note:'類別2經濟，日本線不受改表影響'},
     {id:'nrt-j', route:'香港 ⇄ 東京／大阪',    cabin:'商務', trip:'單程', asiaMiles:33000,  avios:44000,  cashCost:700,   note:'類別2商務改表後加至 33,000，仍比 Avios 抵'},
     {id:'lhr-y', route:'香港 ⇄ 倫敦／巴黎',    cabin:'特選經濟', trip:'單程', asiaMiles:52000, avios:null, cashCost:1600,  note:'長途特選經濟改表後加至 52,000'},
     {id:'lhr-j', route:'香港 ⇄ 倫敦／巴黎',    cabin:'商務', trip:'單程', asiaMiles:91000,  avios:null,  cashCost:1600,  note:'長途商務改表後加至 91,000（來回 ×2）。單程 YQ 約$1,164＋稅'},
     {id:'jfk-j', route:'香港 ⇄ 紐約／多倫多',  cabin:'商務', trip:'單程', asiaMiles:119000, avios:null,  cashCost:1800,  note:'超長途商務改表後加至 119,000'},
-    {id:'upg',   route:'國泰航班・經濟升商務',  cabin:'升艙', trip:'單程', asiaMiles:27000,  avios:null,  cashCost:0,     note:'升艙須符合指定票價條件，實際里數睇航段。原機票已含稅費'},
-    {id:'rtw',   route:'環遊世界（寰宇一家）',  cabin:'商務', trip:'最多5停9-11程', asiaMiles:168000, avios:null, cashCost:8000, note:'oneworld 環球票未受改表影響。20,000哩檔約168,000起，用盡50,000哩上限約230,000。YQ 每航段計，多段累加隨時上萬。呢張就係傳說中「一張飛遊勻全世界」嘅玩法', highlight:true}
+    {id:'upg',   route:'國泰航班・經濟升商務（東京例）', cabin:'升艙', trip:'單程', asiaMiles:23000,  avios:null,  cashCost:0,     note:'官方升艙表按距離區間計：短途類2（日本）經濟→商務 23,000；長途（倫敦）63,000。詳細逐條線計，去「單程」子頁'},
+    {id:'rtw',   route:'環遊世界（寰宇一家）',  cabin:'商務', trip:'最多5停・2轉・2開口', asiaMiles:230000, avios:null, cashCost:8000, note:'oneworld 環球票按總飛行距離 13 區計，官方表已核實。經典 6 段線（香港→倫敦→紐約→洛杉磯→東京→台北→香港，約 19,200 哩，區 10）全程商務 230,000；用盡 50,000 哩上限（區 13）商務 280,000。YQ 每航段計，多段累加隨時上萬。去「環球票」子頁砌你條線', highlight:true}
   ];
 
   /* 邊個計劃抵：返回 {best:'am'|'avios'|'tie', save:兩者差額} */
@@ -1734,6 +1768,47 @@ var BM = (function(){
     return out;
   }
 
+  /* ===== 單程／來回標準獎勵（國泰航空自營航班）=====
+     來源全 Level 1（2026-07-11）：
+     ・24 格里數＝Robert 逐格官方計算機查證（單程；來回＝×2 已交叉核對）
+     ・6 區間界線＋類別1/2 國家分界＝國泰官方「修訂飛行距離區域」頁原文
+     ・大圓距離計法＝官方標準獎勵條款第 3 條原文
+     注意：呢張表淨係換國泰自己航班；oneworld 夥伴航班係另一套。 */
+  var SA_CAT2 = ['日本','印尼','斯里蘭卡','尼泊爾','孟加拉','印度']; /* 官方：往返呢六國＝類別2，其餘＝類別1 */
+  var SA_CHART = [
+    {id:'z1',  lab:'超短途',      lo:1,    hi:750,           y:7000,  w:11000, j:16000,  f:null},
+    {id:'z2a', lab:'短途－類別1', lo:751,  hi:2750,  cat:1,  y:9000,  w:18000, j:27000,  f:43000},
+    {id:'z2b', lab:'短途－類別2', lo:751,  hi:2750,  cat:2,  y:13000, w:23000, j:33000,  f:50000},
+    {id:'z3',  lab:'中途',        lo:2751, hi:5000,          y:20000, w:39000, j:60000,  f:90000},
+    {id:'z4',  lab:'長途',        lo:5001, hi:7500,          y:27000, w:52000, j:91000,  f:125000},
+    {id:'z5',  lab:'超長途',      lo:7501, hi:999999,        y:38000, w:78000, j:119000, f:160000}
+  ];
+  /* 客艙提升獎勵（官方 T&C 表，同一套距離區間＋類別1/2）：y2w=經濟→特選、w2j=特選→商務、y2j=經濟→商務*、j2f=商務→頭等
+     *經濟→商務適用於不設特選經濟客艙之航班（官方註） */
+  var SA_UPGRADE = [
+    {id:'z1',  y2w:6000,  w2j:8000,  y2j:11000, j2f:15000},
+    {id:'z2a', y2w:10000, w2j:14000, y2j:19000, j2f:26000},
+    {id:'z2b', y2w:13000, w2j:17000, y2j:23000, j2f:30000},
+    {id:'z3',  y2w:21000, w2j:30000, y2j:42000, j2f:54000},
+    {id:'z4',  y2w:29000, w2j:44000, y2j:63000, j2f:75000},
+    {id:'z5',  y2w:43000, w2j:58000, y2j:82000, j2f:96000}
+  ];
+  function saEvaluate(destCode){
+    var hk = owAirport('HKG'), d = owAirport(destCode);
+    if (!d) return {error:'目的地機場未識別——用三字 IATA 碼（例 TPE、LHR），或者揀選單入面嘅機場。'};
+    if (d.i === 'HKG') return {error:'出發同目的地都係香港，揀返個目的地先。'};
+    var dist = owDist(hk, d);
+    var cat = SA_CAT2.indexOf(d.co) >= 0 ? 2 : 1;
+    var zone = null, i2;
+    for (i2 = 0; i2 < SA_CHART.length; i2++){
+      var z = SA_CHART[i2];
+      if (dist >= z.lo && dist <= z.hi && (!z.cat || z.cat === cat)){ zone = z; break; }
+    }
+    var up = null;
+    if (zone){ SA_UPGRADE.forEach(function(u){ if (u.id === zone.id) up = u; }); }
+    return {airport:d, dist:dist, cat:cat, zone:zone, upgrade:up};
+  }
+
   return {DATA_AS_OF:DATA_AS_OF, DEFAULT_CARDS:DEFAULT_CARDS, REDEMPTIONS:REDEMPTIONS, CHANNEL_OFFERS:CHANNEL_OFFERS,
           CATEGORIES:CATEGORIES, cheaperProgram:cheaperProgram,
           catRate:catRate, bestCardForCategory:bestCardForCategory,
@@ -1744,7 +1819,8 @@ var BM = (function(){
           welcomeFullMiles:welcomeFullMiles, welcomeMilesAtSpend:welcomeMilesAtSpend, isHighFeeCard:isHighFeeCard,
           HIGH_FEE_THRESHOLD:HIGH_FEE_THRESHOLD,
           OW_CARRIERS:OW_CARRIERS, OW_AIRPORTS:OW_AIRPORTS, OW_CHART:OW_CHART,
-          owAirport:owAirport, owDist:owDist, owEvaluate:owEvaluate, owCarriersFor:owCarriersFor};
+          owAirport:owAirport, owDist:owDist, owEvaluate:owEvaluate, owCarriersFor:owCarriersFor,
+          SA_CHART:SA_CHART, SA_CAT2:SA_CAT2, SA_UPGRADE:SA_UPGRADE, saEvaluate:saEvaluate};
 })();
 if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 </script>
@@ -3174,6 +3250,99 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     renderOwSegs(); renderOwResult();
   })();
 
+  /* ---------- 用里數子頁切換＋單程／來回計算機 ---------- */
+  (function(){
+    var SUBS = {ideas:'rsub-ideas', oneway:'rsub-oneway', rtw:'rsub-rtw'};
+    function showSub(k){
+      Object.keys(SUBS).forEach(function(x){ var el = $(SUBS[x]); if (el) el.hidden = (x !== k); });
+      Array.prototype.forEach.call(document.querySelectorAll('#redeemSub button'), function(b){
+        b.classList.toggle('on', b.getAttribute('data-rsub') === k);
+      });
+      store.set('bm_rsub', k);
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('#redeemSub button'), function(b){
+      b.addEventListener('click', function(){ showSub(b.getAttribute('data-rsub')); });
+    });
+    var savedSub = store.get('bm_rsub');
+    if (savedSub && SUBS[savedSub]) showSub(savedSub);
+    var goBtn = $('goRtwPlanner');
+    if (goBtn) goBtn.addEventListener('click', function(){
+      showSub('rtw');
+      $('redeemSub').scrollIntoView({behavior:'auto', block:'start'});
+    });
+
+    /* ── 單程／來回（國泰標準獎勵，全 Level 1）── */
+    var saState = store.get('bm_sa') || {dest:'', trip:'ow'};
+    var SA_CABS = [['y','經濟'], ['w','特選經濟'], ['j','商務'], ['f','頭等']];
+    function renderSa(){
+      var host = $('saResult');
+      if (!host) return;
+      if (!saState.dest){
+        host.innerHTML = '<div class="hint" style="margin-top:6px">入目的地機場（三字 IATA 碼，例 TPE、LHR、JFK），或者由選單揀——即刻出四個艙嘅官方里數。</div>';
+        return;
+      }
+      var r = BM.saEvaluate(saState.dest);
+      if (r.error){ host.innerHTML = '<div class="warn" style="margin-top:8px">' + esc(r.error) + '</div>'; return; }
+      var mult = saState.trip === 'rt' ? 2 : 1;
+      var tripLab = saState.trip === 'rt' ? '來回' : '單程';
+      var have = parseHave();
+      var cabHtml = SA_CABS.map(function(c){
+        var v = r.zone[c[0]];
+        var body;
+        if (v == null){
+          body = '<div class="cv" style="color:var(--mut);font-size:13px">不適用</div>';
+        } else {
+          var need = v * mult;
+          body = '<div class="cv">' + BM.fmt(need) + '</div>' +
+            (have > 0 ? '<div class="sa-afford ' + (have >= need ? 'ok">夠 ✓' : 'no">差 ' + BM.fmt(need - have)) + '</div>' : '');
+        }
+        return '<div class="ow-cab"><div class="cl">' + c[1] + '</div>' + body + '</div>';
+      }).join('');
+      var catNote = '';
+      if (r.zone.cat){
+        catNote = '<div style="font-size:12.5px;color:var(--mut);margin-top:6px">751–2,750 哩官方拆兩類：往返日本／印尼／斯里蘭卡／尼泊爾／孟加拉／印度＝<b>類別2</b>，其餘＝<b>類別1</b>。' + esc(r.airport.n) + '（' + esc(r.airport.co) + '）屬類別' + r.cat + '。</div>';
+      }
+      var up = r.upgrade;
+      var upHtml = up ? ('<details style="margin-top:10px"><summary style="font-weight:700;font-size:14px;cursor:pointer">✈ 已有機票？呢條線升艙里數（官方表）</summary>' +
+        '<table style="width:100%;font-size:13px;border-collapse:collapse;margin-top:8px">' +
+        '<tr><td style="padding:5px 0">經濟 → 特選經濟</td><td style="padding:5px 0;text-align:right;font-family:var(--mono);font-weight:700">' + BM.fmt(up.y2w) + '</td></tr>' +
+        '<tr><td style="padding:5px 0">特選經濟 → 商務</td><td style="padding:5px 0;text-align:right;font-family:var(--mono);font-weight:700">' + BM.fmt(up.w2j) + '</td></tr>' +
+        '<tr><td style="padding:5px 0">經濟 → 商務 *</td><td style="padding:5px 0;text-align:right;font-family:var(--mono);font-weight:700">' + BM.fmt(up.y2j) + '</td></tr>' +
+        '<tr><td style="padding:5px 0">商務 → 頭等</td><td style="padding:5px 0;text-align:right;font-family:var(--mono);font-weight:700">' + BM.fmt(up.j2f) + '</td></tr>' +
+        '</table>' +
+        '<div class="hint" style="margin-top:4px">按航段（單程）計。*經濟→商務適用於不設特選經濟客艙之航班（官方註）。升艙要符合指定票價條件。</div>' +
+        '</details>') : '';
+      host.innerHTML =
+        '<div class="sa-zone">香港 ⇄ ' + esc(r.airport.n) + '（' + r.airport.i + '）大圓距離約 <b>' + BM.fmt(r.dist) + '</b> 哩——落喺「<b style="font-family:var(--sans)">' + esc(r.zone.lab) + '</b>」' + catNote + '</div>' +
+        '<div class="ow-cabins" style="margin-top:10px">' + cabHtml + '</div>' +
+        '<div class="hint" style="margin-top:6px">' + tripLab + '・國泰自營航班・' + (have > 0 ? '你而家儲咗 ' + BM.fmt(have) + ' 里。' : '') + '往返香港同價（按大圓距離計）。</div>' +
+        upHtml;
+    }
+    var saDestEl = $('saDest');
+    if (saDestEl){
+      saDestEl.value = saState.dest;
+      saDestEl.addEventListener('change', function(){
+        var m = String(saDestEl.value || '').toUpperCase().match(/[A-Z]{3}/);
+        saState.dest = m ? m[0] : '';
+        saDestEl.value = saState.dest;
+        store.set('bm_sa', saState);
+        renderSa();
+      });
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('[data-satrip]'), function(el){
+      el.addEventListener('click', function(){
+        saState.trip = el.getAttribute('data-satrip');
+        Array.prototype.forEach.call(document.querySelectorAll('[data-satrip]'), function(b){ b.classList.toggle('on', b === el); });
+        store.set('bm_sa', saState);
+        renderSa();
+      });
+      el.classList.toggle('on', el.getAttribute('data-satrip') === saState.trip);
+    });
+    var hm = $('haveMiles');
+    if (hm) hm.addEventListener('input', renderSa);
+    renderSa();
+  })();
+
   var TABS = {opt:'tab-opt', daily:'tab-daily', redeem:'tab-redeem', cards:'tab-cards', about:'tab-about'};
   Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function(btn){
     btn.addEventListener('click', function(){
@@ -3206,7 +3375,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
   /* ══════════ v2.5 新功能模組 ══════════ */
 
-  var APP_VERSION = 'v2.9.1 · build 2026-07-10'; /* 同第一行 build marker 一齊改 */
+  var APP_VERSION = 'v3.0.0 · build 2026-07-11'; /* 同第一行 build marker 一齊改 */
 
   /* ---------- toast ---------- */
   var toastTimer = null;

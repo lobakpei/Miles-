@@ -1,7 +1,6 @@
-/* BigMiles service worker
-   策略：同源 network-first（卡數據要最新，斷網先食 cache）；跨域（字體）cache-first。
-   ⚠️ 每次改版：CACHE 名跟 index.html 版本號一齊升。 */
-var CACHE = 'bigmiles-v2.5.1';
+/* Angel方加 service worker — 同源 network-first（保資料新鮮），斷網先食 cache。
+   每次改版要跟住升 CACHE 名，舊 cache 自動清。 */
+var CACHE = 'angelfk-v2.7.0';
 var CORE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', function(e){
   e.waitUntil(caches.open(CACHE).then(function(c){ return c.addAll(CORE); }).then(function(){ return self.skipWaiting(); }));
@@ -12,28 +11,14 @@ self.addEventListener('activate', function(e){
   }).then(function(){ return self.clients.claim(); }));
 });
 self.addEventListener('fetch', function(e){
-  var req = e.request;
-  if (req.method !== 'GET') return;
-  var sameOrigin = req.url.indexOf(self.location.origin) === 0;
-  if (sameOrigin){
-    e.respondWith(
-      fetch(req).then(function(res){
-        var copy = res.clone();
-        caches.open(CACHE).then(function(c){ c.put(req, copy); });
-        return res;
-      }).catch(function(){
-        return caches.match(req).then(function(m){ return m || caches.match('./index.html'); });
-      })
-    );
-  } else {
-    e.respondWith(
-      caches.match(req).then(function(m){
-        return m || fetch(req).then(function(res){
-          var copy = res.clone();
-          caches.open(CACHE).then(function(c){ c.put(req, copy); });
-          return res;
-        });
-      })
-    );
-  }
+  if (e.request.method !== 'GET') return;
+  var url = new URL(e.request.url);
+  if (url.origin !== location.origin) return;
+  e.respondWith(
+    fetch(e.request).then(function(res){
+      var copy = res.clone();
+      caches.open(CACHE).then(function(c){ c.put(e.request, copy); });
+      return res;
+    }).catch(function(){ return caches.match(e.request); })
+  );
 });

@@ -1,4 +1,4 @@
-<!-- build: 2026-07-11 UK — v3.0.0：「用里數」子頁架構＋單程計算機（全 Level 1）：①子頁膠囊（換咩好？／單程來回／環球票），記住上次揀邊頁；環球票規劃器欲入去子頁三②單程計算機：SA_CHART 6區×4艙 24 格全部 Robert 官方計算機逐格查證（來回×2 交叉核對）；類別1/2 分界＝官方「修訂飛行距離區域」頁（日本／印尼／斯里蘭卡／尼泊爾／孟加拉／印度＝類2）；升艙表 SA_UPGRADE 6區×4 官方 T&C；saEvaluate 純函數 T15 十六條全綠③環球票 13區表升 Level 1（39 格逐格對官方換算表全中）④REDEMPTIONS 官方化：首爾曼谷來回 18,000、升艙例改 23,000、終極目標 168,000→官方 230,000（區10 經典線）⑤banner 轉綠：官方已核實項目同參考項目分開講。原 v2.9.1：航司樞紐過濾 -->
+<!-- build: 2026-07-11 UK — v3.0.1：單程目的地揀選器改版（Robert UX 反饋）——棄用原生 datalist 搜尋（120 個機場一嚇過屁落鍵盤），改 app 內建揀選器：11 個大區膠囊（台灣／日韓／中國內地／東南亞／南亞／中東／歐洲／大洋洲／北美／中南美／非洲）→ 國家小標題 → 目的地卡仔（城市＋IATA＋經濳里數迷你價，單程／來回跟 toggle 即時更新），磉住搞靈感；揀咗目的地自動跳返佢個區；119 個目的地全覆蓋冒煙驗證。原 v3.0.0：子頁架構＋單程計算機 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -229,6 +229,12 @@ html.dark .pass{box-shadow:none}
 .sa-afford{font-size:12px;font-weight:700;margin-top:3px}
 .sa-afford.ok{color:var(--ok)}
 .sa-afford.no{color:var(--red)}
+.sa-dests{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.sa-co{grid-column:1/-1;font-size:11.5px;font-weight:800;color:var(--mut);letter-spacing:1.5px;margin:6px 0 -2px}
+.sa-dest{text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:11px;padding:9px 11px;min-width:0}
+.sa-dest.on{border-color:var(--jade);background:var(--jade-soft)}
+.sa-dest .sd-city{display:block;font-weight:800;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sa-dest .sd-sub{display:block;font-size:11px;color:var(--mut);font-family:var(--mono);margin-top:2px;white-space:nowrap}
 /* ---------- 寰宇一家規劃器（cxplanner 式緊湊表格） ---------- */
 .ow-head{display:grid;grid-template-columns:18px 1fr 14px 1fr 74px 62px;gap:5px;align-items:center;font-size:10.5px;font-weight:700;color:var(--mut);letter-spacing:.5px;padding:0 2px 5px}
 .ow-row{display:grid;grid-template-columns:18px 1fr 14px 1fr 74px 62px;gap:5px;align-items:center;padding:5px 2px;border-bottom:1px dashed var(--line)}
@@ -644,9 +650,11 @@ footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:
   <div id="rsub-oneway" hidden>
     <div class="panel">
       <div class="eyebrow">單程／來回計算機 · 國泰標準獎勵</div>
-      <p style="font-size:13.5px;color:var(--mut);line-height:1.6;margin-bottom:12px">香港 ⇄ 目的地，換<b>國泰航空自己航班</b>要幾多里。全部數字經官方核實（2026-07-11）：入目的地，即刻出四個艙。</p>
+      <p style="font-size:13.5px;color:var(--mut);line-height:1.6;margin-bottom:12px">香港 ⇄ 目的地，換<b>國泰航空自己航班</b>要幾多里。全部數字經官方核實（2026-07-11）：揀大區、撳目的地，四個艙即刻出。</p>
       <div class="field" style="margin-bottom:10px">
-        <input list="owAirportList" class="ow-in" id="saDest" style="text-align:left;font-size:16px;padding:11px 13px" placeholder="目的地機場，例 TPE／LHR／JFK" autocapitalize="characters" autocomplete="off" aria-label="目的地機場">
+        <div class="eyebrow">想飛去邊？揀大區，撳目的地</div>
+        <div class="chips" id="saRegions" style="margin-bottom:2px"></div>
+        <div class="sa-dests" id="saDests"></div>
       </div>
       <div class="chips" id="saTrip" style="margin-bottom:6px">
         <button type="button" class="chip on" data-satrip="ow">單程</button>
@@ -3272,13 +3280,78 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     });
 
     /* ── 單程／來回（國泰標準獎勵，全 Level 1）── */
-    var saState = store.get('bm_sa') || {dest:'', trip:'ow'};
+    var saState = store.get('bm_sa') || {dest:'', trip:'ow', region:'日韓'};
+    if (!saState.region) saState.region = '日韓';
     var SA_CABS = [['y','經濟'], ['w','特選經濟'], ['j','商務'], ['f','頭等']];
+    /* 大區分類（純顯示層：機場 co → 區）——分類畀人碌住搵靈感，唔再迫人用搜尋器 */
+    var SA_REGIONS = [
+      {k:'台灣', cos:['台灣']},
+      {k:'日韓', cos:['日本','南韓']},
+      {k:'中國內地', cos:['中國內地']},
+      {k:'東南亞', cos:['新加坡','泰國','馬來西亞','印尼','菲律賓','越南','柬埔寨','緬甸']},
+      {k:'南亞', cos:['印度','斯里蘭卡','尼泊爾','孟加拉','馬爾代夫']},
+      {k:'中東', cos:['阿聯酋','卡塔爾','阿曼','巴林','約旦','以色列','沙特']},
+      {k:'歐洲', cos:['英國','愛爾蘭','法國','荷蘭','德國','瑞士','奧地利','捷克','匈牙利','波蘭','西班牙','葡萄牙','意大利','希臘','芬蘭','瑞典','丹麥','挪威','土耳其']},
+      {k:'大洋洲', cos:['澳洲','新西蘭','斐濟']},
+      {k:'北美', cos:['美國','加拿大','墨西哥']},
+      {k:'中南美', cos:['巴西','阿根廷','智利','秘魯','哥倫比亞']},
+      {k:'非洲', cos:['埃及','摩洛哥','南非','肯雅']}
+    ];
+    function saRegionOf(co){
+      var i;
+      for (i = 0; i < SA_REGIONS.length; i++){ if (SA_REGIONS[i].cos.indexOf(co) >= 0) return SA_REGIONS[i].k; }
+      return null;
+    }
+    function renderSaRegions(){
+      var host = $('saRegions');
+      if (!host) return;
+      host.innerHTML = SA_REGIONS.map(function(r){
+        return '<button type="button" class="chip' + (saState.region === r.k ? ' on' : '') + '" data-sareg="' + r.k + '">' + r.k + '</button>';
+      }).join('');
+      Array.prototype.forEach.call(host.querySelectorAll('[data-sareg]'), function(el){
+        el.addEventListener('click', function(){
+          saState.region = el.getAttribute('data-sareg');
+          store.set('bm_sa', saState);
+          renderSaRegions(); renderSaDests();
+        });
+      });
+    }
+    function renderSaDests(){
+      var host = $('saDests');
+      if (!host) return;
+      var reg = null, i;
+      for (i = 0; i < SA_REGIONS.length; i++){ if (SA_REGIONS[i].k === saState.region) reg = SA_REGIONS[i]; }
+      if (!reg){ host.innerHTML = ''; return; }
+      var mult = saState.trip === 'rt' ? 2 : 1;
+      var html = '';
+      reg.cos.forEach(function(co){
+        var list = BM.OW_AIRPORTS.filter(function(a){ return a.co === co && a.i !== 'HKG'; });
+        if (!list.length) return;
+        if (reg.cos.length > 1) html += '<div class="sa-co">' + esc(co) + '</div>';
+        html += list.map(function(a){
+          var r = BM.saEvaluate(a.i);
+          var price = (r.zone && r.zone.y) ? BM.fmt(r.zone.y * mult) : '—';
+          return '<button type="button" class="sa-dest' + (saState.dest === a.i ? ' on' : '') + '" data-sadest="' + a.i + '">' +
+            '<span class="sd-city">' + esc(a.n) + '</span>' +
+            '<span class="sd-sub">' + a.i + ' · 經濟 ' + price + '</span></button>';
+        }).join('');
+      });
+      host.innerHTML = html;
+      Array.prototype.forEach.call(host.querySelectorAll('[data-sadest]'), function(el){
+        el.addEventListener('click', function(){
+          saState.dest = el.getAttribute('data-sadest');
+          store.set('bm_sa', saState);
+          renderSaDests(); renderSa();
+          var res = $('saResult');
+          if (res) res.scrollIntoView({behavior:'smooth', block:'nearest'});
+        });
+      });
+    }
     function renderSa(){
       var host = $('saResult');
       if (!host) return;
       if (!saState.dest){
-        host.innerHTML = '<div class="hint" style="margin-top:6px">入目的地機場（三字 IATA 碼，例 TPE、LHR、JFK），或者由選單揀——即刻出四個艙嘅官方里數。</div>';
+        host.innerHTML = '<div class="hint" style="margin-top:6px">撳上面一個目的地，即刻出四個艙嘅官方里數（卡仔上面嗰個數係經濟艙）。</div>';
         return;
       }
       var r = BM.saEvaluate(saState.dest);
@@ -3318,29 +3391,23 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         '<div class="hint" style="margin-top:6px">' + tripLab + '・國泰自營航班・' + (have > 0 ? '你而家儲咗 ' + BM.fmt(have) + ' 里。' : '') + '往返香港同價（按大圓距離計）。</div>' +
         upHtml;
     }
-    var saDestEl = $('saDest');
-    if (saDestEl){
-      saDestEl.value = saState.dest;
-      saDestEl.addEventListener('change', function(){
-        var m = String(saDestEl.value || '').toUpperCase().match(/[A-Z]{3}/);
-        saState.dest = m ? m[0] : '';
-        saDestEl.value = saState.dest;
-        store.set('bm_sa', saState);
-        renderSa();
-      });
-    }
     Array.prototype.forEach.call(document.querySelectorAll('[data-satrip]'), function(el){
       el.addEventListener('click', function(){
         saState.trip = el.getAttribute('data-satrip');
         Array.prototype.forEach.call(document.querySelectorAll('[data-satrip]'), function(b){ b.classList.toggle('on', b === el); });
         store.set('bm_sa', saState);
-        renderSa();
+        renderSaDests(); renderSa();
       });
       el.classList.toggle('on', el.getAttribute('data-satrip') === saState.trip);
     });
     var hm = $('haveMiles');
     if (hm) hm.addEventListener('input', renderSa);
-    renderSa();
+    /* 上次揀開嘅目的地：自動跳返佢個區 */
+    if (saState.dest){
+      var prev = BM.owAirport(saState.dest);
+      if (prev){ var rg = saRegionOf(prev.co); if (rg) saState.region = rg; }
+    }
+    renderSaRegions(); renderSaDests(); renderSa();
   })();
 
   var TABS = {opt:'tab-opt', daily:'tab-daily', redeem:'tab-redeem', cards:'tab-cards', about:'tab-about'};
@@ -3375,7 +3442,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
   /* ══════════ v2.5 新功能模組 ══════════ */
 
-  var APP_VERSION = 'v3.0.0 · build 2026-07-11'; /* 同第一行 build marker 一齊改 */
+  var APP_VERSION = 'v3.0.1 · build 2026-07-11'; /* 同第一行 build marker 一齊改 */
 
   /* ---------- toast ---------- */
   var toastTimer = null;

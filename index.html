@@ -1,4 +1,4 @@
-<!-- build: 2026-07-12 UK — v6.0.0：里程碑（CX式 shell 完成）＋返回鍵接管＋修版：①系統返回鍵接管（history/popstate）：開住浮層先閂（pg頁/subSheet/setSheet/robotPanel）→唔喺主頁返「計算」→乜都冇彈 confirm「離開？」，符合手機 PWA 標準②「更多」sheet 加 max-height:86vh+overflow（之前內容超一屏篤唔到底、footer被遮）③版本對齊：footer/APP_VERSION/marker/sw 統一 v6.0.0（之前三個號打架 v6/v5.4/v4.5）。引擎零改動。原 v5.4.0 header/hero -->
+<!-- build: 2026-07-13 UK — v6.1.0：Landing＝我的旅程＋SHOWCASE＋Back v2（Robert 拍板全套）：①預設 tab 改 journey（opt hidden、nav on 搬、boot renderJourney）②旅程頂 SHOWCASE 宣傳輪播（訂閱/攻略/文章/social 四張、全闊 snap、4.5s 自動、dots、撳咗按內容路由；SOCIAL_LINKS 留位）③吉狀態 onboarding 三步卡（有嘢先開三段）④計算器優惠橫列刪除（同優惠 tab 重覆）⑤Back v2：tab 歷史 stack（back＝上一頁→最尾返旅程→confirm 離開）＋輸入保護（計算有金額/規劃有段 → 返回先 confirm，文案誠實講「會保留」）⑥全 app 浮層統一：modal-bg 撳背景即閂（consent 除外）、卡詳情刪底部閂返改頂 ✕＋backdrop＋back、apPick/robotPanel 納入 back、仙姐撳出面即閂。引擎零改動。原 v6.0.0 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -529,18 +529,6 @@ html.dark .hdr .logo{box-shadow:0 3px 12px rgba(0,0,0,.45)}
 .hdr .theme-btn{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.38);color:#fff}
 main{position:relative;z-index:2;margin-top:-13px}
 .subtabs{position:relative;z-index:2}
-.offer-strip{margin:14px 0 4px}
-.offer-head{display:flex;align-items:center;margin:0 2px 9px}
-.offer-head b{font-size:15.5px}
-.offer-head button{margin-left:auto;font-size:13px;font-weight:700;color:var(--jade)}
-.offer-row{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.offer-row::-webkit-scrollbar{display:none}
-.offer-card{flex:0 0 168px;scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;text-align:left;box-shadow:0 2px 8px rgba(15,40,50,.07);padding:0}
-.offer-card .oc-top{height:62px;background:linear-gradient(135deg,var(--jade),var(--jade2));display:flex;align-items:center;justify-content:center;font-size:27px}
-.offer-card .oc-b{padding:9px 11px 11px}
-.offer-card .oc-tag{display:inline-block;font-size:10.5px;font-weight:800;color:var(--gold-deep);background:var(--gold-soft);border-radius:6px;padding:2px 7px;margin-bottom:5px}
-.offer-card .oc-t{font-size:13px;font-weight:700;line-height:1.35;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.offer-card .oc-d{font-size:11px;color:var(--mut);margin-top:5px;font-family:var(--mono)}
 .dc-priv{font-size:13px;line-height:1.65;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:12px}
 
 /* ══════════ v5.2 CSS：header 置中＋menu＋pg 頁＋旅程＋🩷＋訂閱＋consent ══════════ */
@@ -584,6 +572,29 @@ html.dark .fav-btn{color:#5E7E86}
 .fav-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
 .fav-row:last-child{border-bottom:none}
 .fav-open{flex:1;text-align:left;font-size:14.5px;font-weight:600;color:var(--ink);padding:2px 0}
+
+/* ══════════ v6.1：SHOWCASE＋onboarding＋modal-x ══════════ */
+.show-wrap{margin:2px 0 16px}
+.show-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-radius:16px}
+.show-row::-webkit-scrollbar{display:none}
+.show-card{flex:0 0 100%;scroll-snap-align:center;display:flex;align-items:center;gap:12px;min-height:112px;padding:16px 18px;border:none;text-align:left;color:#fff}
+.show-card.g1{background:linear-gradient(135deg,#0E6E85,var(--jade))}
+.show-card.g2{background:linear-gradient(135deg,var(--jade),var(--jade2))}
+.show-card.g3{background:linear-gradient(135deg,#0B5E74,#17BFA6)}
+.show-card.g4{background:linear-gradient(135deg,#12557E,#16A9C4)}
+.sc-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.sc-tag{align-self:flex-start;font-size:10.5px;font-weight:800;letter-spacing:1px;background:rgba(255,255,255,.22);border-radius:6px;padding:2px 8px}
+.sc-txt b{font-size:16.5px;font-weight:800;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sc-d{font-size:12.5px;opacity:.85;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.sc-emoji{font-size:40px;flex:none;filter:drop-shadow(0 2px 6px rgba(0,20,26,.3))}
+.show-dots{display:flex;gap:5px;justify-content:center;margin-top:8px}
+.show-dots i{width:6px;height:6px;border-radius:50%;background:var(--line);transition:background .2s}
+.show-dots i.on{background:var(--jade);width:16px;border-radius:3px}
+.jr-onboard{margin-bottom:18px}
+.ob-steps{display:flex;flex-direction:column;gap:9px;margin:10px 0 14px}
+.ob-step{display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--ink)}
+.ob-n{flex:none;width:24px;height:24px;border-radius:50%;background:var(--jade-soft);color:var(--jade);font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center}
+.modal-x{position:sticky;top:6px;float:right;width:34px;height:34px;border-radius:10px;background:var(--field);border:1px solid var(--line);color:var(--ink);font-size:15px;z-index:3;display:flex;align-items:center;justify-content:center}
 </style>
 </head>
 <body>
@@ -611,8 +622,8 @@ html.dark .fav-btn{color:#5E7E86}
 
 <div class="modal-bg" id="cardDetail" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="cd-name" style="max-width:480px">
+    <button class="modal-x" id="cdX" type="button" aria-label="閂埋">✕</button>
     <div id="cardDetailBody"></div>
-    <button class="cta" id="cd-close" style="margin-top:6px">閂返</button>
   </div>
 </div>
 
@@ -632,9 +643,9 @@ html.dark .fav-btn{color:#5E7E86}
 
 <nav class="tabs" aria-label="主導覽">
   <div class="tabs-in">
-    <button data-tab="opt" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8.5 7.2h7M8.7 11.5h.01M12 11.5h.01M15.3 11.5h.01M8.7 15h.01M12 15h.01M15.3 15v3.4M8.7 18.4h.01M12 18.4h.01"/></svg><span>計算</span></button>
+    <button data-tab="opt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8.5 7.2h7M8.7 11.5h.01M12 11.5h.01M15.3 11.5h.01M8.7 15h.01M12 15h.01M15.3 15v3.4M8.7 18.4h.01M12 18.4h.01"/></svg><span>計算</span></button>
     <button data-tab="redeem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3 3 10.6l6.4 2.6L12 21l3.2-7.2L21 3z"/><path d="M9.4 13.2 21 3"/></svg><span>規劃</span></button>
-    <button data-tab="journey"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="7.5" width="15" height="12" rx="2.5"/><path d="M9 7.5V5.6A1.6 1.6 0 0 1 10.6 4h2.8A1.6 1.6 0 0 1 15 5.6v1.9M9 11.5v4M15 11.5v4"/></svg><span>旅程</span></button>
+    <button data-tab="journey" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="7.5" width="15" height="12" rx="2.5"/><path d="M9 7.5V5.6A1.6 1.6 0 0 1 10.6 4h2.8A1.6 1.6 0 0 1 15 5.6v1.9M9 11.5v4M15 11.5v4"/></svg><span>旅程</span></button>
     <button data-tab="articles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 12.1 12 20.3 3.8 12V3.8H12l8.2 8.3z"/><circle cx="7.6" cy="7.6" r="1.25"/></svg><span>優惠</span></button>
     <button data-tab="guides"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5.5C10 4 7.5 3.6 5 3.9v13.7c2.5-.3 5 .1 7 1.6 2-1.5 4.5-1.9 7-1.6V3.9c-2.5-.3-5 .1-7 1.6z"/><path d="M12 5.5V19.2"/></svg><span>攻略</span></button>
   </div>
@@ -643,14 +654,9 @@ html.dark .fav-btn{color:#5E7E86}
 <main>
 
 <!-- ============ TAB：賺里數計算器（大額消費＋日常儲分＋頁底卡庫） ============ -->
-<section id="tab-opt">
+<section id="tab-opt" hidden>
   <div class="subtabs" id="earnSub"><button type="button" class="on" data-esub="opt">大額消費</button><button type="button" data-esub="daily">日常儲分</button></div>
 
-  <!-- v5.1 最新優惠橫列（Cathay 式，數據自動嚟自 ARTICLES 頭4條） -->
-  <div class="offer-strip" id="offerStrip" hidden>
-    <div class="offer-head"><b>最新優惠</b><button type="button" id="offerAll">查看所有 ›</button></div>
-    <div class="offer-row" id="offerRow"></div>
-  </div>
 
   <!-- 子頁：大額消費（原優化器） -->
   <div id="esub-opt">
@@ -914,29 +920,37 @@ html.dark .fav-btn{color:#5E7E86}
 </section>
 
 <!-- ============ TAB：獨家優惠文章（v3.3） ============ -->
-<!-- ============ TAB：我的旅程（v6.0：規劃儲存＋收藏書籤，全部本機） ============ -->
-<section id="tab-journey" hidden>
-  <div class="warn" style="background:var(--jade-soft);border-color:var(--jade);color:var(--ink)"><b>🧳 我的旅程。</b>你儲低嘅計劃同心心收藏，全部喺呢度隨時攞返出嚟。所有資料只存喺你部機。</div>
-
-  <h3 class="jr-h">賺里數規劃</h3>
+<!-- ============ TAB：我的旅程（v6.1 landing）＝showcase＋儲低嘅規劃＋收藏 ============ -->
+<section id="tab-journey">
+  <!-- 宣傳輪播（SHOWCASE，3-5 張，撳咗按內容去對應位） -->
+  <div class="show-wrap" id="showWrap" hidden>
+    <div class="show-row" id="showRow"></div>
+    <div class="show-dots" id="showDots" aria-hidden="true"></div>
+  </div>
+  <!-- 新用戶吉狀態：三步 onboarding -->
+  <div class="panel jr-onboard" id="jrOnboard" hidden>
+    <div class="eyebrow">開始好簡單</div>
+    <div class="ob-steps">
+      <div class="ob-step"><span class="ob-n">1</span>去「計算」入你想簽嘅金額</div>
+      <div class="ob-step"><span class="ob-n">2</span>撳「儲存計劃」</div>
+      <div class="ob-step"><span class="ob-n">3</span>返嚟呢度隨時翻睇、跟住做</div>
+    </div>
+    <button class="cta" id="obGo" type="button">計我第一個計劃 →</button>
+  </div>
+  <div class="jr-sec" id="jrSecEarn"><div class="jr-h">賺里數規劃</div>
   <div class="panel" id="savedPlansPanel" hidden>
     <div class="eyebrow">我儲低嘅計劃</div>
     <div id="savedPlansList"></div>
     <div class="hint">開返會用最新卡數據重新計，數字可能同儲嗰陣唔同——迎新成日變。</div>
   </div>
-  <div class="jr-empty" id="jrEarnEmpty">仲未有儲低嘅計劃——去「計算」整一個，計完撳「儲存計劃」。</div>
-
-  <h3 class="jr-h">換里數規劃</h3>
-  <div class="panel" id="rtwSavedPanel" hidden>
-    <div class="eyebrow">我儲低嘅環球行程</div>
-    <div id="rtwSavedList"></div>
-    <div class="hint">開返會載返你啲航段同艙等，用最新規則再驗一次。</div>
+  <div class="panel jr-empty" id="jrEarnEmpty" hidden>仲未有儲低嘅計劃。去「計算」計一個，撳「儲存計劃」就會出現喺度。</div>
   </div>
-  <div class="jr-empty" id="jrRtwEmpty">仲未有儲低嘅行程——去「規劃」砌你嘅環球票，砌完撳「儲存呢個行程」。</div>
-
-  <h3 class="jr-h">我的收藏</h3>
-  <div class="panel">
-    <div id="favList"></div>
+  <div class="jr-sec" id="jrSecRtw"><div class="jr-h">換里數規劃</div>
+  <div class="panel" id="rtwSavedPanel" hidden><div id="rtwSavedList"></div></div>
+  <div class="panel jr-empty" id="jrRtwEmpty">未有儲低嘅行程。去「規劃」砌條環球線，撳「儲存呢個行程」。</div>
+  </div>
+  <div class="jr-sec" id="jrSecFav"><div class="jr-h">我的收藏</div>
+  <div class="panel"><div id="favList"></div></div>
   </div>
 </section>
 
@@ -2439,7 +2453,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   }
   (function(){
     var m = $('cardDetail');
-    $('cd-close').addEventListener('click', function(){ m.hidden = true; });
+    $('cdX').addEventListener('click', function(){ $('cardDetail').hidden = true; });
     m.addEventListener('click', function(e){ if (e.target === m) m.hidden = true; });
   })();
 
@@ -3990,11 +4004,19 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     if (tb) tb.click();
   });
   function renderJourney(){
+    renderShowcase();
     if (typeof renderSavedPlans === 'function') renderSavedPlans();
     var p = $('savedPlansPanel');
     if ($('jrEarnEmpty')) $('jrEarnEmpty').hidden = !(p && p.hidden);
     renderSavedRedeem();
     renderFavs();
+    /* 吉狀態：三段收埋，齋出 onboarding */
+    var f = getFavs();
+    var favN = Object.keys(f.cards).length + Object.keys(f.offers).length + Object.keys(f.guides).length;
+    var total = getSavedPlans().length + getSavedRedeem().length + favN;
+    var fresh = total === 0;
+    $('jrOnboard').hidden = !fresh;
+    ['jrSecEarn', 'jrSecRtw', 'jrSecFav'].forEach(function(id){ var el = $(id); if (el) el.hidden = fresh; });
   }
   function getSavedRedeem(){
     var l = store.get('bm_saved_redeem');
@@ -4131,33 +4153,155 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     el.textContent = lines[Math.floor(Math.random() * lines.length)];
   })();
 
-  /* ══════════ BM_BACK_GUARD：系統返回鍵接管（PWA 標準）══════════ */
+  /* ══════════ BM_BACK_V2：返回鍵＝上一頁（tab stack）＋輸入保護＋浮層優先 ══════════ */
   (function(){
+    var HOME = 'journey';
+    var tabStack = [];
+    window._bmNavSilent = false;
+    /* capture：喺 tab handler 之前記低「舊 tab」 */
+    document.addEventListener('click', function(e){
+      var b = e.target.closest ? e.target.closest('.tabs button') : null;
+      if (!b || window._bmNavSilent) return;
+      var cur = document.querySelector('.tabs button.on');
+      if (cur && cur !== b){
+        tabStack.push(cur.getAttribute('data-tab'));
+        if (tabStack.length > 30) tabStack.shift();
+      }
+    }, true);
+    function silentGo(tab){
+      window._bmNavSilent = true;
+      try{
+        var b = document.querySelector('.tabs button[data-tab="' + tab + '"]');
+        if (b) b.click();
+      } finally { window._bmNavSilent = false; }
+    }
     function closeTop(){
-      var pages = ['pgAbout','pgTerms','pgPriv','pgGuide1','pgGuide2'];
+      var pages = ['pgAbout', 'pgTerms', 'pgPriv', 'pgGuide1', 'pgGuide2'];
       for (var i = 0; i < pages.length; i++){ var p = $(pages[i]); if (p && !p.hidden){ p.hidden = true; return true; } }
-      if ($('subSheet') && !$('subSheet').hidden){ $('subSheet').hidden = true; if ($('setBg')) $('setBg').hidden = true; return true; }
-      if ($('setSheet') && !$('setSheet').hidden){ $('setSheet').hidden = true; if ($('setBg')) $('setBg').hidden = true; return true; }
-      if ($('robotPanel') && !$('robotPanel').hidden){ $('robotPanel').hidden = true; return true; }
+      var ov = ['apPick', 'cardDetail', 'subSheet', 'setSheet', 'robotPanel'];
+      for (var j = 0; j < ov.length; j++){
+        var o = $(ov[j]);
+        if (o && !o.hidden){
+          o.hidden = true;
+          if ((ov[j] === 'subSheet' || ov[j] === 'setSheet') && $('setBg')) $('setBg').hidden = true;
+          return true;
+        }
+      }
       return false;
     }
-    function onMain(){
-      var cur = document.querySelector('.tabs button.on');
-      return !cur || cur.getAttribute('data-tab') === 'opt';
+    function curTab(){
+      var c = document.querySelector('.tabs button.on');
+      return c ? c.getAttribute('data-tab') : HOME;
     }
-    function gotoMain(){
-      var b = document.querySelector('.tabs button[data-tab="opt"]');
-      if (b) b.click();
-      try{ window.scrollTo(0, 0); }catch(e){}
+    function hasDirtyInput(tab){
+      if (tab === 'opt'){
+        var a = $('amount');
+        return !!(a && String(a.value).replace(/[^0-9]/g, '') !== '');
+      }
+      if (tab === 'redeem'){
+        var ow = store.get('bm_ow');
+        if (ow && ow.segs){
+          for (var i = 0; i < ow.segs.length; i++){
+            if ((ow.segs[i].from || '').trim() || (ow.segs[i].to || '').trim()) return true;
+          }
+        }
+      }
+      return false;
+    }
+    function guardLeave(tab){
+      if (!hasDirtyInput(tab)) return true;
+      return window.confirm('呢頁有你輸入緊嘅嘢（會自動幫你保留）。未儲存計劃住喎——照返去上一頁？');
     }
     function arm(){ try{ history.pushState({bm: 1}, ''); }catch(e){} }
     arm();
     window.addEventListener('popstate', function(){
       if (closeTop()){ arm(); return; }
-      if (!onMain()){ gotoMain(); arm(); return; }
+      var cur = curTab();
+      if (tabStack.length){
+        if ((cur === 'opt' || cur === 'redeem') && !guardLeave(cur)){ arm(); return; }
+        silentGo(tabStack.pop()); arm(); return;
+      }
+      if (cur !== HOME){
+        if ((cur === 'opt' || cur === 'redeem') && !guardLeave(cur)){ arm(); return; }
+        silentGo(HOME); arm(); return;
+      }
       if (window.confirm('離開 Angel方加？')){ history.back(); } else { arm(); }
     });
   })();
+
+  /* ══════════ v6.1 SHOWCASE（旅程頂宣傳輪播）＋統一浮層行為 ══════════ */
+  var SOCIAL_LINKS = {ig: '', fb: ''}; /* ← Robert 填：IG／FB 連結；空＝暫 toast */
+  function buildShowcase(){
+    var s = [];
+    s.push({emoji: '📬', tag: '訂閱', t: '唔想走漏迎新？', d: '訂閱最新優惠速報', act: 'sub', bg: 'g1'});
+    if (typeof GUIDES !== 'undefined' && GUIDES[0]) s.push({emoji: GUIDES[0].emoji || '🗺️', tag: '攻略', t: GUIDES[0].t, d: GUIDES[0].d, act: 'pg', pg: GUIDES[0].pg, bg: 'g2'});
+    if (typeof ARTICLES !== 'undefined' && ARTICLES[0]) s.push({emoji: ARTICLES[0].emoji || '🎁', tag: '優惠', t: ARTICLES[0].t, d: ARTICLES[0].d || '', act: 'tab', tab: 'articles', bg: 'g3'});
+    s.push({emoji: '📱', tag: 'Follow', t: '追埋我哋 social', d: 'IG／FB 最新里數情報', act: 'social', bg: 'g4'});
+    return s.slice(0, 5);
+  }
+  var _shTimer = null, _shIdx = 0;
+  function renderShowcase(){
+    var wrap = $('showWrap'), row = $('showRow'), dots = $('showDots');
+    if (!wrap || !row) return;
+    var s = buildShowcase();
+    if (!s.length){ wrap.hidden = true; return; }
+    row.innerHTML = s.map(function(c, i){
+      return '<button type="button" class="show-card ' + c.bg + '" data-shi="' + i + '">' +
+        '<div class="sc-txt"><span class="sc-tag">' + esc(c.tag) + '</span>' +
+        '<b>' + esc(c.t) + '</b><span class="sc-d">' + esc(c.d) + '</span></div>' +
+        '<div class="sc-emoji" aria-hidden="true">' + esc(c.emoji) + '</div></button>';
+    }).join('');
+    dots.innerHTML = s.map(function(_, i){ return '<i' + (i ? '' : ' class="on"') + '></i>'; }).join('');
+    wrap.hidden = false;
+    row.scrollLeft = 0; _shIdx = 0;
+    row.onscroll = function(){
+      var i = Math.round(row.scrollLeft / row.clientWidth);
+      if (i !== _shIdx){ _shIdx = i; syncDots(); }
+    };
+    function syncDots(){
+      Array.prototype.forEach.call(dots.children, function(d, i){ d.className = i === _shIdx ? 'on' : ''; });
+    }
+    row.onclick = function(e){
+      var b = e.target.closest('.show-card'); if (!b) return;
+      var c = s[Number(b.getAttribute('data-shi'))]; if (!c) return;
+      if (c.act === 'sub'){ $('subBtn').click(); }
+      else if (c.act === 'pg' && c.pg){ var p = $(c.pg); if (p) p.hidden = false; }
+      else if (c.act === 'tab'){ var t = document.querySelector('.tabs button[data-tab="' + c.tab + '"]'); if (t) t.click(); }
+      else if (c.act === 'social'){
+        var url = SOCIAL_LINKS.ig || SOCIAL_LINKS.fb;
+        if (url) window.open(url, '_blank', 'noopener'); else toast('社交平台好快開通，一有即刻話你知');
+      }
+    };
+    if (_shTimer) clearInterval(_shTimer);
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduce && s.length > 1){
+      _shTimer = setInterval(function(){
+        if (document.hidden || $('tab-journey').hidden) return;
+        _shIdx = (_shIdx + 1) % s.length;
+        row.scrollTo({left: _shIdx * row.clientWidth, behavior: 'smooth'});
+      }, 4500);
+      row.addEventListener('pointerdown', function(){ if (_shTimer){ clearInterval(_shTimer); _shTimer = null; } });
+    }
+  }
+  /* 吉狀態 onboarding 掣 */
+  if ($('obGo')) $('obGo').addEventListener('click', function(){
+    var b = document.querySelector('.tabs button[data-tab="opt"]');
+    if (b) b.click();
+  });
+  /* 統一：撳 modal 背景即閂（開場 consent 除外） */
+  document.addEventListener('click', function(e){
+    var t = e.target;
+    if (t && t.classList && t.classList.contains('modal-bg') && t.id !== 'disclaimer' && !t.closest('#disclaimer')){
+      t.hidden = true;
+    }
+  });
+  /* 仙姐：撳 panel 外面即閂 */
+  document.addEventListener('click', function(e){
+    var p = $('robotPanel');
+    if (!p || p.hidden) return;
+    if (e.target.closest('#robotPanel') || e.target.closest('#robotBtn') || e.target.closest('#mnRobot')) return;
+    p.hidden = true;
+  });
 
   var TABS = {opt:'tab-opt', redeem:'tab-redeem', journey:'tab-journey', articles:'tab-articles', guides:'tab-guides'};
   Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function(btn){
@@ -4729,27 +4873,6 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   /* ══════════ v5.0 Shell：問候／設定 sheet／外觀三段／PWA 安裝／我的計劃 ══════════ */
   (function(){
     /* 問候（時段） */
-    /* 最新優惠橫列（ARTICLES 頭 4 條，撳咗去文章 tab） */
-    (function(){
-      var st = $('offerStrip'), row = $('offerRow');
-      if (!st || !row || typeof ARTICLES === 'undefined' || !ARTICLES.length) return;
-      row.innerHTML = ARTICLES.slice(0, 4).map(function(a){
-        return '<button type="button" class="offer-card">'
-          + '<div class="oc-top">' + (a.emoji || '🎁') + '</div>'
-          + '<div class="oc-b"><span class="oc-tag">' + (a.tag || '優惠') + '</span>'
-          + '<div class="oc-t">' + a.t + '</div>'
-          + '<div class="oc-d">' + (a.date || '') + '</div></div></button>';
-      }).join('');
-      function goArts(){
-        var tb = document.querySelector('.tabs button[data-tab="articles"]');
-        if (tb) tb.click();
-      }
-      $('offerAll').addEventListener('click', goArts);
-      Array.prototype.forEach.call(row.querySelectorAll('.offer-card'), function(b){
-        b.addEventListener('click', goArts);
-      });
-      st.hidden = false;
-    })();
     /* sheet 開閂 */
     function sheetShow(yes){
       $('setSheet').hidden = !yes;
@@ -4843,7 +4966,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   renderDailyInputs();
   renderDaily();
   applyTheme();
-  renderSavedPlans();
+  renderJourney();
   renderArticles();
   $('metaVer').textContent = APP_VERSION;
   /* PWA：service worker（sw.js 同 index.html 擺埋同一層） */

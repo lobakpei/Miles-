@@ -1,4 +1,4 @@
-<!-- build: 2026-07-13 UK — v6.1.0：Landing＝我的旅程＋SHOWCASE＋Back v2（Robert 拍板全套）：①預設 tab 改 journey（opt hidden、nav on 搬、boot renderJourney）②旅程頂 SHOWCASE 宣傳輪播（訂閱/攻略/文章/social 四張、全闊 snap、4.5s 自動、dots、撳咗按內容路由；SOCIAL_LINKS 留位）③吉狀態 onboarding 三步卡（有嘢先開三段）④計算器優惠橫列刪除（同優惠 tab 重覆）⑤Back v2：tab 歷史 stack（back＝上一頁→最尾返旅程→confirm 離開）＋輸入保護（計算有金額/規劃有段 → 返回先 confirm，文案誠實講「會保留」）⑥全 app 浮層統一：modal-bg 撳背景即閂（consent 除外）、卡詳情刪底部閂返改頂 ✕＋backdrop＋back、apPick/robotPanel 納入 back、仙姐撳出面即閂。引擎零改動。原 v6.0.0 -->
+<!-- build: 2026-07-13 UK — v6.3.0：三層對比格＋7篇攻略上架（交接文件落地）：①環球票結果加「三種買法比一比」（①點對點HK$15–24萬②環球票HK$9–12萬③265,000里+稅，每里HK$0.34–0.80；ⓘ內收10.4萬實quote＋HKG-LAX實測；銀碼全部範圍+參考）②示範②換巴黎版（24,481哩/區11/商務250,000/4停2轉2開，引擎全過）③FAQ「2–15間任砌」修正做官方(a)/(b)④7篇攻略全文頁 pgG1–7（hook強化＋精簡版；攻略4已按核實收緊：航司組合(a)(b)、返出發國加caveat）；GUIDES 7條；舊 pgGuide1/2 簡版退役；back名單更新。引擎零改動。原 v6.2.0 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -595,6 +595,17 @@ html.dark .fav-btn{color:#5E7E86}
 .ob-step{display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--ink)}
 .ob-n{flex:none;width:24px;height:24px;border-radius:50%;background:var(--jade-soft);color:var(--jade);font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center}
 .modal-x{position:sticky;top:6px;float:right;width:34px;height:34px;border-radius:10px;background:var(--field);border:1px solid var(--line);color:var(--ink);font-size:15px;z-index:3;display:flex;align-items:center;justify-content:center}
+
+/* ══ v6.3 三層買法對比格 ══ */
+.ow-compare{margin:10px 0 14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.owc-h{font-size:14.5px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.owc-i{width:22px;height:22px;border-radius:50%;background:var(--field);border:1px solid var(--line);color:var(--mut);font-size:12px;display:inline-flex;align-items:center;justify-content:center}
+.owc-row{display:flex;align-items:baseline;gap:8px;padding:6px 0;border-top:1px dashed var(--line);font-size:13px;color:var(--mut);flex-wrap:wrap}
+.owc-row b{font-size:14.5px;color:var(--ink)}
+.owc-row.hot b{color:var(--jade)}
+.owc-k{flex:none;min-width:9.5em;font-weight:600;color:var(--ink)}
+.owc-note{font-size:11.5px;margin-left:auto}
+.owc-tip{margin-top:9px;font-size:12.5px;line-height:1.65;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:10px;padding:9px 11px}
 </style>
 </head>
 <body>
@@ -882,13 +893,21 @@ html.dark .fav-btn{color:#5E7E86}
       <p style="font-size:13.5px;color:var(--mut);line-height:1.6;margin:0">用 Asia Miles 換「寰宇一家多航空公司獎勵機票」——一張票飛勻幾大洲，商務艙全程 230,000 里起。逐段砌你條線，我幫你計距離、對里數表、驗晒官方規則。</p>
     </div>
     <div id="owSummary"></div>
+    <div class="ow-compare">
+      <div class="owc-h">💰 三種買法比一比 <button type="button" class="owc-i" id="owCompareI" aria-label="呢啲數點嚟">ⓘ</button></div>
+      <div class="owc-row"><span class="owc-k">① 逐程自己買</span><b>≈ HK$15–24 萬</b><span class="owc-note">大部分人咁做</span></div>
+      <div class="owc-row"><span class="owc-k">② oneworld 環球票</span><b>≈ HK$9–12 萬</b><span class="owc-note">慳一半</span></div>
+      <div class="owc-row hot"><span class="owc-k">③ 用 Asia Miles 換</span><b>265,000 里＋稅</b><span class="owc-note">每 1 里值 HK$0.34–0.80</span></div>
+      <div class="owc-tip" id="owCompareTip" hidden>參考範圍，同一條全商務環球線：市價受艙位／季節／出發地／promo 影響，以官網報價為準（官方 oneworld Explorer 商務 4 大洲由 HK$88,740 起，實測連稅約 HK$10.4 萬）；點對點係實測參考（HKG–LAX 商務單程已 HK$27,000）；用里數換＝慳票價，燃油稅照畀。全商務飛長途本身就係天價——所以先至值得玩「里數換環球」呢個遊戲。</div>
+    </div>
     <div class="ow-head">
       <div></div><div>出發</div><div></div><div>到達</div><div style="text-align:center">停留</div><div style="text-align:right">距離</div>
     </div>
     <div id="owSegs"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px">
       <button type="button" class="btn-sm pri" id="owAddSeg">＋ 加一段</button>
-      <button type="button" class="btn-sm" id="owDemo">示範行程（環球商務經典線）</button>
+      <button type="button" class="btn-sm" id="owDemo">示範① 真環球（商務 265,000）</button>
+      <button type="button" class="btn-sm" id="owDemo2">示範② 中等線（商務 250,000）</button>
       <button type="button" class="btn-sm" id="owClear">清空</button>
       <button type="button" class="btn-sm pri" id="owSavePlan">💾 儲存呢個行程</button>
     </div>
@@ -1093,26 +1112,87 @@ html.dark .fav-btn{color:#5E7E86}
   </div>
 </div>
 
-<div class="page" id="pgGuide1" hidden>
-  <div class="page-head"><button type="button" class="pg-back" data-pg="pgGuide1" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>點賺里 101：新手第一課</div>
-  <div class="panel"><div class="eyebrow">① 兩大陣營，一開始揀定一邊</div><p style="font-size:14px;line-height:1.75">香港人儲開嘅飛行里數主要兩隻：<b>Asia Miles</b>（國泰）同 <b>Avios</b>（英航等）。佢哋係兩個完全分開嘅戶口，唔溝得埋——所以第一步係諗清楚你想飛邊度、用邊隻換，先至揀卡。本 app 嘅「計算」入面可以揀你儲邊隻，引擎唔會亂溝。</p></div>
-  <div class="panel"><div class="eyebrow">② 每里成本：張卡抵唔抵嘅唯一指標</div><p style="font-size:14px;line-height:1.75">同一蚊簽賬，唔同卡賺嘅里數可以差好遠。行內用「<b>每里成本</b>」（簽幾多錢先賺到 1 里）嚟比較——數字愈細愈抵。一般嚟講，<b>迎新期</b>嘅每里成本會平過日常好多，所以大額消費最好夾住迎新簽。</p></div>
-  <div class="panel"><div class="eyebrow">③ 迎新三件套：三樣睇齊先好簽</div><p style="font-size:14px;line-height:1.75">每個迎新都有三個位要一齊睇：<b>簽賬要求</b>（要簽夠幾多）、<b>限期</b>（幾多日內簽夠）、<b>年費</b>（豁免定要俾）。求其一樣睇漏，都可能令成單嘢由抵變蝕。「計算」出嘅每個組合，呢三樣會逐張列明。</p></div>
-  <div class="panel"><div class="eyebrow">④ 上限：高倍率通常有封頂</div><p style="font-size:14px;line-height:1.75">好多卡嘅高賺里率係有<b>簽賬上限</b>嘅——爆咗上限，之後嗰部分會跌返去普通率甚至冇。所以大額消費好少「一張卡簽晒」係最抵，通常係幾張卡每張簽到啱啱好。呢樣正正係本 app 引擎幫你計嘅嘢。</p></div>
-  <div class="panel"><div class="eyebrow">⑤ 節制：里數永遠唔值得孭卡數</div><p style="font-size:14px;line-height:1.75">申請信用卡會影響信貸紀錄（TU），而<b>一旦還唔切卡數，利息開支好快食晒你賺嘅里數有突</b>。簽之前計清楚自己還唔還到——借定唔借？還得到先好借！</p></div>
-  <div class="panel"><div class="eyebrow">⑥ 落手</div><p style="font-size:14px;line-height:1.75">去底部「<b>計算</b>」，入你嘅消費金額，引擎會逐蚊幫你排出邊張卡簽幾多、每張賺幾多、幾時截。計完記得撳「儲存計劃」，之後喺「旅程」隨時攞返出嚟跟住做。</p></div>
-  <div class="panel" style="font-size:12.5px;color:var(--mut)">內容只供參考，唔係財務建議；卡條款以銀行官網最新公佈為準。</div>
+<div class="page" id="pgG1" hidden>
+  <div class="page-head"><button type="button" class="pg-back" data-pg="pgG1" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>亞洲萬里通 101</div>
+  <div class="panel"><p style="font-size:14px;line-height:1.75">你日日碌緊嗰張卡，可能一路嘥緊一張機票。碌啱卡、食埋迎新，一張台北來回（14,000 里）近過你想像——呢篇由零講起。</p></div>
+  <div class="panel"><div class="eyebrow">① 里數係咩</div><p style="font-size:14px;line-height:1.75">亞洲萬里通（Asia Miles）係一種積分：儲夠就換機票，唔使畀票價，淨係畀稅同附加費（第④點講）。兩條路賺：<b>信用卡簽賬</b>同<b>搭 oneworld 航班</b>——對大部分人，信用卡先係主力。</p></div>
+  <div class="panel"><div class="eyebrow">② 點賺</div><p style="font-size:14px;line-height:1.75"><b>日常簽賬</b>：每張卡有個率，例如本地 $8 一里、指定類別 $2 一里、海外 $3–4 一里——日日碌，一路儲。<b>迎新先係最大條水喉</b>：新客簽夠門檻一舊過送，達標成本可以平到 $0.25 一里，同日常率差幾十倍，一個迎新隨時夠一張短途機票。<b>搭 oneworld 航班</b>：買國泰、日航、英航呢啲機票，飛完賺返里——唔係主力，順手儲。</p></div>
+  <div class="panel"><div class="eyebrow">③ 點換</div><p style="font-size:14px;line-height:1.75">由最近嘅台北（單程 7,000 里）、日本（單程 13,000 里），到倫敦、紐約一路上去；想玩盡仲有<b>環球票</b>——一個里數價飛勻幾大洲。同一個目的地，經濟同商務差好遠，換之前計清楚。</p></div>
+  <div class="panel"><div class="eyebrow">④ 里數唔等於免費</div><p style="font-size:14px;line-height:1.75">里數只免咗「機票票價」，<b>燃油附加費（YQ）＋政府稅費要現金</b>。YQ 按航段計：短途約 HK$290 一段、長途約 HK$1,164 一段，航段多就疊上去，會跟油價每月變、以出票當日計。「免費機票」——冇一張真係完全免費。</p></div>
+  <div class="panel"><div class="eyebrow">⑤ 里數會過期</div><p style="font-size:14px;line-height:1.75">Asia Miles 一般設有效期，可透過賺取或使用活動延續——戶口長期一動唔動，啲里會過。偶爾登入睇一睇。（規則會變，以官網最新條款為準。）</p></div>
+  <div class="panel"><div class="eyebrow">落手</div><p style="font-size:14px;line-height:1.75">想知你想飛嗰程要幾多里？去「<b>規劃</b>」入目的地即刻有數。想知邊張卡儲得最多？去「<b>計算</b>」入你嘅洗費，佢幫你砌。</p></div>
+  <div class="panel" style="font-size:12.5px;color:var(--mut)">所有迎新、賺率、里數同細節，受各發卡機構及亞洲萬里通條款及細則約束，以官網公佈為準。借定唔借？還得到先好借！</div>
 </div>
 
-<div class="page" id="pgGuide2" hidden>
-  <div class="page-head"><button type="button" class="pg-back" data-pg="pgGuide2" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>寰宇一家環球票新手包</div>
-  <div class="panel"><div class="eyebrow">① 呢張係乜嘢票？</div><p style="font-size:14px;line-height:1.75">用 <b>Asia Miles</b> 換嘅「寰宇一家多航空公司獎勵機票」——一條數，畀你搭 oneworld 聯盟幾間航空公司，一程過飛幾個國家，正宗「環球票」玩法。想用最少里數飛盡個地球，就係玩呢張。</p></div>
-  <div class="panel"><div class="eyebrow">② 點計數？</div><p style="font-size:14px;line-height:1.75">唔係逐段計，而係將你<b>成個行程嘅總飛行距離</b>加埋，跌入邊個距離級距就收邊個價；經濟、商務、頭等各有一條價目表。即係話：條線編排得好，同一堆里數可以飛多好多地方。</p></div>
-  <div class="panel"><div class="eyebrow">③ 三個關鍵詞</div><p style="font-size:14px;line-height:1.75"><b>停留</b>＝喺一個城市留超過 24 小時；<b>轉機</b>＝24 小時內飛走；<b>開口</b>＝兩個機場之間唔搭呢張票、自己陸路或者另買機票駁過去。三樣各有限額——「規劃」入面每段旁邊有 <b>ⓘ</b> 逐條講清楚，超咗會即場提你。</p></div>
-  <div class="panel"><div class="eyebrow">④ 里數以外嘅使費</div><p style="font-size:14px;line-height:1.75">除咗里數，仲要俾<b>燃油附加費（YQ）同稅項</b>——長途段嘅 YQ 唔平，計預算時唔好漏。「規劃」計行程時會連 YQ 一齊幫你預估。</p></div>
-  <div class="panel"><div class="eyebrow">⑤ 點樣訂？</div><p style="font-size:14px;line-height:1.75">呢類多航司獎勵票要<b>打電話去國泰</b>先訂到。「規劃」砌好條線之後，入面有成張<b>電話 booking checklist</b>——照住講，唔怕漏嘢。</p></div>
-  <div class="panel"><div class="eyebrow">⑥ 落手</div><p style="font-size:14px;line-height:1.75">去底部「<b>規劃</b>」→「寰宇一家環球票」，一段一段入機場，引擎即場驗規則、計里數。砌好記得撳「<b>儲存呢個行程</b>」，之後喺「旅程」開返，用最新規則再驗一次。</p></div>
-  <div class="panel" style="font-size:12.5px;color:var(--mut)">規則以國泰航空官方最新公佈為準；本文只係幫你入門，唔構成任何保證。</div>
+<div class="page" id="pgG2" hidden>
+  <div class="page-head"><button type="button" class="pg-back" data-pg="pgG2" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>信用卡砌卡組合</div>
+  <div class="panel"><p style="font-size:14px;line-height:1.75">你買部 iPhone，碌啱卡，就換到一張台北來回機票——你本來就要買，冇為張飛多俾一蚊。點解？$8,000 已夠簽起一張卡嘅迎新：呢一季 Citi PremierMiles 首兩個月簽 $5,000 攞 20,000 里，一張台北來回（14,000 里）仲有剩。</p></div>
+  <div class="panel"><div class="eyebrow">① 根本冇「最好」嘅卡</div><p style="font-size:14px;line-height:1.75">賺率唔係一個數字，係睇你喺邊度簽。<b>滙豐 EveryMile</b>：指定商戶（咖啡店、指定超市藥房）$2 一里，但酒樓、其他本地同海外跌返 $5。<b>Citi PremierMiles</b>：海外及網上外幣 $3–4 一里，但本地 $8。同一張卡，強嗰忽賺到盡、弱嗰忽賺得慢——冇邊張喺所有類別都最勁。</p></div>
+  <div class="panel"><div class="eyebrow">② 真正玩法：每種洗費碌最啱嗰張</div><p style="font-size:14px;line-height:1.75">買咖啡入超市 → EveryMile（$2）；出國、網上外幣 → PremierMiles（$3–4）；其他雜項 → 邊張底率高碌邊張。兩三張卡分工，一年落嚟同求其一張碌，里數爭一大截。</p></div>
+  <div class="panel"><div class="eyebrow">③ 迎新先係最大條水喉</div><p style="font-size:14px;line-height:1.75">日常率點砌都追唔上迎新：$5,000 換 20,000 里＝$0.25 一里，平本地率三十二倍。但迎新有規矩：<b>一次性</b>（攞完就冇）、<b>有條件</b>（要真消費，交稅／PayAll／繳費多數唔計）、<b>有期限</b>（每季變，簽前對返官網當期 T&C）、<b>早 cut 會扣返</b>（多數 12 個月內取消，啲里收返）。</p></div>
+  <div class="panel"><div class="eyebrow">④ 年費同上限</div><p style="font-size:14px;line-height:1.75">呢類卡年費動輒一兩千：EveryMile 首年免、之後 $2,000，年簽夠 $80,000 豁免下年——賺嘅里值唔值返年費，要諗。仲有上限同名單：EveryMile 個 $2 淨係限指定商戶（Starbucks 得、酒樓唔得），名單滙豐話改就改，個率有冇上限官方都未講清——唔好當「所有嘢 $2」。</p></div>
+  <div class="panel"><div class="eyebrow">落手</div><p style="font-size:14px;line-height:1.75">呢啲人手計好煩。去「<b>計算</b>」入你嘅洗費，佢幫你砌邊種洗費碌邊張、預埋迎新同年費，一年實際攞到幾多里，一眼睇晒。</p></div>
+  <div class="panel" style="font-size:12.5px;color:var(--mut)">所有迎新、賺率、年費同細節，受各發卡機構條款及細則約束，以官網公佈為準；迎新同商戶名單經常變，簽之前對返當期官網。借定唔借？還得到先好借！</div>
+</div>
+
+<div class="page" id="pgG3" hidden>
+  <div class="page-head"><button type="button" class="pg-back" data-pg="pgG3" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>標準獎勵換機票</div>
+  <div class="panel"><p style="font-size:14px;line-height:1.75">台北來回 14,000 里、日本 26,000——但同一個目的地，經濟同商務差成三倍。換之前計清楚，先唔會蝕。</p></div>
+  <div class="panel"><div class="eyebrow">① 標準獎勵係咩</div><p style="font-size:14px;line-height:1.75">換國泰自營航班嘅獎勵機票：按飛行距離分區，每區固定里數；來回＝單程 ×2。現時六個距離區（單程・經濟，以官網為準）：台北 7,000／新加坡 9,000／東京 13,000／悉尼 20,000／倫敦 27,000／紐約 38,000。</p></div>
+  <div class="panel"><div class="eyebrow">② 日本點解貴啲：類別 1 vs 2</div><p style="font-size:14px;line-height:1.75">官方將往返<b>日本、印尼、斯里蘭卡、尼泊爾、孟加拉、印度</b>嘅航線劃做「類別 2」，比同距離嘅「類別 1」貴——所以東京（類 2，13,000）貴過新加坡（類 1，9,000），雖然距離差唔多。</p></div>
+  <div class="panel"><div class="eyebrow">③ 艙位差幾多</div><p style="font-size:14px;line-height:1.75">同一程三個價，越前升得越急：東京經濟 13,000、商務 33,000；倫敦經濟 27,000、商務 91,000。抵唔抵睇你點睇——用里數坐商務＝用經濟嘅價錢，換咗個舒服好多嘅位，長途最明顯。</p></div>
+  <div class="panel"><div class="eyebrow">④ 里數唔等於免費</div><p style="font-size:14px;line-height:1.75">只免票價：YQ＋稅要現金。YQ 按航段計，短途約 HK$290、長途約 HK$1,164；英航、卡塔爾段特別重，日航、芬蘭相對輕。</p></div>
+  <div class="panel"><div class="eyebrow">⑤ 補里數升艙</div><p style="font-size:14px;line-height:1.75">已有經濟票？官方有「客艙提升獎勵」——補一段里數升上商務或頭等，唔使成程重新換。長途升艙有時仲划算過重新換。</p></div>
+  <div class="panel"><div class="eyebrow">落手</div><p style="font-size:14px;line-height:1.75">去「<b>規劃</b>」入你想飛嘅目的地，即刻話你知三個艙各要幾多里、夠唔夠、升艙幾多。</p></div>
+  <div class="panel" style="font-size:12.5px;color:var(--mut)">所有里數、規則同細節，受國泰亞洲萬里通條款及細則約束，以官網公佈為準。里數表會調價，計之前規劃器用返最新數。</div>
+</div>
+
+<div class="page" id="pgG4" hidden>
+  <div class="page-head"><button type="button" class="pg-back" data-pg="pgG4" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>寰宇一家環球票</div>
+  <div class="panel"><p style="font-size:14px;line-height:1.75">呢種行程用現金逐程買，實測埋單成 <b>HK$21 萬</b>。識玩嘅人：<b>265,000 里＋稅</b>，搞掂。香港出發，停東京、三藩市、紐約、倫敦再返嚟——五個城市四大洲，一張機票一筆里數。呢個玩法叫寰宇一家環球票（oneworld Multi-carrier Award），係亞洲萬里通最抵、亦最少人識用嘅一張飛。規則睇落嚇窒你；搞得掂，你就打開咗好多人一世都唔知存在嘅玩法。</p></div>
+  <div class="panel"><div class="eyebrow">① 你買嘅係「總距離」，唔係逐程票</div><p style="font-size:14px;line-height:1.75">成條行程所有實飛航段距離加埋，總數跌落邊個「區」就畀嗰個價——停幾多度、飛幾多程都唔影響，只要總距離同區。識砌嘅人，同一個價塞得入幾多城市就幾多。總距離上限 50,000 哩，13 個區由經濟 30,000 里去到頭等 380,000 里（詳細區表以官網為準，app 規劃器已逐格核實）。</p></div>
+  <div class="panel"><div class="eyebrow">② 三個字：停留、轉機、開口</div><p style="font-size:14px;line-height:1.75"><b>停留</b>＝落地過多過 24 個鐘（真係落去玩），最多 <b>5 次</b>。<b>轉機</b>＝唔夠 24 個鐘接下一班，最多 <b>2 次</b>。<b>開口</b>＝A 城入 B 城走、中間自己搞掂，呢段唔計距離唔使里數，最多 <b>2 個</b>。再加兩條：每個城市停留或開口只准一次，且唔可以係出發／最尾城市（2023 年 10 月新例）；成條行程要兜返出發嗰個國家／地區——返同一國家就得，唔使同一城市（官方六條冇逐字寫明呢條，出票時同職員確認）。</p></div>
+  <div class="panel"><div class="eyebrow">③ 唔知就中伏嘅規矩</div><p style="font-size:14px;line-height:1.75"><b>航空公司組合有嚴格規定</b>：冇揀國泰＝要<b>啱啱 2 間</b> oneworld；有揀國泰＝要 <b>3 間或以上</b>；全程只准 oneworld 成員。<b>冇特選經濟</b>——淨係經濟、商務、頭等。<b>成張票跟最貴嗰程個艙計</b>：成程經濟、貪心 book 一程商務，成張票當商務計，一程之差爭一大截。</p></div>
+  <div class="panel"><div class="eyebrow">④ 真正玩法：塞盡個區，唔好跳出去</div><p style="font-size:14px;line-height:1.75">價錢睇「總距離跌邊區」，每個區上限就係懸崖：34,998 哩＝區 12 經濟 14 萬；玩興起繞多個城市頂到 35,001 哩，即刻跌落區 13 變 16 萬——多嗰個城市實收你兩萬里。區區交界都有呢個陷阱。</p></div>
+  <div class="panel"><div class="eyebrow">⑤ 出票同查位，兩件事</div><p style="font-size:14px;line-height:1.75">環球票多數要打會員熱線出票：+852 2747 3333（英文線快啲）。規劃器計價錢同 route；「嗰日有冇獎勵位」係另一件事——冇位，再靚嘅 route 都飛唔到，用第三方查位工具睇實先打熱線。</p></div>
+  <div class="panel"><div class="eyebrow">落手</div><p style="font-size:14px;line-height:1.75">去「<b>規劃</b>」→「環球票」，撳「示範① 真環球」或者自己入機場——總距離、跌邊區、三艙里數、配額爆唔爆、差幾多哩跳區，一次過計晒。唔使開 Excel。</p></div>
+  <div class="panel" style="font-size:12.5px;color:var(--mut)">所有里數、規則同細節，受國泰亞洲萬里通條款及細則約束，以官網公佈為準。</div>
+</div>
+
+<div class="page" id="pgG5" hidden>
+  <div class="page-head"><button type="button" class="pg-back" data-pg="pgG5" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>新手最易中嘅七個伏</div>
+  <div class="panel"><p style="font-size:14px;line-height:1.75">里數最痛嘅唔係儲得慢，係中伏。七個新手必中位，逐個拆——全部避得過，你已經叻過大部分人。</p></div>
+  <div class="panel"><div class="eyebrow">① 迎新有期限有條件</div><p style="font-size:14px;line-height:1.75">要簽真消費——交稅、PayAll、繳費多數唔計；有啲要每月最少簽一次；T&C 逐季變。簽之前對返官網當期條款。</p></div>
+  <div class="panel"><div class="eyebrow">② 簽咗又 cut，啲里收返</div><p style="font-size:14px;line-height:1.75">大部分迎新，12 個月內取消張卡，銀行有權扣返啲里——「攞完迎新即剪卡」行唔通。</p></div>
+  <div class="panel"><div class="eyebrow">③ 里數唔等於免費</div><p style="font-size:14px;line-height:1.75">YQ＋稅要現金：長途每段約 HK$1,164，環球票十幾個航段 YQ 隨時上萬蚊；英航、卡塔爾段特別重。</p></div>
+  <div class="panel"><div class="eyebrow">④ 里數會過期</div><p style="font-size:14px;line-height:1.75">戶口長期一動唔動啲里會過（可透過賺取或使用延續）。辛苦儲落，過咗身乜都冇——偶爾登入睇睇。</p></div>
+  <div class="panel"><div class="eyebrow">⑤ 計到個價 ≠ 嗰日有位</div><p style="font-size:14px;line-height:1.75">工具計到要幾多里係一件事，嗰班機有冇「獎勵位」係另一件事。真係要換：第三方查位工具睇實有位，先打熱線出票。</p></div>
+  <div class="panel"><div class="eyebrow">⑥ $2 一里唔係無限咁抵</div><p style="font-size:14px;line-height:1.75">高賺率淨係限指定商戶（Starbucks 得、酒樓唔得），仲可能有上限——睇清楚張卡個名單先。</p></div>
+  <div class="panel"><div class="eyebrow">⑦ 環球票跟最貴嗰程計</div><p style="font-size:14px;line-height:1.75">成程經濟、中間貪心 book 一程商務，成張票當商務計——一程之差，個價爭一大截。</p></div>
+  <div class="panel"><div class="eyebrow">落手</div><p style="font-size:14px;line-height:1.75">唔想中伏：「仙姐」FAQ（頂部 ? 掣）有齊呢啲問題；計之前去「計算」或「規劃」，數字睇清楚先落手。</p></div>
+  <div class="panel" style="font-size:12.5px;color:var(--mut)">所有迎新、賺率、里數同細節，受各發卡機構及亞洲萬里通條款及細則約束，以官網公佈為準。借定唔借？還得到先好借！</div>
+</div>
+
+<div class="page" id="pgG6" hidden>
+  <div class="page-head"><button type="button" class="pg-back" data-pg="pgG6" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>點用 Angel方加 幫你計</div>
+  <div class="panel"><p style="font-size:14px;line-height:1.75">得兩條問題：<b>點儲最多？儲咗換到咩？</b>成個 app 就係答呢兩條——下面逐個掣教。</p></div>
+  <div class="panel"><div class="eyebrow">① 想儲最多 →「計算」</div><p style="font-size:14px;line-height:1.75"><b>【大額消費】</b>結婚、裝修、大旅行嗰種：由上而下入金額、年薪（隔走申請唔到嘅卡）、一人定二人家庭、點洗法（一炮過定分幾個月）、儲邊種里數（Asia Miles／Avios）、每人最多開幾多張新卡、已有嘅卡。撳「計最佳組合」→ 儲到幾多里、每里成本、簽賬登機證（邊筆碌邊張）、行動時間表、WHAT-IF 拉桿。計完可以<b>儲存</b>或分享。<b>【日常儲分】</b>入你有嘅卡＋每月各類洗費 → 一年儲幾多、每類用邊張最抵。<b>【卡庫】</b>碌到底撳開：所有收錄卡嘅迎新、賺率、年費，撳一張睇齊細節同風險位。</p></div>
+  <div class="panel"><div class="eyebrow">② 想知換到咩 →「規劃」</div><p style="font-size:14px;line-height:1.75"><b>【換咩好？】</b>入你有幾多分 → 換到咩、邊條線抵（「計算」計出嘅數可一撳填入）。<b>【單程・來回】</b>入目的地 → 三艙各幾多里、夠唔夠、升艙幾多（已對官方核實）。<b>【環球票】</b>入機場 → 總距離、里數區、三艙價、停留開口配額、差幾多哩跳區——撳「示範」睇兩條現成靚線。砌好撳「<b>儲存呢個行程</b>」。</p></div>
+  <div class="panel"><div class="eyebrow">③ 兩邊點串</div><p style="font-size:14px;line-height:1.75">計算（賺）→ 規劃（換）係一條線：計到儲幾多里，去「換咩好」一撳填入就睇到換到咩。儲落嘅計劃同行程，全部喺「<b>旅程</b>」tab。</p></div>
+  <div class="panel" style="font-size:12.5px;color:var(--mut)">所有里數、賺率、迎新同細節，受各發卡機構及亞洲萬里通條款及細則約束，以官網公佈為準；申請信用卡會影響信貸紀錄。借定唔借？還得到先好借！</div>
+</div>
+
+<div class="page" id="pgG7" hidden>
+  <div class="page-head"><button type="button" class="pg-back" data-pg="pgG7" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>App 有咩功能</div>
+  <div class="panel"><p style="font-size:14px;line-height:1.75">五個 tab、一部機搞晒、零追蹤——一次過帶你行一圈。Angel方加 幫你計點用信用卡儲盡 Asia Miles／Avios，同埋啲里換到咩機票，全部喺你部機行。</p></div>
+  <div class="panel"><div class="eyebrow">① 計算</div><p style="font-size:14px;line-height:1.75">計「點儲最多」：大額消費（迎新組合＋WHAT-IF＋二人家庭）、日常儲分（每類邊張卡最抵）、卡庫（所有卡撳開睇細節）。</p></div>
+  <div class="panel"><div class="eyebrow">② 規劃</div><p style="font-size:14px;line-height:1.75">計「換到咩」：換咩好？／單程・來回（已對官方核實）／環球票（總距離、里數區、配額一次計）。</p></div>
+  <div class="panel"><div class="eyebrow">③ 旅程</div><p style="font-size:14px;line-height:1.75">你儲低嘅嘢全喺呢度、全部只存你部機：賺里數計劃、環球票行程、心心過嘅收藏。</p></div>
+  <div class="panel"><div class="eyebrow">④ 優惠</div><p style="font-size:14px;line-height:1.75">我哋喺社交平台出嘅優惠分析精選：迎新加碼、限時 flash 呢類。撳「細閱內文」去原文。</p></div>
+  <div class="panel"><div class="eyebrow">⑤ 攻略</div><p style="font-size:14px;line-height:1.75">長青教學（你而家喺度）。想遲啲睇？撳篇文個心心，收埋去「旅程」。</p></div>
+  <div class="panel"><div class="eyebrow">頂部同其他</div><p style="font-size:14px;line-height:1.75"><b>仙姐（? 掣）</b>：FAQ 小幫手，有問題直接搜。<b>更多（⋯掣）</b>：關於／外觀／安裝到主畫面（iPhone 用 Safari → 分享 → 加至主畫面）／統計開關（你揀開先開）／條款／私隱。<b>訂閱掣</b>：留 email 收最新優惠（服務推出前 queue 住喺你部機）。</p></div>
+  <div class="panel"><div class="eyebrow">你嘅私隱</div><p style="font-size:14px;line-height:1.75">所有輸入同計劃只存你部機——冇伺服器、冇 cookies、冇第三方追蹤，所以冇 cookie 彈窗。統計由你話事。目前冇任何 referral 收益；日後如有，會當眼標明。</p></div>
+  <div class="panel" style="font-size:12.5px;color:var(--mut)">Angel方加 唔係財務建議；卡資料只供參考，以銀行官網為準。申請信用卡會影響信貸紀錄，請量力而為。借定唔借？還得到先好借！</div>
 </div>
 
 <div class="robot-panel" id="robotPanel" hidden>
@@ -3740,20 +3820,46 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       owState.segs.push({from:last && last.to ? last.to : '', to:'', carrier:last ? last.carrier : 'CX', stay:'stop'});
       owSave(); renderOwSegs(); renderOwResult();
     });
-    $('owDemo').addEventListener('click', function(){
-      owState.segs = [
-        {from:'HKG', to:'LHR', carrier:'BA', stay:'stop'},
-        {from:'LHR', to:'JFK', carrier:'AA', stay:'stop'},
-        {from:'JFK', to:'LAX', carrier:'AA', stay:'stop'},
-        {from:'LAX', to:'NRT', carrier:'JL', stay:'stop'},
-        {from:'NRT', to:'TPE', carrier:'JL', stay:'stop'},
-        {from:'TPE', to:'HKG', carrier:'CX', stay:'stop'}
-      ];
+    /* 兩條示範線（2026-07-13 引擎驗證：checks 全過）
+       線1 真環球：29,204 哩｜區12｜商務 265,000｜5停2轉1開（跨南北半球：東京轉→LA→紐約→聖保羅→馬德里→多哈轉→吉隆坡⤳新加坡開口→台北→香港）
+       線2 中等線：24,082 哩｜區11｜商務 250,000｜3停2轉2開（亞歐美三洲：多哈轉→倫敦→紐約⤳多倫多開口→LA→東京轉→吉隆坡⤳新加坡開口→台北→香港） */
+    var OW_DEMO_1 = [
+      {from:'HKG', to:'NRT', carrier:'CX', stay:'transit'},
+      {from:'NRT', to:'LAX', carrier:'JL', stay:'stop'},
+      {from:'LAX', to:'JFK', carrier:'AA', stay:'stop'},
+      {from:'JFK', to:'GRU', carrier:'AA', stay:'stop'},
+      {from:'GRU', to:'MAD', carrier:'IB', stay:'stop'},
+      {from:'MAD', to:'DOH', carrier:'QR', stay:'transit'},
+      {from:'DOH', to:'KUL', carrier:'QR', stay:'stop'},
+      {from:'SIN', to:'TPE', carrier:'CX', stay:'stop'},
+      {from:'TPE', to:'HKG', carrier:'CX', stay:'stop'}
+    ];
+    /* 線2 巴黎版（2026-07-13 引擎驗證全過）：24,481 哩｜區11｜商務 250,000｜4停2轉2開
+       多哈轉→倫敦→巴黎→紐約⤳多倫多開口→LA→東京轉→吉隆坡⤳新加坡開口→台北→香港 */
+    var OW_DEMO_2 = [
+      {from:'HKG', to:'DOH', carrier:'QR', stay:'transit'},
+      {from:'DOH', to:'LHR', carrier:'QR', stay:'stop'},
+      {from:'LHR', to:'CDG', carrier:'BA', stay:'stop'},
+      {from:'CDG', to:'JFK', carrier:'AA', stay:'stop'},
+      {from:'YYZ', to:'LAX', carrier:'AA', stay:'stop'},
+      {from:'LAX', to:'NRT', carrier:'JL', stay:'transit'},
+      {from:'NRT', to:'KUL', carrier:'MH', stay:'stop'},
+      {from:'SIN', to:'TPE', carrier:'CX', stay:'stop'},
+      {from:'TPE', to:'HKG', carrier:'CX', stay:'stop'}
+    ];
+    function owLoadDemo(segs){
+      owState.segs = JSON.parse(JSON.stringify(segs));
+      owState.cabin = 'j';
       owSave(); renderOwSegs(); renderOwResult();
-    });
+    }
+    $('owDemo').addEventListener('click', function(){ owLoadDemo(OW_DEMO_1); });
+    $('owDemo2').addEventListener('click', function(){ owLoadDemo(OW_DEMO_2); });
     $('owClear').addEventListener('click', function(){
       owState.segs = [{from:'', to:'', carrier:'CX', stay:'stop'}, {from:'', to:'', carrier:'BA', stay:'stop'}];
       owSave(); renderOwSegs(); renderOwResult();
+    });
+    $('owCompareI').addEventListener('click', function(){
+      var t = $('owCompareTip'); t.hidden = !t.hidden;
     });
     $('owSavePlan').addEventListener('click', function(){
       var codes = [];
@@ -4064,8 +4170,13 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     }
   });
   var GUIDES = [
-    {t: '點賺里 101：新手第一課', d: '兩大陣營、每里成本、迎新三件套——一次過搞清楚，唔使再靠估。', tag: '新手必讀', date: '2026-07', emoji: '🎓', pg: 'pgGuide1'},
-    {t: '寰宇一家環球票新手包', d: '一張飛玩幾個國家點計數？停留、轉機、開口一文睇晒，再用「規劃」砌自己條線。', tag: '進階玩法', date: '2026-07', emoji: '🌏', pg: 'pgGuide2'}
+    {t: '亞洲萬里通 101', d: '由零開始：點賺、點換、YQ、過期——一篇睇晒。', tag: '新手必讀', date: '2026-07', emoji: '🎓', pg: 'pgG1'},
+    {t: '信用卡砌卡組合', d: '買部 iPhone 就換到台北來回——重點唔係最好卡，係最啱組合。', tag: '新手必讀', date: '2026-07', emoji: '🃏', pg: 'pgG2'},
+    {t: '標準獎勵換機票', d: '六個距離區、類別 1/2、艙位差幾多——換之前計清楚。', tag: '換票實戰', date: '2026-07', emoji: '✈️', pg: 'pgG3'},
+    {t: '寰宇一家環球票', d: '現金 21 萬嘅行程，識玩 265,000 里搞掂——規則、區表、跳區陷阱全拆。', tag: '進階玩法', date: '2026-07', emoji: '🌏', pg: 'pgG4'},
+    {t: '新手最易中嘅七個伏', d: '迎新條件、cut 卡扣里、YQ、過期……避晒你已叻過大部分人。', tag: '避坑', date: '2026-07', emoji: '⚠️', pg: 'pgG5'},
+    {t: '點用 Angel方加 幫你計', d: '點儲最多？換到咩？由賺到換逐個掣教。', tag: '教學', date: '2026-07', emoji: '🧭', pg: 'pgG6'},
+    {t: 'App 有咩功能', d: '五個 tab、零追蹤，一次過行一圈。', tag: '導覽', date: '2026-07', emoji: '📱', pg: 'pgG7'}
   ]; /* {t,d,tag,date,emoji, pg:站內全文頁 或 url:出站連結} */
   function renderGuides(){
     var host = $('guideList'); if (!host) return;
@@ -4176,7 +4287,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       } finally { window._bmNavSilent = false; }
     }
     function closeTop(){
-      var pages = ['pgAbout', 'pgTerms', 'pgPriv', 'pgGuide1', 'pgGuide2'];
+      var pages = ['pgAbout', 'pgTerms', 'pgPriv', 'pgG1', 'pgG2', 'pgG3', 'pgG4', 'pgG5', 'pgG6', 'pgG7'];
       for (var i = 0; i < pages.length; i++){ var p = $(pages[i]); if (p && !p.hidden){ p.hidden = true; return true; } }
       var ov = ['apPick', 'cardDetail', 'subSheet', 'setSheet', 'robotPanel'];
       for (var j = 0; j < ov.length; j++){
@@ -4702,7 +4813,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
      a:'官方第 5 條：混艙行程按<b>最高艙等</b>收成程里數——即係你 9 段入面得 1 段商務、8 段經濟，都係照商務價收。所以想商務就索性全程商務先抵；另外呢張表冇特選經濟（官方第 6 條）。'},
     {c:'環球票', q:'環球票同單程標準獎勵有咩分別？',
      kw:['分別','兩樣','標準獎勵定環球','邊樣抵','點揀','有咩唔同'],
-     a:'兩個唔同產品、兩套規則：<b>標準獎勵</b>＝換單一目的地（香港⇌東京呢類），按距離 6 區間計，最多兩間航空公司而且要有國泰；<b>環球票</b>＝一張票飛幾大洲，按總距離 13 區計，2–15 間 oneworld 任你砌，可以 5 停 2 轉 2 開口。淨係去一個地方用標準獎勵；想一次過玩幾個洲先用環球票。'},
+     a:'兩個唔同產品、兩套規則：<b>標準獎勵</b>＝換單一目的地（香港⇌東京呢類），按距離 6 區間計，最多兩間航空公司而且要有國泰；<b>環球票</b>＝一張票飛幾大洲，按總距離 13 區計，航空公司組合有嚴格規定：冇揀國泰＝要啱啱 2 間 oneworld；有揀國泰＝要 3 間或以上（全程只准 oneworld 成員），可以 5 停 2 轉 2 開口。淨係去一個地方用標準獎勵；想一次過玩幾個洲先用環球票。'},
     /* ═══ App ═══ */
     {c:'App', q:'「獨家優惠文章」係啲乜？',
      kw:['文章','獨家優惠','優惠文章','post','精選','連結','文章區','細閱','tab'],

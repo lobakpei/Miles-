@@ -1,6 +1,6 @@
 /* Angel方加 service worker — 同源 network-first（保資料新鮮），斷網先食 cache。
    每次改版要跟住升 CACHE 名，舊 cache 自動清。 */
-var CACHE = 'angelfk-v6.1.0';
+var CACHE = 'angelfk-v6.3.0';
 var CORE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './welcome.mp4'];
 self.addEventListener('install', function(e){
   e.waitUntil(caches.open(CACHE).then(function(c){ return c.addAll(CORE); }).then(function(){ return self.skipWaiting(); }));

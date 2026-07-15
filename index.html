@@ -1,4 +1,4 @@
-<!-- build: 2026-07-14 UK — v6.9.0：①新增 YQ 燃油費專篇（pgG8：係咩/幾多錢/環球票要留意/點慳，含2 demo圖），規劃器「YQ 燃油費」chip 由 pgG4 改指 pgG8，並上 GUIDES②全攻略區圖文並茂化：新增 .art-fig demo 佔位圖 component（虛線框+icon+示範圖位標籤+【建議配圖】說明），為 14 篇文章插入共 21 個佔位圖（pgG4/pgG7 本身已有圖表故不加），每個都括住寫明將來要塞咩圖。引擎零改。原 v6.8.1 -->
+<!-- build: 2026-07-15 UK — v6.9.1：修 PWA 通知欄殘留（Android 媒體通知）——welcome.mp4 原本帶 AAC 聲軌，Android Chrome 見有聲軌即當「媒體播放」彈通知；已剝走聲軌（畫面不變、檔案 1.9M→1.7M），並喺 video 加 disableremoteplayback + play 前強制 muted 雙保險。sw 升版令裝咗 app 嘅手機自動拉新片。原 v6.9.0 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -699,7 +699,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
 </head>
 <body>
 <!-- v4.5 welcome 開場動畫：每次開 app 播 4 秒自動入（無掣）；片載唔到 2.5s 直接入，唔會卡 -->
-<div id="welcome" aria-hidden="true"><video id="welcomeVid" src="welcome.mp4" muted playsinline preload="auto"></video></div>
+<div id="welcome" aria-hidden="true"><video id="welcomeVid" src="welcome.mp4" muted playsinline preload="auto" disableremoteplayback x-webkit-airplay="deny"></video></div>
 
 <!-- 免責聲明（首次必讀） -->
 <div class="modal-bg" id="disclaimer" hidden>
@@ -4956,6 +4956,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     }
     if (v){
       v.addEventListener('error', go);
+      try{ v.muted = true; v.volume = 0; v.disableRemotePlayback = true; }catch(e){}
       var p = v.play();
       if (p && p.catch) p.catch(function(){});
     }

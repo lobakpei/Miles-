@@ -1,4 +1,4 @@
-<!-- build: 2026-07-15 UK — v6.9.1：修 PWA 通知欄殘留（Android 媒體通知）——welcome.mp4 原本帶 AAC 聲軌，Android Chrome 見有聲軌即當「媒體播放」彈通知；已剝走聲軌（畫面不變、檔案 1.9M→1.7M），並喺 video 加 disableremoteplayback + play 前強制 muted 雙保險。sw 升版令裝咗 app 嘅手機自動拉新片。原 v6.9.0 -->
+<!-- build: 2026-07-16 UK — v6.16.1 HOTFIX：修開場即 crash（Uncaught TypeError: Cannot read properties of undefined reading forEach）——v6.15.0 加嘅收藏心心 pg→{cat,key} 對照表 IIFE 喺 line 4811 執行，但 ARTICLES_ORIG 要到 line 5078 先定義，IIFE 跑時佢係 undefined→.forEach 爆錯卡死全 app。將成個 IIFE 搬去 init 尾（renderArticles 之後，兩個 _ORIG 陣列都定義好）。原 v6.16.0 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -14,6 +14,9 @@
 <meta property="og:description" content="大額消費、日常儲分、環球機票，一次過幫你計清楚。">
 <meta property="og:image" content="https://lobakpei.github.io/icon-512.png">
 <meta property="og:type" content="website">
+<link rel="canonical" href="https://lobakpei.github.io/">
+<meta name="robots" content="index,follow">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Angel方加 BigMiles","alternateName":"BigMiles","url":"https://lobakpei.github.io/","description":"香港里數優化 PWA：大額消費迎新組合、日常儲分分工、寰宇一家環球票規劃，一次過計清楚 Asia Miles / Avios。","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"HKD"},"inLanguage":"zh-HK"}</script>
 <meta name="twitter:card" content="summary">
 <meta name="description" content="Angel方加 — 香港大額消費里數優化器。結婚、裝修、大旅行，一次過計清楚用邊幾張卡儲盡 Asia Miles / Avios。">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -173,6 +176,14 @@ html.dark .art-card{box-shadow:none}
 .art-body{padding:14px 16px 16px}
 .art-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .art-tag{font-size:11px;font-weight:700;letter-spacing:.5px;padding:3px 9px;border-radius:999px;background:var(--jade-soft);color:var(--jade)}
+.art-controls{display:flex;align-items:center;gap:8px;margin:2px 0 14px;flex-wrap:nowrap}
+.cat-row{display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;flex:1;min-width:0}
+.cat-row::-webkit-scrollbar{display:none}
+.cat-chip{flex:0 0 auto;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:6px 13px;font-size:13.5px;font-weight:600;color:var(--ink);white-space:nowrap;transition:background .15s,border-color .15s,color .15s}
+.cat-chip.on{background:var(--jade);border-color:var(--jade);color:#fff}
+.sort-toggle{flex:0 0 auto;display:inline-flex;background:var(--field);border-radius:999px;padding:2px;gap:2px}
+.sort-btn{border:0;background:transparent;border-radius:999px;padding:5px 11px;font-size:13px;font-weight:700;color:var(--mut);white-space:nowrap;transition:background .15s,color .15s}
+.sort-btn.on{background:var(--card);color:var(--jade);box-shadow:0 1px 3px rgba(0,20,14,.12)}
 .art-date{font-size:11.5px;color:var(--mut);font-family:var(--mono)}
 .art-title{font-size:16.5px;font-weight:900;line-height:1.4;margin:0 0 6px}
 .art-desc{font-size:13.5px;color:var(--mut);line-height:1.55;margin:0 0 12px}
@@ -277,7 +288,13 @@ html.dark .pass{box-shadow:none}
 .rule-i:active{background:var(--jade);color:#fff}
 #welcome{position:fixed;inset:0;z-index:190;background:#07272F;display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .45s ease}
 #welcome.out{opacity:0;pointer-events:none}
-#welcome video{width:100%;height:100%;object-fit:cover}
+#welcome{background:linear-gradient(150deg,#0E6E85 0%,#16A9C4 52%,#17BFA6 100%)}
+.wc-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;transform:translateY(6px);opacity:0;animation:wcIn .7s cubic-bezier(.2,.8,.2,1) .05s forwards}
+.wc-badge{width:96px;height:96px;object-fit:contain;filter:drop-shadow(0 6px 18px rgba(0,0,0,.28));animation:wcPop .8s cubic-bezier(.2,.9,.25,1.15) both}
+.wc-name{font-size:26px;font-weight:900;letter-spacing:.5px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.22)}
+.wc-tag{font-size:12.5px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,.9)}
+@keyframes wcIn{to{opacity:1;transform:translateY(0)}}
+@keyframes wcPop{0%{opacity:0;transform:scale(.72)}60%{opacity:1}100%{opacity:1;transform:scale(1)}}
 .rule-tip-pop{position:fixed;z-index:130;max-width:250px;background:var(--ink);color:var(--paper);padding:9px 12px;border-radius:10px;font-size:12.5px;line-height:1.55;box-shadow:0 8px 24px rgba(0,18,13,.4);display:none}
 .ow-priceline{margin:2px 0 4px;padding:12px 14px;background:var(--jade-soft);border-radius:12px;font-size:15px;line-height:1.5;color:var(--ink)}
 
@@ -489,6 +506,10 @@ html.dark .pass{box-shadow:none}
 .about li{margin-bottom:6px}
 .meta{font-family:var(--mono);font-size:12px;color:var(--mut);margin-top:14px}
 .link-btn{color:var(--jade);font-weight:700;text-decoration:underline;padding:0}
+.ext-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 4px}
+.ext-row-h{font-size:13px;font-weight:800;color:var(--ink);width:100%;margin-bottom:2px}
+.ext-link{display:inline-flex;align-items:center;gap:3px;font-size:13.5px;font-weight:700;color:var(--jade);border:1.5px solid var(--jade);border-radius:999px;padding:6px 13px;text-decoration:none;background:var(--jade-soft)}
+.ext-note{font-size:11.5px;color:var(--mut);margin-top:6px;line-height:1.5}
 .danger{color:var(--red);border-color:#E8C9BC}
 footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:var(--mut);line-height:1.5;text-align:center}
 .modal-bg{position:fixed;inset:0;background:rgba(10,26,22,.65);backdrop-filter:blur(3px);z-index:100;display:flex;align-items:center;justify-content:center;padding:18px}
@@ -699,7 +720,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
 </head>
 <body>
 <!-- v4.5 welcome 開場動畫：每次開 app 播 4 秒自動入（無掣）；片載唔到 2.5s 直接入，唔會卡 -->
-<div id="welcome" aria-hidden="true"><video id="welcomeVid" src="welcome.mp4" muted playsinline preload="auto" disableremoteplayback x-webkit-airplay="deny"></video></div>
+<div id="welcome" aria-hidden="true"><div class="wc-inner"><img class="wc-badge" src="data:image/png;base64,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" alt=""><div class="wc-name">Angel方加</div><div class="wc-tag">香港里數優化</div></div></div>
 
 <!-- 免責聲明（首次必讀） -->
 <div class="modal-bg" id="disclaimer" hidden>
@@ -970,7 +991,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
         <button type="button" class="chip" data-satrip="rt">來回（×2）</button>
       </div>
       <div id="saResult"></div>
-      <div class="fee-note" style="margin-top:12px">來源（全部官方，2026-07-11）：24 格里數＝官方計算機逐格查證（單程；來回＝×2 已交叉核對）；距離區間＋類別1/2 國家分界＝國泰官方「修訂飛行距離區域」頁；大圓距離＝官方標準獎勵條款第 3 條明文計法。呢張表淨係換<b>國泰自營航班</b>——日航／英航等 oneworld 夥伴係另一套（睇「環球票」子頁或官方夥伴獎勵）。里數以外仲要畀 YQ＋稅費現金。</div>
+      <div class="fee-note" style="margin-top:12px">來源（全部官方，2026-07-11）：24 格里數＝官方計算機逐格查證（單程；來回＝×2 已交叉核對）；距離區間＋類別1/2 國家分界＝國泰官方「修訂飛行距離區域」頁；大圓距離＝官方標準獎勵條款第 3 條明文計法。呢張表淨係換<b>國泰自營航班</b>——日航／英航等 oneworld 夥伴係另一套（睇「環球票」子頁或官方夥伴獎勵）。里數以外仲要畀 YQ＋稅費現金。<br><a class="ext-link" data-ext="asiamiles" target="_blank" rel="noopener" style="margin-top:8px">Asia Miles 官方獎勵機票頁 ↗</a> <a class="ext-link" data-ext="cathayRedeem" target="_blank" rel="noopener">國泰兌換頁 ↗</a></div>
     </div>
   </div>
 
@@ -1063,13 +1084,37 @@ html.dark .itin,html.dark .vz{background:var(--field)}
 </section>
 
 <section id="tab-articles" hidden>
-  <div class="warn" style="background:var(--jade-soft);border-color:var(--jade);color:var(--ink)"><b>📌 精選獨家優惠。</b>呢度只放我哋認為真係值得留意嘅 post，撳「細閱內文」會開新視窗去原文。優惠受條款及細則約束，一切以商戶／銀行官方最新公佈為準。</div>
+  <div class="warn" style="background:var(--jade-soft);border-color:var(--jade);color:var(--ink)"><b>📌 限時優惠速報。</b>呢度集中放時效性嘅迎新加碼、限時活動同平台獨家——撳落睇詳情。優惠受條款及細則約束，一切以商戶／銀行官方最新公佈為準，數字隨時變。</div>
+  <div class="art-controls" data-scope="articles">
+    <div class="cat-row">
+      <button type="button" class="cat-chip on" data-cat="全部">全部</button>
+      <button type="button" class="cat-chip" data-cat="限時">限時</button>
+      <button type="button" class="cat-chip" data-cat="迎新">迎新</button>
+      <button type="button" class="cat-chip" data-cat="教學">教學</button>
+    </div>
+    <div class="sort-toggle">
+      <button type="button" class="sort-btn on" data-sort="推薦">推薦</button>
+      <button type="button" class="sort-btn" data-sort="最新">最新</button>
+    </div>
+  </div>
   <div id="articleList"></div>
 </section>
 
 <!-- ============ TAB：關於我們 ============ -->
 <section id="tab-guides" hidden>
   <div class="warn" style="background:var(--jade-soft);border-color:var(--jade);color:var(--ink)"><b>📚 攻略。</b>長青玩法教學：點賺、點換、寰宇一家點玩。想遲啲慢慢睇？撳篇文上面個心心，收埋去「旅程」。</div>
+  <div class="art-controls" data-scope="guides">
+    <div class="cat-row">
+      <button type="button" class="cat-chip on" data-cat="全部">全部</button>
+      <button type="button" class="cat-chip" data-cat="新手">新手</button>
+      <button type="button" class="cat-chip" data-cat="換票">換票</button>
+      <button type="button" class="cat-chip" data-cat="路線">路線</button>
+    </div>
+    <div class="sort-toggle">
+      <button type="button" class="sort-btn on" data-sort="推薦">推薦</button>
+      <button type="button" class="sort-btn" data-sort="最新">最新</button>
+    </div>
+  </div>
   <div id="guideList"></div>
 </section>
 
@@ -1454,8 +1499,89 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <p class="art-p">環球票飛好多段，每段都可能有 YQ，加埋隨時成 <b>HK$1–2 萬</b>。段數越多、長途段越多，YQ 越貴。所以砌環球票唔淨係睇里數，仲要預埋呢舊現金——規劃器計到里數，但 YQ 要出票果陣先睇到實數。</p>
   <div class="art-tip"><b>💡 點樣慳 YQ？</b>①揀 YQ 收得平嘅航空公司出票（同一條 oneworld 航線，用亞洲萬里通出通常平過用夥伴自己個 program）；②減少不必要嘅長途段；③留意有啲航線／促銷會減免 YQ。出票前格清楚每個組合嘅 YQ，可以差好遠。</p>
   <p class="art-p art-cap">實際 YQ 同稅以出票當日、你揀嘅航空公司同航線為準；上面數字係粗略估算，會跟油價變。（以國泰亞洲萬里通官方公佈為準。）</p>
+    <div class="ext-row"><span class="ext-row-h">官方查證：</span><a class="ext-link" data-ext="asiamiles" target="_blank" rel="noopener">Asia Miles 官方 ↗</a><a class="ext-link" data-ext="cathayRedeem" target="_blank" rel="noopener">國泰兌換頁 ↗</a></div>
   <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgG3"><span>✈️</span><div><b>標準獎勵換機票</b><i>六區里數＋YQ 一齊計</i></div></button><button type="button" class="art-more-i" data-open="pgG4"><span>🌏</span><div><b>寰宇一家環球票</b><i>多段 YQ 點加埋</i></div></button><button type="button" class="art-more-i" data-open="pgG5"><span>⚠️</span><div><b>新手最易中嘅七個伏</b><i>YQ 只係其中一伏</i></div></button></div>
   <div class="art-foot">燃油附加費、稅項同細節以各航空公司及國泰亞洲萬里通條款為準，以官網公佈為準；金額跟油價浮動。</div>
+  </div>
+</div>
+<div class="page" id="pgO1" hidden data-gt="渣打國泰 7 月加碼：全食 143,000 里（7.23 死線）">
+  <div class="page-head"><button type="button" class="pg-back" data-pg="pgO1" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>渣打國泰 7 月加碼：全食 143,000 里（7.23 死線）</div>
+  <div class="page-body">
+  <div class="art-hero"><div class="art-hero-tag">限時優惠 · ⏰ 07-23 截止</div><h1 class="art-hero-t">入門神卡突然加碼，一星期倒數</h1><p class="art-hero-sub">免簽賬 11,000 里＋開戶 10,000 里＋迎新 40,000 里級——連盲盒抽獎，全食高達 <b>143,000 里</b>。</p></div>
+  <div class="art-lead">渣打國泰 Mastercard 係好多人第一張里數卡（年薪要求得 $96,000）。今個 7 月官方突然加碼，仲要三大平台各自再疊獨家——但死線係 <b>7 月 23 日</b>，得返一個星期。</div>
+  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">⏰</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>渣打國泰卡卡面＋大字倒數「7.23」設計圖，強調死線緊迫。</figcaption></figure>
+  <h2 class="art-h">加碼點砌</h2>
+  <p class="art-p"><b>①免簽賬加碼</b>——新客用平台推廣碼申請，免簽賬即 +11,000 里（現有客 +7,000）。<b>②順手開戶</b>——開綜合存款戶口存 $5,000，新客再 +10,000 里。<b>③基本迎新</b>——簽 $5,000／$40,000／$110,000 三級累計。<b>④盲盒抽獎</b>——申請自動入場，大獎歐洲雙人商務來回機票，保底 2,000 里。全部食晒＝高達 143,000 里。</p>
+  <h2 class="art-h">平台獨家再疊</h2>
+  <p class="art-p"><b>小斯</b>（07-15 至 23，碼 HKRSIUC11000）：新舊客 $500 Apple Gift Card／超市禮券。<b>里先生</b>（碼 HKRMRM11000）：88 里賞金（≈HK$88，填 form 拎）。二揀一，唔可以疊。</p>
+  <div class="art-tip"><b>⚠️ 三件套提醒：</b>迎新窗口只有 2 個月（比一般短）；渣打通病係好多優惠要<b>預先登記</b>；DCC 揀港幣結算嘅海外簽賬唔計數仲要多畀 1%。</div>
+    <div class="ext-row"><span class="ext-row-h">去邊度睇／申請：</span><a class="ext-link" data-ext="mrmiles" target="_blank" rel="noopener">里先生 ↗</a><a class="ext-link" data-ext="flyformiles" target="_blank" rel="noopener">小斯 ↗</a><a class="ext-link" data-ext="moneyhero" target="_blank" rel="noopener">MoneyHero ↗</a></div>
+  <p class="ext-note">以上為第三方公開連結，方便你自行前往；本 app 現時冇任何 referral／聯盟收益（見「關於」利益披露）。實際優惠、細則一律以該平台及銀行官方最新公佈為準。</p>
+  <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgO5"><span>🧭</span><div><b>平台獨家點樣拎</b><i>cookie、填form、流程逐個講</i></div></button><button type="button" class="art-more-i" data-open="pgG2"><span>🃏</span><div><b>信用卡砌卡組合</b><i>迎新點食盡</i></div></button><button type="button" class="art-more-i" data-open="pgG5"><span>⚠️</span><div><b>新手七個伏</b><i>cut卡冷河期必讀</i></div></button></div>
+  <div class="art-foot">資料截至 2026-07-16，來源為具名比較平台（第 3 級）；所有優惠以各銀行／機構官方條款及細則為準，數字或隨時變動，申請前請自行核對。借定唔借？還得到先好借！</div>
+  </div>
+</div>
+<div class="page" id="pgO2" hidden data-gt="EveryMile「MILEFLASH」：新客爆升至 49,000 里">
+  <div class="page-head"><button type="button" class="pg-back" data-pg="pgO2" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>EveryMile「MILEFLASH」：新客爆升至 49,000 里</div>
+  <div class="page-body">
+  <div class="art-hero"><div class="art-hero-tag">限時優惠 · 07-31 截止</div><h1 class="art-hero-t">一個優惠碼，迎新差唔多翻倍</h1><p class="art-hero-sub">網上申請入碼「<b>MILEFLASH</b>」，新客迎新由 25,000 里跳上 <b>49,000 里</b>。</p></div>
+  <div class="art-lead">滙豐 EveryMile 本身係日常儲里主力（$5/里、指定類別 $2/里）。7 月 13 至 31 日有網上限時迎新：申請時輸入優惠碼「MILEFLASH」，批卡 60 日內簽 $8,000，新客<b>額外</b> $1,000 獎賞錢（20,000 里）、舊客額外 $500（10,000 里）——連基本迎新，新客合共高達 $2,450 獎賞錢 ≈ 49,000 里。</div>
+  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">⚡</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>手機申請頁截圖示意，highlight「輸入優惠碼」欄位入咗 MILEFLASH。</figcaption></figure>
+  <h2 class="art-h">三件套逐樣答</h2>
+  <p class="art-p"><b>登記？</b>唔使另外登記，但申請嗰刻必須喺迎新頁輸入「MILEFLASH」。<b>門檻？</b>批卡後 60 日內累積簽 $8,000，而且<b>要包至少一次手機支付</b>（Apple Pay／Google Pay 簽一次就得）。<b>上限？</b>迎新一次過，每人一份。</p>
+  <p class="art-p"><b>加碼位：</b>06-01 至 07-31 開卡兼 60 日內簽 $500，自動參加 HSBC 開卡大抽獎——終極大獎 $50,000 獎賞錢（≈100 萬里），24 個名額。里先生同期經佢申請填 form 仲有 88 里賞金。</p>
+  <div class="art-tip"><b>💡 手機支付嗰單好易漏。</b>唔少人簽夠 $8,000 但全部係實體卡碌，結果差一單手機支付食唔到加碼——批卡第一日就用 Apple Pay 買杯咖啡搞掂佢。</div>
+    <div class="ext-row"><span class="ext-row-h">去邊度睇／申請：</span><a class="ext-link" data-ext="mrmiles" target="_blank" rel="noopener">里先生 ↗</a><a class="ext-link" data-ext="moneyhero" target="_blank" rel="noopener">MoneyHero ↗</a></div>
+  <p class="ext-note">以上為第三方公開連結，方便你自行前往；本 app 現時冇任何 referral／聯盟收益（見「關於」利益披露）。實際優惠、細則一律以該平台及銀行官方最新公佈為準。</p>
+  <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgO5"><span>🧭</span><div><b>平台獨家點樣拎</b><i>填form流程講清楚</i></div></button><button type="button" class="art-more-i" data-open="pgG1"><span>🎓</span><div><b>亞洲萬里通 101</b><i>獎賞錢點變里數</i></div></button><button type="button" class="art-more-i" data-open="pgO1"><span>⏰</span><div><b>渣打國泰 143,000 里</b><i>另一張入門卡都加緊碼</i></div></button></div>
+  <div class="art-foot">資料截至 2026-07-16，來源為具名比較平台（第 3 級）；所有優惠以各銀行／機構官方條款及細則為準，數字或隨時變動，申請前請自行核對。借定唔借？還得到先好借！</div>
+  </div>
+</div>
+<div class="page" id="pgO3" hidden data-gt="AE 白金新一期：100 萬分迎新＋9X 續命到 2027">
+  <div class="page-head"><button type="button" class="pg-back" data-pg="pgO3" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>AE 白金新一期：100 萬分迎新＋9X 續命到 2027</div>
+  <div class="page-body">
+  <div class="art-hero"><div class="art-hero-tag">限時優惠 · ⏰ 07-29 截止（官方）</div><h1 class="art-hero-t">舊迎新啱啱死，新迎新即刻生</h1><p class="art-hero-sub">官方 T&C 已核實：申請期 7 月 15 至 <b>29</b> 日，新客高達 <b>1,000,000 積分（55,556 里）</b>，簽賬門檻仲降咗。</p></div>
+  <div class="art-lead">AE 白金卡（細頭）年費 $9,500 冇得免，但玩法一向係「迎新＋9X 加賞」對沖。新一期官方 T&C 已出：<b>申請期 7 月 15 至 29 日</b>（留意：比平台早報嘅 31 號早兩日！）。新客簽 $15,000 有 400,000 分（22,222 里）、簽 $50,000 有合共 <b>1,000,000 分（55,556 里）</b>——門檻仲由上期 $60,000 降到 $50,000。現有 AE 會員都有：簽 $15,000 → 810,000 分（45,000 里）。另加網上申請首次簽賬 $1,000 回贈＋手機八達通增值 $50。</div>
+  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">👑</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>金屬白金卡卡面實拍＋「1,000,000 分」大字，帶出高年費高回報定位。</figcaption></figure>
+  <h2 class="art-h">重點其實係 9X 續命</h2>
+  <p class="art-p">今次證實 <b>9X 加賞計劃延續到 2027 年 12 月 31 日</b>，拆做六個階段（第一階段 2026-07-01 至 09-30）。外幣、指定旅遊商戶（Trip.com／Agoda／Booking 等）同指定日常商戶簽賬 HK$1＝9 分，<b>低至 $2/里</b>——但<b>每個階段都要重新登記</b>，每階段每類別上限 $15,000。7 月 1 日前嘅舊登記已無效，持卡人而家就要登記返。</p>
+  <div class="art-tip"><b>⚠️ 老實講：</b>年費 $9,500 真金白銀（基本卡連 2 張附屬卡），呢張卡只啱簽賬夠大、用得盡禮遇嘅人。兩個官方細節要知：①<b>首 12 個月 cut 卡，AE 有權扣返 $9,500 年費</b>；②儲值增值（電子錢包）、年費、稅項全部唔計迎新簽賬。申請死線 <b>7 月 29 日</b>，唔好信 31 號。</div>
+    <div class="ext-row"><span class="ext-row-h">去邊度睇／申請：</span><a class="ext-link" data-ext="mrmiles" target="_blank" rel="noopener">里先生 ↗</a><a class="ext-link" data-ext="flyformiles" target="_blank" rel="noopener">小斯 ↗</a></div>
+  <p class="ext-note">以上為第三方公開連結，方便你自行前往；本 app 現時冇任何 referral／聯盟收益（見「關於」利益披露）。實際優惠、細則一律以該平台及銀行官方最新公佈為準。</p>
+  <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgO4"><span>🧳</span><div><b>AE Explorer 7 月版</b><i>年費親民版嘅選擇</i></div></button><button type="button" class="art-more-i" data-open="pgG5"><span>⚠️</span><div><b>新手七個伏</b><i>年費卡伏位</i></div></button><button type="button" class="art-more-i" data-open="pgO5"><span>🧭</span><div><b>平台獨家點樣拎</b><i>88里賞金流程</i></div></button></div>
+  <div class="art-foot">資料截至 2026-07-16，來源為具名比較平台（第 3 級）；所有優惠以各銀行／機構官方條款及細則為準，數字或隨時變動，申請前請自行核對。借定唔借？還得到先好借！</div>
+  </div>
+</div>
+<div class="page" id="pgO4" hidden data-gt="AE Explorer 7 月版：26,000 里＋記得登記全年 6X">
+  <div class="page-head"><button type="button" class="pg-back" data-pg="pgO4" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>AE Explorer 7 月版：26,000 里＋記得登記全年 6X</div>
+  <div class="page-body">
+  <div class="art-hero"><div class="art-hero-tag">限時優惠 · 07-31 加碼</div><h1 class="art-hero-t">迎新照舊，7 月加多 $50 甜頭</h1><p class="art-hero-sub">簽 $30,000 高達 <b>26,000 里</b>，7 月經平台申請多 $50 獎賞——重點係批卡後<b>即刻登記 6X</b>。</p></div>
+  <div class="art-lead">AE Explorer 迎新 26,000 里本身去到 8 月 31 日，7 月 2 至 31 日經平台申請有加碼：多 $50 獎賞（小斯報八達通增值賞、里先生報簽賬回贈，二揀一），里先生仲有 88 里賞金。</div>
+  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🧳</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>Explorer 卡＋行李箱旅行氛圍圖，或迎新「簽$8,000賺8,000里」進度示意。</figcaption></figure>
+  <h2 class="art-h">最多人漏嘅一步</h2>
+  <p class="art-p">Explorer 嘅本地 <b>6X 積分（≈HK$3/里）係全年計劃但要登記先有</b>——AE 各賺分計劃 2026 年 7 月起要（重新）登記，批卡後第一件事就係登記，唔登記＝齋食基本率。另外 MoneyHero 報新一期<b>旅遊簽賬優惠去到 12 月 31 日</b>：登記後外幣低至 HK$1.68/里、港幣低至 $3/里。</p>
+  <div class="art-tip"><b>💡 實測快感：</b>條款寫迎新積分 8 星期內入賬，但用家實測簽完 3 日內就到——趕住換機票嘅話 Explorer 係快槍手。</div>
+    <div class="ext-row"><span class="ext-row-h">去邊度睇／申請：</span><a class="ext-link" data-ext="mrmiles" target="_blank" rel="noopener">里先生 ↗</a><a class="ext-link" data-ext="flyformiles" target="_blank" rel="noopener">小斯 ↗</a><a class="ext-link" data-ext="moneyhero" target="_blank" rel="noopener">MoneyHero ↗</a></div>
+  <p class="ext-note">以上為第三方公開連結，方便你自行前往；本 app 現時冇任何 referral／聯盟收益（見「關於」利益披露）。實際優惠、細則一律以該平台及銀行官方最新公佈為準。</p>
+  <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgO3"><span>👑</span><div><b>AE 白金新一期</b><i>想升級玩 9X 睇呢篇</i></div></button><button type="button" class="art-more-i" data-open="pgG2"><span>🃏</span><div><b>信用卡砌卡組合</b><i>Explorer 點放入組合</i></div></button><button type="button" class="art-more-i" data-open="pgO5"><span>🧭</span><div><b>平台獨家點樣拎</b><i>$50 獎賞流程</i></div></button></div>
+  <div class="art-foot">資料截至 2026-07-16，來源為具名比較平台（第 3 級）；所有優惠以各銀行／機構官方條款及細則為準，數字或隨時變動，申請前請自行核對。借定唔借？還得到先好借！</div>
+  </div>
+</div>
+<div class="page" id="pgO5" hidden data-gt="三大平台獨家獎賞點樣拎（附 Mox 9 月變陣快訊）">
+  <div class="page-head"><button type="button" class="pg-back" data-pg="pgO5" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>三大平台獨家獎賞點樣拎（附 Mox 9 月變陣快訊）</div>
+  <div class="page-body">
+  <div class="art-hero"><div class="art-hero-tag">實戰教學 · 週更專欄</div><h1 class="art-hero-t">同一張卡，識行流程多幾百蚊</h1><p class="art-hero-sub">小斯、里先生、MoneyHero 嘅獨家獎賞唔係自動有——<b>流程行錯一步就冇</b>。</p></div>
+  <div class="art-lead">申請信用卡經比較平台指定連結行，銀行迎新之外通常有平台獨家獎賞（禮券／現金／里賞金）。三個平台機制唔同，呢篇一次過講清楚。</div>
+  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🧭</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>三個平台 logo 並排＋「link→申請→填form→領獎」四步流程圖。</figcaption></figure>
+  <h2 class="art-h">三家機制速記</h2>
+  <p class="art-p"><b>小斯（flyformiles）</b>——靠 cookie 追蹤：撳咗佢條 link 之後唔好再撳其他網站嘅申請連結、唔好用無痕模式、唔好開 adblock、唔好用公司電腦；部分卡要另外填 Google Form。<b>里先生（MrMiles）</b>——會員平台制：申請完要去佢平台填 form，獎賞以「里賞金」派（1 里賞金 ≈ HK$1，可 FPS 提現，每日上限 $3,000）。<b>MoneyHero</b>——表格制：必須由佢個表格入去申請，之後 7 日內填佢電郵發出嘅換領表格，部分要求批卡後簽夠指定金額。</p>
+  <h2 class="art-h">通用鐵律</h2>
+  <p class="art-p">①同一張卡通常<b>只可以揀一個平台</b>嘅獨家獎賞，唔好貪心撳晒三條 link（cookie 會打架）。②截圖留底：申請成功頁、日期、申請編號。③獎賞係平台派唔係銀行派，同銀行客服講冇用。④平台數字同官方有出入時，一律以官方 T&C 為準。</p>
+  <div class="art-tip"><b>📢 快訊：Mox 9 月變陣。</b>Mox 信用卡由 2026-09-01 起，出糧唔再解鎖 HK$5=1 里／2% CashBack（以後要 Mox+ 先解鎖；未解鎖係 $10=1 里）。用開 Mox 儲里嘅朋友要重新計數。</div>
+    <div class="ext-row"><span class="ext-row-h">三大平台官網：</span><a class="ext-link" data-ext="mrmiles" target="_blank" rel="noopener">里先生 MrMiles ↗</a><a class="ext-link" data-ext="flyformiles" target="_blank" rel="noopener">小斯 FlyForMiles ↗</a><a class="ext-link" data-ext="moneyhero" target="_blank" rel="noopener">MoneyHero ↗</a></div>
+  <p class="ext-note">以上為第三方公開連結，方便你自行前往；本 app 現時冇任何 referral／聯盟收益（見「關於」利益披露）。實際優惠、細則一律以該平台及銀行官方最新公佈為準。</p>
+  <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgO1"><span>⏰</span><div><b>渣打國泰 143,000 里</b><i>今週最大死線 07-23</i></div></button><button type="button" class="art-more-i" data-open="pgO2"><span>⚡</span><div><b>EveryMile MILEFLASH</b><i>入碼即加 20,000 里</i></div></button><button type="button" class="art-more-i" data-open="pgG5"><span>⚠️</span><div><b>新手七個伏</b><i>cut卡冷河期</i></div></button></div>
+  <div class="art-foot">資料截至 2026-07-16，來源為具名比較平台（第 3 級）；所有優惠以各銀行／機構官方條款及細則為準，數字或隨時變動，申請前請自行核對。借定唔借？還得到先好借！</div>
   </div>
 </div>
 <div class="page" id="pgG5" hidden data-gt="新手最易中嘅七個伏">
@@ -1520,7 +1646,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
 <script id="bm-core">
 var BM = (function(){
   'use strict';
-  var DATA_AS_OF = '2026-07-11（官方文件基準日）';
+  var DATA_AS_OF = '2026-07-16（官方文件基準2026-07-11＋週更平台料2026-07-16）';
 
   /* 卡數據 v2 官方核實版（基準 2026-07-10）——來源＝Robert 親自搜集嘅官方 T&C／KFS／官網頁（詳見 cards/ 卡檔）。
      迎新一律用 welcome.tiers 階梯結構：【累積簽賬門檻 → 累積「額外」里數】（唔包基本賺里，基本另計）。
@@ -1533,7 +1659,7 @@ var BM = (function(){
      welcome:{type:'tiered', months:2,
        tiers:[{spend:5000, miles:10000},{spend:40000, miles:20000},{spend:110000, miles:40000}],
        prereq:'新客＝申請前 6 個月冇持有／取消渣打或 MANHATTAN 主卡；迎新窗口只有 2 個月（比一般短，批卡即刻開簽）',
-       note:'呢個係綠卡（主打）階梯。優先理財（藍）／優先私人理財（黑）客戶另有更高階版本——迎新更大、海外率更佳（藍 $3、黑 $2/里），高資產用戶申請前值得問一問。'},
+       note:'呢個係綠卡（主打）階梯。優先理財（藍）／優先私人理財（黑）客戶另有更高階版本——迎新更大、海外率更佳（藍 $3、黑 $2/里），高資產用戶申請前值得問一問。【週更2026-07-16·平台第3級】7月加碼（07-23截）：新客用平台推廣碼免簽賬+11,000里、現有客+7,000里；順手開綜合存款戶口存$5,000再+10,000里（現有客+3,000）——連迎新全食高達143,000里。小斯（碼HKRSIUC11000，07-15至23）新舊客另有$500禮券；里先生（碼HKRMRM11000）另有88里賞金。以官方T&C為準。'},
      rateLocal:6, rateOnline:6, rateOverseas:4, cat:{dining:4},
      annualFeeFirst:0, feeRenewal:2000, feeWaivable:true, waiveNote:'首年免；次年簽夠 HK$96,000 或屬優先理財客戶豁免（官方 KFS）',
      convertFee:0, applyWeeks:3,
@@ -1547,7 +1673,7 @@ var BM = (function(){
      annualFeeFirst:0, feeRenewal:2000, feeWaivable:true, waiveNote:'首年免；次年簽夠 HK$80,000 自動豁免（繳費／繳稅唔計入門檻）',
      convertFee:0, applyWeeks:2,
      url:'https://www.mrmiles.hk/everymile/',
-     note:'指定商戶 HK$2/里＝2.5% 獎賞錢 × 優惠兌換率 $1RC=20里（官方核實）。注意：$2 嗰欄餐飲只限「咖啡店及輕便美食」名單（Starbucks 嗰類）——一般餐廳酒樓唔係！交通就齊（巴士／港鐵／的士／油站）。獎賞錢一定要喺 Reward+ App 換里先有優惠價。$2/里上限官方文件未見條文——大額分配呢張暫時保守。滙豐有權隨時改商戶名單。', verified:true},
+     note:'指定商戶 HK$2/里＝2.5% 獎賞錢 × 優惠兌換率 $1RC=20里（官方核實）。注意：$2 嗰欄餐飲只限「咖啡店及輕便美食」名單（Starbucks 嗰類）——一般餐廳酒樓唔係！交通就齊（巴士／港鐵／的士／油站）。獎賞錢一定要喺 Reward+ App 換里先有優惠價。$2/里上限官方文件未見條文——大額分配呢張暫時保守。滙豐有權隨時改商戶名單。【週更2026-07-16·平台第3級】網上限時迎新（07-13至31）：申請時輸入碼「MILEFLASH」，批卡60日內簽$8,000（要包至少一次手機支付）→新客額外$1,000獎賞錢（20,000里）、舊客額外$500（10,000里）；連基本迎新新客合共高達$2,450獎賞錢≈49,000里。另06-01至07-31開卡+60日簽$500自動入HSBC大抽獎（24名$50,000獎賞錢）。里先生同期填form有88里賞金。以官方T&C為準。', verified:true},
     {id:'citi-pm', name:'Citi PremierMiles', bank:'Citibank', program:'flex',
      minIncome:120000, incomeVerified:true,
      welcome:{type:'threshold', months:2, deadline:'2026-09-30', tiers:[{spend:5000, miles:20000}],
@@ -1575,7 +1701,7 @@ var BM = (function(){
      annualFeeFirst:0, feeRenewal:3600, feeWaivable:true, waiveNote:'首年免年費（官方產品頁）；次年 HK$3,600（官方KFS），多數要打電話試 waive',
      convertFee:0, applyWeeks:2,
      url:'https://www.mrmiles.hk/dbs-black-world/',
-     note:'本地 HK$6/里（官方產品頁結案）。海外基本 $4/里；低至 $2/里要過三關：Card+ App 登記＋該曆月總簽滿 $2 萬＋每月海外首 $2 萬以內（官方推廣至 2026 年底；有門檻未建模，穩陣用 $4 計）。⚠️ 迎新推廣期 7 月 6 日已完結，未有新一期官方 T&C——按資料紀律暫時當佢冇迎新，淨計基本率。儲里記得揀「DBS$ 自選換領」，唔好俾佢自動變現金回贈。', verified:true},
+     note:'本地 HK$6/里（官方產品頁結案）。海外基本 $4/里；低至 $2/里要過三關：Card+ App 登記＋該曆月總簽滿 $2 萬＋每月海外首 $2 萬以內（官方推廣至 2026 年底；有門檻未建模，穩陣用 $4 計）。⚠️ 迎新推廣期 7 月 6 日已完結，未有新一期官方 T&C——按資料紀律暫時當佢冇迎新，淨計基本率。儲里記得揀「DBS$ 自選換領」，唔好俾佢自動變現金回贈。【週更2026-07-16·平台第3級】MoneyHero獨家：經佢申請迎新高達32,000里（簽$60,000+做一次Flexi Shopping分期），另獨家獎賞任揀一（$800 Apple禮品卡／惠康券／Trip.com券／8,000 Max Miles／Delsey行李箱等）；07-07至10-05經MoneyHero連結行DBS Card+ app申請再多$50「一扣即享」。用MoneyHero要跟足佢流程（表格→app）先追蹤到。以官方T&C為準。', verified:true},
     {id:'amex-explorer', name:'AE Explorer', bank:'美國運通', program:'flex',
      minIncome:120000, incomeVerified:true,
      welcome:{type:'tiered', months:3, deadline:'2026-08-31',
@@ -1586,7 +1712,7 @@ var BM = (function(){
      annualFeeFirst:0, feeRenewal:2200, feeWaivable:true, waiveNote:'首年免（迎新）；其後年簽 HK$150,000 自動豁免下年度（官方）',
      convertFee:0, applyWeeks:2,
      url:'https://www.mrmiles.hk/ae-explorer/',
-     note:'官方T&C核實（18分=1里，2026-07基準）。迎新兩浸：$8,000→8,000（$1.00/里）、$30,000→26,000（申請至 8 月 31 日；過去 12 個月有任何 AE 卡＝唔合資格）。本地 $3/里要登記「本地簽賬賞」，額外部分每季首 $15,000，超過跌 $6/里。外幣 $1.68/里要登記，每季首 $10,000，另有 2% 外幣手續費。批卡後第一件事：登記晒本地＋外幣＋指定網上商戶三個計劃。部分商戶唔收 AMEX。', verified:true},
+     note:'官方T&C核實（18分=1里，2026-07基準）。迎新兩浸：$8,000→8,000（$1.00/里）、$30,000→26,000（申請至 8 月 31 日；過去 12 個月有任何 AE 卡＝唔合資格）。本地 $3/里要登記「本地簽賬賞」，額外部分每季首 $15,000，超過跌 $6/里。外幣 $1.68/里要登記，每季首 $10,000，另有 2% 外幣手續費。批卡後第一件事：登記晒本地＋外幣＋指定網上商戶三個計劃。部分商戶唔收 AMEX。【週更2026-07-16·平台第3級】7月限時（07-02至31）：經平台申請迎新26,000里外，加$50獎賞（小斯報八達通增值賞／里先生報簽賬回贈）；里先生另有88里賞金。提醒：本地6X積分（HK$3/里）係全年計劃但要登記先有。MoneyHero報新一期旅遊簽賬優惠至12-31：登記後外幣低至HK$1.68/里、港幣低至HK$3/里。以官方T&C為準。', verified:true},
     {id:'dahsing-ba', name:'大新英國航空白金卡', bank:'大新銀行', program:'avios',
      minIncome:150000, incomeVerified:false,
      welcome:{type:'threshold', months:3, deadline:'2026-12-31', tiers:[{spend:12000, miles:10000}],
@@ -1604,21 +1730,21 @@ var BM = (function(){
      annualFeeFirst:0, feeRenewal:2000, feeWaivable:true, waiveNote:'次年可試 waive',
      convertFee:0, applyWeeks:2,
      url:'https://www.mrmiles.hk/hsbc-visa-signature/',
-     note:'「平民黑卡」。基本得 0.4% 獎賞錢＝HK$25/里；最紅自主 all-in「賞滋味」先去到食飯 $2.78/里（flyformiles 拆解）。額外獎賞歷年設年度上限，上限數未核實，大額食飯倚賴前查最紅自主 T&C。年薪 24 萬；資產審查（Premier/One 戶口）年薪未夠都可能批。整張卡未有官方文件（Level 3），數字待核。', verified:false},
+     note:'「平民黑卡」。基本得 0.4% 獎賞錢＝HK$25/里；最紅自主 all-in「賞滋味」先去到食飯 $2.78/里（flyformiles 拆解）。額外獎賞歷年設年度上限，上限數未核實，大額食飯倚賴前查最紅自主 T&C。年薪 24 萬；資產審查（Premier/One 戶口）年薪未夠都可能批。整張卡未有官方文件（Level 3），數字待核。【週更2026-07-16·平台第3級】06-01至07-31開卡+60日內簽$500自動參加HSBC開卡大抽獎（終極大獎$50,000獎賞錢≈100萬里、24名）。以官方T&C為準。', verified:false},
     {id:'amex-platinum', name:'AE 白金卡（細頭）', bank:'美國運通', program:'flex',
      minIncome:120000, incomeVerified:true,
-     welcome:{type:'tiered', months:3, deadline:'2026-07-15',
-       tiers:[{spend:15000, miles:22222},{spend:60000, miles:55556}],
+     welcome:{type:'tiered', months:3, deadline:'2026-07-29', /* 官方T&C 2026-07-15~29 收件並批核；簽賬期＝批卡後3個月 */
+       tiers:[{spend:15000, miles:22222},{spend:50000, miles:55556}],
        altTiers:[{spend:15000, miles:45000}],
-       altNote:'現有 AE 會員另一個 offer：簽 $15,000 → 45,000 里（16 星期入分）',
-       condNote:'子條件加碼：首 3 個月外幣簽滿 HK$40,000（計入 $60,000 之內、唔係額外簽）→ 再＋61,667 里，全食 117,222 里。引擎唔假設你嘅外幣比例，呢舊未計入總數——如果你今次筆錢本身係外幣簽（例如海外婚禮），實際會多過顯示。',
-       prereq:'新客＝過去 12 個月冇任何 AE 香港基本卡；批卡即重新登記 9X（7 月 1 日後舊登記無效）'},
+       altNote:'現有 AE 會員（過去12個月冇白金／半島白金）：簽 $15,000 → 810,000 分＝45,000 里（申請期 02-26 至 07-29，16 星期入分）',
+       condNote:'另有兩浸現金回贈（唔係里數，冇計入上面）：①網上申請＋7 個工作天內交齊文件，批卡後 3 個月內完成首次簽賬 → HK$1,000 回贈；②手機八達通增值單一簽 $600+ → HK$50 回贈。',
+       prereq:'新客＝過去 12 個月冇任何 AE 香港批核嘅基本卡；官方 T&C（07-15 至 07-29 收件並批核）；批卡即重新登記 9X'},
      rateLocal:9, rateOnline:9, rateOverseas:4.5, cat:{overseas:{rate:2, capMonthly:5000, excessRate:4.5}, groceries:{rate:2, capMonthly:5000, excessRate:9}},
      capTotal:160000, excessRate:18, secondCardMult:0.81,
      annualFeeFirst:9500, feeRenewal:9500, feeWaivable:false, waiveNote:'年費 HK$9,500 硬收（官方T&C），唔 waive。官方年薪門檻 $120,000，市場公認實際審批睇資產',
      convertFee:300, applyWeeks:2,
      url:'https://www.mrmiles.hk/ae-platinum-card-centurion-lounge/',
-     note:'官方T&C核實（18分=1里）。新客迎新限時至 7 月 15 日：兩浸 $15,000→22,222（$0.68/里）、$60,000→55,556，內含 $4 萬外幣再＋61,667（全食 117,222 里）。日常：本地 $9/里（Turbo 每年度首 $16萬，超過 $18）；外幣／指定超市 $2/里（要登記 9X，每類每季首 $1.5萬）。用 Alipay/WeChat 畀錢唔計，Apple Pay 計。兌換過迎新之後 12 個月內 cut 卡會被扣 $9,500。年費 $9,500 照攤入每里成本——連年費全食約 $0.59/里。產品決策：墊底推介。', verified:true}
+     note:'官方T&C核實（18分=1里）。新客迎新限時至 7 月 15 日：兩浸 $15,000→22,222（$0.68/里）、$60,000→55,556，內含 $4 萬外幣再＋61,667（全食 117,222 里）。日常：本地 $9/里（Turbo 每年度首 $16萬，超過 $18）；外幣／指定超市 $2/里（要登記 9X，每類每季首 $1.5萬）。用 Alipay/WeChat 畀錢唔計，Apple Pay 計。兌換過迎新之後 12 個月內 cut 卡會被扣 $9,500。年費 $9,500 照攤入每里成本——連年費全食約 $0.59/里。產品決策：墊底推介。【官方T&C 2026-07-16核實】新一期迎新（申請期07-15至**07-29**，唔係平台報嘅31號）：新客簽$15,000→400,000分（22,222里）、簽$50,000→合共1,000,000分（55,556里，門檻由上期$60,000降到$50,000）；現有AE會員簽$15,000→810,000分（45,000里）。另有網上申請首次簽賬$1,000回贈＋手機八達通增值$50（現金，冇計入引擎）。取消退款/儲值增值/年費/稅項唔計簽賬；首12個月cut卡AE有權扣返$9,500年費。9X加賞延續到2027-12-31拆六階段，每階段要重新登記，每階段每類上限$15,000。', verified:true}
   ];
   /* 剔除紀錄：恒生 MMPOWER（現金回贈卡，冇里數機制）、建行(亞洲) BA 白金（產品 2026-07-10 下架）——詳見 cards/ 08、09 檔 */
 
@@ -2816,7 +2942,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     var note = sec('管家點評 · 風險位') +
       '<div style="font-size:13.5px;line-height:1.65;color:#3A4A44">' + esc2(c.note || '') + '</div>';
 
-    var official = c.url ? '<div style="margin-top:12px"><a class="link-btn" href="' + esc2(c.url) + '" target="_blank" rel="noopener">睇卡嘅官方／詳細資料 ↗</a></div>' : '';
+    var official = (SHOW_3P_LINKS && c.url) ? '<div style="margin-top:12px"><a class="link-btn" href="' + esc2(c.url) + '" target="_blank" rel="noopener">睇卡嘅官方／詳細資料 ↗</a></div>' : '';
 
     /* 渠道優惠（完全分開） */
     var offers = BM.CHANNEL_OFFERS[c.id] || [];
@@ -4559,17 +4685,25 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     {t: '點用 Angel方加 幫你計', d: '點儲最多？換到咩？由賺到換逐個掣教。', tag: '教學', date: '2026-07-12', emoji: '🧭', pg: 'pgG6'},
     {t: 'App 有咩功能', d: '五個 tab、零追蹤，一次過行一圈。', tag: '導覽', date: '2026-07-12', emoji: '📱', pg: 'pgG7'}
   ]; /* {t,d,tag,date,emoji, pg:站內全文頁 或 url:出站連結} */
+  var GUIDES_ORIG = GUIDES.slice();
+  var G_CATMAP = {'新手':['新手必讀','教學','導覽'], '換票':['換票實戰','進階玩法','避坑'], '路線':['路線實例','環球路線']};
+  var guidesCat = '全部', guidesSort = '推薦';
   function renderGuides(){
     var host = $('guideList'); if (!host) return;
-    GUIDES = GUIDES.map(function(a, i){ return [a, i]; }).sort(function(x, y){
-      var dc = String(y[0].date || '').localeCompare(String(x[0].date || ''));
-      return dc !== 0 ? dc : x[1] - y[1];
-    }).map(function(p){ return p[0]; });
-    if (!GUIDES.length){
-      host.innerHTML = '<div class="panel" style="text-align:center;color:var(--mut)">攻略準備緊 ✍️ 第一批：點賺里 101、寰宇一家環球票新手包。</div>';
+    var list = GUIDES_ORIG.map(function(a, i){ return [a, i]; });
+    if (guidesCat !== '全部'){
+      var gt = G_CATMAP[guidesCat] || [guidesCat];
+      list = list.filter(function(p){ return gt.indexOf(p[0].tag) >= 0; });
+    }
+    if (guidesSort === '最新'){
+      list.sort(function(x, y){ var dc = String(y[0].date || '').localeCompare(String(x[0].date || '')); return dc !== 0 ? dc : x[1] - y[1]; });
+    }
+    var arr = list.map(function(p){ return p[0]; });
+    if (!arr.length){
+      host.innerHTML = '<div class="panel" style="text-align:center;color:var(--mut)">呢個分類暫時未有文章 ✍️</div>';
       return;
     }
-    host.innerHTML = GUIDES.map(function(a){
+    host.innerHTML = arr.map(function(a){
       var media = '<div class="art-media"><div class="art-fallback" aria-hidden="true">' + esc(a.emoji || '🗺️') + '</div>' +
         (a.img ? '<img src="' + esc(a.img) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">' : '') + '</div>';
       var meta = '<div class="art-meta">' +
@@ -4579,6 +4713,31 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       return '<article class="art-card">' + media + '<div class="art-body">' + meta + '<h3 class="art-title">' + esc(a.t) + '</h3><p class="art-desc">' + esc(a.d) + '</p>' + cta + '</div></article>';
     }).join('');
   }
+  /* 分類 chip + 排序切換（攻略／優惠 共用，document delegation）*/
+  document.addEventListener('click', function(e){
+    var chip = e.target && e.target.closest ? e.target.closest('.cat-chip') : null;
+    var sortb = e.target && e.target.closest ? e.target.closest('.sort-btn') : null;
+    if (!chip && !sortb) return;
+    var ctrl = (chip || sortb).closest('.art-controls');
+    if (!ctrl) return;
+    var scope = ctrl.getAttribute('data-scope');
+    if (chip){
+      ctrl.querySelectorAll('.cat-chip').forEach(function(b){ b.classList.remove('on'); });
+      chip.classList.add('on');
+      var cat = chip.getAttribute('data-cat');
+      if (scope === 'guides'){ guidesCat = cat; renderGuides(); }
+      else { artCat = cat; renderArticles(); }
+    } else {
+      ctrl.querySelectorAll('.sort-btn').forEach(function(b){ b.classList.remove('on'); });
+      sortb.classList.add('on');
+      var s = sortb.getAttribute('data-sort');
+      if (scope === 'guides'){ guidesSort = s; renderGuides(); }
+      else { artSort = s; renderArticles(); }
+    }
+    var lst = $(scope === 'guides' ? 'guideList' : 'articleList');
+    if (lst) lst.scrollTop = 0;
+  });
+
   /* menu 頁（pgAbout/pgTerms/pgPriv）開閂 */
   document.addEventListener('click', function(e){
     var op = e.target && e.target.closest ? e.target.closest('[data-open]') : null;
@@ -4588,6 +4747,11 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         pg.hidden = false;
         window._pgZ = (window._pgZ || 150) + 1;
         pg.style.zIndex = window._pgZ;
+        try{ pg.scrollTop = 0; }catch(_){}
+        /* v6.13.0：手機上 position:fixed 圖層 hidden→顯示唔一定即刻重繪（要切 tab 先彈出）——強制 reflow + 重新合成一次圖層 */
+        void pg.offsetHeight;
+        pg.style.transform = 'translateZ(0)';
+        requestAnimationFrame(function(){ if (pg) pg.style.transform = ''; });
       }
       return;
     }
@@ -4642,14 +4806,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       paintSub(); toast('已記低！服務開通會自動登記');
     });
   })();
-  /* 全文頁 page-head 注入收藏心心（data-gt＝收藏名） */
-  (function(){
-    Array.prototype.forEach.call(document.querySelectorAll('.page[data-gt]'), function(p){
-      var head = p.querySelector('.page-head');
-      var t = p.getAttribute('data-gt');
-      if (head && t && !head.querySelector('.fav-btn')) head.insertAdjacentHTML('beforeend', favHeart('guides', t, t));
-    });
-  })();
+  /* （全文頁收藏心心注入已移去 init 尾，因為要等 GUIDES_ORIG／ARTICLES_ORIG 都定義好先跑）*/
   /* pgAbout 資料日期 */
   (function(){
     try{
@@ -4849,6 +5006,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       if (tab === 'redeem') renderRedeem();
       if (tab === 'journey') renderJourney();
       if (tab === 'guides') renderGuides();
+      if (tab === 'articles') renderArticles();
       window.scrollTo({top:0, behavior:'auto'});
     });
   });
@@ -4876,28 +5034,69 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
      （標題＋簡介＋連結＋圖檔名），Claude 喺 ARTICLES 最頂插新條目再交付。
      img＝repo 相對路徑（repo 開 img/ 資料夾，例：img/post-20260711.jpg）；
      冇圖或圖載入失敗會自動 fallback 漸變色塊＋emoji。url 留空＝顯示「連結未上架」灰掣。 */
+  /* ══════════ 外部連結集中表（單一真相來源）══════════
+     現階段係第三方公開連結（非 affiliate）。Robert 有自己 affiliate 時：
+     改呢度個 URL 就全站換；設做 '' 就全站自動隱藏該連結（完全下架第三方）。
+     文章／各處只放佔位 <a data-ext="key">，由 initExtLinks() 填。 */
+  /* 第三方連結總開關：有自己 affiliate 時設 false → 全站第三方連結（文章連結列＋卡庫官方連結）一次過收起；
+     或者直接改下面 URL／card url 換成自己嘅。呢個係「一鍵下架第三方」嘅硬掣。 */
+  var SHOW_3P_LINKS = true;
+  var EXT_LINKS = {
+    mrmiles:      'https://www.mrmiles.hk/',
+    flyformiles:  'https://www.flyformiles.hk/',
+    moneyhero:    'https://www.moneyhero.com.hk/zh/credit-card',
+    asiamiles:    'https://www.asiamiles.com/zh-hk/redeem-awards/flight-awards.html',
+    cathayRedeem: 'https://www.cathaypacific.com/cx/zh_HK/book-a-trip/redeem-flights/redeem-flight-awards.html'
+  };
+  function initExtLinks(){
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ext]'), function(el){
+      var url = SHOW_3P_LINKS ? EXT_LINKS[el.getAttribute('data-ext')] : '';
+      if (url){ el.setAttribute('href', url); el.style.display = ''; }
+      else { el.style.display = 'none'; }   /* 空值或總掣關＝下架，自動唔顯示 */
+    });
+  }
   var ARTICLES = [
-    {t:'示範：迎新優惠精選 post 會放喺呢度', d:'我哋喺社交平台出嘅獨家優惠分析，精選嘅會擺入嚟，一撳直達原文。', url:'', img:'img/post-demo1.jpg', tag:'示範', date:'2026-07-11', emoji:'🎁'},
-    {t:'示範：限時里數活動速報', d:'限時 flash 優惠、迎新加碼，值得留意嘅先會上榜——唔係乜都放。', url:'', img:'img/post-demo2.jpg', tag:'限時', date:'2026-07-11', emoji:'⚡'},
-    {t:'示範：換票攻略長文', d:'環球票、開口位、稅費點慳——長文攻略都會喺呢度俾入口。', url:'', img:'img/post-demo3.jpg', tag:'攻略', date:'2026-07-11', emoji:'🌍'}
-  ];
+    {t:'渣打國泰 7 月加碼 143,000 里', d:'免簽賬 11,000 里＋開戶＋盲盒——7 月 23 日死線，得返一星期。', tag:'限時', date:'2026-07-16', emoji:'⏰', pg:'pgO1', expire:'2026-07-23'},
+    {t:'EveryMile「MILEFLASH」49,000 里', d:'一個優惠碼迎新差唔多翻倍，記得包一單手機支付。', tag:'限時', date:'2026-07-16', emoji:'⚡', pg:'pgO2', expire:'2026-07-31'},
+    {t:'AE 白金新一期：100 萬分＋9X 續到 2027', d:'官方核實：申請期至 7 月 29 日（唔係31）；簽 $50,000 有 100 萬分。', tag:'迎新', date:'2026-07-16', emoji:'👑', pg:'pgO3', expire:'2026-07-29'},
+    {t:'AE Explorer 7 月版 26,000 里', d:'加 $50 甜頭之外，最緊要批卡即登記全年 6X。', tag:'迎新', date:'2026-07-16', emoji:'🧳', pg:'pgO4', expire:'2026-07-31'},
+    {t:'三大平台獨家獎賞點樣拎', d:'小斯 cookie、里先生填 form、MoneyHero 表格——行錯一步就冇。', tag:'教學', date:'2026-07-16', emoji:'🧭', pg:'pgO5'}
+  ]; /* {t,d,tag,date,emoji, pg:站內全文頁 或 url:出站連結} */
+  var ARTICLES_ORIG = ARTICLES.slice();
+  var artCat = '全部', artSort = '推薦';
   function renderArticles(){
     var host = $('articleList');
     if (!host) return;
-    if (!ARTICLES.length){
-      host.innerHTML = '<div class="panel" style="text-align:center;color:var(--mut)">文章準備緊，好快同大家見面 ✈️</div>';
+    var list = ARTICLES_ORIG.map(function(a, i){ return [a, i]; });
+    if (artCat !== '全部'){
+      list = list.filter(function(p){ return p[0].tag === artCat; });
+    }
+    if (artSort === '最新'){
+      list.sort(function(x, y){ var dc = String(y[0].date || '').localeCompare(String(x[0].date || '')); return dc !== 0 ? dc : x[1] - y[1]; });
+    }
+    var arr = list.map(function(p){ return p[0]; });
+    var today = new Date().toISOString().slice(0, 10);
+    /* 過期嗰啲排去最後 */
+    arr.sort(function(x, y){
+      var xe = (x.expire && x.expire < today) ? 1 : 0, ye = (y.expire && y.expire < today) ? 1 : 0;
+      return xe - ye;
+    });
+    if (!arr.length){
+      host.innerHTML = '<div class="panel" style="text-align:center;color:var(--mut)">呢個分類暫時未有優惠 ✈️</div>';
       return;
     }
-    host.innerHTML = ARTICLES.map(function(a){
-      var media = '<div class="art-media"><div class="art-fallback" aria-hidden="true">' + esc(a.emoji || '🎁') + '</div>' +
+    host.innerHTML = arr.map(function(a){
+      var expired = a.expire && a.expire < today;
+      var media = '<div class="art-media"' + (expired ? ' style="filter:grayscale(1);opacity:.55"' : '') + '><div class="art-fallback" aria-hidden="true">' + esc(a.emoji || '🎁') + '</div>' +
         (a.img ? '<img src="' + esc(a.img) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">' : '') + '</div>';
       var meta = '<div class="art-meta">' +
-        (a.tag ? '<span class="art-tag">' + esc(a.tag) + '</span>' : '') +
+        (expired ? '<span class="art-tag" style="background:#eee;color:#999">已完結</span>' : (a.tag ? '<span class="art-tag">' + esc(a.tag) + '</span>' : '')) +
         (a.date ? '<span class="art-date">' + esc(a.date) + '</span>' : '') + favHeart('offers', a.t, a.t) + '</div>';
-      var cta = a.url
-        ? '<a class="art-cta" href="' + esc(a.url) + '" target="_blank" rel="noopener">細閱內文 →</a>'
-        : '<span class="art-cta off">連結未上架</span>';
-      return '<article class="art-card">' + media + '<div class="art-body">' + meta +
+      var cta = a.pg
+        ? '<button type="button" class="art-cta" data-open="' + esc(a.pg) + '">' + (expired ? '睇返内容 →' : '睇詳情 →') + '</button>'
+        : (a.url ? '<a class="art-cta" href="' + esc(a.url) + '" target="_blank" rel="noopener">細閱內文 →</a>'
+        : '<span class="art-cta off">連結未上架</span>');
+      return '<article class="art-card"' + (expired ? ' style="opacity:.72"' : '') + '>' + media + '<div class="art-body">' + meta +
         '<h3 class="art-title">' + esc(a.t) + '</h3><p class="art-desc">' + esc(a.d) + '</p>' + cta + '</div></article>';
     }).join('');
   }
@@ -4930,7 +5129,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   /* ══════════ v4.5 welcome 開場（4 秒自動入；載唔到唔會卡） ══════════ */
   (function(){
     /* BM_WELCOME_ONCE：同一日 or 4 個鐘內開過，唔再播開場（1C） */
-    var w = $('welcome'), v = $('welcomeVid');
+    var w = $('welcome');
     if (!w) return;
     function skipWelcome(){
       try{
@@ -4954,14 +5153,8 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       w.classList.add('out');
       setTimeout(function(){ if (w.parentNode) w.parentNode.removeChild(w); }, 500);
     }
-    if (v){
-      v.addEventListener('error', go);
-      try{ v.muted = true; v.volume = 0; v.disableRemotePlayback = true; }catch(e){}
-      var p = v.play();
-      if (p && p.catch) p.catch(function(){});
-    }
-    setTimeout(function(){ if (!done && (!v || v.readyState < 2)) go(); }, 2500); /* 片未載到→唔等 */
-    setTimeout(go, 4000); /* 4 秒硬性入 app */
+    /* v6.9.2：純 CSS 開場動畫，唔再用 <video>（避免 Android 媒體通知）；2 秒淡出 */
+    setTimeout(go, 2000);
   })();
 
   /* ══════════ v3.9 賺里數計算器子頁＋卡庫摺疊 ══════════ */
@@ -5514,6 +5707,22 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   applyTheme();
   renderJourney();
   renderArticles();
+  initExtLinks();
+  /* 全文頁 page-head 注入收藏心心——用 pg→{cat,key} 對照表，同列表嗰粒心 100% 對齊（修 pgO offers/guides 類別＋key 唔一致）*/
+  (function(){
+    var PG_FAV = {};
+    GUIDES_ORIG.forEach(function(a){ if (a.pg) PG_FAV[a.pg] = {cat: 'guides', key: a.t}; });
+    ARTICLES_ORIG.forEach(function(a){ if (a.pg) PG_FAV[a.pg] = {cat: 'offers', key: a.t}; });
+    Array.prototype.forEach.call(document.querySelectorAll('.page[data-gt]'), function(p){
+      var head = p.querySelector('.page-head');
+      if (!head || head.querySelector('.fav-btn')) return;
+      var m = PG_FAV[p.id];
+      var cat = m ? m.cat : 'guides';
+      var key = m ? m.key : p.getAttribute('data-gt');
+      if (key) head.insertAdjacentHTML('beforeend', favHeart(cat, key, key));
+    });
+  })();
+
   $('metaVer').textContent = APP_VERSION;
   /* PWA：service worker（sw.js 同 index.html 擺埋同一層） */
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')){

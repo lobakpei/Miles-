@@ -1,4 +1,4 @@
-<!-- build: 2026-07-16 UK — v6.24.2：移除文章圖片 .art-fig 嘅虛線框（原本係 demo 佔位框樣式，真圖入咗唔需要）——保留圓角＋overflow hidden，圖片邊緣乾淨。注意：深色模式隱形字（art-lead 個「台北來回機票」等）喺 v6.24.0 已修（jade-ink），呢個 build 一併含齊，部署最新 index.html 即兩個問題都解決。原 v6.24.1 -->
+<!-- build: 2026-07-16 UK — v6.26.0：全站深層修深色模式按鈕對比（Playwright 對比度審計＋補漸變盲點）——問題：所有「jade 底＋白字」按鈕（segmented toggle／分類 chip／大 CTA／subtabs／規劃 chip 等）喺深色模式用光青 #3ECFE0 做底，白字對比得 1.5-1.9 好難睇。新增 --jade-btn/--jade-btn2 按鈕背景專用變數（淺色 #16A9C4/#17BFA6；深色改中青 #0E7E96/#0F8C7E，白字對比升到 ~4.5）；6 處漸變按鈕 + 4 處實色 chip 背景全部改用。text 用嘅 --jade（光青）不變。原 v6.25.0 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -85,6 +85,8 @@ var SENTRY_DSN = '';
   --jade2:#17BFA6;
   --jade-deep:#0E6E85;
   --jade-ink:#0E6E85;
+  --jade-btn:#16A9C4;
+  --jade-btn2:#17BFA6;
   --jade-soft:#DAF4F6;
   --gold:#FFD54A;
   --gold-deep:#BC8410;
@@ -109,6 +111,8 @@ html.dark{
   --jade2:#35D8B8;
   --jade-deep:#0A2A38;
   --jade-ink:#5FE0EF;
+  --jade-btn:#0E7E96;
+  --jade-btn2:#0F8C7E;
   --jade-soft:#123D48;
   --gold:#FFD960;
   --gold-deep:#FFE38A;
@@ -151,7 +155,7 @@ html.dark .tabs{background:rgba(15,22,19,.86)}
 .tabs-in{max-width:680px;margin:0 auto;display:flex;gap:7px}
 .tabs button{flex:1;padding:10px 4px;border-radius:12px;font-weight:700;font-size:clamp(12.5px,3.6vw,15px);color:var(--mut);letter-spacing:-.2px;line-height:1.3;word-break:keep-all;display:flex;align-items:center;justify-content:center;text-align:center;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 3px rgba(21,37,32,.05)}
 html.dark .tabs button{box-shadow:none}
-.tabs button.on{background:linear-gradient(135deg,var(--jade),var(--jade2));color:#fff;border-color:var(--jade)}
+.tabs button.on{background:linear-gradient(135deg,var(--jade-btn),var(--jade-btn2));color:#fff;border-color:var(--jade)}
 
 main{max-width:680px;margin:0 auto;padding:16px 14px 40px}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(21,37,32,.04)}
@@ -164,6 +168,7 @@ html.dark .panel{box-shadow:none}
 /* ---------- 獨家優惠文章卡（v3.3）：色全部行 CSS 變量，深色自動跟 ---------- */
 .art-card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:14px;box-shadow:0 1px 3px rgba(21,37,32,.04)}
 html.dark .art-card{box-shadow:none}
+.art-card[data-open]{cursor:pointer}
 .art-media{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,var(--jade-soft),var(--gold-soft))}
 .art-media .art-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:46px}
 .art-media img{position:relative;width:100%;height:100%;object-fit:cover;display:block}
@@ -189,7 +194,7 @@ html.dark .art-card{box-shadow:none}
 .cat-row{display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;flex:1;min-width:0}
 .cat-row::-webkit-scrollbar{display:none}
 .cat-chip{flex:0 0 auto;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:6px 13px;font-size:13.5px;font-weight:600;color:var(--ink);white-space:nowrap;transition:background .15s,border-color .15s,color .15s}
-.cat-chip.on{background:var(--jade);border-color:var(--jade);color:#fff}
+.cat-chip.on{background:var(--jade-btn);border-color:var(--jade-btn);color:#fff}
 .sort-toggle{flex:0 0 auto;display:inline-flex;background:var(--field);border-radius:999px;padding:2px;gap:2px}
 .sort-btn{border:0;background:transparent;border-radius:999px;padding:5px 11px;font-size:13px;font-weight:700;color:var(--mut);white-space:nowrap;transition:background .15s,color .15s}
 .sort-btn.on{background:var(--card);color:var(--jade);box-shadow:0 1px 3px rgba(0,20,14,.12)}
@@ -204,12 +209,15 @@ html.dark .art-card{box-shadow:none}
 .amt-wrap{display:flex;align-items:center;gap:8px;border:2px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--field)}
 .amt-wrap:focus-within{border-color:var(--jade)}
 .amt-wrap .cur{font-family:var(--mono);font-weight:700;color:var(--mut);font-size:15px}
-#amount{border:none;outline:none;background:none;width:100%;font-family:var(--mono);font-weight:700;font-size:26px;color:var(--ink)}
+.amt-wrap input{border:none;outline:none;background:none;width:100%;font-family:var(--mono);font-weight:700;font-size:20px;color:var(--ink)}
+#amount{font-size:26px}
+.amt-wrap input::placeholder{color:var(--mut);opacity:.7}
+.amt-wrap input::-webkit-input-placeholder{color:var(--mut);opacity:.7}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:8px 15px;font-weight:500;font-size:14.5px;color:var(--ink);transition:background .15s,border-color .15s}
-.chip.on{background:var(--jade);border-color:var(--jade);color:#fff;font-weight:700}
+.chip.on{background:var(--jade-btn);border-color:var(--jade-btn);color:#fff;font-weight:700}
 .chip small{display:block;font-size:11px;opacity:.75;font-weight:400;line-height:1.2}
-.cta{width:100%;background:linear-gradient(135deg,var(--jade),var(--jade2));color:#fff;font-weight:900;font-size:17px;letter-spacing:2px;padding:15px;border-radius:13px;margin-top:4px;transition:transform .1s,box-shadow .15s;box-shadow:0 3px 10px rgba(0,89,78,.22)}
+.cta{width:100%;background:linear-gradient(135deg,var(--jade-btn),var(--jade-btn2));color:#fff;font-weight:900;font-size:17px;letter-spacing:2px;padding:15px;border-radius:13px;margin-top:4px;transition:transform .1s,box-shadow .15s;box-shadow:0 3px 10px rgba(0,89,78,.22)}
 html.dark .cta{box-shadow:none}
 .cta:active{transform:scale(.985)}
 
@@ -279,7 +287,7 @@ html.dark .pass{box-shadow:none}
 /* ---------- 子頁膠囊（里數規劃專員＋賺里數計算器共用） ---------- */
 .subtabs{display:flex;gap:5px;background:var(--field);border:1px solid var(--line);border-radius:13px;padding:4px;margin-bottom:14px}
 .subtabs button{flex:1;padding:10px 3px;border-radius:10px;font-size:clamp(12.5px,3.5vw,14px);font-weight:800;color:var(--mut);letter-spacing:0;white-space:nowrap}
-.subtabs button.on{background:linear-gradient(135deg,var(--jade),var(--jade2));color:#fff}
+.subtabs button.on{background:linear-gradient(135deg,var(--jade-btn),var(--jade-btn2));color:#fff}
 
 /* ---------- 資訊摺疊（ℹ️ 撳先開，收埋非重點細字，v4.1） ---------- */
 .ow-info{margin:8px 0 4px;border:1px solid var(--line);border-radius:11px;background:var(--field);overflow:hidden}
@@ -336,7 +344,7 @@ html.dark .pass{box-shadow:none}
 .ap-regions{display:flex;gap:6px;overflow-x:auto;padding:2px 16px 10px;-webkit-overflow-scrolling:touch;flex:none;scrollbar-width:none}
 .ap-regions::-webkit-scrollbar{display:none}
 .ap-regions button{flex:none;padding:7px 13px;border-radius:20px;font-size:13.5px;font-weight:700;background:var(--field);border:1px solid var(--line);color:var(--mut);white-space:nowrap}
-.ap-regions button.on{background:var(--jade);border-color:var(--jade);color:#fff}
+.ap-regions button.on{background:var(--jade-btn);border-color:var(--jade-btn);color:#fff}
 .ap-list{overflow-y:auto;padding:2px 12px 16px;-webkit-overflow-scrolling:touch}
 .ap-co{font-size:11.5px;font-weight:800;color:var(--mut);letter-spacing:1.5px;margin:10px 4px 4px}
 .ap-opt{width:100%;text-align:left;display:flex;align-items:baseline;gap:9px;padding:11px 12px;border-radius:10px;margin-bottom:2px}
@@ -417,7 +425,7 @@ html.dark .pass{box-shadow:none}
 .lib-note{font-size:12.5px;color:var(--mut);margin-top:9px}
 .lib-actions{display:flex;gap:8px;margin-top:12px;align-items:center;flex-wrap:wrap}
 .btn-sm{border:1.5px solid var(--line);border-radius:9px;padding:7px 13px;font-weight:700;font-size:13.5px}
-.btn-sm.pri{background:var(--jade);border-color:var(--jade);color:#fff}
+.btn-sm.pri{background:var(--jade-btn);border-color:var(--jade-btn);color:#fff}
 .vcheck{display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:500;margin-left:auto}
 .vcheck input{width:17px;height:17px;accent-color:var(--ok)}
 
@@ -552,7 +560,7 @@ html.dark .tabs button.on{color:var(--jade)}
 .seg button{flex:1;padding:8px 4px;border-radius:9px;font-size:13.5px;font-weight:700;color:var(--mut)}
 .seg button.on{background:var(--card);color:var(--jade);box-shadow:0 1px 4px rgba(15,40,50,.14)}
 html.dark .seg button.on{background:var(--line)}
-.set-act{width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,var(--jade),var(--jade2));color:#fff;font-weight:800;font-size:15px}
+.set-act{width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,var(--jade-btn),var(--jade-btn2));color:#fff;font-weight:800;font-size:15px}
 .set-act.sec{background:var(--field);color:var(--jade);border:1.5px solid var(--jade)}
 .set-act:disabled{opacity:.55}
 .set-note{font-size:13px;line-height:1.65;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
@@ -617,7 +625,7 @@ html.dark .fav-btn{color:#5E7E86}
 .show-row::-webkit-scrollbar{display:none}
 .show-card{flex:0 0 100%;scroll-snap-align:center;display:flex;align-items:center;gap:12px;min-height:112px;padding:16px 18px;border:none;text-align:left;color:#fff}
 .show-card.g1{background:linear-gradient(135deg,#0E6E85,var(--jade))}
-.show-card.g2{background:linear-gradient(135deg,var(--jade),var(--jade2))}
+.show-card.g2{background:linear-gradient(135deg,var(--jade-btn),var(--jade-btn2))}
 .show-card.g3{background:linear-gradient(135deg,#0B5E74,#17BFA6)}
 .show-card.g4{background:linear-gradient(135deg,#12557E,#16A9C4)}
 .sc-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
@@ -689,7 +697,7 @@ html.dark .fav-btn{color:#5E7E86}
 .hl-k{font-size:12.5px;font-weight:800;color:var(--ink);margin-top:5px}
 .hl-d{font-size:10.5px;color:var(--mut);margin-top:2px}
 .art-tip{background:var(--gold-soft);border:1px solid var(--gold);border-radius:12px;padding:12px 14px;font-size:13.5px;line-height:1.7;color:var(--ink);margin:6px 2px 14px}
-.art-cta-big{width:100%;padding:15px;border-radius:14px;background:linear-gradient(135deg,var(--jade),var(--jade2));color:#fff;font-weight:900;font-size:15.5px;margin:8px 0 20px;box-shadow:0 6px 18px rgba(22,169,196,.32)}
+.art-cta-big{width:100%;padding:15px;border-radius:14px;background:linear-gradient(135deg,var(--jade-btn),var(--jade-btn2));color:#fff;font-weight:900;font-size:15.5px;margin:8px 0 20px;box-shadow:0 6px 18px rgba(22,169,196,.32)}
 .art-more{border-top:1px solid var(--line);padding-top:14px;margin-top:4px}
 .art-more-h{font-size:12px;font-weight:800;letter-spacing:1px;color:var(--mut);margin:0 2px 9px}
 .art-more-i{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-bottom:8px}
@@ -4721,7 +4729,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         (a.tag ? '<span class="art-tag">' + esc(a.tag) + '</span>' : '') +
         (a.date ? '<span class="art-date">' + esc(a.date) + '</span>' : '') + favHeart('guides', a.t, a.t) + '</div>';
       var cta = a.pg ? '<button type="button" class="art-cta" data-open="' + esc(a.pg) + '">閱讀全文 →</button>' : (a.url ? '<a class="art-cta" href="' + esc(a.url) + '" target="_blank" rel="noopener">細閱內文 →</a>' : '<span class="art-cta off">連結未上架</span>');
-      return '<article class="art-card">' + media + '<div class="art-body">' + meta + '<h3 class="art-title">' + esc(a.t) + '</h3><p class="art-desc">' + esc(a.d) + '</p>' + cta + '</div></article>';
+      return '<article class="art-card"' + (a.pg ? ' data-open="' + esc(a.pg) + '"' : '') + '>' + media + '<div class="art-body">' + meta + '<h3 class="art-title">' + esc(a.t) + '</h3><p class="art-desc">' + esc(a.d) + '</p>' + cta + '</div></article>';
     }).join('');
   }
   /* 分類 chip + 排序切換（攻略／優惠 共用，document delegation）*/
@@ -4751,6 +4759,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
   /* menu 頁（pgAbout/pgTerms/pgPriv）開閂 */
   document.addEventListener('click', function(e){
+    if (e.target && e.target.closest && e.target.closest('.fav-btn')) return; /* 撳收藏心心唔好開卡 */
     var op = e.target && e.target.closest ? e.target.closest('[data-open]') : null;
     if (op){
       var pg = $(op.getAttribute('data-open'));
@@ -5111,7 +5120,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         ? '<button type="button" class="art-cta" data-open="' + esc(a.pg) + '">' + (expired ? '睇返内容 →' : '睇詳情 →') + '</button>'
         : (a.url ? '<a class="art-cta" href="' + esc(a.url) + '" target="_blank" rel="noopener">細閱內文 →</a>'
         : '<span class="art-cta off">連結未上架</span>');
-      return '<article class="art-card"' + (expired ? ' style="opacity:.72"' : '') + '>' + media + '<div class="art-body">' + meta +
+      return '<article class="art-card"' + (a.pg ? ' data-open="' + esc(a.pg) + '"' : '') + (expired ? ' style="opacity:.72"' : '') + '>' + media + '<div class="art-body">' + meta +
         '<h3 class="art-title">' + esc(a.t) + '</h3><p class="art-desc">' + esc(a.d) + '</p>' + cta + '</div></article>';
     }).join('');
   }

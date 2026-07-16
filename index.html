@@ -1,4 +1,4 @@
-<!-- build: 2026-07-16 UK — v6.23.2：pgG1/pgG2 三張圖換成正確版本（左上角有 A+ logo）——機艙窗/三步驟拼圖/北海道，檔名不變（pgG1-hero/pgG1-steps/pgG2-cards.jpg），只換圖檔內容；sw 升版強制手機重拉新圖。原 v6.23.1 -->
+<!-- build: 2026-07-16 UK — v6.24.1：sw.js 加固——①install 由 addAll（原子性，一個檔 404 就冧成個 SW）改成逐個 c.add + catch，單一檔案失敗唔影響其他快取；②fetch 只 cache 200 成功回應，唔再將 404 存落 cache（之前圖擺錯位置時 404 可能被 cache 咗，令修好後都仲係爛圖）。原 v6.24.0 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -84,6 +84,7 @@ var SENTRY_DSN = '';
   --jade:#16A9C4;
   --jade2:#17BFA6;
   --jade-deep:#0E6E85;
+  --jade-ink:#0E6E85;
   --jade-soft:#DAF4F6;
   --gold:#FFD54A;
   --gold-deep:#BC8410;
@@ -107,6 +108,7 @@ html.dark{
   --jade:#3ECFE0;
   --jade2:#35D8B8;
   --jade-deep:#0A2A38;
+  --jade-ink:#5FE0EF;
   --jade-soft:#123D48;
   --gold:#FFD960;
   --gold-deep:#FFE38A;
@@ -172,17 +174,17 @@ html.dark .art-card{box-shadow:none}
 .art-fig-ph .flb{font-size:10.5px;font-weight:800;letter-spacing:1.5px;color:var(--jade-deep);background:rgba(255,255,255,.72);padding:3px 11px;border-radius:20px}
 .art-fig img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover}
 .art-fig-cap{font-size:12px;color:var(--mut);padding:9px 13px;background:var(--field);line-height:1.55;border-top:1px solid var(--line)}
-.art-fig-cap b{color:var(--jade-deep);font-weight:800}
+.art-fig-cap b{color:var(--jade-ink);font-weight:800}
 .art-body{padding:14px 16px 16px}
 .art-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .art-tag{font-size:11px;font-weight:700;letter-spacing:.5px;padding:3px 9px;border-radius:999px;background:var(--jade-soft);color:var(--jade)}
 .art-list{margin:14px 0;display:flex;flex-direction:column;gap:10px}
 .art-li{display:flex;gap:11px;align-items:flex-start}
-.art-li-m{flex:0 0 auto;min-width:24px;height:24px;padding:0 6px;border-radius:12px;background:var(--jade-soft);color:var(--jade-deep);font-size:12.5px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-top:1px}
+.art-li-m{flex:0 0 auto;min-width:24px;height:24px;padding:0 6px;border-radius:12px;background:var(--jade-soft);color:var(--jade-ink);font-size:12.5px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-top:1px}
 .art-li-t{flex:1;font-size:14.5px;line-height:1.6}
-.art-li-t b{color:var(--jade-deep)}
+.art-li-t b{color:var(--jade-ink)}
 .art-hl{margin:14px 0;padding:13px 15px;border-radius:12px;background:linear-gradient(135deg,var(--jade-soft),var(--gold-soft));border:1px solid var(--jade);font-size:15px;font-weight:800;color:var(--ink);line-height:1.5}
-.art-hl b{color:var(--jade-deep)}
+.art-hl b{color:var(--jade-ink)}
 .art-controls{display:flex;align-items:center;gap:8px;margin:2px 0 14px;flex-wrap:nowrap}
 .cat-row{display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;flex:1;min-width:0}
 .cat-row::-webkit-scrollbar{display:none}
@@ -649,7 +651,7 @@ html.dark .fav-btn{color:#5E7E86}
 .art-hero-sub{font-size:13.5px;line-height:1.55;opacity:.95;margin:0;max-width:78%}
 .art-hero-sub b{color:var(--gold)}
 .art-lead{font-size:14.5px;line-height:1.75;color:var(--ink);margin:0 2px 14px;font-weight:500}
-.art-lead b{color:var(--jade-deep);font-weight:800}
+.art-lead b{color:var(--jade-ink);font-weight:800}
 .art-kv{display:flex;margin:6px 0 20px;padding:2px 0}
 .art-kv-i{flex:1;text-align:center;padding:2px 10px;border-right:1px solid var(--line)}
 .art-kv-i:last-child{border-right:none}
@@ -674,7 +676,7 @@ html.dark .fav-btn{color:#5E7E86}
 .mtbl col.c-zr{width:26%}
 .mtbl td.zr{font-size:11px;color:var(--mut)}
 .mtbl td.zc{text-align:center;font-weight:800;color:var(--mut)}
-.mtbl td.jc{font-weight:800;color:var(--jade-deep)}
+.mtbl td.jc{font-weight:800;color:var(--jade-ink)}
 .mtbl tr:last-child td{border-bottom:none}
 .mtbl tr.hot{background:linear-gradient(90deg,var(--gold-soft),transparent)}
 .mtbl tr.hot td.zc{color:var(--gold-deep)}
@@ -713,12 +715,12 @@ html.dark .art-kv-i,html.dark .hl,html.dark .art-more-i,html.dark .mchart{backgr
 .it-code{font-family:var(--mono);font-size:14.5px;font-weight:800;color:var(--ink);min-width:3.2em}
 .it-city{font-size:13.5px;color:var(--ink);flex:1}
 .it-badge{font-size:10.5px;font-weight:800;border-radius:6px;padding:2px 8px;background:var(--field);border:1px solid var(--line);color:var(--mut)}
-.it-row.st .it-badge{background:var(--jade-soft);border-color:var(--jade);color:var(--jade-deep)}
+.it-row.st .it-badge{background:var(--jade-soft);border-color:var(--jade);color:var(--jade-ink)}
 .it-open{margin:4px 0 4px 19px;padding:8px 11px;border:1.5px dashed var(--gold);background:var(--gold-soft);border-radius:10px;font-size:12px;line-height:1.55;color:var(--ink)}
 .vz{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin:4px 0 14px}
 .vz-h{width:100%;font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:2px}
 .vz-c{font-size:11px;font-weight:700;border-radius:999px;padding:3px 10px}
-.vz-c.ok{background:var(--jade-soft);color:var(--jade-deep)}
+.vz-c.ok{background:var(--jade-soft);color:var(--jade-ink)}
 .vz-c.no{background:#FDE3DE;color:#A5361F}
 .vz-c.md{background:var(--gold-soft);color:var(--gold-deep)}
 .vz i{width:100%;font-size:10.5px;color:var(--mut);font-style:normal;margin-top:4px;line-height:1.5}
@@ -2949,7 +2951,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
     /* 管家點評 + 風險位 */
     var note = sec('管家點評 · 風險位') +
-      '<div style="font-size:13.5px;line-height:1.65;color:#3A4A44">' + esc2(c.note || '') + '</div>';
+      '<div style="font-size:13.5px;line-height:1.65;color:var(--ink)">' + esc2(c.note || '') + '</div>';
 
     var official = (SHOW_3P_LINKS && c.url) ? '<div style="margin-top:12px"><a class="link-btn" href="' + esc2(c.url) + '" target="_blank" rel="noopener">睇卡嘅官方／詳細資料 ↗</a></div>' : '';
 

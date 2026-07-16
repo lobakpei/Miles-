@@ -1,9 +1,14 @@
 /* AcreMiles service worker — 同源 network-first（保資料新鮮），斷網先食 cache。
    每次改版要跟住升 CACHE 名，舊 cache 自動清。 */
-var CACHE = 'acremiles-v6.23.2';
+var CACHE = 'acremiles-v6.24.1';
 var CORE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './img/pgG1-hero.jpg', './img/pgG1-steps.jpg', './img/pgG2-cards.jpg'];
 self.addEventListener('install', function(e){
-  e.waitUntil(caches.open(CACHE).then(function(c){ return c.addAll(CORE); }).then(function(){ return self.skipWaiting(); }));
+  /* 逐個 cache，單一檔案 404 唔會拖冧成個 SW 安裝（唔用 addAll 嘅原子性）*/
+  e.waitUntil(caches.open(CACHE).then(function(c){
+    return Promise.all(CORE.map(function(u){
+      return c.add(u).catch(function(err){ console.warn('SW cache 跳過', u, err); });
+    }));
+  }).then(function(){ return self.skipWaiting(); }));
 });
 self.addEventListener('activate', function(e){
   e.waitUntil(caches.keys().then(function(keys){
@@ -16,8 +21,11 @@ self.addEventListener('fetch', function(e){
   if (url.origin !== location.origin) return;
   e.respondWith(
     fetch(e.request).then(function(res){
-      var copy = res.clone();
-      caches.open(CACHE).then(function(c){ c.put(e.request, copy); });
+      /* 只 cache 成功回應（200），唔好將 404 存落 cache */
+      if (res && res.ok){
+        var copy = res.clone();
+        caches.open(CACHE).then(function(c){ c.put(e.request, copy); });
+      }
       return res;
     }).catch(function(){ return caches.match(e.request); })
   );

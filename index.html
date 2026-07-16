@@ -1,4 +1,4 @@
-<!-- build: 2026-07-16 UK — v6.16.1 HOTFIX：修開場即 crash（Uncaught TypeError: Cannot read properties of undefined reading forEach）——v6.15.0 加嘅收藏心心 pg→{cat,key} 對照表 IIFE 喺 line 4811 執行，但 ARTICLES_ORIG 要到 line 5078 先定義，IIFE 跑時佢係 undefined→.forEach 爆錯卡死全 app。將成個 IIFE 搬去 init 尾（renderArticles 之後，兩個 _ORIG 陣列都定義好）。原 v6.16.0 -->
+<!-- build: 2026-07-16 UK — v6.21.0：文章三格數據卡徹底去按鈕化——由「三個獨立盒（邊框+底色+圓角）」改成「統計數字帶」：冇盒、冇邊框、冇底色、冇圓角，三欄之間淨係一條幼直線分隔，坐喺頁面底色上。重點數字（用Asia Miles）用 jade 色+大字（19px）突出，唔再靠盒。呢種係報表/統計視覺語言，完全唔會誤認做按鈕。全站10個art-kv一次過統一。原 v6.20.0 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -176,6 +176,13 @@ html.dark .art-card{box-shadow:none}
 .art-body{padding:14px 16px 16px}
 .art-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .art-tag{font-size:11px;font-weight:700;letter-spacing:.5px;padding:3px 9px;border-radius:999px;background:var(--jade-soft);color:var(--jade)}
+.art-list{margin:14px 0;display:flex;flex-direction:column;gap:10px}
+.art-li{display:flex;gap:11px;align-items:flex-start}
+.art-li-m{flex:0 0 auto;min-width:24px;height:24px;padding:0 6px;border-radius:12px;background:var(--jade-soft);color:var(--jade-deep);font-size:12.5px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-top:1px}
+.art-li-t{flex:1;font-size:14.5px;line-height:1.6}
+.art-li-t b{color:var(--jade-deep)}
+.art-hl{margin:14px 0;padding:13px 15px;border-radius:12px;background:linear-gradient(135deg,var(--jade-soft),var(--gold-soft));border:1px solid var(--jade);font-size:15px;font-weight:800;color:var(--ink);line-height:1.5}
+.art-hl b{color:var(--jade-deep)}
 .art-controls{display:flex;align-items:center;gap:8px;margin:2px 0 14px;flex-wrap:nowrap}
 .cat-row{display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;flex:1;min-width:0}
 .cat-row::-webkit-scrollbar{display:none}
@@ -643,12 +650,13 @@ html.dark .fav-btn{color:#5E7E86}
 .art-hero-sub b{color:var(--gold)}
 .art-lead{font-size:14.5px;line-height:1.75;color:var(--ink);margin:0 2px 14px;font-weight:500}
 .art-lead b{color:var(--jade-deep);font-weight:800}
-.art-kv{display:flex;gap:8px;margin:0 0 18px}
-.art-kv-i{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 10px;text-align:center}
-.art-kv-i span{display:block;font-size:11px;color:var(--mut);margin-bottom:4px}
-.art-kv-i b{font-size:15px;color:var(--ink);line-height:1.2}
-.art-kv-i.hot{background:linear-gradient(135deg,var(--jade),var(--jade2));border-color:transparent}
-.art-kv-i.hot span,.art-kv-i.hot b{color:#fff}
+.art-kv{display:flex;margin:6px 0 20px;padding:2px 0}
+.art-kv-i{flex:1;text-align:center;padding:2px 10px;border-right:1px solid var(--line)}
+.art-kv-i:last-child{border-right:none}
+.art-kv-i span{display:block;font-size:11.5px;color:var(--mut);margin-bottom:7px;font-weight:600}
+.art-kv-i b{font-size:17px;color:var(--ink);line-height:1.15;font-weight:800}
+.art-kv-i.hot span{color:var(--jade)}
+.art-kv-i.hot b{color:var(--jade);font-size:19px}
 .art-h{font-size:18px;font-weight:900;color:var(--ink);margin:22px 2px 9px;line-height:1.3}
 .art-p{font-size:14px;line-height:1.75;color:var(--ink);margin:0 2px 12px}
 .art-p b{font-weight:800}
@@ -1411,7 +1419,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="panel" style="font-size:13.5px;line-height:2">香港 HKG - 札幌 CTS (停)<br>札幌 CTS - 沖繩 OKA (停)<br>沖繩 OKA - 東京 NRT (停)<br>東京 NRT - 首爾 ICN (停)<br>首爾 ICN - 曼谷 BKK (停)<br>曼谷 BKK - 香港 HKG</div>
   <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🎿</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>拼圖：札幌雪場＋沖繩海灘＋東京街頭＋曼谷夜市，四格帶出「一張飛四種天氣」。</figcaption></figure>
   <h2 class="art-h">逐站點玩</h2>
-  <p class="art-p"><b>札幌</b>——落地即滑雪（二世古／留壽都），湯咖喱、成吉思汗烤肉暖返。<b>沖繩</b>——滑完雪直插海灘，美國村、水族館，溫差玩盡。<b>東京</b>——血拼主場：新宿、澀谷、銀座。<b>首爾</b>——明洞掃美妝、弘大食烤肉。<b>曼谷</b>——按摩、夜市、天台 bar，鬆晒先返香港。</p>
+  <div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>札幌</b> — 落地即滑雪（二世古／留壽都），湯咖喱、成吉思汗烤肉暖返。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>沖繩</b> — 滑完雪直插海灘，美國村、水族館，溫差玩盡。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t"><b>東京</b> — 血拼主場：新宿、澀谷、銀座。</div></div><div class="art-li"><span class="art-li-m">4</span><div class="art-li-t"><b>首爾</b> — 明洞掃美妝、弘大食烤肉。</div></div><div class="art-li"><span class="art-li-m">5</span><div class="art-li-t"><b>曼谷</b> — 按摩、夜市、天台 bar，鬆晒先返香港。</div></div></div>
   <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🍜</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>其中一個代表站嘅招牌畫面（例：札幌成吉思汗烤肉／曼谷天台 bar 夜景）。</figcaption></figure>
   <h2 class="art-h">點解咁排</h2>
   <p class="art-p">香港人玩法：急住滑雪放最頭（雪季唔等人），血拼站東京＋首爾夾中段，曼谷放鬆收尾——係情緒節奏，唔係地圖順路。</p>
@@ -1427,7 +1435,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="panel" style="font-size:13.5px;line-height:2">香港 HKG - 札幌 CTS (停)<br>札幌 CTS - 福岡 FUK (停)<br>福岡 FUK - 悉尼 SYD (停)<br>悉尼 SYD - 清邁 CNX (停)<br>清邁 CNX - 香港 HKG</div>
   <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🌏</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>悉尼歌劇院／邦迪海灘實拍做主圖，帶出「一程由北半球冬跳去南半球夏」。</figcaption></figure>
   <h2 class="art-h">逐站點玩</h2>
-  <p class="art-p"><b>札幌</b>——滑雪開波。<b>福岡</b>——屋台拉麵、太宰府，日本最好食嘅城市之一。<b>悉尼</b>——歌劇院、邦迪海灘，一程飛咗成季（北半球冬→南半球夏）。<b>清邁</b>——古城慢活、夜市按摩收尾。</p>
+  <div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>札幌</b> — 滑雪開波。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>福岡</b> — 屋台拉麵、太宰府，日本最好食嘅城市之一。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t"><b>悉尼</b> — 歌劇院、邦迪海灘，一程飛咗成季（北半球冬→南半球夏）。</div></div><div class="art-li"><span class="art-li-m">4</span><div class="art-li-t"><b>清邁</b> — 古城慢活、夜市按摩收尾。</div></div></div>
   <h2 class="art-h">數口</h2>
   <p class="art-p">呢條線淨係「香港⇄悉尼」商務來回市價已經 HK$3–4 萬；加埋日本兩程同清邁，逐程買隨時 HK$9–13 萬（粗略估算）。170,000 里一次過搞掂，仲要係一路向季節追。</p>
   <div class="art-kv"><div class="art-kv-i"><span>商務逐程買（估）</span><b>≈ HK$9–13 萬</b></div><div class="art-kv-i hot"><span>用 Asia Miles</span><b>170,000 里</b></div><div class="art-kv-i"><span>另加 YQ＋稅</span><b>約 HK$3–5 千</b></div></div>
@@ -1442,7 +1450,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="panel" style="font-size:13.5px;line-height:2">香港 HKG - 馬德里 MAD (停)<br>馬德里 MAD - 巴黎 CDG (停)<br>巴黎 CDG - 倫敦 LHR (停)<br>倫敦 LHR - 紐約 JFK (停)<br>紐約 JFK - 溫哥華 YVR (停)<br>溫哥華 YVR →(轉機)東京 NRT-  香港 HKG</div>
   <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🗼</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>歐洲三古都拼圖（馬德里／巴黎鐵塔／倫敦大笨鐘）＋紐約天際線。</figcaption></figure>
   <h2 class="art-h">逐站點玩</h2>
-  <p class="art-p"><b>馬德里</b>——陽光、tapas、普拉多開波。<b>巴黎</b>——浪漫中段。<b>倫敦</b>——古典＋音樂劇。<b>紐約</b>——行程高潮。<b>溫哥華</b>——山海減壓，執整心情。<b>東京（轉機）</b>——返港前最後衝刺：輕裝 hand-carry 玩法，行李留返轉機，人出境爆買，戰利品塞背囊上機。</p>
+  <div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>馬德里</b> — 陽光、tapas、普拉多開波。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>巴黎</b> — 浪漫中段。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t"><b>倫敦</b> — 古典＋音樂劇。</div></div><div class="art-li"><span class="art-li-m">4</span><div class="art-li-t"><b>紐約</b> — 行程高潮。</div></div><div class="art-li"><span class="art-li-m">5</span><div class="art-li-t"><b>溫哥華</b> — 山海減壓，執整心情。</div></div><div class="art-li"><span class="art-li-m">6</span><div class="art-li-t"><b>東京（轉機）</b> — 返港前最後衝刺：輕裝 hand-carry 玩法，行李留返轉機，人出境爆買，戰利品塞背囊上機。</div></div></div>
   <div class="art-tip"><b>⚠️ 轉機血拼老實講：</b>轉機時數以實際出票航班為準，唔係保證值——delay 有機會壓到得返十個鐘。出票時揀 20 鐘以上嘅接駁先夠玩；買唔成咪當普通轉機。</div>
   <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🛍️</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>東京轉機爆買示意：hand-carry 行李＋購物袋，帶出「輕裝快閃」玩法。</figcaption></figure>
   <div class="art-kv"><div class="art-kv-i"><span>商務逐程買（估）</span><b>≈ HK$15–20 萬</b></div><div class="art-kv-i hot"><span>用 Asia Miles</span><b>230,000 里</b></div><div class="art-kv-i"><span>另加 YQ＋稅</span><b>約 HK$5–8 千</b></div></div>
@@ -1457,7 +1465,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="panel" style="font-size:13.5px;line-height:2">香港 HKG →(轉機)多哈 DOH-  馬爾代夫 MLE (停)<br>馬爾代夫 MLE - 開羅 CAI (停)<br>開羅 CAI - 紐約 JFK (停)<br>紐約 JFK - 洛杉磯 LAX (停)<br>洛杉磯 LAX - 香港 HKG</div>
   <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🏝️</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>馬爾代夫水上屋／開羅金字塔拼圖，帶出「印度洋離島 × 北非古國」嘅反差。</figcaption></figure>
   <h2 class="art-h">逐站點玩</h2>
-  <p class="art-p"><b>馬爾代夫</b>——水上屋度假開波，商務飛入去本身已經係體驗。<b>開羅</b>——金字塔、尼羅河，古文明震撼。<b>紐約</b>——由沙漠古城跳落現代之巔。<b>洛杉磯</b>——加州陽光收尾先返港。</p>
+  <div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>馬爾代夫</b> — 水上屋度假開波，商務飛入去本身已經係體驗。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>開羅</b> — 金字塔、尼羅河，古文明震撼。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t"><b>紐約</b> — 由沙漠古城跳落現代之巔。</div></div><div class="art-li"><span class="art-li-m">4</span><div class="art-li-t"><b>洛杉磯</b> — 加州陽光收尾先返港。</div></div></div>
   <p class="art-p">四站四個世界：印度洋離島、北非古國、美東美西——單獨飛邊個都貴到肉赤，一張票 250,000 里全包。</p>
   <div class="art-kv"><div class="art-kv-i"><span>商務逐程買（估）</span><b>≈ HK$18–25 萬</b></div><div class="art-kv-i hot"><span>用 Asia Miles</span><b>250,000 里</b></div><div class="art-kv-i"><span>另加 YQ＋稅</span><b>約 HK$6–9 千</b></div></div>
 <p class="art-p" style="text-align:center;margin:14px 0"><button type="button" class="btn-sm pri" data-owdiy="z11">🛠️ 遠洲探索：一撳載入規劃器自己 DIY</button></p>  <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgW0"><span>🗂️</span><div><b>五條線總覽</b><i>五個預算級別一眼睇</i></div></button><button type="button" class="art-more-i" data-open="pgW13"><span>🌏</span><div><b>區13・六大洲極限</b><i>最終回：兩個開口＋極光門戶</i></div></button></div>
@@ -1475,7 +1483,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <p class="art-p"><b>奧斯陸 ⤳ 赫爾辛基</b>——飛入奧斯陸，玩完自己過去赫爾辛基再上機。呢程北歐短途單程平到 <b>HK$300–1,500</b>。兩個都係<b>極光門戶</b>：想見真極光，喺呢度加返程內陸機北上特羅姆瑟或者羅瓦涅米。</p>
   <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🐧</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>里約基督像／開普敦桌山／南極企鵝其中之一，帶出開口城市嘅玩法。</figcaption></figure>
   <h2 class="art-h">其餘各站</h2>
-  <p class="art-p"><b>悉尼・奧克蘭</b>——澳紐雙城開波。<b>開普敦</b>——桌山、好望角、酒莊。<b>三藩市・紐約</b>——美國東西岸壓軸。<b>珀斯／檀香山（轉機）</b>——輕裝快閃：行李留轉機，人出去唞一唞。</p>
+  <div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>悉尼・奧克蘭</b> — 澳紐雙城開波。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>開普敦</b> — 桌山、好望角、酒莊。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t"><b>三藩市・紐約</b> — 美國東西岸壓軸。</div></div><div class="art-li"><span class="art-li-m">4</span><div class="art-li-t"><b>珀斯／檀香山（轉機）</b> — 輕裝快閃：行李留轉機，人出去唞一唞。</div></div></div>
   <div class="art-tip"><b>⚠️ 老實講：</b>①轉機時數以實際航班為準，delay 會壓縮，唔好期望必定夠鐘出去玩。②開口嗰兩程接駁機自己出錢買，上面價錢係 2026-07 格價網水平，出發前自行格返。</div>
   <div class="art-kv"><div class="art-kv-i"><span>商務逐程買（估）</span><b>≈ HK$25–35 萬</b></div><div class="art-kv-i hot"><span>用 Asia Miles</span><b>280,000 里</b></div><div class="art-kv-i"><span>YQ＋稅＋開口機</span><b>約 HK$1.2–2 萬</b></div></div>
 <p class="art-p" style="text-align:center;margin:14px 0"><button type="button" class="btn-sm pri" data-owdiy="z13">🛠️ 六大洲極限：一撳載入規劃器自己 DIY</button></p>  <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgW0"><span>🗂️</span><div><b>五條線總覽</b><i>五個預算級別一眼睇</i></div></button><button type="button" class="art-more-i" data-open="pgG4"><span>🌏</span><div><b>環球票規則篇</b><i>5停2轉2開點計</i></div></button><button type="button" class="art-more-i" data-open="pgG5"><span>⚠️</span><div><b>新手七個伏</b><i>埋單前必讀</i></div></button></div>
@@ -1497,7 +1505,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <figure class="art-fig"><div class="art-fig-ph"><div class="fic">📊</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>一個簡單對照表或長條圖：短途 vs 長途 YQ 大約金額；或者國泰官方「燃油附加費表」嘅截圖。</figcaption></figure>
   <h2 class="art-h">環球票要特別留意</h2>
   <p class="art-p">環球票飛好多段，每段都可能有 YQ，加埋隨時成 <b>HK$1–2 萬</b>。段數越多、長途段越多，YQ 越貴。所以砌環球票唔淨係睇里數，仲要預埋呢舊現金——規劃器計到里數，但 YQ 要出票果陣先睇到實數。</p>
-  <div class="art-tip"><b>💡 點樣慳 YQ？</b>①揀 YQ 收得平嘅航空公司出票（同一條 oneworld 航線，用亞洲萬里通出通常平過用夥伴自己個 program）；②減少不必要嘅長途段；③留意有啲航線／促銷會減免 YQ。出票前格清楚每個組合嘅 YQ，可以差好遠。</p>
+  <div class="art-tip"><b>💡 點樣慳 YQ？</b>①揀 YQ 收得平嘅航空公司出票（同一條 oneworld 航線，用亞洲萬里通出通常平過用夥伴自己個 program）；②減少不必要嘅長途段；③留意有啲航線／促銷會減免 YQ。出票前格清楚每個組合嘅 YQ，可以差好遠。</div>
   <p class="art-p art-cap">實際 YQ 同稅以出票當日、你揀嘅航空公司同航線為準；上面數字係粗略估算，會跟油價變。（以國泰亞洲萬里通官方公佈為準。）</p>
     <div class="ext-row"><span class="ext-row-h">官方查證：</span><a class="ext-link" data-ext="asiamiles" target="_blank" rel="noopener">Asia Miles 官方 ↗</a><a class="ext-link" data-ext="cathayRedeem" target="_blank" rel="noopener">國泰兌換頁 ↗</a></div>
   <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgG3"><span>✈️</span><div><b>標準獎勵換機票</b><i>六區里數＋YQ 一齊計</i></div></button><button type="button" class="art-more-i" data-open="pgG4"><span>🌏</span><div><b>寰宇一家環球票</b><i>多段 YQ 點加埋</i></div></button><button type="button" class="art-more-i" data-open="pgG5"><span>⚠️</span><div><b>新手最易中嘅七個伏</b><i>YQ 只係其中一伏</i></div></button></div>
@@ -1511,7 +1519,8 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="art-lead">渣打國泰 Mastercard 係好多人第一張里數卡（年薪要求得 $96,000）。今個 7 月官方突然加碼，仲要三大平台各自再疊獨家——但死線係 <b>7 月 23 日</b>，得返一個星期。</div>
   <figure class="art-fig"><div class="art-fig-ph"><div class="fic">⏰</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>渣打國泰卡卡面＋大字倒數「7.23」設計圖，強調死線緊迫。</figcaption></figure>
   <h2 class="art-h">加碼點砌</h2>
-  <p class="art-p"><b>①免簽賬加碼</b>——新客用平台推廣碼申請，免簽賬即 +11,000 里（現有客 +7,000）。<b>②順手開戶</b>——開綜合存款戶口存 $5,000，新客再 +10,000 里。<b>③基本迎新</b>——簽 $5,000／$40,000／$110,000 三級累計。<b>④盲盒抽獎</b>——申請自動入場，大獎歐洲雙人商務來回機票，保底 2,000 里。全部食晒＝高達 143,000 里。</p>
+  <div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>免簽賬加碼</b> — 新客用平台推廣碼申請，免簽賬即 +11,000 里（現有客 +7,000）。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>順手開戶</b> — 開綜合存款戶口存 $5,000，新客再 +10,000 里。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t"><b>基本迎新</b> — 簽 $5,000／$40,000／$110,000 三級累計。</div></div><div class="art-li"><span class="art-li-m">4</span><div class="art-li-t"><b>盲盒抽獎</b> — 申請自動入場，大獎歐洲雙人商務來回機票，保底 2,000 里。</div></div></div>
+  <div class="art-hl">全部食晒＝高達 <b>143,000 里</b>。</div>
   <h2 class="art-h">平台獨家再疊</h2>
   <p class="art-p"><b>小斯</b>（07-15 至 23，碼 HKRSIUC11000）：新舊客 $500 Apple Gift Card／超市禮券。<b>里先生</b>（碼 HKRMRM11000）：88 里賞金（≈HK$88，填 form 拎）。二揀一，唔可以疊。</p>
   <div class="art-tip"><b>⚠️ 三件套提醒：</b>迎新窗口只有 2 個月（比一般短）；渣打通病係好多優惠要<b>預先登記</b>；DCC 揀港幣結算嘅海外簽賬唔計數仲要多畀 1%。</div>
@@ -1574,9 +1583,9 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="art-lead">申請信用卡經比較平台指定連結行，銀行迎新之外通常有平台獨家獎賞（禮券／現金／里賞金）。三個平台機制唔同，呢篇一次過講清楚。</div>
   <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🧭</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>三個平台 logo 並排＋「link→申請→填form→領獎」四步流程圖。</figcaption></figure>
   <h2 class="art-h">三家機制速記</h2>
-  <p class="art-p"><b>小斯（flyformiles）</b>——靠 cookie 追蹤：撳咗佢條 link 之後唔好再撳其他網站嘅申請連結、唔好用無痕模式、唔好開 adblock、唔好用公司電腦；部分卡要另外填 Google Form。<b>里先生（MrMiles）</b>——會員平台制：申請完要去佢平台填 form，獎賞以「里賞金」派（1 里賞金 ≈ HK$1，可 FPS 提現，每日上限 $3,000）。<b>MoneyHero</b>——表格制：必須由佢個表格入去申請，之後 7 日內填佢電郵發出嘅換領表格，部分要求批卡後簽夠指定金額。</p>
+  <div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>小斯（flyformiles）</b> — 靠 cookie 追蹤——撳咗佢條 link 之後唔好再撳其他網站嘅申請連結、唔好用無痕模式、唔好開 adblock、唔好用公司電腦；部分卡要另外填 Google Form。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>里先生（MrMiles）</b> — 會員平台制——申請完要去佢平台填 form，獎賞以「里賞金」派（1 里賞金 ≈ HK$1，可 FPS 提現，每日上限 $3,000）。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t"><b>MoneyHero</b> — 表格制——必須由佢個表格入去申請，之後 7 日內填佢電郵發出嘅換領表格，部分要求批卡後簽夠指定金額。</div></div></div>
   <h2 class="art-h">通用鐵律</h2>
-  <p class="art-p">①同一張卡通常<b>只可以揀一個平台</b>嘅獨家獎賞，唔好貪心撳晒三條 link（cookie 會打架）。②截圖留底：申請成功頁、日期、申請編號。③獎賞係平台派唔係銀行派，同銀行客服講冇用。④平台數字同官方有出入時，一律以官方 T&C 為準。</p>
+  <div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t">同一張卡通常<b>只可以揀一個平台</b>嘅獨家獎賞，唔好貪心撳晒三條 link（cookie 會打架）。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>截圖留底</b>：申請成功頁、日期、申請編號。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t">獎賞係<b>平台派唔係銀行派</b>，同銀行客服講冇用。</div></div><div class="art-li"><span class="art-li-m">4</span><div class="art-li-t">平台數字同官方有出入時，<b>一律以官方 T&C 為準</b>。</div></div></div>
   <div class="art-tip"><b>📢 快訊：Mox 9 月變陣。</b>Mox 信用卡由 2026-09-01 起，出糧唔再解鎖 HK$5=1 里／2% CashBack（以後要 Mox+ 先解鎖；未解鎖係 $10=1 里）。用開 Mox 儲里嘅朋友要重新計數。</div>
     <div class="ext-row"><span class="ext-row-h">三大平台官網：</span><a class="ext-link" data-ext="mrmiles" target="_blank" rel="noopener">里先生 MrMiles ↗</a><a class="ext-link" data-ext="flyformiles" target="_blank" rel="noopener">小斯 FlyForMiles ↗</a><a class="ext-link" data-ext="moneyhero" target="_blank" rel="noopener">MoneyHero ↗</a></div>
   <p class="ext-note">以上為第三方公開連結，方便你自行前往；本 app 現時冇任何 referral／聯盟收益（見「關於」利益披露）。實際優惠、細則一律以該平台及銀行官方最新公佈為準。</p>
@@ -4748,15 +4757,19 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         window._pgZ = (window._pgZ || 150) + 1;
         pg.style.zIndex = window._pgZ;
         try{ pg.scrollTop = 0; }catch(_){}
-        /* v6.13.0：手機上 position:fixed 圖層 hidden→顯示唔一定即刻重繪（要切 tab 先彈出）——強制 reflow + 重新合成一次圖層 */
+        /* v6.17.0：Samsung/Android 上 position:fixed + sticky 子元素，hidden→顯示唔一定即刻 paint（要另一動作先彈出）。
+           用 display none→逼 reflow→還原，逼一次完整 reflow+repaint（比 translateZ 一幀可靠好多）；
+           收尾用 removeProperty('display') 清走 inline，等返回掣個 hidden=true 照閂到頁。 */
+        pg.style.display = 'none';
         void pg.offsetHeight;
-        pg.style.transform = 'translateZ(0)';
-        requestAnimationFrame(function(){ if (pg) pg.style.transform = ''; });
+        pg.style.removeProperty('display');
+        void pg.offsetHeight;
+        try{ pg.scrollTop = 0; }catch(_){}
       }
       return;
     }
     var bk = e.target && e.target.closest ? e.target.closest('.pg-back') : null;
-    if (bk){ var p2 = $(bk.getAttribute('data-pg')); if (p2) p2.hidden = true; }
+    if (bk){ var p2 = $(bk.getAttribute('data-pg')); if (p2){ p2.style.removeProperty('display'); p2.hidden = true; } }
   });
   /* menu 行為 */
   (function(){

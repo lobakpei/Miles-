@@ -167,6 +167,8 @@ html.dark .tabs button{box-shadow:none}
 .tabs button.on{background:linear-gradient(135deg,var(--jade-btn),var(--jade-btn2));color:#fff;border-color:var(--jade)}
 
 main{max-width:680px;margin:0 auto;padding:16px 18px 40px}
+/* v6.33.2：畫面縮放只套落內容（tab section＋文章頁），浮層/header/nav 保持 100% 免爆 */
+main > section, .page{zoom:var(--app-zoom, 1)}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(21,37,32,.04)}
 html.dark .panel{box-shadow:none}
 .eyebrow{font-size:12px;font-weight:700;color:var(--jade);letter-spacing:1.5px;margin-bottom:8px}
@@ -5311,14 +5313,13 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   }
   /* v5.0：外觀切換遷入設定 sheet（見下面 shell 段） */
 
-  /* ---------- 畫面縮放：slider 拉大細，CSS zoom 縮放成個 app，儲 bm_zoom（數字 %，default 100） ---------- */
+  /* ---------- 畫面縮放：slider 拉大細，只 zoom tab 內容＋文章頁（--app-zoom），浮層/header/nav 保持 100% 免爆，儲 bm_zoom（數字 %，default 100） ---------- */
   function zoomLevel(){ var v = parseInt(store.get('bm_zoom'), 10); return (v >= 70 && v <= 130) ? v : 100; }
   function applyZoom(){
     var lv = zoomLevel();
-    document.documentElement.style.zoom = lv === 100 ? '' : String(lv / 100);
+    document.documentElement.style.setProperty('--app-zoom', String(lv / 100));
     var vv = document.getElementById('zoomVal'); if (vv) vv.textContent = lv + '%';
     var rg = document.getElementById('zoomRange'); if (rg && parseInt(rg.value, 10) !== lv) rg.value = lv;
-    try{ window.dispatchEvent(new Event('resize')); }catch(e){} /* 令收縮 header 用新 zoom 重新量度 */
   }
 
   /* ---------- 分享 plan（Web Share，冇就複製） ---------- */
@@ -5433,6 +5434,8 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
      ══ Robert：申請好客服 email 之後，貼入下面對引號（例：'hello@bigmiles.hk'）══
      留空＝面板照用，會見「客服電郵開通中」；一填即自動變「電郵我哋」掣。 */
   var CS_EMAIL = 'support@acremiles.app';
+  /* v6.33.2：喺 CS_EMAIL 賦值之後至此先隱藏「開通中」——mnContact init 喺此之前執行，嗰時 CS_EMAIL（var hoist）仲係 undefined，所以嗰度 hide 唔到 */
+  if (CS_EMAIL){ var _mcn = document.getElementById('mnContactNote'); if (_mcn) _mcn.hidden = true; }
   var FAQS = [
     /* ═══ 賺里數計算器 ═══ */
     {c:'賺里數計算器', q:'迎新係咪一定攞到？',

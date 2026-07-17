@@ -1,4 +1,4 @@
-<!-- build: 2026-07-17 UK — v6.31.0：①修 pgG4 結構 bug——line 1360 mchart 後有 stray「表以官網為準。」＋2 個多餘 </div>，令 pgG4 提早收，令「玩之前規矩/點出票/實例①②/延伸閱讀/免責」漏出 .page 外落主 tab（冇 18px padding 就貼邊）；刪走 stray＋補返正確巢狀，內容返 pgG4 內有返 padding。②頂 bar logo 34→28px 收細。③shrunk bar 底加圓角 0 0 18px 18px（唔再死方形）。原 v6.30.0 -->
+<!-- build: 2026-07-17 UK — v6.31.1：修頂 bar 大/細切換抽搐(cyber psycho)——①hero-row max-height 140→72px 貼近實際高度令收縮均勻(原本頭68%冇變、尾突然clip)；②html,body 加 overflow-anchor:none 禁 scroll-anchor 補償同動畫搶位；③scroll listener 加 hysteresis(shrink要>64、un-shrink要<20，中間band唔flip-flop)；④.hdr 同 hero-row transition 統一.2s ease 同步。原 v6.31.0（pgG4結構修復＋logo28px＋shrunk圓角）-->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -136,7 +136,7 @@ html{-webkit-text-size-adjust:100%}
 /* ══ v6.28 app-feel：似 native app ══ */
 *{scrollbar-width:none;-webkit-tap-highlight-color:transparent}
 *::-webkit-scrollbar{display:none;width:0;height:0}
-html,body{overscroll-behavior:none}
+html,body{overscroll-behavior:none;overflow-anchor:none}
 body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-select:text}
 .page{-webkit-user-select:text;user-select:text} /* 文章內容可 copy（優惠碼等） */
@@ -593,9 +593,9 @@ main{position:relative;z-index:2;margin-top:-13px}
 .hdr-btns{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;gap:14px}
 .hdr-ico.plain{width:auto;height:auto;background:none;border:none;border-radius:0;color:#fff;padding:0;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))}
 .hdr-ico.plain svg{width:23px;height:23px}
-.hero-row{max-width:680px;margin:34px auto 0;display:flex;align-items:flex-end;gap:10px;overflow:hidden;transition:max-height .26s ease,margin-top .24s ease,opacity .2s ease;max-height:140px}
+.hero-row{max-width:680px;margin:34px auto 0;display:flex;align-items:flex-end;gap:10px;overflow:hidden;transition:max-height .2s ease,margin-top .2s ease,opacity .16s ease;max-height:72px}
 /* v6.30：收縮頂 bar——.hdr sticky 常駐，scroll 落收埋 hero-row，淨返 slim bar（logo＋?＋⋯） */
-.hdr{position:sticky;top:0;z-index:44;transition:padding .24s ease,border-radius .24s ease,box-shadow .24s ease}
+.hdr{position:sticky;top:0;z-index:44;transition:padding .2s ease,border-radius .2s ease,box-shadow .2s ease}
 .hdr.shrunk{padding-top:calc(7px + env(safe-area-inset-top));padding-bottom:9px;border-radius:0 0 18px 18px;box-shadow:0 4px 16px rgba(0,20,26,.22);background-image:linear-gradient(135deg,#0B5E74,#16A9C4)}
 .hdr.shrunk .hero-row{max-height:0;margin-top:0;opacity:0;pointer-events:none}
 .hero-copy{flex:1;min-width:0}
@@ -5066,7 +5066,12 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     var hdr = document.querySelector('.hdr');
     if (!hdr) return;
     var ticking = false;
-    function upd(){ hdr.classList.toggle('shrunk', window.scrollY > 24); ticking = false; }
+    function upd(){
+      var y = window.scrollY, on = hdr.classList.contains('shrunk');
+      if (!on && y > 64) hdr.classList.add('shrunk');
+      else if (on && y < 20) hdr.classList.remove('shrunk');
+      ticking = false;
+    }
     window.addEventListener('scroll', function(){
       if (!ticking){ ticking = true; requestAnimationFrame(upd); }
     }, {passive: true});

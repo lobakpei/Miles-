@@ -5046,11 +5046,18 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       t.hidden = true;
     }
   });
-  /* 畝里：撳 panel 外面即閂 */
+  /* 畝里：撳 panel 外面即閂。
+     ⚠️ 用 capture 階段先擷取「撳咗面板內」狀態——因為撳 topic 會即刻 $('robotBody').innerHTML=... 重 render，
+     令你撳嗰粒元素由 DOM 移走；若等到 bubble 階段先用 closest 查，target 已 detached、查唔到 #robotPanel，
+     就會誤當你撳咗外面而閂走面板（就係「一撳 topic 就彈走」個 bug）。capture 喺 target handler 之前跑，嗰時仲 attached。 */
+  var _clkInRobot = false;
+  document.addEventListener('click', function(e){
+    _clkInRobot = !!(e.target && e.target.closest && (e.target.closest('#robotPanel') || e.target.closest('#robotBtn') || e.target.closest('#mnRobot')));
+  }, true);
   document.addEventListener('click', function(e){
     var p = $('robotPanel');
     if (!p || p.hidden) return;
-    if (e.target.closest('#robotPanel') || e.target.closest('#robotBtn') || e.target.closest('#mnRobot')) return;
+    if (_clkInRobot) return;
     p.hidden = true;
   });
 

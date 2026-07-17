@@ -1,4 +1,4 @@
-<!-- build: 2026-07-16 UK — v6.26.4：pgW0（環球票總覽）hero=五景 polaroid「5條環球玩法你揀邊個」、pgO3（AE白金）hero=白金卡「1,000,000分」深綠底——換走各自 figure[0] demo，同時設列表縮圖（pgW0喺GUIDES、pgO3喺ARTICLES）；sw CORE 加 2 圖。原 v6.26.3 -->
+<!-- build: 2026-07-17 UK — v6.27.2：填入客服電郵 CS_EMAIL=support@acremiles.app（啟動設定選單「聯絡我哋」、仙姐答唔到時「電郵問我哋」、robot footer「電郵我哋」全部 mailto 掣）。原 v6.27.1 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -623,16 +623,15 @@ html.dark .fav-btn{color:#5E7E86}
 .show-wrap{margin:2px 0 16px}
 .show-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-radius:16px}
 .show-row::-webkit-scrollbar{display:none}
-.show-card{flex:0 0 100%;scroll-snap-align:center;display:flex;align-items:center;gap:12px;min-height:112px;padding:16px 18px;border:none;text-align:left;color:#fff}
+.show-card{position:relative;flex:0 0 100%;scroll-snap-align:center;aspect-ratio:16/9;border:none;padding:0;overflow:hidden;display:block;text-align:left;color:#fff;background:linear-gradient(135deg,#0E6E85,var(--jade))}
 .show-card.g1{background:linear-gradient(135deg,#0E6E85,var(--jade))}
 .show-card.g2{background:linear-gradient(135deg,var(--jade-btn),var(--jade-btn2))}
 .show-card.g3{background:linear-gradient(135deg,#0B5E74,#17BFA6)}
 .show-card.g4{background:linear-gradient(135deg,#12557E,#16A9C4)}
-.sc-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
-.sc-tag{align-self:flex-start;font-size:10.5px;font-weight:800;letter-spacing:1px;background:rgba(255,255,255,.22);border-radius:6px;padding:2px 8px}
-.sc-txt b{font-size:16.5px;font-weight:800;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.sc-d{font-size:12.5px;opacity:.85;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
-.sc-emoji{font-size:40px;flex:none;filter:drop-shadow(0 2px 6px rgba(0,20,26,.3))}
+.sc-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.sc-overlay{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:34px 16px 14px;background:linear-gradient(to top,rgba(4,26,32,.74) 0%,rgba(4,26,32,.32) 46%,rgba(4,26,32,0) 100%)}
+.sc-tag{font-size:10.5px;font-weight:800;letter-spacing:1px;background:rgba(255,255,255,.24);border-radius:6px;padding:2px 8px}
+.sc-overlay b{font-size:17px;font-weight:900;line-height:1.28;text-shadow:0 1px 8px rgba(0,18,24,.55);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .show-dots{display:flex;gap:5px;justify-content:center;margin-top:8px}
 .show-dots i{width:6px;height:6px;border-radius:50%;background:var(--line);transition:background .2s}
 .show-dots i.on{background:var(--jade);width:16px;border-radius:3px}
@@ -1009,7 +1008,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
         <button type="button" class="chip" data-satrip="rt">來回（×2）</button>
       </div>
       <div id="saResult"></div>
-      <div class="fee-note" style="margin-top:12px">來源（全部官方，2026-07-11）：24 格里數＝官方計算機逐格查證（單程；來回＝×2 已交叉核對）；距離區間＋類別1/2 國家分界＝國泰官方「修訂飛行距離區域」頁；大圓距離＝官方標準獎勵條款第 3 條明文計法。呢張表淨係換<b>國泰自營航班</b>——日航／英航等 oneworld 夥伴係另一套（睇「環球票」子頁或官方夥伴獎勵）。里數以外仲要畀 YQ＋稅費現金。<br><a class="ext-link" data-ext="asiamiles" target="_blank" rel="noopener" style="margin-top:8px">Asia Miles 官方獎勵機票頁 ↗</a> <a class="ext-link" data-ext="cathayRedeem" target="_blank" rel="noopener">國泰兌換頁 ↗</a></div>
+      <div class="fee-note" style="margin-top:12px">來源（全部官方，2026-07-11）：24 格里數＝官方計算機逐格查證（單程；來回＝×2 已交叉核對）；距離區間＋類別1/2 國家分界＝國泰官方「修訂飛行距離區域」頁；大圓距離＝官方標準獎勵條款第 3 條明文計法。呢張表淨係換<b>國泰自營航班</b>——日航／英航等 oneworld 夥伴係另一套（睇「環球票」子頁或官方夥伴獎勵）。里數以外仲要畀 YQ＋稅費現金。<br><a class="ext-link" data-ext="cathayRedeem" target="_blank" rel="noopener" style="margin-top:8px">國泰官方兌換頁 ↗</a></div>
     </div>
   </div>
 
@@ -1518,7 +1517,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <p class="art-p">環球票飛好多段，每段都可能有 YQ，加埋隨時成 <b>HK$1–2 萬</b>。段數越多、長途段越多，YQ 越貴。所以砌環球票唔淨係睇里數，仲要預埋呢舊現金——規劃器計到里數，但 YQ 要出票果陣先睇到實數。</p>
   <div class="art-tip"><b>💡 點樣慳 YQ？</b>①揀 YQ 收得平嘅航空公司出票（同一條 oneworld 航線，用亞洲萬里通出通常平過用夥伴自己個 program）；②減少不必要嘅長途段；③留意有啲航線／促銷會減免 YQ。出票前格清楚每個組合嘅 YQ，可以差好遠。</div>
   <p class="art-p art-cap">實際 YQ 同稅以出票當日、你揀嘅航空公司同航線為準；上面數字係粗略估算，會跟油價變。（以國泰亞洲萬里通官方公佈為準。）</p>
-    <div class="ext-row"><span class="ext-row-h">官方查證：</span><a class="ext-link" data-ext="asiamiles" target="_blank" rel="noopener">Asia Miles 官方 ↗</a><a class="ext-link" data-ext="cathayRedeem" target="_blank" rel="noopener">國泰兌換頁 ↗</a></div>
+    <div class="ext-row"><span class="ext-row-h">官方查證：</span><a class="ext-link" data-ext="cathayRedeem" target="_blank" rel="noopener">國泰官方兌換頁 ↗</a></div>
   <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgG3"><span>✈️</span><div><b>標準獎勵換機票</b><i>六區里數＋YQ 一齊計</i></div></button><button type="button" class="art-more-i" data-open="pgG4"><span>🌏</span><div><b>寰宇一家環球票</b><i>多段 YQ 點加埋</i></div></button><button type="button" class="art-more-i" data-open="pgG5"><span>⚠️</span><div><b>新手最易中嘅七個伏</b><i>YQ 只係其中一伏</i></div></button></div>
   <div class="art-foot">燃油附加費、稅項同細節以各航空公司及國泰亞洲萬里通條款為準，以官網公佈為準；金額跟油價浮動。</div>
   </div>
@@ -4932,13 +4931,17 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   })();
 
   /* ══════════ v6.1 SHOWCASE（旅程頂宣傳輪播）＋統一浮層行為 ══════════ */
-  var SOCIAL_LINKS = {ig: '', fb: ''}; /* ← Robert 填：IG／FB 連結；空＝暫 toast */
+  var SOCIAL_LINKS = {ig: 'https://www.instagram.com/acremiles', fb: ''}; /* IG 已填(@acremiles)；FB 頁 URL 待 Robert 畀確實 slug；兩者皆空先 toast */
   function buildShowcase(){
     var s = [];
-    s.push({emoji: '📬', tag: '訂閱', t: '唔想走漏迎新？', d: '訂閱最新優惠速報', act: 'sub', bg: 'g1'});
-    if (typeof GUIDES !== 'undefined' && GUIDES[0]) s.push({emoji: GUIDES[0].emoji || '🗺️', tag: '攻略', t: GUIDES[0].t, d: GUIDES[0].d, act: 'pg', pg: GUIDES[0].pg, bg: 'g2'});
-    if (typeof ARTICLES !== 'undefined' && ARTICLES[0]) s.push({emoji: ARTICLES[0].emoji || '🎁', tag: '優惠', t: ARTICLES[0].t, d: ARTICLES[0].d || '', act: 'tab', tab: 'articles', bg: 'g3'});
-    s.push({emoji: '📱', tag: 'Follow', t: '追埋我哋 social', d: 'IG／FB 最新里數情報', act: 'social', bg: 'g4'});
+    /* 訂閱：圖已含大標題文字 → bare（唔疊字，避免重疊） */
+    s.push({tag: '訂閱', act: 'sub', bg: 'g1', img: 'img/banner-sub.jpg', bare: true, alt: '唔想走漏迎新？訂閱優惠速報'});
+    /* 攻略：文章 hero 圖（無 baked 文字）→ 疊 tag＋標題 */
+    if (typeof GUIDES !== 'undefined' && GUIDES[0]) s.push({tag: '攻略', t: GUIDES[0].t, act: 'pg', pg: GUIDES[0].pg, bg: 'g2', img: GUIDES[0].img || 'img/pgG1-hero.jpg', alt: GUIDES[0].t});
+    /* 優惠：AE白金 pgO3 圖已 baked「1,000,000分 迎新獎賞」文字 → bare 唔疊字，撳去優惠 tab（優惠入口） */
+    s.push({tag: '優惠', act: 'tab', tab: 'articles', bg: 'g3', img: 'img/pgO3-hero.jpg', bare: true, alt: 'AE 白金 100 萬分迎新獎賞'});
+    /* Follow：圖已含 handle 文字 → bare */
+    s.push({tag: 'Follow', act: 'social', bg: 'g4', img: 'img/banner-follow.jpg', bare: true, alt: 'Follow 我哋 social'});
     return s.slice(0, 5);
   }
   var _shTimer = null, _shIdx = 0;
@@ -4948,10 +4951,11 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     var s = buildShowcase();
     if (!s.length){ wrap.hidden = true; return; }
     row.innerHTML = s.map(function(c, i){
-      return '<button type="button" class="show-card ' + c.bg + '" data-shi="' + i + '">' +
-        '<div class="sc-txt"><span class="sc-tag">' + esc(c.tag) + '</span>' +
-        '<b>' + esc(c.t) + '</b><span class="sc-d">' + esc(c.d) + '</span></div>' +
-        '<div class="sc-emoji" aria-hidden="true">' + esc(c.emoji) + '</div></button>';
+      var bg = c.img ? '<img class="sc-bg" src="' + esc(c.img) + '" alt="" loading="lazy">' : '';
+      var overlay = c.bare ? '' :
+        '<div class="sc-overlay"><span class="sc-tag">' + esc(c.tag) + '</span><b>' + esc(c.t || '') + '</b></div>';
+      return '<button type="button" class="show-card ' + c.bg + '" data-shi="' + i + '"' +
+        (c.alt ? ' aria-label="' + esc(c.alt) + '"' : '') + '>' + bg + overlay + '</button>';
     }).join('');
     dots.innerHTML = s.map(function(_, i){ return '<i' + (i ? '' : ' class="on"') + '></i>'; }).join('');
     wrap.hidden = false;
@@ -5070,7 +5074,6 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     mrmiles:      'https://www.mrmiles.hk/',
     flyformiles:  'https://www.flyformiles.hk/',
     moneyhero:    'https://www.moneyhero.com.hk/zh/credit-card',
-    asiamiles:    'https://www.asiamiles.com/zh-hk/redeem-awards/flight-awards.html',
     cathayRedeem: 'https://www.cathaypacific.com/cx/zh_HK/book-a-trip/redeem-flights/redeem-flight-awards.html'
   };
   function initExtLinks(){
@@ -5353,7 +5356,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   /* ---------- AcreMiles 助手（右下角規則式 FAQ） ----------
      ══ Robert：申請好客服 email 之後，貼入下面對引號（例：'hello@bigmiles.hk'）══
      留空＝面板照用，會見「客服電郵開通中」；一填即自動變「電郵我哋」掣。 */
-  var CS_EMAIL = '';
+  var CS_EMAIL = 'support@acremiles.app';
   var FAQS = [
     /* ═══ 賺里數計算器 ═══ */
     {c:'賺里數計算器', q:'迎新係咪一定攞到？',

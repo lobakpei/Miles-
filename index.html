@@ -564,6 +564,14 @@ html.dark .tabs button.on{color:var(--jade)}
 .sheet-head b{font-size:17px}
 .sheet-head button{margin-left:auto;width:36px;height:36px;border-radius:10px;background:var(--field);border:1px solid var(--line);font-size:15px;display:flex;align-items:center;justify-content:center}
 .set-row{padding:14px 0 13px;border-top:1px solid var(--line)}
+.zoom-ctrl{display:flex;align-items:center;gap:10px}
+.zoom-ctrl .za{font-weight:800;color:var(--mut);flex:none;line-height:1}
+.zoom-ctrl .za.sm{font-size:12px}
+.zoom-ctrl .za.lg{font-size:20px}
+.zoom-ctrl input[type=range]{flex:1;min-width:0;-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;background:var(--line);outline:none;margin:0}
+.zoom-ctrl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:var(--jade);border:2px solid #fff;box-shadow:0 1px 5px rgba(0,20,26,.35);cursor:pointer}
+.zoom-ctrl input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--jade);border:2px solid #fff;cursor:pointer}
+.zoom-val{flex:none;min-width:48px;text-align:right;font-weight:800;color:var(--jade);font-size:14px}
 .set-k{font-size:12.5px;color:var(--mut);font-weight:700;letter-spacing:.4px;margin-bottom:9px}
 .seg{display:flex;background:var(--field);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
 .seg button{flex:1;padding:8px 4px;border-radius:9px;font-size:13.5px;font-weight:700;color:var(--mut)}
@@ -1182,11 +1190,13 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   </div>
   <div class="set-row">
     <div class="set-k">畫面縮放</div>
-    <div class="seg" id="zoomSeg">
-      <button type="button" data-zoom="off">App 感</button>
-      <button type="button" data-zoom="on">無障礙</button>
+    <div class="zoom-ctrl">
+      <span class="za sm" aria-hidden="true">A</span>
+      <input type="range" id="zoomRange" min="70" max="130" step="5" value="100" aria-label="畫面縮放">
+      <span class="za lg" aria-hidden="true">A</span>
+      <span class="zoom-val" id="zoomVal">100%</span>
     </div>
-    <div class="set-note" style="margin-top:9px">App 感＝鎖定唔畀放大，似原生 app；無障礙＝可以雙指放大睇字。轉完即時生效（部分 iPhone 要重開先套用）。</div>
+    <div class="set-note" style="margin-top:9px">拉條 bar 調整成個 app 大細，100% 係預設。轉完即時生效。</div>
   </div>
   <div class="set-row">
     <div class="set-k">安裝到主畫面（離線都用到）</div>
@@ -5301,14 +5311,14 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   }
   /* v5.0：外觀切換遷入設定 sheet（見下面 shell 段） */
 
-  /* ---------- 畫面縮放：App 感(鎖定) / 無障礙(可雙指放大)，儲 bm_zoom（default 鎖定＝App感） ---------- */
-  function zoomPref(){ return store.get('bm_zoom') === 'on' ? 'on' : 'off'; }
+  /* ---------- 畫面縮放：slider 拉大細，CSS zoom 縮放成個 app，儲 bm_zoom（數字 %，default 100） ---------- */
+  function zoomLevel(){ var v = parseInt(store.get('bm_zoom'), 10); return (v >= 70 && v <= 130) ? v : 100; }
   function applyZoom(){
-    var vp = document.querySelector('meta[name="viewport"]');
-    if (!vp) return;
-    vp.setAttribute('content', zoomPref() === 'on'
-      ? 'width=device-width, initial-scale=1, viewport-fit=cover'
-      : 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover');
+    var lv = zoomLevel();
+    document.documentElement.style.zoom = lv === 100 ? '' : String(lv / 100);
+    var vv = document.getElementById('zoomVal'); if (vv) vv.textContent = lv + '%';
+    var rg = document.getElementById('zoomRange'); if (rg && parseInt(rg.value, 10) !== lv) rg.value = lv;
+    try{ window.dispatchEvent(new Event('resize')); }catch(e){} /* 令收縮 header 用新 zoom 重新量度 */
   }
 
   /* ---------- 分享 plan（Web Share，冇就複製） ---------- */
@@ -5711,7 +5721,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       $('setSheet').hidden = !yes;
       $('setBg').hidden = !yes;
     }
-    $('setBtn').addEventListener('click', function(){ sheetShow(true); syncSeg(); syncZoom(); setPwa(); });
+    $('setBtn').addEventListener('click', function(){ sheetShow(true); syncSeg(); applyZoom(); setPwa(); });
     $('setClose').addEventListener('click', function(){ sheetShow(false); });
     $('setBg').addEventListener('click', function(){ sheetShow(false); });
     /* 外觀三段（沿用 bm_theme＋applyTheme） */
@@ -5729,21 +5739,11 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       });
     });
     syncSeg();
-    /* 畫面縮放兩段（bm_zoom＋applyZoom） */
-    var zoomBtns = $('zoomSeg') ? $('zoomSeg').querySelectorAll('button') : [];
-    function syncZoom(){
-      var p = zoomPref();
-      Array.prototype.forEach.call(zoomBtns, function(b){
-        b.classList.toggle('on', b.getAttribute('data-zoom') === p);
-      });
+    /* 畫面縮放 slider（bm_zoom 數字 %＋applyZoom CSS zoom） */
+    var zoomRange = $('zoomRange');
+    if (zoomRange){
+      zoomRange.addEventListener('input', function(){ store.set('bm_zoom', parseInt(zoomRange.value, 10)); applyZoom(); });
     }
-    Array.prototype.forEach.call(zoomBtns, function(b){
-      b.addEventListener('click', function(){
-        store.set('bm_zoom', b.getAttribute('data-zoom'));
-        applyZoom(); syncZoom();
-      });
-    });
-    syncZoom();
     /* PWA 安裝：Android/桌面捕 beforeinstallprompt；iOS 出指示；已裝顯示 ✓ */
     var dp = null;
     var ua = navigator.userAgent || '';

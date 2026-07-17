@@ -1,4 +1,4 @@
-<!-- build: 2026-07-16 UK — v6.26.1：修文章頁頂 header bar 深色模式問題——①page-head 由「側邊有 16px gap、z-index:2」改成全闊實色底（margin:0 -16px 抵銷 .page padding）＋z-index:5＋底部分隔線，杜絕 hero teal 從 header 邊緣/背後透出（Robert 深色模式見到 header 變 teal）②深色 theme-color 由 #1A241F 改 #08252F 夾返 app 深色底，消除 status bar 色差。原 v6.26.0 -->
+<!-- build: 2026-07-16 UK — v6.26.4：pgW0（環球票總覽）hero=五景 polaroid「5條環球玩法你揀邊個」、pgO3（AE白金）hero=白金卡「1,000,000分」深綠底——換走各自 figure[0] demo，同時設列表縮圖（pgW0喺GUIDES、pgO3喺ARTICLES）；sw CORE 加 2 圖。原 v6.26.3 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -1307,7 +1307,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="page-head"><button type="button" class="pg-back" data-pg="pgG3" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>標準獎勵換機票</div>
   <div class="art-hero"><div class="art-hero-tag">換票實戰</div><h1 class="art-hero-t">淨去一個地方？呢篇夠</h1><p class="art-hero-sub">六個距離區、類別 1/2、艙位差幾多——一次計清。</p></div>
   <div class="art-lead">台北來回 14,000 里、日本 26,000——但同一個目的地，<b>經濟同商務差成三倍</b>。換之前計清楚先唔會蝕。</div>
-  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🗺️</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>一張世界地圖，用香港做中心畫出幾條航線（台北／東京／倫敦／紐約），標埋大約里數，帶出「距離分區」概念。</figcaption></figure>
+  <figure class="art-fig"><img src="img/pgG3-hero.jpg" alt="里數換唔同城市機票所需大約里數" loading="lazy"></figure>
   <h2 class="art-h">六個距離區（單程・經濟）</h2>
   <div class="hl-grid"><div class="hl"><div class="hl-n">7k</div><div class="hl-k">台北</div><div class="hl-d">單程經濟</div></div><div class="hl"><div class="hl-n">9k</div><div class="hl-k">新加坡</div><div class="hl-d">單程經濟</div></div><div class="hl"><div class="hl-n">13k</div><div class="hl-k">東京</div><div class="hl-d">單程經濟</div></div><div class="hl"><div class="hl-n">20k</div><div class="hl-k">悉尼</div><div class="hl-d">單程經濟</div></div><div class="hl"><div class="hl-n">27k</div><div class="hl-k">倫敦</div><div class="hl-d">單程經濟</div></div><div class="hl"><div class="hl-n">38k</div><div class="hl-k">紐約</div><div class="hl-d">單程經濟</div></div></div>
   <p class="art-p art-cap">來回＝單程 ×2；商務頭等另有價，越前越貴（東京商務 33,000、倫敦商務 91,000）。</p>
@@ -1329,6 +1329,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   </div>
   <!-- 【可替換：oneworld 官方 logo PNG（透明底），放 hero 作介紹用；未有授權素材前用上方自家示意圖】 -->
   <div class="art-lead">香港出發，停東京、三藩市、紐約、倫敦再返嚟——五個城市、橫跨幾大洲，一張機票一筆里數。呢個叫<b>寰宇一家環球票</b>（oneworld Multi-carrier Award），亞洲萬里通最抵、亦最少人識用嘅一張飛。</div>
+  <figure class="art-fig"><img src="img/pgG4-hero.jpg" alt="寰宇一家環球票一張飛環遊世界" loading="lazy"></figure>
   <div class="art-kv">
     <div class="art-kv-i"><span>市價逐程買</span><b>≈ HK$21 萬</b></div>
     <div class="art-kv-i hot"><span>用 Asia Miles</span><b>265,000 里</b></div>
@@ -1411,7 +1412,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="page-head"><button type="button" class="pg-back" data-pg="pgW0" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>環球票五條示範線・總覽</div>
   <div class="page-body">
   <div class="art-lead">五條線＝五個預算級別，由 <b>12 萬里</b>玩日韓泰，去到 <b>28 萬里</b>踩勻六大洲。每條都用盡規則（停留／開口／轉機），每站都係真旅遊熱點——揀啱你嗰級，撳入去睇逐站點玩。</div>
-  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🗺️</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>一張世界地圖，同時畫出五條線嘅航跡（可用五種顏色區分區6/8/10/11/13），一眼睇晒「由近到遠」嘅格局。</figcaption></figure>
+  <figure class="art-fig"><img src="img/pgW0-hero.jpg" alt="五條環球示範線你揀邊個" loading="lazy"></figure>
   <p class="art-p"><b>🗾 區6・日韓泰（商務 120,000 里）</b>——札幌滑雪→沖繩→東京→首爾→曼谷。5 停。<button type="button" class="art-inline-link" data-open="pgW6">睇全文 →</button></p>
   <p class="art-p"><b>🏔️ 區8・日澳泰（商務 170,000 里）</b>——札幌→福岡→悉尼→清邁。4 停，差 131 哩就到區頂。<button type="button" class="art-inline-link" data-open="pgW8">睇全文 →</button></p>
   <p class="art-p"><b>🌍 區10・歐美環球（商務 230,000 里）</b>——馬德里→巴黎→倫敦→紐約→溫哥華，尾段東京轉機血拼。<button type="button" class="art-inline-link" data-open="pgW10">睇全文 →</button></p>
@@ -1505,7 +1506,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="page-body">
   <div class="art-hero"><div class="art-hero-tag">換票必讀 · 隱藏成本</div><h1 class="art-hero-t">「免費機票」其實要俾幾多錢？</h1><p class="art-hero-sub">里數免嘅係<b>票價</b>，YQ 燃油費同稅要現金硬俾——出票前一定要計埋。</p></div>
   <div class="art-lead">用里數換機票，唔代表零成本。你仲要俾一筆 <b>YQ（燃油附加費）＋機場稅</b>，長途一程隨時上千蚊。呢篇話你知點計、點慳。</div>
-  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🧾</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>一張機票收據／訂位確認截圖，highlight 出「Fuel Surcharge / YQ」同「Tax」嗰兩行，等讀者一睇就知係邊部分要俾現金。</figcaption></figure>
+  <figure class="art-fig"><img src="img/pgG8-hero.jpg" alt="機票里數之外仲要俾YQ燃油附加費" loading="lazy"></figure>
   <div class="art-kv"><div class="art-kv-i"><span>短途每段（估）</span><b>≈ HK$290</b></div><div class="art-kv-i hot"><span>長途每段（估）</span><b>≈ HK$1,164</b></div><div class="art-kv-i"><span>跟油價</span><b>逐月變</b></div></div>
   <h2 class="art-h">YQ 到底係咩</h2>
   <p class="art-p"><b>YQ ＝ 燃油附加費（Fuel Surcharge）</b>，係航空公司喺票價以外另收嘅一筆，用嚟對沖油價。里數換票只係免咗「票價（fare）」嗰部分，YQ 同各種機場稅、離境稅係<b>免唔到</b>嘅，一律要現金找。</p>
@@ -1561,7 +1562,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="page-body">
   <div class="art-hero"><div class="art-hero-tag">限時優惠 · ⏰ 07-29 截止（官方）</div><h1 class="art-hero-t">舊迎新啱啱死，新迎新即刻生</h1><p class="art-hero-sub">官方 T&C 已核實：申請期 7 月 15 至 <b>29</b> 日，新客高達 <b>1,000,000 積分（55,556 里）</b>，簽賬門檻仲降咗。</p></div>
   <div class="art-lead">AE 白金卡（細頭）年費 $9,500 冇得免，但玩法一向係「迎新＋9X 加賞」對沖。新一期官方 T&C 已出：<b>申請期 7 月 15 至 29 日</b>（留意：比平台早報嘅 31 號早兩日！）。新客簽 $15,000 有 400,000 分（22,222 里）、簽 $50,000 有合共 <b>1,000,000 分（55,556 里）</b>——門檻仲由上期 $60,000 降到 $50,000。現有 AE 會員都有：簽 $15,000 → 810,000 分（45,000 里）。另加網上申請首次簽賬 $1,000 回贈＋手機八達通增值 $50。</div>
-  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">👑</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>金屬白金卡卡面實拍＋「1,000,000 分」大字，帶出高年費高回報定位。</figcaption></figure>
+  <figure class="art-fig"><img src="img/pgO3-hero.jpg" alt="AE白金迎新1000000分" loading="lazy"></figure>
   <h2 class="art-h">重點其實係 9X 續命</h2>
   <p class="art-p">今次證實 <b>9X 加賞計劃延續到 2027 年 12 月 31 日</b>，拆做六個階段（第一階段 2026-07-01 至 09-30）。外幣、指定旅遊商戶（Trip.com／Agoda／Booking 等）同指定日常商戶簽賬 HK$1＝9 分，<b>低至 $2/里</b>——但<b>每個階段都要重新登記</b>，每階段每類別上限 $15,000。7 月 1 日前嘅舊登記已無效，持卡人而家就要登記返。</p>
   <div class="art-tip"><b>⚠️ 老實講：</b>年費 $9,500 真金白銀（基本卡連 2 張附屬卡），呢張卡只啱簽賬夠大、用得盡禮遇嘅人。兩個官方細節要知：①<b>首 12 個月 cut 卡，AE 有權扣返 $9,500 年費</b>；②儲值增值（電子錢包）、年費、稅項全部唔計迎新簽賬。申請死線 <b>7 月 29 日</b>，唔好信 31 號。</div>
@@ -4689,12 +4690,12 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   var GUIDES = [
     {t: '亞洲萬里通 101', d: '由零開始：點賺、點換、YQ、過期——一篇睇晒。', tag: '新手必讀', date: '2026-07-11', emoji: '🎓', img: 'img/pgG1-hero.jpg', pg: 'pgG1'},
     {t: '信用卡砌卡組合', d: '買部 iPhone 就換到台北來回——重點唔係最好卡，係最啱組合。', tag: '新手必讀', date: '2026-07-11', emoji: '🃏', img: 'img/pgG2-cards.jpg', pg: 'pgG2'},
-    {t: '標準獎勵換機票', d: '六個距離區、類別 1/2、艙位差幾多——換之前計清楚。', tag: '換票實戰', date: '2026-07-11', emoji: '✈️', pg: 'pgG3'},
-    {t: 'YQ 燃油費：免費機票要俾幾多', d: '里數免票價，YQ 同稅要現金——長途一程上千，出票前計埋。', tag: '換票實戰', date: '2026-07-14', emoji: '🧾', pg: 'pgG8'},
-    {t: '寰宇一家環球票', d: '現金 21 萬嘅行程，識玩 265,000 里搞掂——規則、區表、跳區陷阱全拆。', tag: '進階玩法', date: '2026-07-11', emoji: '🌏', pg: 'pgG4'},
+    {t: '標準獎勵換機票', d: '六個距離區、類別 1/2、艙位差幾多——換之前計清楚。', tag: '換票實戰', date: '2026-07-11', emoji: '✈️', img: 'img/pgG3-hero.jpg', pg: 'pgG3'},
+    {t: 'YQ 燃油費：免費機票要俾幾多', d: '里數免票價，YQ 同稅要現金——長途一程上千，出票前計埋。', tag: '換票實戰', date: '2026-07-14', emoji: '🧾', img: 'img/pgG8-hero.jpg', pg: 'pgG8'},
+    {t: '寰宇一家環球票', d: '現金 21 萬嘅行程，識玩 265,000 里搞掂——規則、區表、跳區陷阱全拆。', tag: '進階玩法', date: '2026-07-11', emoji: '🌏', img: 'img/pgG4-hero.jpg', pg: 'pgG4'},
     {t: '路線實例①：真環球 265,000 里', d: '四大洲九個站逐站拆：去邊玩乜、開口點駁、多哈官方轉機團。', tag: '路線實例', date: '2026-07-12', emoji: '🧳', pg: 'pgR1'},
     {t: '路線實例②：中等線 250,000 里', d: '倫敦巴黎紐約多倫多——仲剩一個停留額俾你自己加站。', tag: '路線實例', date: '2026-07-12', emoji: '🗼', pg: 'pgR2'},
-    {t: '環球票五條示範線・總覽', d: '12 萬到 28 萬里、五個預算級別——揀啱你嗰級，逐條入去睇。', tag: '環球路線', date: '2026-07-14', emoji: '🗂️', pg: 'pgW0'},
+    {t: '環球票五條示範線・總覽', d: '12 萬到 28 萬里、五個預算級別——揀啱你嗰級，逐條入去睇。', tag: '環球路線', date: '2026-07-14', emoji: '🗂️', img: 'img/pgW0-hero.jpg', pg: 'pgW0'},
     {t: '區6・日韓泰 120,000 里', d: '札幌滑雪→沖繩→東京→首爾→曼谷，最入門嘅環球票。', tag: '環球路線', date: '2026-07-14', emoji: '🗾', pg: 'pgW6'},
     {t: '區8・日澳泰 170,000 里', d: '札幌→福岡→悉尼→清邁，貼到區頂差 131 哩。', tag: '環球路線', date: '2026-07-14', emoji: '🏔️', pg: 'pgW8'},
     {t: '區10・歐美環球 230,000 里', d: '歐洲三古都＋紐約溫哥華，尾段東京轉機爆買。', tag: '環球路線', date: '2026-07-14', emoji: '🌍', pg: 'pgW10'},
@@ -5082,7 +5083,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   var ARTICLES = [
     {t:'渣打國泰 7 月加碼 143,000 里', d:'免簽賬 11,000 里＋開戶＋盲盒——7 月 23 日死線，得返一星期。', tag:'限時', date:'2026-07-16', emoji:'⏰', pg:'pgO1', expire:'2026-07-23'},
     {t:'EveryMile「MILEFLASH」49,000 里', d:'一個優惠碼迎新差唔多翻倍，記得包一單手機支付。', tag:'限時', date:'2026-07-16', emoji:'⚡', pg:'pgO2', expire:'2026-07-31'},
-    {t:'AE 白金新一期：100 萬分＋9X 續到 2027', d:'官方核實：申請期至 7 月 29 日（唔係31）；簽 $50,000 有 100 萬分。', tag:'迎新', date:'2026-07-16', emoji:'👑', pg:'pgO3', expire:'2026-07-29'},
+    {t:'AE 白金新一期：100 萬分＋9X 續到 2027', d:'官方核實：申請期至 7 月 29 日（唔係31）；簽 $50,000 有 100 萬分。', tag:'迎新', date:'2026-07-16', emoji:'👑', img:'img/pgO3-hero.jpg', pg:'pgO3', expire:'2026-07-29'},
     {t:'AE Explorer 7 月版 26,000 里', d:'加 $50 甜頭之外，最緊要批卡即登記全年 6X。', tag:'迎新', date:'2026-07-16', emoji:'🧳', pg:'pgO4', expire:'2026-07-31'},
     {t:'三大平台獨家獎賞點樣拎', d:'小斯 cookie、里先生填 form、MoneyHero 表格——行錯一步就冇。', tag:'教學', date:'2026-07-16', emoji:'🧭', pg:'pgO5'}
   ]; /* {t,d,tag,date,emoji, pg:站內全文頁 或 url:出站連結} */

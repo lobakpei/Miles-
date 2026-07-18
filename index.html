@@ -1,4 +1,4 @@
-<!-- build: 2026-07-17 UK — v6.31.1：修頂 bar 大/細切換抽搐(cyber psycho)——①hero-row max-height 140→72px 貼近實際高度令收縮均勻(原本頭68%冇變、尾突然clip)；②html,body 加 overflow-anchor:none 禁 scroll-anchor 補償同動畫搶位；③scroll listener 加 hysteresis(shrink要>64、un-shrink要<20，中間band唔flip-flop)；④.hdr 同 hero-row transition 統一.2s ease 同步。原 v6.31.0（pgG4結構修復＋logo28px＋shrunk圓角）-->
+<!-- build: 2026-07-18 UK — v6.37.0（累積 v6.32.0–v6.37.0；注意：v6.31.1 之後嘅 marker 更新因 sed 失敗未寫入，此行為補回嘅完整記錄）：【頂 bar】v6.32 診斷出 sticky header 收縮改動文件高度→觸發 Chrome URL bar feedback loop（cyber psycho）；v6.33.0 改真 collapsing header：.hdr 用 position:fixed 出流＋main 固定頂 padding，height=clamp(MIN,FULL−scrollY,FULL)，文件高度恆定→無 loop。【縮放】v6.33.1 App感/無障礙 toggle 換 slider（70–130%，100% 置中）；v6.33.2 修 zoom 爆浮層——zoom 只套 main>section＋.page（--app-zoom），header/nav/浮層保持 100%，關掣永遠撳到；同場修「開通中」badge（CS_EMAIL var hoist 令 init 時 undefined，改喺賦值後即隱藏）。【畝里面板】v6.33.3 修撳 topic 面板彈走——撳 topic 會重 render 令 target 離開 DOM，bubble 階段 closest 查唔到誤判撳咗外面；改 capture 階段預先擷取。【計算機】v6.35.0 修兩個 bug：①家庭／卡數上限 chips 轉咗唔會自動重算（畫面顯示舊結果，要再撳計）→已計過即自動重算；②【嚴重】優化器貪心：原本「直接儲目標里數嘅卡無條件贏彈性點數卡」行喺 里數/$ 比較之前，令 0.29 里/$ 贏 4 里/$（差 8 倍），大而唔抵嘅一浸食晒 budget→簽 15 萬（85,000 里）少過簽 10 萬（115,000 里）；改成 effm×1.10 溢價＋同分 tie-break。5 萬–30 萬全掃描：單人／家庭全程單調，簽賬冇超支、卡數冇超上限、冇重複卡。【內容】v6.34.0 pgW6 加「一次大額簽賬，就儲夠成條線」段落（v6.35 跟住更新為修好後實測數：單人約 115,000 里／二人家庭約 190,000 里；區6 經濟 68,000・商務 120,000）。【圖】v6.36.0 pgW6／pgW13 主圖＋列表縮圖上架，pgW13 標題「六大洲極限」全站改「終極版環遊世界」；v6.37.0 再上 pgW8／pgW10／pgW11／pgR1／pgR2 五張，全部入 sw CORE。原 v6.31.1 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -1393,7 +1393,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="page-head"><button type="button" class="pg-back" data-pg="pgR1" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>路線實例①：真環球</div>
   <div class="art-hero"><div class="art-hero-tag">路線實例 · 五大洲</div><h1 class="art-hero-t">265,000 里，飛勻五大洲</h1><p class="art-hero-sub">東京・洛杉磯・芝加哥・紐約・多倫多・聖保羅・約堡・開普敦・多哈・曼谷・新加坡——一張飛。</p></div>
   <div class="art-lead">呢條線用現金逐程買商務，實測埋單約 <b>HK$21 萬</b>。用 Asia Miles？<b>265,000 里＋約 HK$1 萬稅</b>。以下係張「飛」出咗嚟嘅樣——</div>
-  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🌏</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>真環球路線嘅世界地圖連線圖（四大洲九個站），或者其中一個站嘅代表性地標實拍。</figcaption></figure>
+  <figure class="art-fig"><img src="img/pgR1-hero.jpg" alt="265,000 里玩勻五大洲十一個城市：芝加哥、多倫多、聖保羅、開普敦、多哈" loading="lazy"></figure>
   <div class="itin"><div class="itin-top"><span class="itin-tag">示範行程 · 規劃器引擎驗證</span><div class="itin-big">265,000 <i>里 · 商務</i></div><div class="itin-sub">Zone 12｜總飛行 29,859 哩｜另加燃油稅約 HK$1 萬</div></div><div class="itin-route"><div class="it-row"><span class="it-dot"></span><b class="it-code">HKG</b><span class="it-city">香港</span><span class="it-badge">出發</span></div><div class="it-row tr"><span class="it-dot"></span><b class="it-code">NRT</b><span class="it-city">東京</span><span class="it-badge">轉機 <24h</span></div><div class="it-row st"><span class="it-dot"></span><b class="it-code">LAX</b><span class="it-city">洛杉磯</span><span class="it-badge">停留</span></div><div class="it-row st"><span class="it-dot"></span><b class="it-code">ORD</b><span class="it-city">芝加哥</span><span class="it-badge">停留</span></div><div class="it-row st"><span class="it-dot"></span><b class="it-code">JFK</b><span class="it-city">紐約</span><span class="it-badge">停留</span></div><div class="it-open">⤳ 開口：紐約 → 多倫多（呢段唔喺張飛入面，自己搭車／買平機駁過去）</div><div class="it-row"><span class="it-dot"></span><b class="it-code">YYZ</b><span class="it-city">多倫多</span><span class="it-badge">出發</span></div><div class="it-row st"><span class="it-dot"></span><b class="it-code">GRU</b><span class="it-city">聖保羅</span><span class="it-badge">停留</span></div><div class="it-row st"><span class="it-dot"></span><b class="it-code">JNB</b><span class="it-city">約翰內斯堡</span><span class="it-badge">停留</span></div><div class="it-open">⤳ 開口：約堡 → 開普敦（呢段唔喺張飛入面，自己搭車／買平機駁過去）</div><div class="it-row"><span class="it-dot"></span><b class="it-code">CPT</b><span class="it-city">開普敦</span><span class="it-badge">出發</span></div><div class="it-row tr"><span class="it-dot"></span><b class="it-code">DOH</b><span class="it-city">多哈</span><span class="it-badge">轉機 <24h</span></div><div class="it-row st"><span class="it-dot"></span><b class="it-code">BKK</b><span class="it-city">曼谷</span><span class="it-badge">停留</span></div><div class="it-row st"><span class="it-dot"></span><b class="it-code">SIN</b><span class="it-city">新加坡</span><span class="it-badge">停留</span></div><div class="it-row"><span class="it-dot"></span><b class="it-code">HKG</b><span class="it-city">香港</span><span class="it-badge">返到屋企</span></div></div></div>
   <div class="art-kv"><div class="art-kv-i"><span>逐程現金買</span><b>≈ HK$21 萬</b></div><div class="art-kv-i hot"><span>Asia Miles</span><b>265,000 里</b></div><div class="art-kv-i"><span>每 1 里等於慳</span><b>HK$0.75+</b></div></div>
   <h2 class="art-h">逐站拆：去邊、玩乜</h2>
@@ -1420,7 +1420,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="page-head"><button type="button" class="pg-back" data-pg="pgR2" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>路線實例②：中性環球</div>
   <div class="art-hero"><div class="art-hero-tag">路線實例 · 亞歐美三洲</div><h1 class="art-hero-t">250,000 里，歐美一鑊熟</h1><p class="art-hero-sub">倫敦・巴黎・紐約・多倫多・芝加哥・洛杉磯・吉隆坡・新加坡・台北。</p></div>
   <div class="art-lead">少 15,000 里，一樣狠：<b>五個停留＋兩個開口</b>，經典環球路——去程中東入歐洲，橫過大西洋掃北美，太平洋收尾。</div>
-  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🗼</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>中等線路線圖（倫敦巴黎紐約多倫多），或者巴黎鐵塔／倫敦地標實拍。</figcaption></figure>
+  <figure class="art-fig"><img src="img/pgR2-hero.jpg" alt="人生 bucket list 十一個城市：巴黎、紐約、多倫多、芝加哥、洛杉磯" loading="lazy"></figure>
   <div class="itin"><div class="itin-top"><span class="itin-tag">示範行程 · 規劃器引擎驗證</span><div class="itin-big">250,000 <i>里 · 商務</i></div><div class="itin-sub">Zone 11｜總飛行 24,487 哩｜另加燃油稅約 HK$8–10K</div></div><div class="itin-route"><div class="it-row"><span class="it-dot"></span><b class="it-code">HKG</b><span class="it-city">香港</span><span class="it-badge">出發</span></div><div class="it-row tr"><span class="it-dot"></span><b class="it-code">DOH</b><span class="it-city">多哈</span><span class="it-badge">轉機 <24h</span></div><div class="it-row st"><span class="it-dot"></span><b class="it-code">LHR</b><span class="it-city">倫敦</span><span class="it-badge">停留</span></div><div class="it-row st"><span class="it-dot"></span><b class="it-code">CDG</b><span class="it-city">巴黎</span><span class="it-badge">停留</span></div><div class="it-row st"><span class="it-dot"></span><b class="it-code">JFK</b><span class="it-city">紐約</span><span class="it-badge">停留</span></div><div class="it-open">⤳ 開口：紐約 → 多倫多（呢段唔喺張飛入面，自己搭車／買平機駁過去）</div><div class="it-row"><span class="it-dot"></span><b class="it-code">YYZ</b><span class="it-city">多倫多</span><span class="it-badge">出發</span></div><div class="it-row st"><span class="it-dot"></span><b class="it-code">ORD</b><span class="it-city">芝加哥</span><span class="it-badge">停留</span></div><div class="it-row st"><span class="it-dot"></span><b class="it-code">LAX</b><span class="it-city">洛杉磯</span><span class="it-badge">停留</span></div><div class="it-row tr"><span class="it-dot"></span><b class="it-code">NRT</b><span class="it-city">東京</span><span class="it-badge">轉機 <24h</span></div><div class="it-row st"><span class="it-dot"></span><b class="it-code">KUL</b><span class="it-city">吉隆坡</span><span class="it-badge">停留</span></div><div class="it-open">⤳ 開口：吉隆坡 → 新加坡（呢段唔喺張飛入面，自己搭車／買平機駁過去）</div><div class="it-row"><span class="it-dot"></span><b class="it-code">SIN</b><span class="it-city">新加坡</span><span class="it-badge">出發</span></div><div class="it-row st"><span class="it-dot"></span><b class="it-code">TPE</b><span class="it-city">台北</span><span class="it-badge">停留</span></div><div class="it-row"><span class="it-dot"></span><b class="it-code">HKG</b><span class="it-city">香港</span><span class="it-badge">返到屋企</span></div></div></div>
   <h2 class="art-h">逐站拆</h2>
   <p class="art-p"><b>🇶🇦 多哈（轉機）</b>——落地就玩官方轉機團快閃（詳見<button type="button" class="art-inline-link" data-open="pgR1">實例①多哈段</button>）。</p>
@@ -1448,9 +1448,9 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <p class="art-p"><b>🏔️ 區8・日澳泰（商務 170,000 里）</b>——札幌→福岡→悉尼→清邁。4 停，差 131 哩就到區頂。<button type="button" class="art-inline-link" data-open="pgW8">睇全文 →</button></p>
   <p class="art-p"><b>🌍 區10・歐美環球（商務 230,000 里）</b>——馬德里→巴黎→倫敦→紐約→溫哥華，尾段東京轉機血拼。<button type="button" class="art-inline-link" data-open="pgW10">睇全文 →</button></p>
   <p class="art-p"><b>🏜️ 區11・遠洲探索（商務 250,000 里）</b>——馬爾代夫→開羅→紐約→洛杉磯，全部係平機唔會去嘅地方。<button type="button" class="art-inline-link" data-open="pgW11">睇全文 →</button></p>
-  <p class="art-p"><b>🌏 區13・六大洲極限（商務 280,000 里）</b>——11 個目的地、兩個開口、北歐極光門戶。<button type="button" class="art-inline-link" data-open="pgW13">睇全文 →</button></p>
+  <p class="art-p"><b>🌏 區13・終極版環遊世界（商務 280,000 里）</b>——11 個目的地、兩個開口、北歐極光門戶。<button type="button" class="art-inline-link" data-open="pgW13">睇全文 →</button></p>
   <div class="art-tip"><b>💡 規劃器有兩條現成示範</b>（區8＋區11）一撳即載；五條線嘅全文入面都有「DIY」掣，鍾意邊條就載邊條自己改。</div>
-  <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgG4"><span>🌏</span><div><b>寰宇一家環球票（規則篇）</b><i>分區表、5停2轉2開、出票熱線</i></div></button><button type="button" class="art-more-i" data-open="pgW13"><span>🌌</span><div><b>六大洲極限</b><i>最盡嗰條由呢篇睇起</i></div></button></div>
+  <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgG4"><span>🌏</span><div><b>寰宇一家環球票（規則篇）</b><i>分區表、5停2轉2開、出票熱線</i></div></button><button type="button" class="art-more-i" data-open="pgW13"><span>🌌</span><div><b>終極版環遊世界</b><i>最盡嗰條由呢篇睇起</i></div></button></div>
   <div class="art-foot">里數、規則以官方公佈為準；市價為粗略估算，出票前請自行格價；獎位有冇要打熱線先知。</div>
   </div>
 </div>
@@ -1459,12 +1459,19 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="page-body">
   <div class="art-lead">最入門嘅環球票：一張飛滑雪、掃街、海灘、按摩四樣齊——<b>8,636 哩・區 6・商務 120,000 里・5 個停留</b>。</div>
   <div class="panel" style="font-size:13.5px;line-height:2">香港 HKG - 札幌 CTS (停)<br>札幌 CTS - 沖繩 OKA (停)<br>沖繩 OKA - 東京 NRT (停)<br>東京 NRT - 首爾 ICN (停)<br>首爾 ICN - 曼谷 BKK (停)<br>曼谷 BKK - 香港 HKG</div>
-  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🎿</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>拼圖：札幌雪場＋沖繩海灘＋東京街頭＋曼谷夜市，四格帶出「一張飛四種天氣」。</figcaption></figure>
+  <figure class="art-fig"><img src="img/pgW6-hero.jpg" alt="15 萬大額消費用啱卡即賺一程五站之旅：北海道滑雪、沖繩、東京澀谷、首爾明洞、曼谷" loading="lazy"></figure>
   <h2 class="art-h">逐站點玩</h2>
   <div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>札幌</b> — 落地即滑雪（二世古／留壽都），湯咖喱、成吉思汗烤肉暖返。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>沖繩</b> — 滑完雪直插海灘，美國村、水族館，溫差玩盡。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t"><b>東京</b> — 血拼主場：新宿、澀谷、銀座。</div></div><div class="art-li"><span class="art-li-m">4</span><div class="art-li-t"><b>首爾</b> — 明洞掃美妝、弘大食烤肉。</div></div><div class="art-li"><span class="art-li-m">5</span><div class="art-li-t"><b>曼谷</b> — 按摩、夜市、天台 bar，鬆晒先返香港。</div></div></div>
   <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🍜</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>其中一個代表站嘅招牌畫面（例：札幌成吉思汗烤肉／曼谷天台 bar 夜景）。</figcaption></figure>
   <h2 class="art-h">點解咁排</h2>
   <p class="art-p">香港人玩法：急住滑雪放最頭（雪季唔等人），血拼站東京＋首爾夾中段，曼谷放鬆收尾——係情緒節奏，唔係地圖順路。</p>
+  <h2 class="art-h">一次大額簽賬，就儲夠成條線</h2>
+  <p class="art-p">唔使儲幾年。結婚、裝修、大旅行——<b>一次過簽 HK$135,000</b>，用啱卡組合食迎新，計算機出到：</p>
+  <div class="art-kv"><div class="art-kv-i"><span>一個人簽</span><b>約 115,000 里</b></div><div class="art-kv-i hot"><span>二人家庭一齊簽</span><b>約 190,000 里</b></div></div>
+  <p class="art-p">對返區 6 個價——<b>經濟 68,000 里・商務 120,000 里</b>：</p>
+  <div class="art-kv"><div class="art-kv-i"><span>一個人</span><b>經濟換完仲有找</b></div><div class="art-kv-i hot"><span>二人家庭</span><b>商務都夠，仲剩 7 萬里</b></div></div>
+  <p class="art-p">北海道滑雪、東京首爾血拼、尾站曼谷揼骨，五個站，一張飛。<br>去「計算」入你自己嘅金額，睇下你嗰個組合食到幾多。</p>
+  <div class="art-tip"><b>⚠️ 講清楚：</b>以上係計算機根據<b>當時</b>嘅迎新同賺里率估算（單人估算範圍約 100,000–125,000 里、二人家庭約 170,000–210,000 里），實際要睇你申請到邊幾張卡、批唔批到、迎新有冇改。二人家庭＝兩位都申請，同一張卡嘅迎新各食一份。里數同區價以官方公佈為準。</div>
   <div class="art-kv"><div class="art-kv-i"><span>商務逐程買（估）</span><b>≈ HK$6–9 萬</b></div><div class="art-kv-i hot"><span>用 Asia Miles</span><b>120,000 里</b></div><div class="art-kv-i"><span>另加 YQ＋稅</span><b>約 HK$2–4 千</b></div></div>
 <p class="art-p" style="text-align:center;margin:14px 0"><button type="button" class="btn-sm pri" data-owdiy="z6">🛠️ 日韓泰：一撳載入規劃器自己 DIY</button></p>  <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgW0"><span>🗂️</span><div><b>五條線總覽</b><i>揀返啱你預算嗰條</i></div></button><button type="button" class="art-more-i" data-open="pgW8"><span>🏔️</span><div><b>區8・日澳泰</b><i>加 5 萬里，多咗個澳洲</i></div></button></div>
   <div class="art-foot">里數、規則以官方公佈為準；市價為粗略估算，出票前請自行格價；獎位有冇要打熱線先知。</div>
@@ -1475,7 +1482,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="page-body">
   <div class="art-lead">四站四種體驗，貼到區頂淨返 131 哩——<b>13,869 哩・區 8・商務 170,000 里・4 個停留</b>。規劃器嘅示範掣之一就係佢。</div>
   <div class="panel" style="font-size:13.5px;line-height:2">香港 HKG - 札幌 CTS (停)<br>札幌 CTS - 福岡 FUK (停)<br>福岡 FUK - 悉尼 SYD (停)<br>悉尼 SYD - 清邁 CNX (停)<br>清邁 CNX - 香港 HKG</div>
-  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🌏</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>悉尼歌劇院／邦迪海灘實拍做主圖，帶出「一程由北半球冬跳去南半球夏」。</figcaption></figure>
+  <figure class="art-fig"><img src="img/pgW8-hero.jpg" alt="南半球？北半球？Why not both！札幌滑雪、福岡太宰府櫻花、悉尼歌劇院、清邁" loading="lazy"></figure>
   <h2 class="art-h">逐站點玩</h2>
   <div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>札幌</b> — 滑雪開波。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>福岡</b> — 屋台拉麵、太宰府，日本最好食嘅城市之一。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t"><b>悉尼</b> — 歌劇院、邦迪海灘，一程飛咗成季（北半球冬→南半球夏）。</div></div><div class="art-li"><span class="art-li-m">4</span><div class="art-li-t"><b>清邁</b> — 古城慢活、夜市按摩收尾。</div></div></div>
   <h2 class="art-h">數口</h2>
@@ -1490,7 +1497,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="page-body">
   <div class="art-lead">歐洲三古都＋紐約＋溫哥華，尾段仲有東京轉機爆買——<b>19,793 哩・區 10・商務 230,000 里・5 停 1 轉</b>，差 207 哩到頂。</div>
   <div class="panel" style="font-size:13.5px;line-height:2">香港 HKG - 馬德里 MAD (停)<br>馬德里 MAD - 巴黎 CDG (停)<br>巴黎 CDG - 倫敦 LHR (停)<br>倫敦 LHR - 紐約 JFK (停)<br>紐約 JFK - 溫哥華 YVR (停)<br>溫哥華 YVR →(轉機)東京 NRT-  香港 HKG</div>
-  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🗼</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>歐洲三古都拼圖（馬德里／巴黎鐵塔／倫敦大笨鐘）＋紐約天際線。</figcaption></figure>
+  <figure class="art-fig"><img src="img/pgW10-hero.jpg" alt="230,000 里全商務圍住個地球飛一圈：馬德里、巴黎、倫敦、紐約、溫哥華" loading="lazy"></figure>
   <h2 class="art-h">逐站點玩</h2>
   <div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>馬德里</b> — 陽光、tapas、普拉多開波。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>巴黎</b> — 浪漫中段。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t"><b>倫敦</b> — 古典＋音樂劇。</div></div><div class="art-li"><span class="art-li-m">4</span><div class="art-li-t"><b>紐約</b> — 行程高潮。</div></div><div class="art-li"><span class="art-li-m">5</span><div class="art-li-t"><b>溫哥華</b> — 山海減壓，執整心情。</div></div><div class="art-li"><span class="art-li-m">6</span><div class="art-li-t"><b>東京（轉機）</b> — 返港前最後衝刺：輕裝 hand-carry 玩法，行李留返轉機，人出境爆買，戰利品塞背囊上機。</div></div></div>
   <div class="art-tip"><b>⚠️ 轉機血拼老實講：</b>轉機時數以實際出票航班為準，唔係保證值——delay 有機會壓到得返十個鐘。出票時揀 20 鐘以上嘅接駁先夠玩；買唔成咪當普通轉機。</div>
@@ -1505,21 +1512,21 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="page-body">
   <div class="art-lead">呢個級數，唔應該再塞平機都去到嘅地方——全部係要用里數先抵飛嘅遠洲：<b>24,565 哩・區 11・商務 250,000 里・4 停 1 轉</b>，差 435 哩到頂。規劃器示範掣之一。</div>
   <div class="panel" style="font-size:13.5px;line-height:2">香港 HKG →(轉機)多哈 DOH-  馬爾代夫 MLE (停)<br>馬爾代夫 MLE - 開羅 CAI (停)<br>開羅 CAI - 紐約 JFK (停)<br>紐約 JFK - 洛杉磯 LAX (停)<br>洛杉磯 LAX - 香港 HKG</div>
-  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🏝️</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>馬爾代夫水上屋／開羅金字塔拼圖，帶出「印度洋離島 × 北非古國」嘅反差。</figcaption></figure>
+  <figure class="art-fig"><img src="img/pgW11-hero.jpg" alt="250,000 里全商務豪華蜜月之旅：馬爾代夫水上屋、開羅金字塔、紐約自由神像、洛杉磯荷李活" loading="lazy"></figure>
   <h2 class="art-h">逐站點玩</h2>
   <div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>馬爾代夫</b> — 水上屋度假開波，商務飛入去本身已經係體驗。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>開羅</b> — 金字塔、尼羅河，古文明震撼。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t"><b>紐約</b> — 由沙漠古城跳落現代之巔。</div></div><div class="art-li"><span class="art-li-m">4</span><div class="art-li-t"><b>洛杉磯</b> — 加州陽光收尾先返港。</div></div></div>
   <p class="art-p">四站四個世界：印度洋離島、北非古國、美東美西——單獨飛邊個都貴到肉赤，一張票 250,000 里全包。</p>
   <div class="art-kv"><div class="art-kv-i"><span>商務逐程買（估）</span><b>≈ HK$18–25 萬</b></div><div class="art-kv-i hot"><span>用 Asia Miles</span><b>250,000 里</b></div><div class="art-kv-i"><span>另加 YQ＋稅</span><b>約 HK$6–9 千</b></div></div>
-<p class="art-p" style="text-align:center;margin:14px 0"><button type="button" class="btn-sm pri" data-owdiy="z11">🛠️ 遠洲探索：一撳載入規劃器自己 DIY</button></p>  <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgW0"><span>🗂️</span><div><b>五條線總覽</b><i>五個預算級別一眼睇</i></div></button><button type="button" class="art-more-i" data-open="pgW13"><span>🌏</span><div><b>區13・六大洲極限</b><i>最終回：兩個開口＋極光門戶</i></div></button></div>
+<p class="art-p" style="text-align:center;margin:14px 0"><button type="button" class="btn-sm pri" data-owdiy="z11">🛠️ 遠洲探索：一撳載入規劃器自己 DIY</button></p>  <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgW0"><span>🗂️</span><div><b>五條線總覽</b><i>五個預算級別一眼睇</i></div></button><button type="button" class="art-more-i" data-open="pgW13"><span>🌏</span><div><b>區13・終極版環遊世界</b><i>最終回：兩個開口＋極光門戶</i></div></button></div>
   <div class="art-foot">里數、規則以官方公佈為準；市價為粗略估算，出票前請自行格價；獎位有冇要打熱線先知。</div>
   </div>
 </div>
-<div class="page" id="pgW13" hidden data-gt="區13・六大洲極限 280,000 里">
-  <div class="page-head"><button type="button" class="pg-back" data-pg="pgW13" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>區13・六大洲極限 280,000 里</div>
+<div class="page" id="pgW13" hidden data-gt="區13・終極版環遊世界 280,000 里">
+  <div class="page-head"><button type="button" class="pg-back" data-pg="pgW13" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>區13・終極版環遊世界 280,000 里</div>
   <div class="page-body">
   <div class="art-lead">最盡嗰條：<b>11 個目的地、六大洲、45,881 哩・區 13・商務 280,000 里</b>——5 停留＋2 開口＋2 轉機，三種額度全部用晒。</div>
   <div class="panel" style="font-size:13.5px;line-height:2">香港 HKG →(轉機)珀斯 PER-  悉尼 SYD (停)<br>悉尼 SYD - 奧克蘭 AKL (停)<br>奧克蘭 AKL - 里約 GIG (開口)<br>利馬 LIM - 開普敦 CPT (停)<br>開普敦 CPT - 奧斯陸 OSL (開口)<br>赫爾辛基 HEL - 三藩市 SFO (停)<br>三藩市 SFO - 紐約 JFK (停)<br>紐約 JFK →(轉機)檀香山 HNL-  香港 HKG</div>
-  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">🌌</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>北歐極光實拍做主圖（呼應「極光門戶」賣點）；或者六大洲地標六格拼圖。</figcaption></figure>
+  <figure class="art-fig"><img src="img/pgW13-hero.jpg" alt="終極版環遊世界：芬蘭北極光、悉尼歌劇院、里約基督像、開普敦桌山、金門大橋、夏威夷海灘" loading="lazy"></figure>
   <h2 class="art-h">開口點玩（一個額換兩個城市）</h2>
   <p class="art-p"><b>里約 ⤳ 利馬</b>——飛入里約（基督像、沙灘），玩完自己搭平機去利馬（馬丘比丘門戶）再上機。呢程廉航單程約 <b>HK$1,000–2,000</b>。</p>
   <p class="art-p"><b>奧斯陸 ⤳ 赫爾辛基</b>——飛入奧斯陸，玩完自己過去赫爾辛基再上機。呢程北歐短途單程平到 <b>HK$300–1,500</b>。兩個都係<b>極光門戶</b>：想見真極光，喺呢度加返程內陸機北上特羅姆瑟或者羅瓦涅米。</p>
@@ -1528,7 +1535,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>悉尼・奧克蘭</b> — 澳紐雙城開波。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>開普敦</b> — 桌山、好望角、酒莊。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t"><b>三藩市・紐約</b> — 美國東西岸壓軸。</div></div><div class="art-li"><span class="art-li-m">4</span><div class="art-li-t"><b>珀斯／檀香山（轉機）</b> — 輕裝快閃：行李留轉機，人出去唞一唞。</div></div></div>
   <div class="art-tip"><b>⚠️ 老實講：</b>①轉機時數以實際航班為準，delay 會壓縮，唔好期望必定夠鐘出去玩。②開口嗰兩程接駁機自己出錢買，上面價錢係 2026-07 格價網水平，出發前自行格返。</div>
   <div class="art-kv"><div class="art-kv-i"><span>商務逐程買（估）</span><b>≈ HK$25–35 萬</b></div><div class="art-kv-i hot"><span>用 Asia Miles</span><b>280,000 里</b></div><div class="art-kv-i"><span>YQ＋稅＋開口機</span><b>約 HK$1.2–2 萬</b></div></div>
-<p class="art-p" style="text-align:center;margin:14px 0"><button type="button" class="btn-sm pri" data-owdiy="z13">🛠️ 六大洲極限：一撳載入規劃器自己 DIY</button></p>  <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgW0"><span>🗂️</span><div><b>五條線總覽</b><i>五個預算級別一眼睇</i></div></button><button type="button" class="art-more-i" data-open="pgG4"><span>🌏</span><div><b>環球票規則篇</b><i>5停2轉2開點計</i></div></button><button type="button" class="art-more-i" data-open="pgG5"><span>⚠️</span><div><b>新手七個伏</b><i>埋單前必讀</i></div></button></div>
+<p class="art-p" style="text-align:center;margin:14px 0"><button type="button" class="btn-sm pri" data-owdiy="z13">🛠️ 終極版環遊世界：一撳載入規劃器自己 DIY</button></p>  <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgW0"><span>🗂️</span><div><b>五條線總覽</b><i>五個預算級別一眼睇</i></div></button><button type="button" class="art-more-i" data-open="pgG4"><span>🌏</span><div><b>環球票規則篇</b><i>5停2轉2開點計</i></div></button><button type="button" class="art-more-i" data-open="pgG5"><span>⚠️</span><div><b>新手七個伏</b><i>埋單前必讀</i></div></button></div>
   <div class="art-foot">里數、規則以官方公佈為準；市價為粗略估算，出票前請自行格價；獎位有冇要打熱線先知。</div>
   </div>
 </div>
@@ -2094,6 +2101,7 @@ var BM = (function(){
     }
 
     function directBonus(c){ return (goal !== 'any' && c.program === goal) ? 1 : 0; }
+    var DIRECT_PREMIUM = 1.10; /* 直接儲目標里數嘅卡輕微優先（轉分有摩擦），但唔可以蓋過里數/$ 本身 */
     function applyMonthOf(slot){ return Math.floor(slot / 2) + 1; } /* 每月最多兩張，逐對排開 */
 
     var allowHighFee = !!input.allowHighFee; /* 踢卡替補專用：免年費卡搵唔到替補時，UI 會開呢個 flag 再計一次，畀高年費卡入場做「反面教材」 */
@@ -2187,10 +2195,16 @@ var BM = (function(){
           if (item.seg.dM + item.seg.dS / effRate(item.st.card) <= item.seg.dS / holderRate) return;
         }
         if (!best){ best = item; return; }
+        /* v6.35 修：以前「直接儲目標里數嘅卡」係無條件贏（比較行喺 effm 之前），
+           結果一浸 0.29 里/$ 嘅直接卡都贏得過 4 里/$ 嘅彈性卡（差 8 倍），
+           貪心就會俾一浸大而唔抵嘅嘢食晒 budget（15 萬簽賬反而少過 14 萬嘅塌陷 bug）。
+           改法：直接卡保留「輕微優先」＝ effm × 1.10 溢價（反映轉分有摩擦），
+           同分先用「直接」做 tie-break——唔再蓋過里數/$ 本身。 */
         var aDir = directBonus(item.st.card), bDir = directBonus(best.st.card);
-        if (aDir !== bDir){ if (aDir > bDir) best = item; return; }
-        var aEffm = item.seg.dM / item.seg.dS, bEffm = best.seg.dM / best.seg.dS;
+        var aEffm = (item.seg.dM / item.seg.dS) * (aDir ? DIRECT_PREMIUM : 1);
+        var bEffm = (best.seg.dM / best.seg.dS) * (bDir ? DIRECT_PREMIUM : 1);
         if (Math.abs(aEffm - bEffm) > 1e-12){ if (aEffm > bEffm) best = item; return; }
+        if (aDir !== bDir){ if (aDir > bDir) best = item; return; }
         if (item.type !== best.type){ if (item.type === 'cont') best = item; return; } /* 打和先揀已開卡（慳一張新卡） */
         if (effRate(item.st.card) < effRate(best.st.card)) best = item;
       });
@@ -3108,13 +3122,15 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
           ? '呢個係你哋兩個人一齊簽嘅總數——系統會自動分畀 A 同 B，唔係要求每人各簽咁多。'
           : '結婚、裝修、大旅行……可以碌卡嗰部分先計。';
         renderFamilyChips();
+        store.set('bm_input', state);
+        if (lastRes) runCalc(false); /* v6.35：上面一轉，結果即刻跟住轉（唔使再撳「計最佳組合」） */
       });
   }
   function renderMaxCardChips(){
     chipRow($('maxCardChips'),
       [{id:'2', label:'2 張'},{id:'4', label:'4 張'},{id:'6', label:'6 張', sub:'榨盡迎新'},{id:'99', label:'唔限'}],
       function(it){ return Number(it.id) === state.maxNewCards; },
-      function(id){ state.maxNewCards = Number(id); renderMaxCardChips(); });
+      function(id){ state.maxNewCards = Number(id); renderMaxCardChips(); store.set('bm_input', state); if (lastRes) runCalc(false); });
   }
   function renderOwnedChipsB(){
     chipRow($('ownedChipsB'),
@@ -4330,7 +4346,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
        區8  日澳泰     13,869哩 /商務170,000/4停       ：札幌滑雪→福岡→悉尼→清邁慢活（差131到頂）
        區10 歐美環球   19,793哩 /商務230,000/5停1轉    ：歐洲古典→紐約→溫哥華→東京轉機血拼
        區11 遠洲探索   24,565哩 /商務250,000/4停1轉    ：馬爾代夫→開羅→紐約→洛杉磯（差435）
-       區13 六大洲極限 45,881哩 /商務280,000/5停2轉2開 ：北歐版——里約⤳利馬、奧斯陸⤳赫爾辛基兩開口；規劃器示範掣只出 z8/z11，其餘由攻略文 DIY 掣載入 */
+       區13 終極版環遊世界 45,881哩 /商務280,000/5停2轉2開 ：北歐版——里約⤳利馬、奧斯陸⤳赫爾辛基兩開口；規劃器示範掣只出 z8/z11，其餘由攻略文 DIY 掣載入 */
     var OW_ZONE_DEMOS = {
       z6: [
         {from:'HKG', to:'CTS', carrier:'CX', stay:'stop'},
@@ -4724,14 +4740,14 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     {t: '標準獎勵換機票', d: '六個距離區、類別 1/2、艙位差幾多——換之前計清楚。', tag: '換票實戰', date: '2026-07-11', emoji: '✈️', img: 'img/pgG3-hero.jpg', pg: 'pgG3'},
     {t: 'YQ 燃油費：免費機票要俾幾多', d: '里數免票價，YQ 同稅要現金——長途一程上千，出票前計埋。', tag: '換票實戰', date: '2026-07-14', emoji: '🧾', img: 'img/pgG8-hero.jpg', pg: 'pgG8'},
     {t: '寰宇一家環球票', d: '現金 21 萬嘅行程，識玩 265,000 里搞掂——規則、區表、跳區陷阱全拆。', tag: '進階玩法', date: '2026-07-11', emoji: '🌏', img: 'img/pgG4-hero.jpg', pg: 'pgG4'},
-    {t: '路線實例①：真環球 265,000 里', d: '四大洲九個站逐站拆：去邊玩乜、開口點駁、多哈官方轉機團。', tag: '路線實例', date: '2026-07-12', emoji: '🧳', pg: 'pgR1'},
-    {t: '路線實例②：中等線 250,000 里', d: '倫敦巴黎紐約多倫多——仲剩一個停留額俾你自己加站。', tag: '路線實例', date: '2026-07-12', emoji: '🗼', pg: 'pgR2'},
+    {t: '路線實例①：真環球 265,000 里', d: '四大洲九個站逐站拆：去邊玩乜、開口點駁、多哈官方轉機團。', tag: '路線實例', date: '2026-07-12', emoji: '🧳', img: 'img/pgR1-hero.jpg', pg: 'pgR1'},
+    {t: '路線實例②：中等線 250,000 里', d: '倫敦巴黎紐約多倫多——仲剩一個停留額俾你自己加站。', tag: '路線實例', date: '2026-07-12', emoji: '🗼', img: 'img/pgR2-hero.jpg', pg: 'pgR2'},
     {t: '環球票五條示範線・總覽', d: '12 萬到 28 萬里、五個預算級別——揀啱你嗰級，逐條入去睇。', tag: '環球路線', date: '2026-07-14', emoji: '🗂️', img: 'img/pgW0-hero.jpg', pg: 'pgW0'},
-    {t: '區6・日韓泰 120,000 里', d: '札幌滑雪→沖繩→東京→首爾→曼谷，最入門嘅環球票。', tag: '環球路線', date: '2026-07-14', emoji: '🗾', pg: 'pgW6'},
-    {t: '區8・日澳泰 170,000 里', d: '札幌→福岡→悉尼→清邁，貼到區頂差 131 哩。', tag: '環球路線', date: '2026-07-14', emoji: '🏔️', pg: 'pgW8'},
-    {t: '區10・歐美環球 230,000 里', d: '歐洲三古都＋紐約溫哥華，尾段東京轉機爆買。', tag: '環球路線', date: '2026-07-14', emoji: '🌍', pg: 'pgW10'},
-    {t: '區11・遠洲探索 250,000 里', d: '馬爾代夫→開羅→紐約→洛杉磯——冇一個係平機去到嘅地方。', tag: '環球路線', date: '2026-07-14', emoji: '🏜️', pg: 'pgW11'},
-    {t: '區13・六大洲極限 280,000 里', d: '11 個目的地兩個開口，仲有北歐極光門戶。', tag: '環球路線', date: '2026-07-14', emoji: '🌏', pg: 'pgW13'},
+    {t: '區6・日韓泰 120,000 里', d: '札幌滑雪→沖繩→東京→首爾→曼谷，最入門嘅環球票。', tag: '環球路線', date: '2026-07-14', emoji: '🗾', img: 'img/pgW6-hero.jpg', pg: 'pgW6'},
+    {t: '區8・日澳泰 170,000 里', d: '札幌→福岡→悉尼→清邁，貼到區頂差 131 哩。', tag: '環球路線', date: '2026-07-14', emoji: '🏔️', img: 'img/pgW8-hero.jpg', pg: 'pgW8'},
+    {t: '區10・歐美環球 230,000 里', d: '歐洲三古都＋紐約溫哥華，尾段東京轉機爆買。', tag: '環球路線', date: '2026-07-14', emoji: '🌍', img: 'img/pgW10-hero.jpg', pg: 'pgW10'},
+    {t: '區11・遠洲探索 250,000 里', d: '馬爾代夫→開羅→紐約→洛杉磯——冇一個係平機去到嘅地方。', tag: '環球路線', date: '2026-07-14', emoji: '🏜️', img: 'img/pgW11-hero.jpg', pg: 'pgW11'},
+    {t: '區13・終極版環遊世界 280,000 里', d: '11 個目的地兩個開口，仲有北歐極光門戶。', tag: '環球路線', date: '2026-07-14', emoji: '🌏', img: 'img/pgW13-hero.jpg', pg: 'pgW13'},
     {t: '新手最易中嘅七個伏', d: '迎新條件、cut 卡扣里、YQ、過期……避晒你已叻過大部分人。', tag: '避坑', date: '2026-07-11', emoji: '⚠️', pg: 'pgG5'},
     {t: '點用 AcreMiles 幫你計', d: '點儲最多？換到咩？由賺到換逐個掣教。', tag: '教學', date: '2026-07-12', emoji: '🧭', pg: 'pgG6'},
     {t: 'App 有咩功能', d: '五個 tab、零追蹤，一次過行一圈。', tag: '導覽', date: '2026-07-12', emoji: '📱', pg: 'pgG7'}

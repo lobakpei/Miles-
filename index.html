@@ -1,4 +1,4 @@
-<!-- build: 2026-07-18 UK — v6.44.1：訂閱視窗（subSheet）加返「唔想走漏迎新？」頭圖（img/banner-sub.jpg，即係由輪播移出嚟嗰張）——擺喺標題下面，用負 margin 出血貼齊 sheet 兩邊、16:9 圓角。原 v6.44.0：旅程 showcase 四格廣告位改做 Robert 指定：①信用卡砌卡組合 pgG2 ②EveryMile MILEFLASH 49,000 pgO2 ③區10 歐美環球 230,000 里 pgW10 ④Follow 我哋；四張圖全部已 baked 標題文字故一律 bare（唔疊字）；順手補返「撳廣告開文章」缺咗嘅 z-index 遞增／scrollTop 歸零／回頂掣接駁。原 v6.43.1：①頂 bar 同內容之間加呼吸位（main paddingTop = header 全高 + 16 → +30，原本太貼）；②文章頁右下加「返回頂部」圓掣——.page 有自己 overflow:auto，所以 scroll 嗰個元素唔係 window；scrollTop>380 淡入、撳一下 smooth 彈返頂、開新頁／撳返回自動收起；z-index 400 高過 .page 動態 z-index；桌面版用 calc 貼返 680px 欄右邊。原 v6.43.0：修桌面版排版——.hdr／.tabs 用 fixed left:0;right:0 拉到全螢幕闊，但 main 鎖 680px 置中，電腦睇落頂 bar 全闊、內容細粒喺中間對唔上。加 @media(min-width:720px)：.hdr／.tabs／.page 一齊收窄 680px 置中，main 加 --paper 底＋陰影做 app 欄，body 外圍淺灰，畝里面板改為貼欄右邊。原 v6.42.0：pgO5（獨家獎賞點樣拎？千祈唔好貪心・四步流程圖）主圖＋列表縮圖上架並入 sw CORE；pgO4 主圖換做 Robert 修訂版（同檔名覆蓋，SW 版本號跳令快取更新）。至此全部文章主圖完成。原 v6.41.0：pgO4（AE Explorer 簽 $30,000 即賺高達 26,000 里・換峇里來回）主圖＋列表縮圖上架，入 sw CORE；已用 app 標準獎勵表核實 HKG→DPS 2,148 哩／印尼類別2／經濟單程 13,000×2＝26,000 里。原 v6.40.0：pgG6（點用 AcreMiles 幫你計・三個主畫面拼圖，用真 app 截圖砌）主圖＋列表縮圖上架，入 sw CORE。原 v6.39.0：pgO2（滙豐 EveryMile 即賺 49,000 里・優惠碼 MILEFLASH・7.31 截止）主圖＋列表縮圖上架，入 sw CORE。原 v6.38.0：pgO1（渣打國泰倒數 7.23・全食 143,000 里）同 pgG5（新手最易中嘅七個伏）主圖＋列表縮圖上架，兩張入 sw CORE。原 v6.37.0（累積 v6.32.0–v6.37.0；注意：v6.31.1 之後嘅 marker 更新因 sed 失敗未寫入，此行為補回嘅完整記錄）：【頂 bar】v6.32 診斷出 sticky header 收縮改動文件高度→觸發 Chrome URL bar feedback loop（cyber psycho）；v6.33.0 改真 collapsing header：.hdr 用 position:fixed 出流＋main 固定頂 padding，height=clamp(MIN,FULL−scrollY,FULL)，文件高度恆定→無 loop。【縮放】v6.33.1 App感/無障礙 toggle 換 slider（70–130%，100% 置中）；v6.33.2 修 zoom 爆浮層——zoom 只套 main>section＋.page（--app-zoom），header/nav/浮層保持 100%，關掣永遠撳到；同場修「開通中」badge（CS_EMAIL var hoist 令 init 時 undefined，改喺賦值後即隱藏）。【畝里面板】v6.33.3 修撳 topic 面板彈走——撳 topic 會重 render 令 target 離開 DOM，bubble 階段 closest 查唔到誤判撳咗外面；改 capture 階段預先擷取。【計算機】v6.35.0 修兩個 bug：①家庭／卡數上限 chips 轉咗唔會自動重算（畫面顯示舊結果，要再撳計）→已計過即自動重算；②【嚴重】優化器貪心：原本「直接儲目標里數嘅卡無條件贏彈性點數卡」行喺 里數/$ 比較之前，令 0.29 里/$ 贏 4 里/$（差 8 倍），大而唔抵嘅一浸食晒 budget→簽 15 萬（85,000 里）少過簽 10 萬（115,000 里）；改成 effm×1.10 溢價＋同分 tie-break。5 萬–30 萬全掃描：單人／家庭全程單調，簽賬冇超支、卡數冇超上限、冇重複卡。【內容】v6.34.0 pgW6 加「一次大額簽賬，就儲夠成條線」段落（v6.35 跟住更新為修好後實測數：單人約 115,000 里／二人家庭約 190,000 里；區6 經濟 68,000・商務 120,000）。【圖】v6.36.0 pgW6／pgW13 主圖＋列表縮圖上架，pgW13 標題「六大洲極限」全站改「終極版環遊世界」；v6.37.0 再上 pgW8／pgW10／pgW11／pgR1／pgR2 五張，全部入 sw CORE。原 v6.31.1 -->
+<!-- build: 2026-07-18 UK — v6.47.0：①pgG7（App 有咩功能）主圖上架——用五個 tab 真截圖（計算結果/規劃/旅程/優惠/攻略）程式砌五機扇形拼圖＋金框 tab chips，插入文章開頭＋列表縮圖；②pgG8 中段 YQ 對照圖上架——程式砌長條圖：短途（日韓台）≈HK$290 vs 長途（歐美）≈HK$1,164，bar 長度按真實比例 0.249；兩張入 sw CORE。示範圖位剩 3（pgW6/pgW10/pgW13 中段，等 Robert 出圖）。原 v6.46.0：深層清潔③排版——全站掃描出 9 段 110 字以上嘅密集 prose，按 research checklist 全部拆掉：pgO3 迎新 230 字段→key-facts box（申請期/簽賬級距/會員檔）＋死線 art-tip；pgO3 9X 段→三點 art-list（邊啲有 9X/每階段重登記/舊登記無效）；pgO2 迎新段→key-facts（優惠碼 MILEFLASH/期限/門檻/合共）；pgO4 6X 段→兩點 art-list（批卡即登記 6X＋旅遊簽賬優惠）；pgG8 YQ 段→art-kv（短途 290/長途 1,164）；pgG2 賺率段→四格 art-kv（EveryMile/Citi PM 強弱面）；pgR1 三個站段輕手 br 拆行。掃描復查：無拆行長段落清零。原 v6.45.0：深層清潔①②——①外部連結全面改專屬文章頁（Robert 硬規則：唔准連主頁）：EXT_LINKS 擴充 9 條每卡每平台 URL（2026-07-18 逐條 web search 驗證），pgO1 渣打→mrmiles/cathay-card+flyformiles/41446+moneyhero products 頁；pgO2 EveryMile→mrmiles/hsbc-everymile+moneyhero blog；pgO3 白金細頭→mrmiles/ae-platinum-card-centurion-lounge+flyformiles/7913；pgO4 Explorer→mrmiles/ae-explorer+flyformiles/amex-explorer+moneyhero blog；pgO5 平台教學篇保留主頁（本身講平台）；一鍵下架 SHOW_3P_LINKS 架構不變。②文章日期按實際開發時序重分：pgG1–G8＝07-08 至 07-13、pgO3＝07-15、pgO1/O2/O4/O5＝07-16、pgW0＋五條示範線＝07-17、路線實例 pgR1/pgR2＝07-18（最新，Robert 指定）。原 v6.44.1：訂閱視窗（subSheet）加返「唔想走漏迎新？」頭圖（img/banner-sub.jpg，即係由輪播移出嚟嗰張）——擺喺標題下面，用負 margin 出血貼齊 sheet 兩邊、16:9 圓角。原 v6.44.0：旅程 showcase 四格廣告位改做 Robert 指定：①信用卡砌卡組合 pgG2 ②EveryMile MILEFLASH 49,000 pgO2 ③區10 歐美環球 230,000 里 pgW10 ④Follow 我哋；四張圖全部已 baked 標題文字故一律 bare（唔疊字）；順手補返「撳廣告開文章」缺咗嘅 z-index 遞增／scrollTop 歸零／回頂掣接駁。原 v6.43.1：①頂 bar 同內容之間加呼吸位（main paddingTop = header 全高 + 16 → +30，原本太貼）；②文章頁右下加「返回頂部」圓掣——.page 有自己 overflow:auto，所以 scroll 嗰個元素唔係 window；scrollTop>380 淡入、撳一下 smooth 彈返頂、開新頁／撳返回自動收起；z-index 400 高過 .page 動態 z-index；桌面版用 calc 貼返 680px 欄右邊。原 v6.43.0：修桌面版排版——.hdr／.tabs 用 fixed left:0;right:0 拉到全螢幕闊，但 main 鎖 680px 置中，電腦睇落頂 bar 全闊、內容細粒喺中間對唔上。加 @media(min-width:720px)：.hdr／.tabs／.page 一齊收窄 680px 置中，main 加 --paper 底＋陰影做 app 欄，body 外圍淺灰，畝里面板改為貼欄右邊。原 v6.42.0：pgO5（獨家獎賞點樣拎？千祈唔好貪心・四步流程圖）主圖＋列表縮圖上架並入 sw CORE；pgO4 主圖換做 Robert 修訂版（同檔名覆蓋，SW 版本號跳令快取更新）。至此全部文章主圖完成。原 v6.41.0：pgO4（AE Explorer 簽 $30,000 即賺高達 26,000 里・換峇里來回）主圖＋列表縮圖上架，入 sw CORE；已用 app 標準獎勵表核實 HKG→DPS 2,148 哩／印尼類別2／經濟單程 13,000×2＝26,000 里。原 v6.40.0：pgG6（點用 AcreMiles 幫你計・三個主畫面拼圖，用真 app 截圖砌）主圖＋列表縮圖上架，入 sw CORE。原 v6.39.0：pgO2（滙豐 EveryMile 即賺 49,000 里・優惠碼 MILEFLASH・7.31 截止）主圖＋列表縮圖上架，入 sw CORE。原 v6.38.0：pgO1（渣打國泰倒數 7.23・全食 143,000 里）同 pgG5（新手最易中嘅七個伏）主圖＋列表縮圖上架，兩張入 sw CORE。原 v6.37.0（累積 v6.32.0–v6.37.0；注意：v6.31.1 之後嘅 marker 更新因 sed 失敗未寫入，此行為補回嘅完整記錄）：【頂 bar】v6.32 診斷出 sticky header 收縮改動文件高度→觸發 Chrome URL bar feedback loop（cyber psycho）；v6.33.0 改真 collapsing header：.hdr 用 position:fixed 出流＋main 固定頂 padding，height=clamp(MIN,FULL−scrollY,FULL)，文件高度恆定→無 loop。【縮放】v6.33.1 App感/無障礙 toggle 換 slider（70–130%，100% 置中）；v6.33.2 修 zoom 爆浮層——zoom 只套 main>section＋.page（--app-zoom），header/nav/浮層保持 100%，關掣永遠撳到；同場修「開通中」badge（CS_EMAIL var hoist 令 init 時 undefined，改喺賦值後即隱藏）。【畝里面板】v6.33.3 修撳 topic 面板彈走——撳 topic 會重 render 令 target 離開 DOM，bubble 階段 closest 查唔到誤判撳咗外面；改 capture 階段預先擷取。【計算機】v6.35.0 修兩個 bug：①家庭／卡數上限 chips 轉咗唔會自動重算（畫面顯示舊結果，要再撳計）→已計過即自動重算；②【嚴重】優化器貪心：原本「直接儲目標里數嘅卡無條件贏彈性點數卡」行喺 里數/$ 比較之前，令 0.29 里/$ 贏 4 里/$（差 8 倍），大而唔抵嘅一浸食晒 budget→簽 15 萬（85,000 里）少過簽 10 萬（115,000 里）；改成 effm×1.10 溢價＋同分 tie-break。5 萬–30 萬全掃描：單人／家庭全程單調，簽賬冇超支、卡數冇超上限、冇重複卡。【內容】v6.34.0 pgW6 加「一次大額簽賬，就儲夠成條線」段落（v6.35 跟住更新為修好後實測數：單人約 115,000 里／二人家庭約 190,000 里；區6 經濟 68,000・商務 120,000）。【圖】v6.36.0 pgW6／pgW13 主圖＋列表縮圖上架，pgW13 標題「六大洲極限」全站改「終極版環遊世界」；v6.37.0 再上 pgW8／pgW10／pgW11／pgR1／pgR2 五張，全部入 sw CORE。原 v6.31.1 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -1347,7 +1347,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <figure class="art-fig"><img src="img/pgG2-cards.jpg" alt="碌卡買 iPhone 賺北海道來回機票" loading="lazy"></figure>
   <div class="art-kv"><div class="art-kv-i"><span>EveryMile 指定商戶</span><b>$2／里</b></div><div class="art-kv-i"><span>Citi PM 海外</span><b>$3–4／里</b></div><div class="art-kv-i hot"><span>迎新</span><b>$0.25／里</b></div></div>
   <h2 class="art-h">根本冇「最好」嘅卡</h2>
-  <p class="art-p">賺率唔係一個數，係睇你喺邊度簽。<b>滙豐 EveryMile</b>：指定商戶（咖啡店、指定超市）$2 一里，但酒樓、其他本地海外跌返 $5。<b>Citi PremierMiles</b>：海外網上外幣 $3–4，但本地 $8。強嗰忽賺到盡、弱嗰忽賺得慢——冇一張全能。</p>
+  <p class="art-p">賺率唔係一個數，係睇你喺邊度簽：</p><div class="art-kv"><div class="art-kv-i"><span>EveryMile 指定商戶</span><b>$2/里</b></div><div class="art-kv-i"><span>EveryMile 其他簽賬</span><b>$5/里</b></div><div class="art-kv-i"><span>Citi PM 海外網上</span><b>$3–4/里</b></div><div class="art-kv-i"><span>Citi PM 本地</span><b>$8/里</b></div></div><p class="art-p">強嗰忽賺到盡、弱嗰忽賺得慢——<b>冇一張全能</b>。</p>
   <h2 class="art-h">真正玩法：分工碌</h2>
   <p class="art-p">買咖啡入超市 → EveryMile；出國網上外幣 → PremierMiles；雜項 → 邊張底率高碌邊張。兩三張卡分工，一年落嚟同求其一張碌，里數爭一大截。</p>
   <div class="art-tip"><b>💡 迎新四條規矩</b>：一次性（攞完就冇）；要真消費（交稅、PayAll、繳費多數唔計）；有限期（每季變，簽前對官網當期 T&C）；早 cut 會扣返（多數 12 個月內取消就收返啲里）。</div>
@@ -1424,10 +1424,10 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <p class="art-p"><b>🇯🇵 東京（轉機，&lt;24 鐘）</b>——唔好以為轉機＝坐喺機場。港護照日本免簽，成田入市區一個鐘：夠長就出去食碗拉麵、行下淺草；夠短就留 NRT 掃藥妝。</p>
   <p class="art-p"><b>🇺🇸 洛杉磯（停留）</b>——Santa Monica 踩單車、Hollywood、Disneyland。⚠️ 港人去美國要<b>預先申請簽證（面簽）</b>，出發前最少兩三個月搞，一張簽證行晒 LA・芝加哥・紐約三站。</p>
   <p class="art-p"><b>🇺🇸 芝加哥（停留）</b>——Millennium Park 影「雲門」、深盤 pizza、密歇根湖畔建築遊船——美國最俾人睇小嘅靚城市。</p>
-  <p class="art-p"><b>🇺🇸 紐約（停留・開口位）</b>——中央公園、百老匯、自由神像。玩完呢度係<b>開口</b>：自駕上多倫多睇千島湖（約 8 個鐘）或者內陸機個半鐘。⚠️ 入加拿大要網上 eTA。<b>開口＝買一送一</b>：紐約玩完，多倫多都袋埋（CN Tower、尼亞加拉大瀑布日歸），先至喺 YYZ 上返條線。</p>
+  <p class="art-p"><b>🇺🇸 紐約（停留・開口位）</b>——中央公園、百老匯、自由神像。<br>玩完呢度係<b>開口</b>：自駕上多倫多睇千島湖（約 8 個鐘）或者內陸機個半鐘。<br>⚠️ 入加拿大要網上 eTA。<br><b>開口＝買一送一</b>：紐約玩完，多倫多都袋埋（CN Tower、尼亞加拉大瀑布日歸），先至喺 YYZ 上返條線。</p>
   <p class="art-p"><b>🇧🇷 聖保羅（停留）</b>——多倫多直落南半球！巴西燒烤食到飽、Ibirapuera 公園、街頭藝術。港人免簽，最遠嗰程反而最易入境。</p>
-  <p class="art-p"><b>🇿🇦 約翰內斯堡（停留・開口位）</b>——非洲大陸！Apartheid Museum、獅子園 safari。之後第二個<b>開口</b>：租車行世界級靚路「花園大道」或者內陸機兩個鐘去<b>開普敦</b>——桌山、好望角、企鵝灘，玩完先喺 CPT 上機。又係買一送一。港護照南非免簽。</p>
-  <p class="art-p"><b>🇶🇦 多哈（轉機）</b>——卡塔爾航空官方有 <b>Discover Qatar 轉機導賞團</b>：轉機 6 個鐘以上，跟官方團出去睇瓦其夫市集、濱海大道、伊斯蘭藝術博物館，玩完送返你上機；夠 12 個鐘仲有官方 Stopover 酒店計劃，oneworld 機票都用得。留意：轉機少過 24 鐘拎唔到寄艙行李，快閃嘢放手提。</p>
+  <p class="art-p"><b>🇿🇦 約翰內斯堡（停留・開口位）</b>——非洲大陸！Apartheid Museum、獅子園 safari。<br>之後第二個<b>開口</b>：租車行世界級靚路「花園大道」或者內陸機兩個鐘去<b>開普敦</b>——桌山、好望角、企鵝灘，玩完先喺 CPT 上機。<br>又係買一送一。港護照南非免簽。</p>
+  <p class="art-p"><b>🇶🇦 多哈（轉機）</b>——卡塔爾航空官方有 <b>Discover Qatar 轉機導賞團</b>：轉機 6 個鐘以上，跟官方團出去睇瓦其夫市集、濱海大道、伊斯蘭藝術博物館，玩完送返你上機。<br>夠 12 個鐘仲有官方 Stopover 酒店計劃，oneworld 機票都用得。<br>⚠️ 留意：轉機少過 24 鐘拎唔到寄艙行李，快閃嘢放手提。</p>
   <p class="art-p"><b>🇹🇭 曼谷（停留）→ 🇸🇬 新加坡（停留）</b>——非洲返亞洲：曼谷街頭小食、水上市場充電；新加坡濱海灣花園、Hawker Centre 掃街。最後一程返香港，五大洲圓滿。</p>
   <div class="vz"><span class="vz-h">✈️ 快閃前睇簽證（香港特區護照）</span><span class="vz-c ok">日本 免簽</span><span class="vz-c no">美國 要預先簽證</span><span class="vz-c md">加拿大 網上 eTA</span><span class="vz-c ok">巴西 免簽</span><span class="vz-c ok">南非 免簽</span><span class="vz-c ok">卡塔爾 免簽</span><span class="vz-c ok">泰國 免簽</span><span class="vz-c ok">新加坡 免簽</span><i>以各領事館最新公佈為準；BNO 待遇唔同，自己揸嘅護照自己查。</i></div>
   <div class="art-tip"><b>💡 呢條線嘅精髓</b>：29,859 哩塞喺 Zone 12 上限（35,000）之下——五個停留＋兩個轉機快閃＋兩個開口（每個開口都係「買一送一」城市），一個價玩盡五大洲。</div>
@@ -1574,8 +1574,8 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <p class="art-p"><b>YQ ＝ 燃油附加費（Fuel Surcharge）</b>，係航空公司喺票價以外另收嘅一筆，用嚟對沖油價。里數換票只係免咗「票價（fare）」嗰部分，YQ 同各種機場稅、離境稅係<b>免唔到</b>嘅，一律要現金找。</p>
   <p class="art-p">所以「用里數換免費機票」呢句，嚴格上嚟講唔完全啱——應該係「用里數換到<b>唔使俾票價</b>嘅機票，但仲要俾 YQ ＋稅」。</p>
   <h2 class="art-h">大概要俾幾多</h2>
-  <p class="art-p">YQ 按<b>地區同航程長短</b>計，唔係按你張飛平定貴。粗略講：短途（例如香港去日韓台）每段大約 <b>HK$290</b>；長途（例如香港去歐美）每段大約 <b>HK$1,164</b>。呢個數會跟油價逐月調整，亦視乎你揀邊間航空公司——有啲 oneworld 夥伴（例如英航）自己收得高，但用亞洲萬里通出反而收得平啲。</p>
-  <figure class="art-fig"><div class="art-fig-ph"><div class="fic">📊</div><div class="flb">示範圖位</div></div><figcaption class="art-fig-cap"><b>【建議配圖】</b>一個簡單對照表或長條圖：短途 vs 長途 YQ 大約金額；或者國泰官方「燃油附加費表」嘅截圖。</figcaption></figure>
+  <p class="art-p">YQ 按<b>地區同航程長短</b>計，唔係按你張飛平定貴。粗略價位：</p><div class="art-kv"><div class="art-kv-i"><span>短途每段（日韓台）</span><b>≈ HK$290</b></div><div class="art-kv-i hot"><span>長途每段（歐美）</span><b>≈ HK$1,164</b></div></div><p class="art-p">呢個數跟油價<b>逐月調整</b>，亦視乎航空公司——有啲 oneworld 夥伴（例如英航）自己收得高，用亞洲萬里通出反而平啲。</p>
+  <figure class="art-fig"><img src="img/pgG8-yq.jpg" alt="YQ 燃油費每段大約幾多：短途日韓台約 HK$290、長途歐美約 HK$1,164" loading="lazy"></figure>
   <h2 class="art-h">環球票要特別留意</h2>
   <p class="art-p">環球票飛好多段，每段都可能有 YQ，加埋隨時成 <b>HK$1–2 萬</b>。段數越多、長途段越多，YQ 越貴。所以砌環球票唔淨係睇里數，仲要預埋呢舊現金——規劃器計到里數，但 YQ 要出票果陣先睇到實數。</p>
   <div class="art-tip"><b>💡 點樣慳 YQ？</b>①揀 YQ 收得平嘅航空公司出票（同一條 oneworld 航線，用亞洲萬里通出通常平過用夥伴自己個 program）；②減少不必要嘅長途段；③留意有啲航線／促銷會減免 YQ。出票前格清楚每個組合嘅 YQ，可以差好遠。</div>
@@ -1597,7 +1597,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <h2 class="art-h">平台獨家再疊</h2>
   <p class="art-p"><b>小斯</b>（07-15 至 23，碼 HKRSIUC11000）：新舊客 $500 Apple Gift Card／超市禮券。<b>里先生</b>（碼 HKRMRM11000）：88 里賞金（≈HK$88，填 form 拎）。二揀一，唔可以疊。</p>
   <div class="art-tip"><b>⚠️ 三件套提醒：</b>迎新窗口只有 2 個月（比一般短）；渣打通病係好多優惠要<b>預先登記</b>；DCC 揀港幣結算嘅海外簽賬唔計數仲要多畀 1%。</div>
-    <div class="ext-row"><span class="ext-row-h">去邊度睇／申請：</span><a class="ext-link" data-ext="mrmiles" target="_blank" rel="noopener">里先生 ↗</a><a class="ext-link" data-ext="flyformiles" target="_blank" rel="noopener">小斯 ↗</a><a class="ext-link" data-ext="moneyhero" target="_blank" rel="noopener">MoneyHero ↗</a></div>
+    <div class="ext-row"><span class="ext-row-h">去邊度睇／申請：</span><a class="ext-link" data-ext="mrmiles_cathay" target="_blank" rel="noopener">里先生 ↗</a><a class="ext-link" data-ext="flyformiles_cathay" target="_blank" rel="noopener">小斯 ↗</a><a class="ext-link" data-ext="moneyhero_cathay" target="_blank" rel="noopener">MoneyHero ↗</a></div>
   <p class="ext-note">以上為第三方公開連結，方便你自行前往；本 app 現時冇任何 referral／聯盟收益（見「關於」利益披露）。實際優惠、細則一律以該平台及銀行官方最新公佈為準。</p>
   <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgO5"><span>🧭</span><div><b>平台獨家點樣拎</b><i>cookie、填form、流程逐個講</i></div></button><button type="button" class="art-more-i" data-open="pgG2"><span>🃏</span><div><b>信用卡砌卡組合</b><i>迎新點食盡</i></div></button><button type="button" class="art-more-i" data-open="pgG5"><span>⚠️</span><div><b>新手七個伏</b><i>cut卡冷河期必讀</i></div></button></div>
   <div class="art-foot">資料截至 2026-07-16，來源為具名比較平台（第 3 級）；所有優惠以各銀行／機構官方條款及細則為準，數字或隨時變動，申請前請自行核對。借定唔借？還得到先好借！</div>
@@ -1607,13 +1607,13 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="page-head"><button type="button" class="pg-back" data-pg="pgO2" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>EveryMile「MILEFLASH」：新客爆升至 49,000 里</div>
   <div class="page-body">
   <div class="art-hero"><div class="art-hero-tag">限時優惠 · 07-31 截止</div><h1 class="art-hero-t">一個優惠碼，迎新差唔多翻倍</h1><p class="art-hero-sub">網上申請入碼「<b>MILEFLASH</b>」，新客迎新由 25,000 里跳上 <b>49,000 里</b>。</p></div>
-  <div class="art-lead">滙豐 EveryMile 本身係日常儲里主力（$5/里、指定類別 $2/里）。7 月 13 至 31 日有網上限時迎新：申請時輸入優惠碼「MILEFLASH」，批卡 60 日內簽 $8,000，新客<b>額外</b> $1,000 獎賞錢（20,000 里）、舊客額外 $500（10,000 里）——連基本迎新，新客合共高達 $2,450 獎賞錢 ≈ 49,000 里。</div>
+  <div class="art-lead">滙豐 EveryMile 本身係日常儲里主力（$5/里、指定類別 $2/里）。7 月網上限時迎新重點：</p><div class="art-kv"><div class="art-kv-i hot"><span>優惠碼</span><b>MILEFLASH</b></div><div class="art-kv-i"><span>期限</span><b>7 月 13 – 31 日</b></div><div class="art-kv-i"><span>門檻</span><b>批卡 60 日內簽 $8,000</b></div><div class="art-kv-i hot"><span>新客合共</span><b>$2,450 獎賞錢 ≈ 49,000 里</b></div></div><p class="art-p">拆開計：新客<b>額外</b> $1,000 獎賞錢（20,000 里）、舊客額外 $500（10,000 里），再連基本迎新。</div>
   <figure class="art-fig"><img src="img/pgO2-hero.jpg" alt="滙豐 EveryMile 新客迎新即賺 49,000 里，優惠碼 MILEFLASH，7.31 截止" loading="lazy"></figure>
   <h2 class="art-h">三件套逐樣答</h2>
   <p class="art-p"><b>登記？</b>唔使另外登記，但申請嗰刻必須喺迎新頁輸入「MILEFLASH」。<b>門檻？</b>批卡後 60 日內累積簽 $8,000，而且<b>要包至少一次手機支付</b>（Apple Pay／Google Pay 簽一次就得）。<b>上限？</b>迎新一次過，每人一份。</p>
   <p class="art-p"><b>加碼位：</b>06-01 至 07-31 開卡兼 60 日內簽 $500，自動參加 HSBC 開卡大抽獎——終極大獎 $50,000 獎賞錢（≈100 萬里），24 個名額。里先生同期經佢申請填 form 仲有 88 里賞金。</p>
   <div class="art-tip"><b>💡 手機支付嗰單好易漏。</b>唔少人簽夠 $8,000 但全部係實體卡碌，結果差一單手機支付食唔到加碼——批卡第一日就用 Apple Pay 買杯咖啡搞掂佢。</div>
-    <div class="ext-row"><span class="ext-row-h">去邊度睇／申請：</span><a class="ext-link" data-ext="mrmiles" target="_blank" rel="noopener">里先生 ↗</a><a class="ext-link" data-ext="moneyhero" target="_blank" rel="noopener">MoneyHero ↗</a></div>
+    <div class="ext-row"><span class="ext-row-h">去邊度睇／申請：</span><a class="ext-link" data-ext="mrmiles_everymile" target="_blank" rel="noopener">里先生 ↗</a><a class="ext-link" data-ext="moneyhero_everymile" target="_blank" rel="noopener">MoneyHero ↗</a></div>
   <p class="ext-note">以上為第三方公開連結，方便你自行前往；本 app 現時冇任何 referral／聯盟收益（見「關於」利益披露）。實際優惠、細則一律以該平台及銀行官方最新公佈為準。</p>
   <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgO5"><span>🧭</span><div><b>平台獨家點樣拎</b><i>填form流程講清楚</i></div></button><button type="button" class="art-more-i" data-open="pgG1"><span>🎓</span><div><b>亞洲萬里通 101</b><i>獎賞錢點變里數</i></div></button><button type="button" class="art-more-i" data-open="pgO1"><span>⏰</span><div><b>渣打國泰 143,000 里</b><i>另一張入門卡都加緊碼</i></div></button></div>
   <div class="art-foot">資料截至 2026-07-16，來源為具名比較平台（第 3 級）；所有優惠以各銀行／機構官方條款及細則為準，數字或隨時變動，申請前請自行核對。借定唔借？還得到先好借！</div>
@@ -1623,12 +1623,12 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="page-head"><button type="button" class="pg-back" data-pg="pgO3" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>AE 白金新一期：100 萬分迎新＋9X 續命到 2027</div>
   <div class="page-body">
   <div class="art-hero"><div class="art-hero-tag">限時優惠 · ⏰ 07-29 截止（官方）</div><h1 class="art-hero-t">舊迎新啱啱死，新迎新即刻生</h1><p class="art-hero-sub">官方 T&C 已核實：申請期 7 月 15 至 <b>29</b> 日，新客高達 <b>1,000,000 積分（55,556 里）</b>，簽賬門檻仲降咗。</p></div>
-  <div class="art-lead">AE 白金卡（細頭）年費 $9,500 冇得免，但玩法一向係「迎新＋9X 加賞」對沖。新一期官方 T&C 已出：<b>申請期 7 月 15 至 29 日</b>（留意：比平台早報嘅 31 號早兩日！）。新客簽 $15,000 有 400,000 分（22,222 里）、簽 $50,000 有合共 <b>1,000,000 分（55,556 里）</b>——門檻仲由上期 $60,000 降到 $50,000。現有 AE 會員都有：簽 $15,000 → 810,000 分（45,000 里）。另加網上申請首次簽賬 $1,000 回贈＋手機八達通增值 $50。</div>
+  <div class="art-lead">年費 $9,500 冇得免——呢張卡嘅玩法一向係「迎新＋9X 加賞」對沖。新一期官方 T&C 已出，重點如下：</p><div class="art-kv"><div class="art-kv-i hot"><span>申請期</span><b>7 月 15 – 29 日</b></div><div class="art-kv-i"><span>新客簽 $15,000</span><b>400,000 分（22,222 里）</b></div><div class="art-kv-i hot"><span>新客簽 $50,000</span><b>1,000,000 分（55,556 里）</b></div><div class="art-kv-i"><span>現有會員簽 $15,000</span><b>810,000 分（45,000 里）</b></div></div><div class="art-tip"><b>⚠️ 死線係 29 號</b>——比平台早報嘅 31 號<b>早兩日</b>，唔好等到月尾。門檻仲由上期 $60,000 降到 $50,000。</div><p class="art-p">另加細甜頭：網上申請首次簽賬 $1,000 回贈＋手機八達通增值 $50。</div>
   <figure class="art-fig"><img src="img/pgO3-hero.jpg" alt="AE白金迎新1000000分" loading="lazy"></figure>
   <h2 class="art-h">重點其實係 9X 續命</h2>
-  <p class="art-p">今次證實 <b>9X 加賞計劃延續到 2027 年 12 月 31 日</b>，拆做六個階段（第一階段 2026-07-01 至 09-30）。外幣、指定旅遊商戶（Trip.com／Agoda／Booking 等）同指定日常商戶簽賬 HK$1＝9 分，<b>低至 $2/里</b>——但<b>每個階段都要重新登記</b>，每階段每類別上限 $15,000。7 月 1 日前嘅舊登記已無效，持卡人而家就要登記返。</p>
+  <p class="art-p">今次官方證實 <b>9X 加賞延續到 2027 年 12 月 31 日</b>，拆做六個階段（第一階段 2026-07-01 至 09-30）。重點三樣：</p><div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>邊啲簽賬有 9X</b> — 外幣、指定旅遊商戶（Trip.com／Agoda／Booking 等）、指定日常商戶，HK$1＝9 分，<b>低至 $2/里</b>。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>每階段都要重新登記</b> — 每階段每類別上限 $15,000，過咗上限跌返基本率。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t"><b>舊登記已無效</b> — 7 月 1 日前登記過都唔算數，持卡人<b>而家就要登記返</b>。</div></div></div><p class="art-p" hidden></p>
   <div class="art-tip"><b>⚠️ 老實講：</b>年費 $9,500 真金白銀（基本卡連 2 張附屬卡），呢張卡只啱簽賬夠大、用得盡禮遇嘅人。兩個官方細節要知：①<b>首 12 個月 cut 卡，AE 有權扣返 $9,500 年費</b>；②儲值增值（電子錢包）、年費、稅項全部唔計迎新簽賬。申請死線 <b>7 月 29 日</b>，唔好信 31 號。</div>
-    <div class="ext-row"><span class="ext-row-h">去邊度睇／申請：</span><a class="ext-link" data-ext="mrmiles" target="_blank" rel="noopener">里先生 ↗</a><a class="ext-link" data-ext="flyformiles" target="_blank" rel="noopener">小斯 ↗</a></div>
+    <div class="ext-row"><span class="ext-row-h">去邊度睇／申請：</span><a class="ext-link" data-ext="mrmiles_aeplat" target="_blank" rel="noopener">里先生 ↗</a><a class="ext-link" data-ext="flyformiles_aeplat" target="_blank" rel="noopener">小斯 ↗</a></div>
   <p class="ext-note">以上為第三方公開連結，方便你自行前往；本 app 現時冇任何 referral／聯盟收益（見「關於」利益披露）。實際優惠、細則一律以該平台及銀行官方最新公佈為準。</p>
   <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgO4"><span>🧳</span><div><b>AE Explorer 7 月版</b><i>年費親民版嘅選擇</i></div></button><button type="button" class="art-more-i" data-open="pgG5"><span>⚠️</span><div><b>新手七個伏</b><i>年費卡伏位</i></div></button><button type="button" class="art-more-i" data-open="pgO5"><span>🧭</span><div><b>平台獨家點樣拎</b><i>88里賞金流程</i></div></button></div>
   <div class="art-foot">資料截至 2026-07-16，來源為具名比較平台（第 3 級）；所有優惠以各銀行／機構官方條款及細則為準，數字或隨時變動，申請前請自行核對。借定唔借？還得到先好借！</div>
@@ -1641,9 +1641,9 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="art-lead">AE Explorer 迎新 26,000 里本身去到 8 月 31 日，7 月 2 至 31 日經平台申請有加碼：多 $50 獎賞（小斯報八達通增值賞、里先生報簽賬回贈，二揀一），里先生仲有 88 里賞金。</div>
   <figure class="art-fig"><img src="img/pgO4-hero.jpg" alt="AE Explorer 信用卡簽 $30,000 即賺高達 26,000 里，換峇里來回機票" loading="lazy"></figure>
   <h2 class="art-h">最多人漏嘅一步</h2>
-  <p class="art-p">Explorer 嘅本地 <b>6X 積分（≈HK$3/里）係全年計劃但要登記先有</b>——AE 各賺分計劃 2026 年 7 月起要（重新）登記，批卡後第一件事就係登記，唔登記＝齋食基本率。另外 MoneyHero 報新一期<b>旅遊簽賬優惠去到 12 月 31 日</b>：登記後外幣低至 HK$1.68/里、港幣低至 $3/里。</p>
+  <p class="art-p">兩樣批卡後即刻做：</p><div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>登記 6X 本地積分</b>（≈HK$3/里）— 全年計劃但<b>要登記先有</b>：AE 賺分計劃 2026 年 7 月起全部要（重新）登記。唔登記＝齋食基本率。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>登記旅遊簽賬優惠</b>（去到 12 月 31 日）— 登記後外幣低至 <b>HK$1.68/里</b>、港幣低至 <b>$3/里</b>。</div></div></div><p class="art-p" hidden></p>
   <div class="art-tip"><b>💡 實測快感：</b>條款寫迎新積分 8 星期內入賬，但用家實測簽完 3 日內就到——趕住換機票嘅話 Explorer 係快槍手。</div>
-    <div class="ext-row"><span class="ext-row-h">去邊度睇／申請：</span><a class="ext-link" data-ext="mrmiles" target="_blank" rel="noopener">里先生 ↗</a><a class="ext-link" data-ext="flyformiles" target="_blank" rel="noopener">小斯 ↗</a><a class="ext-link" data-ext="moneyhero" target="_blank" rel="noopener">MoneyHero ↗</a></div>
+    <div class="ext-row"><span class="ext-row-h">去邊度睇／申請：</span><a class="ext-link" data-ext="mrmiles_explorer" target="_blank" rel="noopener">里先生 ↗</a><a class="ext-link" data-ext="flyformiles_explorer" target="_blank" rel="noopener">小斯 ↗</a><a class="ext-link" data-ext="moneyhero_explorer" target="_blank" rel="noopener">MoneyHero ↗</a></div>
   <p class="ext-note">以上為第三方公開連結，方便你自行前往；本 app 現時冇任何 referral／聯盟收益（見「關於」利益披露）。實際優惠、細則一律以該平台及銀行官方最新公佈為準。</p>
   <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgO3"><span>👑</span><div><b>AE 白金新一期</b><i>想升級玩 9X 睇呢篇</i></div></button><button type="button" class="art-more-i" data-open="pgG2"><span>🃏</span><div><b>信用卡砌卡組合</b><i>Explorer 點放入組合</i></div></button><button type="button" class="art-more-i" data-open="pgO5"><span>🧭</span><div><b>平台獨家點樣拎</b><i>$50 獎賞流程</i></div></button></div>
   <div class="art-foot">資料截至 2026-07-16，來源為具名比較平台（第 3 級）；所有優惠以各銀行／機構官方條款及細則為準，數字或隨時變動，申請前請自行核對。借定唔借？還得到先好借！</div>
@@ -1702,6 +1702,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
   <div class="page-head"><button type="button" class="pg-back" data-pg="pgG7" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>App 有咩功能</div>
   <div class="art-hero"><div class="art-hero-tag">導覽</div><h1 class="art-hero-t">五個 tab、零追蹤</h1><p class="art-hero-sub">全部喺你部機行——一次過帶你行一圈。</p></div>
   <div class="art-lead">AcreMiles 幫你計點用信用卡儲盡 Asia Miles／Avios，同埋啲里換到咩機票。</div>
+  <figure class="art-fig"><img src="img/pgG7-hero.jpg" alt="App 有咩功能：計算、規劃、旅程、優惠、攻略五個 tab 一次過行一圈" loading="lazy"></figure>
   <button type="button" class="art-more-i"><span>🧮</span><div><b>計算</b><i>大額迎新組合・日常分工・卡庫</i></div></button>
   <button type="button" class="art-more-i"><span>✈️</span><div><b>規劃</b><i>換咩好・單程來回・環球票（官方核實）</i></div></button>
   <button type="button" class="art-more-i"><span>🧳</span><div><b>旅程</b><i>你儲低嘅計劃、行程、收藏——只存你部機</i></div></button>
@@ -4760,22 +4761,22 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     }
   });
   var GUIDES = [
-    {t: '亞洲萬里通 101', d: '由零開始：點賺、點換、YQ、過期——一篇睇晒。', tag: '新手必讀', date: '2026-07-11', emoji: '🎓', img: 'img/pgG1-hero.jpg', pg: 'pgG1'},
-    {t: '信用卡砌卡組合', d: '買部 iPhone 就換到台北來回——重點唔係最好卡，係最啱組合。', tag: '新手必讀', date: '2026-07-11', emoji: '🃏', img: 'img/pgG2-cards.jpg', pg: 'pgG2'},
-    {t: '標準獎勵換機票', d: '六個距離區、類別 1/2、艙位差幾多——換之前計清楚。', tag: '換票實戰', date: '2026-07-11', emoji: '✈️', img: 'img/pgG3-hero.jpg', pg: 'pgG3'},
-    {t: 'YQ 燃油費：免費機票要俾幾多', d: '里數免票價，YQ 同稅要現金——長途一程上千，出票前計埋。', tag: '換票實戰', date: '2026-07-14', emoji: '🧾', img: 'img/pgG8-hero.jpg', pg: 'pgG8'},
+    {t: '亞洲萬里通 101', d: '由零開始：點賺、點換、YQ、過期——一篇睇晒。', tag: '新手必讀', date: '2026-07-08', emoji: '🎓', img: 'img/pgG1-hero.jpg', pg: 'pgG1'},
+    {t: '信用卡砌卡組合', d: '買部 iPhone 就換到台北來回——重點唔係最好卡，係最啱組合。', tag: '新手必讀', date: '2026-07-09', emoji: '🃏', img: 'img/pgG2-cards.jpg', pg: 'pgG2'},
+    {t: '標準獎勵換機票', d: '六個距離區、類別 1/2、艙位差幾多——換之前計清楚。', tag: '換票實戰', date: '2026-07-10', emoji: '✈️', img: 'img/pgG3-hero.jpg', pg: 'pgG3'},
+    {t: 'YQ 燃油費：免費機票要俾幾多', d: '里數免票價，YQ 同稅要現金——長途一程上千，出票前計埋。', tag: '換票實戰', date: '2026-07-13', emoji: '🧾', img: 'img/pgG8-hero.jpg', pg: 'pgG8'},
     {t: '寰宇一家環球票', d: '現金 21 萬嘅行程，識玩 265,000 里搞掂——規則、區表、跳區陷阱全拆。', tag: '進階玩法', date: '2026-07-11', emoji: '🌏', img: 'img/pgG4-hero.jpg', pg: 'pgG4'},
-    {t: '路線實例①：真環球 265,000 里', d: '四大洲九個站逐站拆：去邊玩乜、開口點駁、多哈官方轉機團。', tag: '路線實例', date: '2026-07-12', emoji: '🧳', img: 'img/pgR1-hero.jpg', pg: 'pgR1'},
-    {t: '路線實例②：中等線 250,000 里', d: '倫敦巴黎紐約多倫多——仲剩一個停留額俾你自己加站。', tag: '路線實例', date: '2026-07-12', emoji: '🗼', img: 'img/pgR2-hero.jpg', pg: 'pgR2'},
-    {t: '環球票五條示範線・總覽', d: '12 萬到 28 萬里、五個預算級別——揀啱你嗰級，逐條入去睇。', tag: '環球路線', date: '2026-07-14', emoji: '🗂️', img: 'img/pgW0-hero.jpg', pg: 'pgW0'},
-    {t: '區6・日韓泰 120,000 里', d: '札幌滑雪→沖繩→東京→首爾→曼谷，最入門嘅環球票。', tag: '環球路線', date: '2026-07-14', emoji: '🗾', img: 'img/pgW6-hero.jpg', pg: 'pgW6'},
-    {t: '區8・日澳泰 170,000 里', d: '札幌→福岡→悉尼→清邁，貼到區頂差 131 哩。', tag: '環球路線', date: '2026-07-14', emoji: '🏔️', img: 'img/pgW8-hero.jpg', pg: 'pgW8'},
-    {t: '區10・歐美環球 230,000 里', d: '歐洲三古都＋紐約溫哥華，尾段東京轉機爆買。', tag: '環球路線', date: '2026-07-14', emoji: '🌍', img: 'img/pgW10-hero.jpg', pg: 'pgW10'},
-    {t: '區11・遠洲探索 250,000 里', d: '馬爾代夫→開羅→紐約→洛杉磯——冇一個係平機去到嘅地方。', tag: '環球路線', date: '2026-07-14', emoji: '🏜️', img: 'img/pgW11-hero.jpg', pg: 'pgW11'},
-    {t: '區13・終極版環遊世界 280,000 里', d: '11 個目的地兩個開口，仲有北歐極光門戶。', tag: '環球路線', date: '2026-07-14', emoji: '🌏', img: 'img/pgW13-hero.jpg', pg: 'pgW13'},
-    {t: '新手最易中嘅七個伏', d: '迎新條件、cut 卡扣里、YQ、過期……避晒你已叻過大部分人。', tag: '避坑', date: '2026-07-11', emoji: '⚠️', img: 'img/pgG5-hero.jpg', pg: 'pgG5'},
-    {t: '點用 AcreMiles 幫你計', d: '點儲最多？換到咩？由賺到換逐個掣教。', tag: '教學', date: '2026-07-12', emoji: '🧭', img:'img/pgG6-hero.jpg', pg: 'pgG6'},
-    {t: 'App 有咩功能', d: '五個 tab、零追蹤，一次過行一圈。', tag: '導覽', date: '2026-07-12', emoji: '📱', pg: 'pgG7'}
+    {t: '路線實例①：真環球 265,000 里', d: '四大洲九個站逐站拆：去邊玩乜、開口點駁、多哈官方轉機團。', tag: '路線實例', date: '2026-07-18', emoji: '🧳', img: 'img/pgR1-hero.jpg', pg: 'pgR1'},
+    {t: '路線實例②：中等線 250,000 里', d: '倫敦巴黎紐約多倫多——仲剩一個停留額俾你自己加站。', tag: '路線實例', date: '2026-07-18', emoji: '🗼', img: 'img/pgR2-hero.jpg', pg: 'pgR2'},
+    {t: '環球票五條示範線・總覽', d: '12 萬到 28 萬里、五個預算級別——揀啱你嗰級，逐條入去睇。', tag: '環球路線', date: '2026-07-17', emoji: '🗂️', img: 'img/pgW0-hero.jpg', pg: 'pgW0'},
+    {t: '區6・日韓泰 120,000 里', d: '札幌滑雪→沖繩→東京→首爾→曼谷，最入門嘅環球票。', tag: '環球路線', date: '2026-07-17', emoji: '🗾', img: 'img/pgW6-hero.jpg', pg: 'pgW6'},
+    {t: '區8・日澳泰 170,000 里', d: '札幌→福岡→悉尼→清邁，貼到區頂差 131 哩。', tag: '環球路線', date: '2026-07-17', emoji: '🏔️', img: 'img/pgW8-hero.jpg', pg: 'pgW8'},
+    {t: '區10・歐美環球 230,000 里', d: '歐洲三古都＋紐約溫哥華，尾段東京轉機爆買。', tag: '環球路線', date: '2026-07-17', emoji: '🌍', img: 'img/pgW10-hero.jpg', pg: 'pgW10'},
+    {t: '區11・遠洲探索 250,000 里', d: '馬爾代夫→開羅→紐約→洛杉磯——冇一個係平機去到嘅地方。', tag: '環球路線', date: '2026-07-17', emoji: '🏜️', img: 'img/pgW11-hero.jpg', pg: 'pgW11'},
+    {t: '區13・終極版環遊世界 280,000 里', d: '11 個目的地兩個開口，仲有北歐極光門戶。', tag: '環球路線', date: '2026-07-17', emoji: '🌏', img: 'img/pgW13-hero.jpg', pg: 'pgW13'},
+    {t: '新手最易中嘅七個伏', d: '迎新條件、cut 卡扣里、YQ、過期……避晒你已叻過大部分人。', tag: '避坑', date: '2026-07-12', emoji: '⚠️', img: 'img/pgG5-hero.jpg', pg: 'pgG5'},
+    {t: '點用 AcreMiles 幫你計', d: '點儲最多？換到咩？由賺到換逐個掣教。', tag: '教學', date: '2026-07-13', emoji: '🧭', img:'img/pgG6-hero.jpg', pg: 'pgG6'},
+    {t: 'App 有咩功能', d: '五個 tab、零追蹤，一次過行一圈。', tag: '導覽', date: '2026-07-13', emoji: '📱', img: 'img/pgG7-hero.jpg', pg: 'pgG7'}
   ]; /* {t,d,tag,date,emoji, pg:站內全文頁 或 url:出站連結} */
   var GUIDES_ORIG = GUIDES.slice();
   var G_CATMAP = {'新手':['新手必讀','教學','導覽'], '換票':['換票實戰','進階玩法','避坑'], '路線':['路線實例','環球路線']};
@@ -5217,9 +5218,22 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
      或者直接改下面 URL／card url 換成自己嘅。呢個係「一鍵下架第三方」嘅硬掣。 */
   var SHOW_3P_LINKS = true;
   var EXT_LINKS = {
+    /* 平台主頁（只限 pgO5 平台教學篇用——嗰篇本身講平台，連主頁係啱） */
     mrmiles:      'https://www.mrmiles.hk/',
     flyformiles:  'https://www.flyformiles.hk/',
     moneyhero:    'https://www.moneyhero.com.hk/zh/credit-card',
+    /* v6.45：每卡每平台「專屬文章」URL（2026-07-18 逐條 web search 驗證存在＋內容對題）——
+       優惠文章連結必須去對應卡嘅文章頁，唔准連主頁（Robert 硬規則） */
+    mrmiles_cathay:      'https://www.mrmiles.hk/cathay-card/',
+    flyformiles_cathay:  'https://flyformiles.hk/41446',
+    moneyhero_cathay:    'https://www.moneyhero.com.hk/zh/credit-card/products/standard-chartered-cathay-mastercard',
+    mrmiles_everymile:   'https://www.mrmiles.hk/hsbc-everymile/',
+    moneyhero_everymile: 'https://www.moneyhero.com.hk/zh/credit-card/blog/%E8%A7%A3%E6%A7%8B-%E6%BB%99%E8%B1%90everymile%E4%BF%A1%E7%94%A8%E5%8D%A1',
+    mrmiles_aeplat:      'https://www.mrmiles.hk/ae-platinum-card-centurion-lounge/',
+    flyformiles_aeplat:  'https://flyformiles.hk/7913/ae%E7%99%BD%E9%87%91%E5%8D%A1-%E7%BE%8E%E5%9C%8B%E9%81%8B%E9%80%9A%E7%99%BD%E9%87%91%E5%8D%A1-%E7%B4%B0%E9%A0%AD-centurion-card',
+    mrmiles_explorer:    'https://www.mrmiles.hk/ae-explorer/',
+    flyformiles_explorer:'https://flyformiles.hk/amex-explorer',
+    moneyhero_explorer:  'https://www.moneyhero.com.hk/blog/zh/%E8%A7%A3%E6%A7%8B-%E7%BE%8E%E5%9C%8B%E9%81%8B%E9%80%9Aexplorer-%E4%BF%A1%E7%94%A8%E5%8D%A1',
     cathayRedeem: 'https://www.cathaypacific.com/cx/zh_HK/book-a-trip/redeem-flights/redeem-flight-awards.html'
   };
   function initExtLinks(){
@@ -5232,7 +5246,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   var ARTICLES = [
     {t:'渣打國泰 7 月加碼 143,000 里', d:'免簽賬 11,000 里＋開戶＋盲盒——7 月 23 日死線，得返一星期。', tag:'限時', date:'2026-07-16', emoji:'⏰', img:'img/pgO1-hero.jpg', pg:'pgO1', expire:'2026-07-23'},
     {t:'EveryMile「MILEFLASH」49,000 里', d:'一個優惠碼迎新差唔多翻倍，記得包一單手機支付。', tag:'限時', date:'2026-07-16', emoji:'⚡', img:'img/pgO2-hero.jpg', pg:'pgO2', expire:'2026-07-31'},
-    {t:'AE 白金新一期：100 萬分＋9X 續到 2027', d:'官方核實：申請期至 7 月 29 日（唔係31）；簽 $50,000 有 100 萬分。', tag:'迎新', date:'2026-07-16', emoji:'👑', img:'img/pgO3-hero.jpg', pg:'pgO3', expire:'2026-07-29'},
+    {t:'AE 白金新一期：100 萬分＋9X 續到 2027', d:'官方核實：申請期至 7 月 29 日（唔係31）；簽 $50,000 有 100 萬分。', tag:'迎新', date:'2026-07-15', emoji:'👑', img:'img/pgO3-hero.jpg', pg:'pgO3', expire:'2026-07-29'},
     {t:'AE Explorer 7 月版 26,000 里', d:'加 $50 甜頭之外，最緊要批卡即登記全年 6X。', tag:'迎新', date:'2026-07-16', emoji:'🧳', img:'img/pgO4-hero.jpg', pg:'pgO4', expire:'2026-07-31'},
     {t:'三大平台獨家獎賞點樣拎', d:'小斯 cookie、里先生填 form、MoneyHero 表格——行錯一步就冇。', tag:'教學', date:'2026-07-16', emoji:'🧭', img:'img/pgO5-hero.jpg', pg:'pgO5'}
   ]; /* {t,d,tag,date,emoji, pg:站內全文頁 或 url:出站連結} */

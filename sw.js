@@ -1,6 +1,6 @@
 /* AcreMiles service worker — 同源 network-first（保資料新鮮），斷網先食 cache。
    每次改版要跟住升 CACHE 名，舊 cache 自動清。 */
-var CACHE = 'acremiles-v6.44.1';
+var CACHE = 'acremiles-v6.47.0';
 var CORE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './img/pgG1-hero.jpg', './img/pgG1-steps.jpg', './img/pgG2-cards.jpg', './img/pgG3-hero.jpg', './img/pgG8-hero.jpg', './img/pgG4-hero.jpg', './img/pgW0-hero.jpg',
   './img/pgW6-hero.jpg',
   './img/pgW13-hero.jpg',
@@ -14,7 +14,9 @@ var CORE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-5
   './img/pgO2-hero.jpg',
   './img/pgG6-hero.jpg',
   './img/pgO4-hero.jpg',
-  './img/pgO5-hero.jpg', './img/pgO3-hero.jpg', './img/banner-sub.jpg', './img/banner-follow.jpg'];
+  './img/pgO5-hero.jpg',
+  './img/pgG7-hero.jpg',
+  './img/pgG8-yq.jpg', './img/pgO3-hero.jpg', './img/banner-sub.jpg', './img/banner-follow.jpg'];
 self.addEventListener('install', function(e){
   /* 逐個 cache，單一檔案 404 唔會拖冧成個 SW 安裝（唔用 addAll 嘅原子性）*/
   e.waitUntil(caches.open(CACHE).then(function(c){

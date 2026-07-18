@@ -1,4 +1,4 @@
-<!-- build: 2026-07-18 UK — v6.42.0：pgO5（獨家獎賞點樣拎？千祈唔好貪心・四步流程圖）主圖＋列表縮圖上架並入 sw CORE；pgO4 主圖換做 Robert 修訂版（同檔名覆蓋，SW 版本號跳令快取更新）。至此全部文章主圖完成。原 v6.41.0：pgO4（AE Explorer 簽 $30,000 即賺高達 26,000 里・換峇里來回）主圖＋列表縮圖上架，入 sw CORE；已用 app 標準獎勵表核實 HKG→DPS 2,148 哩／印尼類別2／經濟單程 13,000×2＝26,000 里。原 v6.40.0：pgG6（點用 AcreMiles 幫你計・三個主畫面拼圖，用真 app 截圖砌）主圖＋列表縮圖上架，入 sw CORE。原 v6.39.0：pgO2（滙豐 EveryMile 即賺 49,000 里・優惠碼 MILEFLASH・7.31 截止）主圖＋列表縮圖上架，入 sw CORE。原 v6.38.0：pgO1（渣打國泰倒數 7.23・全食 143,000 里）同 pgG5（新手最易中嘅七個伏）主圖＋列表縮圖上架，兩張入 sw CORE。原 v6.37.0（累積 v6.32.0–v6.37.0；注意：v6.31.1 之後嘅 marker 更新因 sed 失敗未寫入，此行為補回嘅完整記錄）：【頂 bar】v6.32 診斷出 sticky header 收縮改動文件高度→觸發 Chrome URL bar feedback loop（cyber psycho）；v6.33.0 改真 collapsing header：.hdr 用 position:fixed 出流＋main 固定頂 padding，height=clamp(MIN,FULL−scrollY,FULL)，文件高度恆定→無 loop。【縮放】v6.33.1 App感/無障礙 toggle 換 slider（70–130%，100% 置中）；v6.33.2 修 zoom 爆浮層——zoom 只套 main>section＋.page（--app-zoom），header/nav/浮層保持 100%，關掣永遠撳到；同場修「開通中」badge（CS_EMAIL var hoist 令 init 時 undefined，改喺賦值後即隱藏）。【畝里面板】v6.33.3 修撳 topic 面板彈走——撳 topic 會重 render 令 target 離開 DOM，bubble 階段 closest 查唔到誤判撳咗外面；改 capture 階段預先擷取。【計算機】v6.35.0 修兩個 bug：①家庭／卡數上限 chips 轉咗唔會自動重算（畫面顯示舊結果，要再撳計）→已計過即自動重算；②【嚴重】優化器貪心：原本「直接儲目標里數嘅卡無條件贏彈性點數卡」行喺 里數/$ 比較之前，令 0.29 里/$ 贏 4 里/$（差 8 倍），大而唔抵嘅一浸食晒 budget→簽 15 萬（85,000 里）少過簽 10 萬（115,000 里）；改成 effm×1.10 溢價＋同分 tie-break。5 萬–30 萬全掃描：單人／家庭全程單調，簽賬冇超支、卡數冇超上限、冇重複卡。【內容】v6.34.0 pgW6 加「一次大額簽賬，就儲夠成條線」段落（v6.35 跟住更新為修好後實測數：單人約 115,000 里／二人家庭約 190,000 里；區6 經濟 68,000・商務 120,000）。【圖】v6.36.0 pgW6／pgW13 主圖＋列表縮圖上架，pgW13 標題「六大洲極限」全站改「終極版環遊世界」；v6.37.0 再上 pgW8／pgW10／pgW11／pgR1／pgR2 五張，全部入 sw CORE。原 v6.31.1 -->
+<!-- build: 2026-07-18 UK — v6.44.1：訂閱視窗（subSheet）加返「唔想走漏迎新？」頭圖（img/banner-sub.jpg，即係由輪播移出嚟嗰張）——擺喺標題下面，用負 margin 出血貼齊 sheet 兩邊、16:9 圓角。原 v6.44.0：旅程 showcase 四格廣告位改做 Robert 指定：①信用卡砌卡組合 pgG2 ②EveryMile MILEFLASH 49,000 pgO2 ③區10 歐美環球 230,000 里 pgW10 ④Follow 我哋；四張圖全部已 baked 標題文字故一律 bare（唔疊字）；順手補返「撳廣告開文章」缺咗嘅 z-index 遞增／scrollTop 歸零／回頂掣接駁。原 v6.43.1：①頂 bar 同內容之間加呼吸位（main paddingTop = header 全高 + 16 → +30，原本太貼）；②文章頁右下加「返回頂部」圓掣——.page 有自己 overflow:auto，所以 scroll 嗰個元素唔係 window；scrollTop>380 淡入、撳一下 smooth 彈返頂、開新頁／撳返回自動收起；z-index 400 高過 .page 動態 z-index；桌面版用 calc 貼返 680px 欄右邊。原 v6.43.0：修桌面版排版——.hdr／.tabs 用 fixed left:0;right:0 拉到全螢幕闊，但 main 鎖 680px 置中，電腦睇落頂 bar 全闊、內容細粒喺中間對唔上。加 @media(min-width:720px)：.hdr／.tabs／.page 一齊收窄 680px 置中，main 加 --paper 底＋陰影做 app 欄，body 外圍淺灰，畝里面板改為貼欄右邊。原 v6.42.0：pgO5（獨家獎賞點樣拎？千祈唔好貪心・四步流程圖）主圖＋列表縮圖上架並入 sw CORE；pgO4 主圖換做 Robert 修訂版（同檔名覆蓋，SW 版本號跳令快取更新）。至此全部文章主圖完成。原 v6.41.0：pgO4（AE Explorer 簽 $30,000 即賺高達 26,000 里・換峇里來回）主圖＋列表縮圖上架，入 sw CORE；已用 app 標準獎勵表核實 HKG→DPS 2,148 哩／印尼類別2／經濟單程 13,000×2＝26,000 里。原 v6.40.0：pgG6（點用 AcreMiles 幫你計・三個主畫面拼圖，用真 app 截圖砌）主圖＋列表縮圖上架，入 sw CORE。原 v6.39.0：pgO2（滙豐 EveryMile 即賺 49,000 里・優惠碼 MILEFLASH・7.31 截止）主圖＋列表縮圖上架，入 sw CORE。原 v6.38.0：pgO1（渣打國泰倒數 7.23・全食 143,000 里）同 pgG5（新手最易中嘅七個伏）主圖＋列表縮圖上架，兩張入 sw CORE。原 v6.37.0（累積 v6.32.0–v6.37.0；注意：v6.31.1 之後嘅 marker 更新因 sed 失敗未寫入，此行為補回嘅完整記錄）：【頂 bar】v6.32 診斷出 sticky header 收縮改動文件高度→觸發 Chrome URL bar feedback loop（cyber psycho）；v6.33.0 改真 collapsing header：.hdr 用 position:fixed 出流＋main 固定頂 padding，height=clamp(MIN,FULL−scrollY,FULL)，文件高度恆定→無 loop。【縮放】v6.33.1 App感/無障礙 toggle 換 slider（70–130%，100% 置中）；v6.33.2 修 zoom 爆浮層——zoom 只套 main>section＋.page（--app-zoom），header/nav/浮層保持 100%，關掣永遠撳到；同場修「開通中」badge（CS_EMAIL var hoist 令 init 時 undefined，改喺賦值後即隱藏）。【畝里面板】v6.33.3 修撳 topic 面板彈走——撳 topic 會重 render 令 target 離開 DOM，bubble 階段 closest 查唔到誤判撳咗外面；改 capture 階段預先擷取。【計算機】v6.35.0 修兩個 bug：①家庭／卡數上限 chips 轉咗唔會自動重算（畫面顯示舊結果，要再撳計）→已計過即自動重算；②【嚴重】優化器貪心：原本「直接儲目標里數嘅卡無條件贏彈性點數卡」行喺 里數/$ 比較之前，令 0.29 里/$ 贏 4 里/$（差 8 倍），大而唔抵嘅一浸食晒 budget→簽 15 萬（85,000 里）少過簽 10 萬（115,000 里）；改成 effm×1.10 溢價＋同分 tie-break。5 萬–30 萬全掃描：單人／家庭全程單調，簽賬冇超支、卡數冇超上限、冇重複卡。【內容】v6.34.0 pgW6 加「一次大額簽賬，就儲夠成條線」段落（v6.35 跟住更新為修好後實測數：單人約 115,000 里／二人家庭約 190,000 里；區6 經濟 68,000・商務 120,000）。【圖】v6.36.0 pgW6／pgW13 主圖＋列表縮圖上架，pgW13 標題「六大洲極限」全站改「終極版環遊世界」；v6.37.0 再上 pgW8／pgW10／pgW11／pgR1／pgR2 五張，全部入 sw CORE。原 v6.31.1 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -754,6 +754,29 @@ html.dark .art-kv-i,html.dark .hl,html.dark .art-more-i,html.dark .mchart{backgr
 .vz i{width:100%;font-size:10.5px;color:var(--mut);font-style:normal;margin-top:4px;line-height:1.5}
 .page-head .fav-btn{margin-left:auto}
 html.dark .itin,html.dark .vz{background:var(--field)}
+
+/* v6.43：桌面版（≥720px）——原本 .hdr／.tabs 用 fixed left:0;right:0 拉到成個螢幕闊，
+   但 main 鎖死 680px 置中，兩者對唔上，喺電腦睇落頂 bar 全螢幕、內容細細粒喺中間。
+   修法：將整個 app shell（頂 bar／底 nav／文章頁／畝里面板）一齊收窄到同 main 一樣 680px 並置中，
+   外圍畀個淺色背景 + 欄身陰影，變成一條「手機形」app 欄置中喺畫面，同手機版完全一致。 */
+@media (min-width:720px){
+  body{background:#dde5e2}
+  html.dark body{background:#080d0c}
+  .hdr,.tabs,.page{max-width:680px;margin-left:auto;margin-right:auto}
+  main{background:var(--paper);min-height:100vh;box-shadow:0 0 46px rgba(0,20,26,.13)}
+  html.dark main{box-shadow:0 0 46px rgba(0,0,0,.45)}
+  .robot-panel{left:calc(50% - 340px + 10px);right:calc(50% - 340px + 10px)}
+}
+
+/* v6.43.1：文章頁右下「返回頂部」圓掣——scroll 落一定距離先淡入，撳一下順滑彈返頂。
+   z-index 400 高過 .page（150 起、每開一頁 +1），確保永遠喺最上。 */
+.pg-top{position:fixed;right:16px;bottom:calc(22px + env(safe-area-inset-bottom));z-index:400;width:48px;height:48px;border-radius:50%;border:none;padding:0;cursor:pointer;background-image:linear-gradient(135deg,var(--jade-btn),var(--jade-btn2));color:#fff;box-shadow:0 6px 20px rgba(0,20,26,.34);display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .22s ease,transform .22s ease}
+.pg-top.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.pg-top svg{width:24px;height:24px}
+@media (min-width:720px){ .pg-top{right:calc(50% - 340px + 16px)} }
+
+/* v6.44.1：訂閱視窗頭圖——.sheet 有 18px 橫向 padding，用負 margin 出血到兩邊貼齊，16:9 圓角 */
+.sub-hero{display:block;width:calc(100% + 36px);margin:2px -18px 12px;aspect-ratio:16/9;object-fit:cover;border-radius:14px}
 </style>
 </head>
 <body>
@@ -1224,6 +1247,7 @@ html.dark .itin,html.dark .vz{background:var(--field)}
 <section class="sheet" id="subSheet" hidden aria-label="訂閱最新優惠">
   <div class="sheet-bar" aria-hidden="true"></div>
   <div class="sheet-head"><b>訂閱最新優惠</b><button id="subClose" type="button" aria-label="閂埋">✕</button></div>
+  <img class="sub-hero" src="img/banner-sub.jpg" alt="唔想走漏迎新？訂閱優惠速報，第一時間收到" loading="lazy">
   <p style="font-size:13.5px;line-height:1.65;color:var(--mut);margin:2px 0 12px">有筍嘅迎新、限時加碼先出聲，唔會日日轟炸。每封電郵一撳就退訂。</p>
   <div id="subDone" class="set-note" hidden></div>
   <div id="subForm">
@@ -2822,6 +2846,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 </script>
 
 <!-- ============ UI ============ -->
+<button class="pg-top" id="pgTop" type="button" aria-label="返回頂部"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <script>
 (function(){
   'use strict';
@@ -4824,12 +4849,40 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         pg.style.removeProperty('display');
         void pg.offsetHeight;
         try{ pg.scrollTop = 0; }catch(_){}
+        if (window._pgTop) window._pgTop.attach(pg);
       }
       return;
     }
     var bk = e.target && e.target.closest ? e.target.closest('.pg-back') : null;
-    if (bk){ var p2 = $(bk.getAttribute('data-pg')); if (p2){ p2.style.removeProperty('display'); p2.hidden = true; } }
+    if (bk){ var p2 = $(bk.getAttribute('data-pg')); if (p2){ p2.style.removeProperty('display'); p2.hidden = true; } if (window._pgTop) window._pgTop.hide(); }
   });
+  /* v6.43.1：文章頁「返回頂部」——.page 有自己嘅 scroll（overflow:auto），所以要 scroll 嗰個元素唔係 window */
+  (function(){
+    var btn = document.getElementById('pgTop');
+    if (!btn) return;
+    var cur = null, ticking = false;
+    function upd(){
+      if (!cur || cur.hidden){ btn.classList.remove('show'); return; }
+      btn.classList.toggle('show', cur.scrollTop > 380);
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('.page'), function(pg){
+      pg.addEventListener('scroll', function(){
+        cur = pg;
+        if (!ticking){ ticking = true; requestAnimationFrame(function(){ upd(); ticking = false; }); }
+      }, {passive:true});
+    });
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      if (!cur) return;
+      try{ cur.scrollTo({top:0, behavior:'smooth'}); }catch(_){ cur.scrollTop = 0; }
+      btn.classList.remove('show');
+    });
+    window._pgTop = {
+      attach: function(pg){ cur = pg; btn.classList.remove('show'); },
+      hide:   function(){ cur = null; btn.classList.remove('show'); }
+    };
+  })();
+
   /* menu 行為 */
   (function(){
     function closeMenu(){ $('setSheet').hidden = true; $('setBg').hidden = true; }
@@ -4981,15 +5034,12 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   /* ══════════ v6.1 SHOWCASE（旅程頂宣傳輪播）＋統一浮層行為 ══════════ */
   var SOCIAL_LINKS = {ig: 'https://www.instagram.com/acremiles', fb: ''}; /* IG 已填(@acremiles)；FB 頁 URL 待 Robert 畀確實 slug；兩者皆空先 toast */
   function buildShowcase(){
+    /* v6.44：Robert 指定四格。四張圖全部已 baked 大標題文字 → 一律 bare，唔再疊 tag/標題落去（會重疊）。 */
     var s = [];
-    /* 訂閱：圖已含大標題文字 → bare（唔疊字，避免重疊） */
-    s.push({tag: '訂閱', act: 'sub', bg: 'g1', img: 'img/banner-sub.jpg', bare: true, alt: '唔想走漏迎新？訂閱優惠速報'});
-    /* 攻略：文章 hero 圖（無 baked 文字）→ 疊 tag＋標題 */
-    if (typeof GUIDES !== 'undefined' && GUIDES[0]) s.push({tag: '攻略', t: GUIDES[0].t, act: 'pg', pg: GUIDES[0].pg, bg: 'g2', img: GUIDES[0].img || 'img/pgG1-hero.jpg', alt: GUIDES[0].t});
-    /* 優惠：AE白金 pgO3 圖已 baked「1,000,000分 迎新獎賞」文字 → bare 唔疊字，撳去優惠 tab（優惠入口） */
-    s.push({tag: '優惠', act: 'tab', tab: 'articles', bg: 'g3', img: 'img/pgO3-hero.jpg', bare: true, alt: 'AE 白金 100 萬分迎新獎賞'});
-    /* Follow：圖已含 handle 文字 → bare */
-    s.push({tag: 'Follow', act: 'social', bg: 'g4', img: 'img/banner-follow.jpg', bare: true, alt: 'Follow 我哋 social'});
+    s.push({tag: '攻略',   act: 'pg', pg: 'pgG2',  bg: 'g1', img: 'img/pgG2-cards.jpg', bare: true, alt: '信用卡砌卡組合：用啱卡買部 iPhone 即賺北海道來回機票'});
+    s.push({tag: '優惠',   act: 'pg', pg: 'pgO2',  bg: 'g2', img: 'img/pgO2-hero.jpg',  bare: true, alt: '滙豐 EveryMile MILEFLASH 新客迎新即賺 49,000 里'});
+    s.push({tag: '路線',   act: 'pg', pg: 'pgW10', bg: 'g3', img: 'img/pgW10-hero.jpg', bare: true, alt: '區10 歐美環球 230,000 里全商務'});
+    s.push({tag: 'Follow', act: 'social',          bg: 'g4', img: 'img/banner-follow.jpg', bare: true, alt: 'Follow 我哋 social'});
     return s.slice(0, 5);
   }
   var _shTimer = null, _shIdx = 0;
@@ -5019,7 +5069,12 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       var b = e.target.closest('.show-card'); if (!b) return;
       var c = s[Number(b.getAttribute('data-shi'))]; if (!c) return;
       if (c.act === 'sub'){ $('subBtn').click(); }
-      else if (c.act === 'pg' && c.pg){ var p = $(c.pg); if (p) p.hidden = false; }
+      else if (c.act === 'pg' && c.pg){ var p = $(c.pg);
+        if (p){ p.hidden = false;
+          window._pgZ = (window._pgZ || 150) + 1; p.style.zIndex = window._pgZ;
+          try{ p.scrollTop = 0; }catch(_){}
+          if (window._pgTop) window._pgTop.attach(p);
+        } }
       else if (c.act === 'tab'){ var t = document.querySelector('.tabs button[data-tab="' + c.tab + '"]'); if (t) t.click(); }
       else if (c.act === 'social'){
         var url = SOCIAL_LINKS.ig || SOCIAL_LINKS.fb;
@@ -5111,7 +5166,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       HEROSPACE = hero.offsetHeight + 34; /* 34 = hero-row margin-top */
       MIN = FULL - HEROSPACE - (PT_F - PT_M) - (PB_F - PB_M);
       if (MIN < 48) MIN = 48;
-      main.style.paddingTop = (FULL + 16) + 'px';
+      main.style.paddingTop = (FULL + 30) + 'px'; /* v6.43.1：頂 bar 同內容之間加呼吸位（原本 16 太貼） */
       apply();
     }
     function apply(){

@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://lobakpei.github.io/sitemap.xml
+
+Sitemap: https://acremiles.app/sitemap.xml

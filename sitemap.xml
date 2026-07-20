@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://acremiles.app/</loc><lastmod>2026-07-19</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://acremiles.app/</loc><lastmod>2026-07-20</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://acremiles.app/cards/</loc><lastmod>2026-07-20</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://acremiles.app/cards/scb-cathay-mastercard.html</loc><lastmod>2026-07-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://acremiles.app/cards/hsbc-everymile.html</loc><lastmod>2026-07-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://acremiles.app/cards/citi-premiermiles.html</loc><lastmod>2026-07-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://acremiles.app/cards/citi-prestige.html</loc><lastmod>2026-07-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://acremiles.app/cards/dbs-black-world-mastercard.html</loc><lastmod>2026-07-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://acremiles.app/cards/ae-explorer.html</loc><lastmod>2026-07-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://acremiles.app/cards/ae-platinum-card.html</loc><lastmod>2026-07-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://acremiles.app/cards/dahsing-ba-platinum.html</loc><lastmod>2026-07-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://acremiles.app/cards/hsbc-visa-signature.html</loc><lastmod>2026-07-20</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
 </urlset>

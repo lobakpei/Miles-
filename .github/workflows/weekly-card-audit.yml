@@ -1,0 +1,27 @@
+name: Weekly card freshness audit
+
+on:
+  schedule:
+    # 逢星期一 08:00 香港時間（00:00 UTC）
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: weekly-card-freshness-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository (read-only)
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check offer expiry and source freshness
+        run: node scripts/audit-freshness.js --strict

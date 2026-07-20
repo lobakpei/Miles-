@@ -25,4 +25,20 @@ node scripts/generate-card-pages.js
 node scripts/generate-share-pages.js
 ```
 
+## 每週信用卡更新
+
+先檢查渠道優惠到期日同卡資料最後核實日期：
+
+```bash
+node scripts/audit-freshness.js
+```
+
+完整嘅官方來源優先流程、五個比較平台清單及差異表格式，見 [`docs/WEEKLY-CARD-UPDATE.md`](docs/WEEKLY-CARD-UPDATE.md)。GitHub 每週排程只會提示問題，唔會自動改內容或發布。
+
+發布後可模擬 Facebook／WhatsApp crawler 核對全部文章及信用卡分享頁：
+
+```bash
+node scripts/test-social-previews.js https://acremiles.app/
+```
+
 現行產品、資料核實、私隱及 QA 守則見 `AGENTS.md`。

@@ -1,4 +1,4 @@
-# 四條 RTW 候選路線逐段核實
+# 五條 RTW 候選路線逐段核實
 
 核實日：2026-07-20
 
@@ -45,6 +45,22 @@
 
 判斷：所有獎勵飛行段有現行直航依據；日期、接駁時間及獎勵位仍要再查。
 
+## 區 10・歐美城市線
+
+重算：19,496 哩；區 10；商務 230,000 里；2 停留、2 轉機、1 開口。
+
+| 行程段 | 航司／方式 | 結果 | 依據 |
+|---|---|---|---|
+| HKG → DOH | QR | 直航已核實 | [卡塔爾航空香港至馬德里頁列明香港先直飛多哈](https://www.qatarairways.com/en-in/destinations/flights-to-madrid/from-hong-kong.html) |
+| DOH → MAD | QR | 直航已核實 | [卡塔爾航空多哈至馬德里官方頁](https://www.qatarairways.com/en-at/destinations/flights-to-madrid/from-doha.html/) |
+| MAD → LHR | 自費開口 | 不計入 RTW 飛行距離 | 旅客自行搭機或安排歐洲地面行程 |
+| LHR → JFK | BA | 直航已核實 | [英航 Reward Flight 頁列明 London–New York](https://hotline.britishairways.com/content/en/gr/the-british-airways-club/avios/spending-avios/reward-flights) |
+| JFK → ORD | AA | 直航已核實 | [美國航空紐約至芝加哥官方訂票頁](https://www.aa.com/en-us/flights-from-new-york-to-chicago) |
+| ORD → HND | JL | 直航已核實 | [日航芝加哥至東京官方航線頁列明每日 ORD→HND](https://www.jal.co.jp/ar/en/offers/new-direct-flights-chicago-tokyo/index.html) |
+| HND → HKG | CX | 直航已核實 | [國泰東京至香港官方頁列明羽田／成田出發](https://flights.cathaypacific.com/destinations/en_JP/flights-from-tokyo-to-hong-kong) |
+
+判斷：所有獎勵飛行段有官方路線依據。馬德里→倫敦係自費開口；指定日期班次、接駁時間、獎勵位、YQ 同稅項仍要再查。舊區 10 方案誤將 HKG→MAD／QR 當直航，舊 19,793 哩與稅費估算維持撤回，並只保留作修正紀錄。
+
 ## 區 11・遠洲探索
 
 重算：24,658 哩；區 11；商務 250,000 里；5 停留、2 轉機。
@@ -89,7 +105,7 @@
 
 ## 最後結論
 
-四條線嘅「直航是否存在」已逐段處理，但都不應宣傳成可以直接照抄出票。用戶揀定日期後，仍有三關：
+五條線嘅「直航是否存在」已逐段處理，但都不應宣傳成可以直接照抄出票。用戶揀定日期後，仍有三關：
 
 1. 嗰日真係有班次；
 2. 嗰班有獎勵位；

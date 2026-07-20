@@ -86,7 +86,7 @@ ok('家庭每人每月≤2張新卡', (() => {
   return Object.keys(c).every(k => c[k] <= 2);
 })());
 cr = false;
-try { BM.optimize(X({ family: true, income2: 100000, owned: ['hs-mmpower'], owned2: ['ccba-ba'], excludedCards: ['dbs-black'] }), BM.DEFAULT_CARDS); } catch (e) { cr = true; }
+try { BM.optimize(X({ family: true, income2: 100000, owned: ['cancelled-card-a'], owned2: ['cancelled-card-b'], excludedCards: ['dbs-black'] }), BM.DEFAULT_CARDS); } catch (e) { cr = true; }
 ok('家庭+舊id+剔卡 唔crash', !cr);
 
 /* 有 cap 嘅卡：超額必須跌 excess（唔准無限 flat rate） */
@@ -183,7 +183,28 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
   ok('曼谷至新加坡國泰直航錯誤封鎖已修正', BM.owRouteStatus(bkk, sin, 'CX') === 'verified');
   ok('季節線會另外提示', BM.owRouteSeasonality(BM.owAirport('LAX'), BM.owAirport('HEL'), 'AY') === 'seasonal');
   ok('Hawaiian Airlines 已加入 oneworld 清單', BM.OW_CARRIERS.some(c => c.c === 'HA'));
-  ok('z10 壞 demo 已停止載入', !/['"]z10['"]\s*:/.test(src) && !/data-owdiy=['"]z10['"]/.test(src));
+  const doh = BM.owAirport('DOH'), ord = BM.owAirport('ORD');
+  ok('區10 新方案六段航線已逐段入核實庫',
+    BM.owRouteStatus(hkg, doh, 'QR') === 'verified' && BM.owRouteStatus(doh, mad, 'QR') === 'verified' &&
+    BM.owRouteStatus(BM.owAirport('LHR'), BM.owAirport('JFK'), 'BA') === 'verified' &&
+    BM.owRouteStatus(BM.owAirport('JFK'), ord, 'AA') === 'verified' &&
+    BM.owRouteStatus(ord, hnd, 'JL') === 'verified' && BM.owRouteStatus(hnd, hkg, 'CX') === 'verified');
+  const z10Eval = BM.owEvaluate([
+    {from:'HKG',to:'DOH',carrier:'QR',stay:'transit'}, {from:'DOH',to:'MAD',carrier:'QR',stay:'open'},
+    {from:'LHR',to:'JFK',carrier:'BA',stay:'stop'}, {from:'JFK',to:'ORD',carrier:'AA',stay:'stop'},
+    {from:'ORD',to:'HND',carrier:'JL',stay:'transit'}, {from:'HND',to:'HKG',carrier:'CX',stay:'stop'}
+  ], 'j');
+  ok('區10 新方案距離、分區同票規重算一致', z10Eval.errors.length === 0 && z10Eval.total === 19496 && z10Eval.zone.z === 10 && z10Eval.need === 230000 && z10Eval.stopovers === 2 && z10Eval.transits === 2 && z10Eval.openJaws === 1);
+  ok('區10 新方案可由文章載入規劃器並保留舊錯誤紀錄',
+    /z10\s*:\s*\[[\s\S]*?HKG[\s\S]*?DOH[\s\S]*?MAD[\s\S]*?LHR[\s\S]*?JFK[\s\S]*?ORD[\s\S]*?HND[\s\S]*?HKG/.test(src) &&
+    /data-owdiy=["']z10["']/.test(src) && /睇返已撤回嘅舊方案紀錄/.test(src));
+  ok('過期優惠文章保留內容並有首屏灰色存檔提示',
+    /function applyExpiryNotices\([\s\S]*?expired-article[\s\S]*?歷史優惠｜已於[\s\S]*?insertBefore\(n, body\.firstChild\)/.test(src));
+  ok('取消卡冇出現喺公開卡庫', !/建行\(亞洲\).*BA 白金|中銀.*Cheers|BOC Cheers/.test(src.replace(/\/\*[^]*?\*\//g, '')));
+  ok('每張卡都有長版公開條款分類', BM.DEFAULT_CARDS.every(c => c.publicDetails && ['eligibility','registration','fees','exclusions','crediting','benefits'].filter(k => Array.isArray(c.publicDetails[k]) && c.publicDetails[k].length).length >= 5));
+  ok('現行渠道優惠有實際到期日，過期後會轉歷史紀錄',
+    Object.values(BM.CHANNEL_OFFERS).flat().filter(o => o.active && o.verified).length >= 6 &&
+    /過往優惠紀錄/.test(src) && /已完結 · /.test(src));
   ok('對外不再宣稱「條線齊規」', !src.includes('條線齊規'));
 
   ok('viewport 允許縮放', !/user-scalable\s*=\s*no|maximum-scale\s*=\s*1/.test(src));

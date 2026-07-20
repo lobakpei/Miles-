@@ -131,8 +131,20 @@ async function main() {
     await page.locator('#pgO1 [data-share-page="pgO1"]').click();
     const articleShare = await page.evaluate(() => window.__lastShare || null);
     check('文章分享使用獨立預覽網址', articleShare && /share\/standard-chartered-cathay-july-2026\/$/.test(articleShare.url), articleShare && articleShare.url);
+    await page.evaluate(() => window.applyExpiryNotices('2026-07-24'));
+    check('過期文章首屏清楚標示歷史優惠', await page.locator('#pgO1.expired-article .expired-note').isVisible());
+    check('過期文章仍然保留正文可閱讀', (await page.locator('#pgO1 .art-p').count()) > 0 && await page.locator('#pgO1').isVisible());
     await page.screenshot({path:path.join(outDir, 'mobile-390-pgO1.png'), fullPage:false});
     await runAxe(page, 'mobile-390 pgO1 文章');
+
+    await page.goto(base + '?open=pgW10', {waitUntil:'domcontentloaded'});
+    await loadQaFonts(page, base);
+    await page.waitForTimeout(350);
+    check('區10 新文章同資訊型封面可見', await page.locator('#pgW10').isVisible() && await page.locator('#pgW10 img[src="img/pgW10-hero-v3.jpg"]').isVisible());
+    await page.locator('#pgW10 [data-owdiy="z10"]').click();
+    await page.waitForTimeout(180);
+    const zone10Values = await page.locator('#owSegs input[data-owf="from"]').evaluateAll(nodes => nodes.map(n => n.value));
+    check('區10 DIY 會載入六段新路線', zone10Values.join(',') === 'HKG,DOH,LHR,JFK,ORD,HND', zone10Values.join(','));
 
     await page.goto(base, {waitUntil:'domcontentloaded'});
     await loadQaFonts(page, base);

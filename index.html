@@ -1,4 +1,4 @@
-<!-- build: 2026-07-20T17:14 UK — v6.74.1：英國個人營運者、ICO 登記同一個曆月私隱回覆 -->
+<!-- build: 2026-07-20 UK — v6.75.0：過期內容存檔、信用卡長版條款、最新渠道優惠及區10重建 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -832,10 +832,17 @@ html.dark .itin,html.dark .vz{background:var(--field)}
 /* v6.44.1：訂閱視窗頭圖——.sheet 有 18px 橫向 padding，用負 margin 出血到兩邊貼齊，16:9 圓角 */
 .sub-hero{display:block;width:calc(100% + 36px);margin:2px -18px 12px;aspect-ratio:16/9;object-fit:cover;border-radius:14px}
 
-/* v6.48：過期優惠提示——列表本身已有灰化＋「已完結」badge；呢度補文章頁內 notice */
-.expired-note{background:#f1f3f2;border:1.5px solid #c9d2cf;border-radius:14px;padding:13px 15px;font-size:13.5px;line-height:1.7;color:#5a6663;margin:0 0 14px}
+/* 過期優惠保留做內容檔案：列表同全文都轉灰，但仍然可以閱讀、收藏同分享。 */
+.expired-note{background:#e8ebea;border:2px solid #87938f;border-radius:14px;padding:14px 15px;font-size:13.5px;line-height:1.7;color:#394441;margin:0 0 14px;box-shadow:inset 4px 0 0 #697571}
 html.dark .expired-note{background:#131a18;border-color:#2a3633;color:#93a29e}
 .expired-note b{color:inherit}
+.page.expired-article .page-head{background:#53615d;color:#fff}
+.page.expired-article .art-hero,.page.expired-article .art-fig img{filter:grayscale(1)}
+.page.expired-article .art-hero{background:#68736f!important}
+.page.expired-article .art-hero-tag{background:#ecefed!important;color:#4f5b57!important}
+.page.expired-article .art-cta-big,.page.expired-article .ext-link{filter:grayscale(1)}
+.page.expired-article .art-lead{border-color:#98a29f;background:#f0f2f1}
+html.dark .page.expired-article .art-lead{background:#151b19}
 
 /* v6.48：長文章自動目錄——art-h ≥3 嘅文章，喺開頭生成「跳到」chips */
 .toc-chips{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 16px}
@@ -1370,7 +1377,7 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
   <div class="mn-sec">法律</div>
   <button type="button" class="mn-row" data-open="pgTerms">使用條款<svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
   <button type="button" class="mn-row" data-open="pgPriv">私隱政策<svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
-  <div class="set-row set-about">AcreMiles · v6.74.1<br><span>借定唔借？還得到先好借！</span></div>
+  <div class="set-row set-about">AcreMiles · v6.75.0<br><span>借定唔借？還得到先好借！</span></div>
 </section>
 
 <!-- v6.0 訂閱最新優惠 sheet -->
@@ -1401,7 +1408,7 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
       <li>填咗年薪，就會自動隔走你申請唔到嘅卡（年薪門檻以官網為準）。</li>
       <li>迎新簽賬同時計基本賺里（大部分卡係咁，個別例外以官網為準）。</li>
       <li>「呢筆錢會點洗？」分兩件事：<b>洗錢期</b>——一炮過（買錶／買車／一次過畀清）＝一日簽晒，抵率有上限嘅卡淨計一個月／一季上限，超出即刻跌基本率；分幾個月（訂金／裝修分期）＝攤開貼住上限計。<b>籌備期</b>——就算一炮過洗，你都可以提早幾個月開卡（例：7月開始申請、12月先買錶），所以啲卡唔會因為「一日洗晒」就趕唔切，全部照用。呢兩樣係獨立嘅。</li>
-      <li>部分卡嘅高賺里率有上限——有啲按月（例：中銀 Cheers 類）、有啲按季（例：AE Explorer 本地 $3/里 每季首 $15,000）、有啲成個期間一個數（例：AE 白金 Turbo 每年首 $16 萬）。超過上限嘅簽賬會跌落基本率計，唔會假設成張卡無限量都係嗰個靚 rate。大額簽賬去到上限，會自動溢去下一張最抵嘅卡，唔會死頂一張。</li>
+      <li>部分卡嘅高賺里率有上限——有啲按月（例：DBS 海外優惠）、有啲按季（例：AE Explorer 本地 $3/里 每季首 $15,000）、有啲成個期間一個數（例：AE 白金 Turbo 每年首 $16 萬）。超過上限嘅簽賬會跌落基本率計，唔會假設成張卡無限量都係嗰個靚 rate。大額簽賬去到上限，會自動溢去下一張最抵嘅卡，唔會死頂一張。</li>
       <li>同一發卡機構第二張卡起，迎新按官方政策打折或歸零計算——Citibank 成間銀行計、通常歸零；滙豐成間銀行計但仍有折讓（約1/4）；美國運通跟卡種計（約65%）。已有嘅卡都計入呢個「機構計數」。</li>
       <li>新卡申請逐月排開，最多 6 張，貼近實際「榨盡迎新」做法。重點分清楚：<b>自己查</b>環聯（TransUnion／TU）信貸評分係「軟查詢」，唔會扣分，開卡前應該查定心裏有底；<b>銀行喺你申請時查</b>先係「硬查詢」，短時間太多次會影響批核。所以要慳嘅係申請次數，唔係查詢——時間表每人每月最多兩張、逐對排開，開幾多張你自己揀。</li>
       <li>有年費嘅卡，時間表會提你到期前 cancel 或打電話 waive，唔好白畀年費。</li>
@@ -1604,11 +1611,11 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
   <figure class="art-fig"><img src="img/pgW0-hero.jpg" alt="五條環球示範線你揀邊個" loading="lazy"></figure>
   <p class="art-p"><b>🗾 區6・日韓泰（商務 120,000 里）</b>——札幌滑雪→沖繩→東京→首爾→曼谷→吉隆坡。6 城市，差 70 哩就到區頂。<button type="button" class="art-inline-link" data-open="pgW6">睇全文 →</button></p>
   <p class="art-p"><b>🏔️ 區8・日澳泰（商務 170,000 里）</b>——札幌→福岡→東京→悉尼→墨爾本→星馬→曼谷。8 城市，差 138 哩就到區頂。<button type="button" class="art-inline-link" data-open="pgW8">睇全文 →</button></p>
-  <p class="art-p"><b>⚠ 區10・舊方案已撤回</b>——原方案將 HKG→MAD/QR 當作直航，核實層不足；現時只保留問題紀錄，唔應用嚟規劃或出票。<button type="button" class="art-inline-link" data-open="pgW10">睇撤回原因 →</button></p>
+  <p class="art-p"><b>🌍 區10・歐美城市線（商務 230,000 里）</b>——多哈轉機去馬德里，開口去倫敦，再玩紐約、芝加哥，東京轉機返港。<b>19,496 哩</b>，距區頂 504 哩。<button type="button" class="art-inline-link" data-open="pgW10">睇全文 →</button></p>
   <p class="art-p"><b>🏜️ 區11・遠洲探索（商務 250,000 里）</b>——馬爾代夫→多哈→開羅→紐約→洛杉磯，全部係平機唔會去嘅地方。<button type="button" class="art-inline-link" data-open="pgW11">睇全文 →</button></p>
   <p class="art-p"><b>🌏 區13・終極版環遊世界（商務 280,000 里）</b>——11 個目的地、六大洲、兩個開口，赫爾辛基睇北極光。<button type="button" class="art-inline-link" data-open="pgW13">睇全文 →</button></p>
-  <div class="art-tip"><b>💡 規劃器有兩條現成示範</b>（區8＋區11）一撳即載；五條線嘅全文入面都有「DIY」掣，鍾意邊條就載邊條自己改。</div>
-  <h2 class="art-h">常見問題</h2><details class="faq"><summary>點揀路線？</summary><p class="faq-a">而家有四條候選路線同一條撤回紀錄：由 12 萬里日韓泰，一路去到 28 萬里六大洲；區10 舊方案唔可以使用。</p></details><details class="faq"><summary>可唔可以照抄？</summary><p class="faq-a">唔可以直接照抄。規劃器會分開顯示票規同逐段直航核實狀態；未核實航段只係候選，指定日期班次、獎勵位同最終出票仍要逐段查。</p></details><details class="faq"><summary>市價估算準唔準？</summary><p class="faq-a">粗略估算，出票前自行格價；獎勵位有冇要逐段查並由熱線確認。</p></details>
+  <div class="art-tip"><b>💡 規劃器主畫面有區8＋區11快速示範</b>；五條線嘅全文都有「DIY」掣，包括新區10，鍾意邊條就一撳載入再自己改。</div>
+  <h2 class="art-h">常見問題</h2><details class="faq"><summary>點揀路線？</summary><p class="faq-a">五條都係有效候選設計：由 12 萬里日韓泰，一路去到 28 萬里六大洲。先按里數預算揀級別，再按自己日期逐段查班次同獎勵位。</p></details><details class="faq"><summary>可唔可以照抄？</summary><p class="faq-a">唔可以直接照抄。規劃器會分開顯示票規同逐段直航核實狀態；指定日期班次、獎勵位同最終出票仍要逐段查。</p></details><details class="faq"><summary>市價估算準唔準？</summary><p class="faq-a">粗略估算，出票前自行格價；獎勵位有冇要逐段查並由熱線確認。</p></details>
   <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgG4"><span>🌏</span><div><b>寰宇一家環球票（規則篇）</b><i>分區表、5停2轉2開、出票熱線</i></div></button><button type="button" class="art-more-i" data-open="pgW13"><span>🌌</span><div><b>終極版環遊世界</b><i>最盡嗰條由呢篇睇起</i></div></button></div>
   <div class="art-foot">里數、規則以官方公佈為準；市價為粗略估算，出票前請自行格價；獎位有冇要打熱線先知。</div>
   </div>
@@ -1653,18 +1660,18 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
   <div class="art-foot">里數、規則以官方公佈為準；市價為粗略估算，出票前請自行格價；獎位有冇要打熱線先知。</div>
   </div>
 </div>
-<div class="page" id="pgW10" hidden data-gt="區10・舊方案已撤回">
-  <div class="page-head"><button type="button" class="pg-back" data-pg="pgW10" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>區10・舊方案已撤回</div>
+<div class="page" id="pgW10" hidden data-gt="區10・歐美城市線 230,000 里">
+  <div class="page-head"><button type="button" class="pg-back" data-pg="pgW10" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>區10・歐美城市線 230,000 里</div>
   <div class="page-body">
-  <div class="art-lead"><b>❌ 呢條方案唔可以使用。</b>原 demo 將 HKG→MAD 配 QR 當作已核實直航，但實際要經多哈；拆段會改變總距離、轉機數同分區，所以 19,793 哩／230,000 里結論一併撤回，等重新設計及逐段核實後先恢復。</div>
-  <div class="panel" style="font-size:13.5px;line-height:2"><b>以下只係已撤回嘅舊路線紀錄：</b><br>香港 HKG - 馬德里 MAD (停)<br>馬德里 MAD - 巴黎 CDG (停)<br>巴黎 CDG - 倫敦 LHR (停)<br>倫敦 LHR - 紐約 JFK (停)<br>紐約 JFK - 溫哥華 YVR (停)<br>溫哥華 YVR →(轉機)東京 NRT - 香港 HKG</div>
-  <figure class="art-fig"><img src="img/pgW10-hero.jpg" alt="230,000 里全商務圍住個地球飛一圈：馬德里、巴黎、倫敦、紐約、溫哥華" loading="lazy"></figure>
+  <div class="art-lead">舊方案撤回後重新由零砌過：<b>19,496 哩・區 10・商務 230,000 里・2 停 2 轉 1 開口</b>，距 20,000 哩上限尚餘 <b>504 哩</b>。每一段獎勵航班都有航空公司官方路線依據。</div>
+  <div class="panel" style="font-size:13.5px;line-height:2">香港 HKG →(轉機) 多哈 DOH - 馬德里 MAD (開口⤳倫敦 LHR)<br>倫敦 LHR - 紐約 JFK (停)<br>紐約 JFK - 芝加哥 ORD (停)<br>芝加哥 ORD →(轉機) 東京羽田 HND - 香港 HKG<div class="ow-hint" style="margin:10px 0 0">ℹ 馬德里→倫敦係<b>自費開口段</b>，唔計入 19,496 哩；可按時間同預算自行搭機或分開遊歐洲。東京只按轉機計，唔應假設一定有足夠時間入市區。</div></div>
+  <figure class="art-fig"><img src="img/pgW10-hero-v3.jpg" alt="區10 歐美城市環球候選線：香港、多哈、馬德里、倫敦、紐約、芝加哥、東京；卡塔爾、英航、美航、日航及國泰" loading="lazy"></figure>
   <h2 class="art-h">逐站點玩</h2>
-  <div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>馬德里</b> — 陽光、tapas、普拉多開波。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>巴黎</b> — 浪漫中段。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t"><b>倫敦</b> — 古典＋音樂劇。</div></div><div class="art-li"><span class="art-li-m">4</span><div class="art-li-t"><b>紐約</b> — 行程高潮。</div></div><div class="art-li"><span class="art-li-m">5</span><div class="art-li-t"><b>溫哥華</b> — 山海減壓，執整心情。</div></div><div class="art-li"><span class="art-li-m">6</span><div class="art-li-t"><b>東京（轉機）</b> — 返港前最後衝刺：輕裝 hand-carry 玩法，行李留返轉機，人出境爆買，戰利品塞背囊上機。</div></div></div>
-  <div class="art-tip"><b>⚠️ 轉機血拼老實講：</b>轉機時數以實際出票航班為準，唔係保證值——delay 有機會壓到得返十個鐘。出票時揀 20 鐘以上嘅接駁先夠玩；買唔成咪當普通轉機。</div>
-  <figure class="art-fig"><img src="img/pgW10-mid.jpg" alt="東京掃貨攻略：輕裝快閃入市區 shopping，hand-carry 帶得走幾多得幾多" loading="lazy"></figure>
-  <div class="art-tip"><b>舊價錢、里數同 YQ 估算已撤回。</b>航段一改，以上三項都要由零重計，唔應引用舊數。</div>
-<p class="art-p" style="text-align:center;margin:14px 0"><button type="button" class="btn-sm" disabled aria-disabled="true">暫停載入：等候重新核實</button></p>  <h2 class="art-h">常見問題</h2><details class="faq"><summary>點解唔直接加多哈轉機？</summary><p class="faq-a">加一段會改變總距離、轉機配額同分區，唔可以只補一行就繼續沿用 230,000 里舊結論。</p></details><details class="faq"><summary>舊估算仲可唔可以參考？</summary><p class="faq-a">唔可以。路線未重建前，距離、里數同稅費全部視為無效。</p></details><details class="faq"><summary>幾時恢復？</summary><p class="faq-a">要先用當期時刻表逐段核實，再通過票規同距離測試；完成前維持撤回。</p></details>
+  <div class="art-list"><div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>多哈（轉機）</b> — 只作接駁；實際停留時間跟出票班次。</div></div><div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>馬德里</b> — 陽光、tapas、普拉多開波；之後自費去倫敦，開口段可以順便加西班牙或歐洲行程。</div></div><div class="art-li"><span class="art-li-m">3</span><div class="art-li-t"><b>倫敦</b> — 由開口另一端重新接上環球票，音樂劇、博物館玩完再橫越大西洋。</div></div><div class="art-li"><span class="art-li-m">4</span><div class="art-li-t"><b>紐約（停留）</b> — 百老匯、博物館同城市景觀，係美國段第一站。</div></div><div class="art-li"><span class="art-li-m">5</span><div class="art-li-t"><b>芝加哥（停留）</b> — 建築、爵士樂、湖岸線；由美國中部接日航長途返亞洲。</div></div><div class="art-li"><span class="art-li-m">6</span><div class="art-li-t"><b>東京羽田（轉機）</b> — 只計轉機，接國泰返港；有冇時間離開機場要出票後先判斷。</div></div></div>
+  <div class="art-tip"><b>✅ 航線存在已逐段核實：</b>QR 香港→多哈→馬德里、BA 倫敦→紐約、AA 紐約→芝加哥、JL 芝加哥→羽田、CX 羽田→香港都有官方航線資料。呢個只證明航線存在；你指定日期有冇班次同獎勵位，仍要出票前再查。</div>
+  <p class="art-p">呢條線唔沿用舊方案任何稅費或現金票價估算。六段航班橫跨五間航空公司，<b>YQ、機場稅同自費馬德里→倫敦接駁</b>要按實際日期先計，網站唔會用一個未核實數字扮準確。</p>
+<p class="art-p" style="text-align:center;margin:14px 0"><button type="button" class="btn-sm pri" data-owdiy="z10">🛠️ 歐美城市線：一撳載入規劃器自己 DIY</button></p>  <h2 class="art-h">常見問題</h2><details class="faq"><summary>點解今次區10可以恢復？</summary><p class="faq-a">唔係喺舊線補一個多哈，而係重新揀晒後半程、重算每段距離同票規，再逐段用航空公司官方資料核實。結果係 19,496 哩，仍然屬區10。</p></details><details class="faq"><summary>馬德里去倫敦包唔包？</summary><p class="faq-a">唔包，呢段係一個開口位，要自己買機票或安排歐洲行程；環球票由倫敦重新接上。</p></details><details class="faq"><summary>係咪可以直接照抄出票？</summary><p class="faq-a">唔可以。航線存在同票規計算已通過，但指定日期班次、獎勵位、稅費及整張票可否組合，最後仍要由 Asia Miles 確認。</p></details>
+  <details class="faq"><summary>睇返已撤回嘅舊方案紀錄</summary><p class="faq-a" style="filter:grayscale(1);color:#68726d"><b>已撤回，請勿使用：</b>舊路線寫成香港→馬德里→巴黎→倫敦→紐約→溫哥華→東京→香港，並錯誤當 HKG→MAD／QR 為直航。舊 19,793 哩、里數及稅費估算全部作廢；保留呢段只為交代修正歷史。</p></details>
   <div class="art-more"><div class="art-more-h">延伸閱讀</div><button type="button" class="art-more-i" data-open="pgW0"><span>🗂️</span><div><b>五條線總覽</b><i>五個預算級別一眼睇</i></div></button><button type="button" class="art-more-i" data-open="pgW11"><span>🏜️</span><div><b>區11・遠洲探索</b><i>唔再去平機到嘅地方</i></div></button></div>
   <div class="art-foot">里數、規則以官方公佈為準；市價為粗略估算，出票前請自行格價；獎位有冇要打熱線先知。</div>
   </div>
@@ -2042,7 +2049,7 @@ var BM = (function(){
      minIncome:240000, incomeVerified:true,
      welcome:{type:'threshold', months:2, tiers:[{spend:8000, miles:2000}]},
      rateLocal:25, rateOnline:25, rateOverseas:25, cat:{dining:2.78}, capTotal:100000, excessRate:25,
-     annualFeeFirst:0, feeRenewal:2000, feeWaivable:true, waiveNote:'次年可試 waive',
+     annualFeeFirst:0, feeRenewal:2000, feeWaivable:true, waiveNote:'官方資料顯示首兩年免年費；其後年費 HK$2,000，續期前向滙豐確認最新豁免安排',
      convertFee:0, applyWeeks:2,
      url:'https://www.hsbc.com.hk/credit-cards/products/visa-signature/',
      sourceVerifiedAt:'2026-07-20', sourceStatus:'official-partial-model', sourceDocs:[
@@ -2074,7 +2081,89 @@ var BM = (function(){
      ],
      note:'【官方T&C 2026-07-16核實】申請期 07-15 至 07-29：新客簽 $15,000→400,000 分（22,222里）、簽 $50,000→合共 1,000,000 分（55,556里）；現有 AE 會員簽 $15,000→810,000 分（45,000里）。另有網上申請首次簽賬 $1,000 回贈＋手機八達通增值 $50（現金，冇計入引擎）。日常本地 $9/里（Turbo 每年度首 $160,000，超過 $18/里）；外幣／指定超市 $2/里要登記 9X，每類每季首 $15,000。Alipay／WeChat 唔計分，Apple Pay 計。取消退款、儲值增值、年費同稅項唔計簽賬；兌換迎新後 12 個月內取消，AE 有權扣返 $9,500 年費。9X 延續到 2027-12-31，分六階段並要逐階段重新登記。高年費卡只留作候選，唔自動加入推薦。', verified:true}
   ];
-  /* 剔除紀錄：恒生 MMPOWER（現金回贈卡，冇里數機制）、建行(亞洲) BA 白金（產品 2026-07-10 下架）——詳見 cards/ 08、09 檔 */
+  /* 卡頁公開詳情：只放已由產品頁、KFS 或列明 T&C 支持嘅資料；未知就直接寫未知。 */
+  var CARD_PUBLIC_DETAILS = {
+    'sc-cathay': {
+      eligibility:['新客＝申請前 6 個月冇持有或取消渣打／MANHATTAN 主卡。','主庫係大眾綠卡；優先理財藍卡、優先私人理財黑卡嘅迎新及海外率不同，申請前要按自己戶口級別核對。'],
+      registration:['迎新窗口只有批卡後 2 個月。','渣打部分加碼要預先登記或輸入指定推廣碼；任何大額簽賬前先開當期條款確認。'],
+      fees:['外幣交易費 1.95%。','海外以港幣結算或非香港註冊商戶港幣交易可另收 1%；DCC 揀港幣通常亦失去海外獎賞。','電子轉賬類交易每月累計超過 HK$25,000 嘅部分可收 3.5% 手續費。'],
+      exclusions:['已核實：DCC 港幣結算海外簽賬唔計指定推廣；其他排除項目要以申請當期迎新 T&C 為準。'],
+      crediting:['Asia Miles 按月自動存入會員戶口，毋須手動兌換，亦冇兌換手續費。'],
+      benefits:['國泰／香港快運簽賬可達 HK$2/里；食肆及酒店 HK$4/里。','藍卡及黑卡屬較高資產級別，海外率可較綠卡高。']
+    },
+    'hsbc-everymile': {
+      eligibility:['最低年薪 HK$240,000。','迎新要經網上申請，並按當期條款完成指定類別簽賬；唔係所有 HK$8,000 簽賬都必然砌到宣傳嘅每里成本。'],
+      registration:['里數優惠兌換要喺 Reward+ App 進行；網上理財兌換未必享相同兌換率。','指定商戶名單可隨時改，簽之前要喺滙豐最新名單查一次。'],
+      fees:['外幣交易費 1.95%。','海外港幣交易或非香港註冊商戶港幣交易可另收 1%。'],
+      exclusions:['官方重要條款索引有列例外交易；現有資料未足以將完整排除清單逐項寫死，所以申請及湊迎新前必須再開官方 T&C。'],
+      crediting:['HK$1「獎賞錢」按優惠兌換率可換 20 里；要用 Reward+ App。'],
+      benefits:['指定交通、咖啡店、輕便美食及旅遊商戶可達 HK$2/里；一般餐廳酒樓未必屬指定名單。','其他一般本地及海外簽賬以 HK$5/里作保守比較。']
+    },
+    'citi-pm': {
+      eligibility:['18 歲或以上；最低年薪 HK$120,000。','新客＝過去 12 個月冇持有或取消任何 Citi 主卡；發卡後 1 個月內要啟動實體卡。'],
+      registration:['迎新期內每個月最少要有一次合資格簽賬，唔可以第一個月簽晒之後完全停手。'],
+      fees:['Citi PayAll 手續費 4%。','DCC 額外費 1%；年費及其他收費以官方收費表為準。'],
+      exclusions:['FPS、八達通增值、現金透支、結餘轉賬、Quick Cash、FlexiBill／PayLite、繳稅、網上繳費／公用事業、保險、慈善／非牟利、PayAll、基金、銀行費用、DCC 費、賭場、取消或退款交易均不計迎新門檻。'],
+      crediting:['迎新積分可於達標月份後 5 個曆月內存入；換機票要預足時間。','積分可轉 11 個航空／酒店計劃，包括 Asia Miles、British Airways Club、Qatar、KrisFlyer、Qantas、Flying Blue 及 IHG 等。'],
+      clawback:['發卡後 12 個月內取消主卡，銀行可扣回迎新。']
+    },
+    'citi-prestige': {
+      eligibility:['18 歲或以上；官方最低年薪 HK$600,000。','迎新屬「交年費換積分」，唔係免費迎新，亦唔佔簽賬額度。'],
+      registration:['首年年費要全數入賬及繳清先符合迎新條件。'],
+      fees:['年費 HK$3,800，硬收、不可豁免及不設退款。','里數兌換手續費按現有收費資料為 HK$200。'],
+      exclusions:['日常優惠排除 FPS、八達通增值、繳稅、PayAll、保險、分期、慈善及取消退款等交易；細節以 Citi 共用條款為準。'],
+      crediting:['交妥年費後，迎新積分可於 2 個曆月內存入。','第二年起每年交年費可獲年度 30,000 里獻禮；每年續卡前仍要核對當期條款。'],
+      clawback:['12 個月內取消主卡，銀行可扣回迎新。'],
+      benefits:['包括 Priority Pass、指定酒店第 4 晚免費、餐飲、機場接送及高球等禮遇；每項均有各自預約、次數及地區限制。']
+    },
+    'dbs-black': {
+      eligibility:['18 歲或以上香港居民；最低年薪 HK$240,000。','上一期迎新已於 2026-07-06 完結，只保留做歷史紀錄，唔會進入推薦計算。'],
+      registration:['批卡後要下載、登記及啟動 DBS Card+。','要選擇「DBS$ 自選換領」先可以按計劃兌換里數。','海外 HK$2/里推廣要先登記，而且該月總合資格零售簽賬達 HK$20,000。'],
+      fees:['首年免年費；其後年費 HK$3,600。','其他外幣及跨境收費以 DBS 最新 KFS 為準。'],
+      exclusions:['迎新同海外推廣口徑不同；共通排除包括繳稅、繳費、保險、基金、現金透支、分期供款、取消及退款。上一期迎新曾計部分八達通／電子錢包交易，但唔可以假設下一期相同。'],
+      crediting:['上一期額外迎新最遲可於發卡後 6 個月入賬；呢個時間只屬已完結一期紀錄。'],
+      clawback:['上一期條款列明 12 個月內取消主卡可扣回迎新；新一期要重新核對。'],
+      benefits:['海外優惠率 HK$2/里只適用每月首 HK$20,000 海外簽賬，而且要同月總簽賬達標；未達標或超額以 HK$4/里計。']
+    },
+    'amex-explorer': {
+      eligibility:['最低年薪 HK$120,000。','新客＝過去 12 個月冇持有或取消任何 AE 香港基本卡。'],
+      registration:['批卡後立即分別登記本地、外幣及指定網上商戶賺分計劃；冇登記就唔會自動享有宣傳加賞。'],
+      fees:['外幣交易費 2%。','基本卡連首 2 張附屬卡；第 3 張附屬卡起按官方 KFS 收費。'],
+      exclusions:['電子錢包增值、本地拍賣行港幣交易、年費、結餘轉戶、旅行支票／禮券、財務費、逾期費、海外退稅、繳稅及經 AE 賬戶繳交部分公用事業費不賺分。'],
+      crediting:['Membership Rewards 以 18 分兌 1 里作目前比較基準；兌換率及夥伴名單可改。'],
+      clawback:['12 個月內取消卡，AE 可扣回迎新。'],
+      benefits:['本地優惠率每季首 HK$15,000；超過後回落至 HK$6/里。','外幣優惠率每季首 HK$10,000，另計 2% 外幣費；部分商戶不接受 AMEX。']
+    },
+    'dahsing-ba': {
+      eligibility:['最低年薪 HK$150,000。','新客＝發卡前 12 個月冇持有任何大新主卡或附屬卡。'],
+      registration:['申請時或發卡後 3 個月內網上開指定新理財戶口，先符合額外開戶 Avios 條件；已有戶口或分行開戶唔計。'],
+      fees:['白金卡年費 HK$1,800；外幣交易費 1.95%，跨境港幣交易費 1%。'],
+      exclusions:['迎新排除八達通增值、PayMe／TNG／WeChat Pay／Alipay 等電子錢包增值、繳稅繳費、分期供款、年費等。','BA 機票簽賬唔當一般海外簽賬；取消或退款交易會扣回相應 Avios。'],
+      crediting:['Avios 會按月自動兌換並存入 British Airways Club，毋須手動轉換；迎新額外 Avios 可於簽賬期完結後約 6–8 星期入賬。'],
+      clawback:['13 個月內取消主卡可收 HK$1,200 手續費，比一般 12 個月更長。'],
+      benefits:['生日當日及指定 BA 機票簽賬可達 HK$3/Avios。','指定香港出發 BA 機票 9 折碼 CARDOFFERH 有效期至 2027-02-28，使用前要核對班次及條款。']
+    },
+    'hsbc-visasig': {
+      eligibility:['最低年薪 HK$240,000。','卡資料已有官方文件，但迎新各層及例外交易仍未完全轉入推薦器，所以暫時只供比較。'],
+      registration:['要登記「最紅自主獎賞」並將額外倍數分配到指定類別；類別及上限按每期條款重新設定。'],
+      fees:['官方資料顯示首兩年免年費；其後年費 HK$2,000。','外幣及跨境港幣費用以滙豐最新 KFS 為準。'],
+      exclusions:['例外交易清單尚未完整轉成引擎欄位；未完成前唔會將 HK$2.78/里當成任何簽賬都適用。'],
+      crediting:['基本 0.4% 獎賞錢；兌 Cathay 時按現行官方兌換率比較。'],
+      benefits:['指定「最紅自主」類別連 Visa Signature 額外獎賞最高約 3.6% 獎賞錢，即約 HK$2.78/里；2026 年指定類別上限為首 HK$100,000。']
+    },
+    'amex-platinum': {
+      eligibility:['官方最低年薪 HK$120,000；實際審批仍由 AE 按整體財務狀況決定。','新客＝過去 12 個月冇任何 AE 香港批核基本卡；現有 AE 會員有另一套迎新。'],
+      registration:['9X 分階段運作，每個階段都要重新登記；舊階段登記唔會自動延續。'],
+      fees:['年費 HK$9,500，硬收及不可豁免。','外幣交易費 2%；里數兌換費按現有資料為 HK$300。'],
+      exclusions:['Alipay／WeChat Pay、取消退款、儲值增值、年費及稅項不計指定獎賞；Apple Pay 可按合資格交易計。'],
+      crediting:['現有 AE 會員迎新可於約 16 星期內入分；其他迎新按當期 T&C。'],
+      clawback:['兌換迎新後 12 個月內取消，AE 可扣回 HK$9,500 年費。'],
+      benefits:['Turbo 每計劃年度首 HK$160,000；超過後回落至約 HK$18/里。','外幣及指定商戶 9X 分類各有獨立上限；9X 計劃現列至 2027-12-31。','旅遊保險、機場貴賓室及白金秘書安排曾有改動，使用前必須再開官方禮遇頁確認。']
+    }
+  };
+  DEFAULT_CARDS.forEach(function(c){ c.publicDetails = CARD_PUBLIC_DETAILS[c.id] || {}; });
+
+  /* 不收錄現金回贈卡；建行(亞洲) BA 白金同中銀 Cheers 已按產品決定取消收錄。 */
 
   /* flat 迎新欄位由 welcome.tiers 衍生（＝「全食」數）：畀 UI 快覽／排程／舊介面用；引擎本身行 tiers */
   DEFAULT_CARDS.forEach(function(c){
@@ -2098,10 +2187,17 @@ var BM = (function(){
      渠道優惠＝經邊個平台 link 申請先有嘅【額外】嘢，浮動、會過期、將來換 Robert 自己 referral link。
      ⚠️ 呢啲係比較網站級（Level 3），只入渠道優惠區，永遠唔會影響優化器計算。 */
   var CHANNEL_OFFERS = {
+    'sc-cathay': [
+      {platform:'小斯 flyformiles', bonus:'7 月加碼：指定推廣碼申請，另有 HK$500 禮券（詳情及資格以平台頁為準）', expiry:'2026-07-23', active:true, verified:true, link:'https://flyformiles.hk/41446'},
+      {platform:'里先生', bonus:'7 月加碼：指定推廣碼申請，另有 88 里賞金（詳情及資格以平台頁為準）', expiry:'2026-07-23', active:true, verified:true, link:'https://www.mrmiles.hk/cathay-card/'}
+    ],
+    'hsbc-everymile': [
+      {platform:'里先生', bonus:'優惠碼 MILEFLASH：合資格新客最高約 49,000 里；每月要有簽賬並包括一次手機支付', expiry:'2026-07-31', active:true, verified:true, link:'https://www.mrmiles.hk/hsbc-everymile/'},
+      {platform:'MoneyHero', bonus:'優惠碼 HEROFLASH：合資格新客最高約 49,000 里；申請前先核對平台流程', expiry:'2026-07-31', active:true, verified:true, link:'https://www.moneyhero.com.hk/zh/credit-card/blog/%E8%A7%A3%E6%A7%8B-%E6%BB%99%E8%B1%90everymile%E4%BF%A1%E7%94%A8%E5%8D%A1'}
+    ],
     'amex-explorer': [
-      {platform:'里先生', bonus:'獨家優惠：迎新之上再送 2,000 里', expiry:null, active:false, verified:false, link:'https://www.mrmiles.hk/ae-explorer/'},
-      {platform:'小斯 flyformiles', bonus:'獨家優惠：再送 2,000 里', expiry:null, active:false, verified:false, link:'https://flyformiles.hk/'},
-      {platform:'MoneyHero', bonus:'獨家優惠：送 HK$300 Apple 禮券', expiry:null, active:false, verified:false, link:'https://www.moneyhero.com.hk/'}
+      {platform:'里先生', bonus:'7 月平台加碼：HK$50 回贈，另有 88 里賞金；迎新本體申請期至 8 月 31 日', expiry:'2026-07-31', active:true, verified:true, link:'https://www.mrmiles.hk/ae-explorer/'},
+      {platform:'小斯 flyformiles', bonus:'7 月平台加碼：HK$50 手機八達通增值獎賞；迎新本體申請期至 8 月 31 日', expiry:'2026-07-31', active:true, verified:true, link:'https://flyformiles.hk/amex-explorer'}
     ],
     'amex-platinum': [
       {platform:'里先生', bonus:'獨家優惠：迎新之上再送 2,000 里', expiry:null, active:false, verified:false, link:'https://www.mrmiles.hk/ae-platinum-card-centurion-lounge/'},
@@ -2180,7 +2276,7 @@ var BM = (function(){
   }
   /* ===== 抵率上限模型 =====
      官方 T&C 常見三種上限結構，一張卡可以同時有幾種，取最緊嗰個：
-       capMonthly   每月上限（例：中銀 Cheers 8X 月簽約 $22,500 內）
+       capMonthly   每月上限（例：DBS 海外優惠每月首 $20,000）
        capQuarterly 每曆年季度上限（例：AE Explorer 本地額外3X每季首 $15,000）
        capTotal     成個期間上限（例：AE 白金 Turbo 每參加年度首 $160,000）
      超過上限嘅簽賬跌落 excessRate（$/里）計。 */
@@ -2789,8 +2885,9 @@ var BM = (function(){
     ['HND','GMP','JL'], ['HND','SYD','JL'],
     ['ICN','HKG','CX'], ['HKG','BKK','CX'], ['BKK','KUL','MH'], ['KUL','HKG','CX'],
     ['SYD','MEL','QF'], ['MEL','SIN','QF'],
-    ['HKG','DOH','QR'], ['DOH','MLE','QR'], ['DOH','CAI','QR'],
+    ['HKG','DOH','QR'], ['DOH','MAD','QR'], ['DOH','MLE','QR'], ['DOH','CAI','QR'],
     ['CAI','LHR','BA'], ['LHR','JFK','BA'], ['JFK','LAX','AA'], ['LAX','HKG','CX'],
+    ['JFK','ORD','AA'], ['ORD','HND','JL'], ['HND','HKG','CX'],
     ['HKG','SYD','CX'], ['SYD','SCL','QF'], ['GRU','LHR','BA'], ['LHR','CPT','BA'],
     ['JNB','DOH','QR'], ['DOH','JFK','QR'],
     ['LAX','HEL','AY','seasonal'], ['HEL','NRT','AY'], ['NRT','HKG','CX'],
@@ -3404,6 +3501,22 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     var note = sec('管家點評 · 風險位') +
       '<div style="font-size:13.5px;line-height:1.65;color:var(--ink)">' + esc2(c.note || '') + '</div>';
 
+    /* 已核實嘅長版細節：避免獨立卡頁更新後只剩幾個數字。 */
+    var detailLabels = {
+      eligibility:'申請資格／新客定義', registration:'要登記／要做嘅步驟', fees:'收費細節',
+      exclusions:'不合資格／排除交易', crediting:'入賬及兌換時間', clawback:'取消卡／扣回規則', benefits:'額外禮遇及限制'
+    };
+    var pd = c.publicDetails || {};
+    var detailKeys = Object.keys(detailLabels).filter(function(k){ return Array.isArray(pd[k]) && pd[k].length; });
+    var publicDetails = '';
+    if (detailKeys.length){
+      publicDetails = sec('重要條款逐項睇') + '<div style="display:grid;gap:9px">' + detailKeys.map(function(k){
+        return '<div style="padding:11px 13px;border:1px solid var(--line);border-radius:11px;background:var(--paper)">' +
+          '<div style="font-size:13px;font-weight:800;color:var(--jade-ink);margin-bottom:5px">' + detailLabels[k] + '</div>' +
+          '<ul style="margin:0;padding-left:18px;font-size:12.8px;line-height:1.65">' + pd[k].map(function(x){ return '<li>' + esc2(x) + '</li>'; }).join('') + '</ul></div>';
+      }).join('') + '</div>';
+    }
+
     var officialDocs = Array.isArray(c.sourceDocs) ? c.sourceDocs : [];
     var official = '';
     if (SHOW_3P_LINKS && officialDocs.length){
@@ -3417,7 +3530,10 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     }
 
     /* 渠道優惠（完全分開） */
-    var offers = (BM.CHANNEL_OFFERS[c.id] || []).filter(function(o){ return o.active === true && o.verified === true && !!o.expiry; });
+    var verifiedOffers = (BM.CHANNEL_OFFERS[c.id] || []).filter(function(o){ return o.verified === true && !!o.expiry; });
+    var offerToday = hkToday();
+    var offers = verifiedOffers.filter(function(o){ return o.active === true && o.expiry >= offerToday; });
+    var archivedOffers = verifiedOffers.filter(function(o){ return o.expiry < offerToday; });
     var offerBlock = '<div style="margin-top:20px;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--jade-soft),var(--chip-bg))">' +
       '<div style="font-weight:800;font-size:14px;color:var(--jade-ink)">💳 經邊個平台申請，仲有額外優惠？</div>' +
       '<div style="font-size:12px;color:var(--mut);margin:4px 0 10px">呢啲係<b>平台獨家</b>嘅【額外】著數，同上面張卡本身嘅迎新<b>分開計</b>——經下面連結申請先有。</div>';
@@ -3432,11 +3548,20 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     } else {
       offerBlock += '<div style="font-size:13px;color:var(--mut)">呢張卡暫時未有已確認嘅平台獨家優惠。</div>';
     }
+    if (archivedOffers.length){
+      offerBlock += '<details style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line)"><summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:var(--mut)">過往優惠紀錄（' + archivedOffers.length + '）</summary>' +
+        '<div style="margin-top:8px">' + archivedOffers.map(function(o){
+          return '<div style="padding:10px 12px;background:#eef0ef;border:1px solid #c8cfcc;border-radius:10px;margin-bottom:7px;filter:grayscale(1);color:#59635f">' +
+            '<div style="font-weight:750;font-size:13px">已完結 · ' + esc2(o.platform) + '</div>' +
+            '<div style="font-size:12.5px;margin:3px 0 7px">' + esc2(o.bonus) + '　到期 ' + esc2(o.expiry) + '</div>' +
+            '<a class="link-btn" href="' + esc2(o.link) + '" target="_blank" rel="noopener">睇返當時內容 ↗</a></div>';
+        }).join('') + '</div></details>';
+    }
     offerBlock += '</div>';
 
     var src = '<div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-size:12px;color:var(--mut)">資料基準：' + esc2(BM.DATA_AS_OF) + '　·　' + (c.verified ? '主要資料已按現有來源核實；個別上限／資格仍可能未知' : '未核實資料，只供卡庫參考，唔會加入推薦') + '</div>';
 
-    $('cardDetailBody').innerHTML = head + featBlock + rates + wc + meta + fee + note + official + offerBlock + src;
+    $('cardDetailBody').innerHTML = head + featBlock + rates + wc + meta + fee + note + publicDetails + official + offerBlock + src;
     var m = $('cardDetail'); m.hidden = false;
     var mc = m.querySelector('.modal'); if (mc) mc.scrollTop = 0;
   }
@@ -4490,7 +4615,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     $('cardList').innerHTML = cards.map(function(c){
       var wLine = c.welcomeMiles > 0 ? '迎新 ' + BM.fmt(c.welcomeMiles) + ' 里（簽 HK$' + BM.fmt(c.welcomeSpend) + '）' : '暫無迎新';
       var feeLine = (c.annualFeeFirst > 0 ? '首年 HK$' + BM.fmt(c.annualFeeFirst) : '首年免年費');
-      var offers = (BM.CHANNEL_OFFERS[c.id] || []).filter(function(o){ return o.active === true && o.verified === true && !!o.expiry; });
+      var offers = (BM.CHANNEL_OFFERS[c.id] || []).filter(function(o){ return o.active === true && o.verified === true && !!o.expiry && o.expiry >= hkToday(); });
       return '<button type="button" class="lib-card" data-detail="' + esc(c.id) + '" style="display:block;width:100%;text-align:left;cursor:pointer;border:1px solid var(--line);background:var(--card)">' +
         '<div class="lib-top"><div><div class="lib-name">' + esc(c.name) + '</div>' +
         '<div class="lib-bank">' + esc(c.bank) + ' · ' + programTag(c.program) + '</div></div>' +
@@ -4767,7 +4892,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
        白名單內嘅段先可標示已核實，其他一律顯示警告。
      區6  日韓泰        8,930哩 /商務120,000/4停1轉1開 ：札幌→沖繩⤳東京→首爾→(轉港)曼谷→吉隆坡（距頂 70）
      區8  日澳泰       13,862哩 /商務170,000/4停2開    ：札幌→福岡⤳東京→悉尼→墨爾本→星⤳馬→曼谷（距頂 138）
-     區10 舊方案已撤回：HKG→MAD/QR 並非已核實直航，待重新設計後先恢復
+     區10 歐美城市線     19,496哩 /商務230,000/2停2轉1開 ：(轉多哈)馬德里⤳倫敦→紐約→芝加哥→(轉羽田)香港（距頂 504）
      區11 遠洲探索     24,658哩 /商務250,000/5停2轉    ：馬爾代夫→多哈→開羅→(轉倫敦)紐約→洛杉磯（距頂 342）
      區13 終極版環遊世界 48,883哩 /商務280,000/5停2轉2開 ：悉尼→智利⤳巴西→倫敦→開普敦⤳約堡→(轉多哈)紐約→洛杉磯→赫爾辛基→(轉東京)（距頂 1,117；11 城市＝規則上限）
      規劃器示範掣只出 z8/z11，其餘由攻略文 DIY 掣載入 */
@@ -4797,6 +4922,17 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         {from:'MEL', to:'SIN', carrier:'QF', stay:'open'},
         {from:'KUL', to:'BKK', carrier:'MH', stay:'stop'},
         {from:'BKK', to:'HKG', carrier:'CX', stay:'stop'}
+      ],
+      z10: [
+        /* v6.75 從零重砌：舊方案誤將 HKG→MAD/QR 當成直航，今次正式拆成
+           HKG→DOH→MAD，並以馬德里⤳倫敦做自費開口。六段獎勵航班均有官方
+           航線依據；19,496 哩、距區 10 上限 504 哩。 */
+        {from:'HKG', to:'DOH', carrier:'QR', stay:'transit'},
+        {from:'DOH', to:'MAD', carrier:'QR', stay:'open'},
+        {from:'LHR', to:'JFK', carrier:'BA', stay:'stop'},
+        {from:'JFK', to:'ORD', carrier:'AA', stay:'stop'},
+        {from:'ORD', to:'HND', carrier:'JL', stay:'transit'},
+        {from:'HND', to:'HKG', carrier:'CX', stay:'stop'}
       ],
       z11: [
         /* v6.63 重砌：舊線 MLE→CAI 段冇 oneworld 直航（兩地出入基本上只有 QR 經多哈）。
@@ -5201,7 +5337,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     {t: '環球票五條示範線・總覽', d: '12 萬到 28 萬里、五個預算級別——揀啱你嗰級，逐條入去睇。', tag: '環球路線', date: '2026-07-17', emoji: '🗂️', img: 'img/pgW0-hero.jpg', pg: 'pgW0'},
     {t: '區6・日韓泰 120,000 里', d: '札幌滑雪→沖繩→東京→首爾→曼谷→吉隆坡；精確機場核實後 8,930 哩，差 70 哩到區頂。', tag: '環球路線', date: '2026-07-20', emoji: '🗾', img: 'img/pgW6-hero.jpg', pg: 'pgW6'},
     {t: '區8・日澳泰 170,000 里', d: '札幌→福岡→東京→悉尼→墨爾本→星馬→曼谷；精確機場核實後 13,862 哩，差 138 哩到區頂。', tag: '環球路線', date: '2026-07-20', emoji: '🏔️', img: 'img/pgW8-hero.jpg', pg: 'pgW8'},
-    {t: '區10・舊方案已撤回', d: '原方案誤將 HKG→MAD/QR 當作已核實直航；距離、分區同 230,000 里結論已作廢。', tag: '環球路線', date: '2026-07-20', emoji: '⛔', img: 'img/pgW10-hero.jpg', pg: 'pgW10'},
+    {t: '區10・歐美城市線 230,000 里', d: '多哈轉機去馬德里，開口去倫敦，再玩紐約、芝加哥，東京轉機返港；19,496 哩。', tag: '環球路線', date: '2026-07-20', emoji: '🌍', img: 'img/pgW10-hero-v3.jpg', pg: 'pgW10'},
     {t: '區11・遠洲探索 250,000 里', d: '馬爾代夫→多哈→開羅→紐約→洛杉磯——冇一個係平機去到嘅地方。', tag: '環球路線', date: '2026-07-17', emoji: '🏜️', img: 'img/pgW11-hero.jpg', pg: 'pgW11'},
     {t: '區13・終極版環遊世界 280,000 里', d: '11 個目的地、六大洲、兩個開口，赫爾辛基睇北極光。', tag: '環球路線', date: '2026-07-17', emoji: '🌏', img: 'img/pgW13-hero.jpg', pg: 'pgW13'},
     {t: '新手最易中嘅七個伏', d: '迎新條件、cut 卡扣里、YQ、過期……避晒你已叻過大部分人。', tag: '避坑', date: '2026-07-12', emoji: '⚠️', img: 'img/pgG5-hero.jpg', pg: 'pgG5'},
@@ -5773,14 +5909,21 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       var pg = $(a.pg); if (!pg) return;
       var old = pg.querySelector('.expired-note');
       if (a.expire < today){
+        pg.classList.add('expired-article');
+        pg.setAttribute('data-archive', 'expired-offer');
         if (old) return;
         var body = pg.querySelector('.page-body'); if (!body) return;
         var mm = parseInt(a.expire.slice(5, 7), 10), dd = parseInt(a.expire.slice(8, 10), 10);
         var n = document.createElement('div');
         n.className = 'expired-note';
-        n.innerHTML = '⏳ <b>呢個優惠已於 ' + mm + ' 月 ' + dd + ' 日完結。</b>以下內容留返做紀錄——最新迎新、條款以銀行官方公佈為準。';
+        n.setAttribute('role', 'status');
+        n.innerHTML = '⏳ <b>歷史優惠｜已於 ' + mm + ' 月 ' + dd + ' 日完結。</b><br>呢篇文章會繼續保留畀你參考當時做過嘅內容，但唔可以再按文中優惠申請；最新迎新、條款同申請資格請以銀行官方公佈為準。';
         body.insertBefore(n, body.firstChild);
-      } else if (old){ old.remove(); }
+      } else {
+        pg.classList.remove('expired-article');
+        pg.removeAttribute('data-archive');
+        if (old) old.remove();
+      }
     });
   }
   window.applyExpiryNotices = applyExpiryNotices;
@@ -5788,7 +5931,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
   /* 路線文章只係候選設計；票規、直航時刻表同獎勵位係三個獨立驗證層。 */
   (function applyRouteDataNotices(){
-    ['pgW0','pgW6','pgW8','pgW11','pgW13','pgR1','pgR2'].forEach(function(id){
+    ['pgW0','pgW6','pgW8','pgW10','pgW11','pgW13','pgR1','pgR2'].forEach(function(id){
       var page = $(id); if (!page || page.querySelector('.route-data-notice')) return;
       var lead = page.querySelector('.art-lead');
       var note = document.createElement('div');
@@ -5918,7 +6061,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
   /* ══════════ v2.5 新功能模組 ══════════ */
 
-  var APP_VERSION = 'v6.74.1 · build 2026-07-20'; /* 同第一行 build marker 一齊改 */
+  var APP_VERSION = 'v6.75.0 · build 2026-07-20'; /* 同第一行 build marker 一齊改 */
 
   /* ---------- toast ---------- */
   var toastTimer = null;

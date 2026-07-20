@@ -59,7 +59,7 @@ function programName(program) {
 function welcomeHtml(card) {
   const w = card.welcome || {};
   if (w.expired) {
-    return `<p class="notice amber"><b>迎新暫停計算。</b>${esc(w.expiredNote || '上一期已完，等銀行公布新一期正式條款。')}</p>`;
+    return `<p class="notice archive"><b>歷史優惠｜已完結，唔會進入推薦。</b><br>${esc(w.expiredNote || '上一期已完，等銀行公布新一期正式條款。')}</p>`;
   }
   if (w.type === 'feePurchase') {
     return `<p class="notice"><b>交年費形式：</b>首年年費 HK$${fmt(w.fee)}，按現有條款可得約 ${fmt(w.miles)} 里；唔當成免費迎新。</p>`;
@@ -98,6 +98,23 @@ function sourcesHtml(card) {
   return docs.map(doc => `<a href="${esc(doc.url)}" target="_blank" rel="noopener">${esc(doc.label)} ↗</a>`).join('');
 }
 
+function publicDetailsHtml(card) {
+  const labels = {
+    eligibility: '申請資格／新客定義',
+    registration: '要登記／要做嘅步驟',
+    fees: '收費細節',
+    exclusions: '不合資格／排除交易',
+    crediting: '入賬及兌換時間',
+    clawback: '取消卡／扣回規則',
+    benefits: '額外禮遇及限制'
+  };
+  const details = card.publicDetails || {};
+  const blocks = Object.keys(labels).filter(key => Array.isArray(details[key]) && details[key].length).map(key =>
+    `<details open><summary>${esc(labels[key])}</summary><ul>${details[key].map(item => `<li>${esc(item)}</li>`).join('')}</ul></details>`
+  ).join('');
+  return blocks ? `<section><h2>重要條款逐項睇</h2><p class="small">以下只整理已由本頁列出嘅官方產品頁、KFS 或條款支持嘅資料；未知項目唔會估。</p><div class="detail-grid">${blocks}</div></section>` : '';
+}
+
 function renderCard(card) {
   const file = fileById[card.id];
   const canonical = new URL(`cards/${file}`, origin).href;
@@ -131,6 +148,7 @@ function renderCard(card) {
 <style>
 :root{--jade:#0e6e85;--jade-dark:#075768;--gold:#795100;--ink:#14231f;--mut:#586961;--paper:#f2f5f2;--card:#fff;--line:#d6ded8;--soft:#e4f2f3;--amber:#fff4d5}
 *{box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,"PingFang HK","Microsoft JhengHei",sans-serif;background:var(--paper);color:var(--ink);margin:0;line-height:1.65}header{background:linear-gradient(145deg,#063640,var(--jade-dark));color:#fff;padding:22px 16px}header div,main,footer{max-width:760px;margin:auto}header a{color:#d9eff2;text-decoration:none}h1{font-size:clamp(24px,6vw,34px);line-height:1.25;margin:12px 0 5px}.sub{color:#cfe4e6;margin:0}.badge{display:inline-block;border-radius:999px;font-size:12px;font-weight:800;padding:5px 9px;margin-top:12px}.good{background:#d9f3e9;color:#07573f}.warn{background:#fff0c7;color:#704a00}main{padding:18px 14px 34px}section{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:15px;margin:0 0 14px}h2{font-size:18px;color:var(--jade-dark);margin:0 0 10px}table{border-collapse:collapse;width:100%;font-size:13.5px}th,td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}th{background:var(--soft)}.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.fact{background:var(--soft);border-radius:10px;padding:9px 10px}.fact small{display:block;color:var(--mut)}.notice{background:var(--soft);border-radius:10px;padding:10px 12px}.amber{background:var(--amber)}.small{font-size:12.5px;color:var(--mut)}.links{display:flex;flex-wrap:wrap;gap:8px}.links a{border:1px solid var(--jade);border-radius:999px;color:var(--jade-dark);font-size:12.5px;font-weight:800;padding:6px 10px;text-decoration:none}.share{width:100%;border:0;border-radius:12px;background:var(--jade);color:#fff;font:inherit;font-weight:850;padding:12px;cursor:pointer;margin-bottom:14px}.share:focus-visible,a:focus-visible{outline:3px solid #ffcb45;outline-offset:2px}footer{padding:0 16px 30px;color:var(--mut);font-size:12px;text-align:center}@media(max-width:520px){.facts{grid-template-columns:1fr}table{font-size:12.5px}section{padding:13px;overflow-x:auto}}
+.detail-grid{display:grid;gap:9px}.detail-grid details{border:1px solid var(--line);border-radius:11px;background:var(--paper);padding:10px 12px}.detail-grid summary{cursor:pointer;font-size:13.5px;font-weight:850;color:var(--jade-dark)}.detail-grid ul{margin:8px 0 0;padding-left:20px;font-size:13px}.detail-grid li{margin:5px 0}.archive{background:#eef0ef;border:2px solid #98a29f;color:#4e5955;filter:grayscale(1)}
 </style>
 </head>
 <body>
@@ -146,6 +164,7 @@ function renderCard(card) {
 <section><h2>迎新</h2>${welcomeHtml(card)}</section>
 <section><h2>賺里率</h2><table><thead><tr><th>類別</th><th>每里所需簽賬</th><th>主要上限／條件</th></tr></thead><tbody>${rateRows(card)}</tbody></table></section>
 <section><h2>年費與提醒</h2><p>${esc(card.waiveNote || (card.feeWaivable ? '年費有機會豁免，請向銀行確認。' : '年費不可豁免。'))}</p><p>${esc(card.note || '')}</p></section>
+${publicDetailsHtml(card)}
 <section><h2>銀行官方原文</h2><div class="links">${sourcesHtml(card)}</div><p class="small">AcreMiles 最後核對：${esc(card.sourceVerifiedAt || dataDate)}。限時迎新、商戶名單同條款會變，申請當日請再開銀行頁確認。</p></section>
 </main>
 <footer>資料只供比較，唔係財務建議。借定唔借？還得到先好借！AcreMiles 暫時冇 referral 收益。</footer>

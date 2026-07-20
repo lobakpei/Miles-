@@ -12,7 +12,7 @@
     pgW0:  {slug:'rtw-routes', title:'環球票五條示範線・總覽', description:'由 120,000 至 280,000 里，按預算揀一條候選環球路線。', image:'img/pgW0-hero.jpg', kind:'路線'},
     pgW6:  {slug:'rtw-zone-6', title:'區6・日韓泰 120,000 里', description:'札幌、沖繩、東京、首爾、曼谷、吉隆坡嘅入門候選環球線。', image:'img/pgW6-hero.jpg', kind:'路線'},
     pgW8:  {slug:'rtw-zone-8', title:'區8・日澳泰 170,000 里', description:'日本、澳洲、星馬、曼谷八個城市嘅候選環球線。', image:'img/pgW8-hero.jpg', kind:'路線'},
-    pgW10: {slug:'rtw-zone-10-withdrawn', title:'區10・舊方案已撤回', description:'舊方案包含未核實直航，距離、分區同里數結論已經撤回。', image:'img/pgW10-hero.jpg', kind:'更正'},
+    pgW10: {slug:'rtw-zone-10', title:'區10・歐美城市線 230,000 里', description:'多哈轉機去馬德里，開口去倫敦，再玩紐約、芝加哥，東京轉機返港；19,496 哩。', image:'img/pgW10-hero-v3.jpg', kind:'路線'},
     pgW11: {slug:'rtw-zone-11', title:'區11・遠洲探索 250,000 里', description:'馬爾代夫、多哈、開羅、紐約、洛杉磯嘅候選環球線。', image:'img/pgW11-hero.jpg', kind:'路線'},
     pgW13: {slug:'rtw-zone-13', title:'區13・終極版環遊世界 280,000 里', description:'十一個目的地、六大洲、兩個開口嘅候選終極環球線。', image:'img/pgW13-hero.jpg', kind:'路線'},
     pgG5:  {slug:'beginner-pitfalls', title:'新手最易中嘅七個伏', description:'迎新條件、取消卡、燃油費同里數過期等常見陷阱。', image:'img/pgG5-hero.jpg', kind:'攻略'},

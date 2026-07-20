@@ -1,16 +1,16 @@
 /* AcreMiles service worker — 同源 network-first（保資料新鮮），斷網先食 cache。
    每次改版要跟住升 CACHE 名，舊 cache 自動清。 */
-var CACHE = 'acremiles-v6.72.0';
-var CORE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './img/pgG1-hero.jpg', './img/pgG1-steps.jpg', './img/pgG2-cards.jpg', './img/pgG3-hero.jpg', './img/pgG8-hero.jpg', './img/pgG4-hero.jpg', './img/pgW0-hero.jpg',
+var CACHE = 'acremiles-v6.75.0';
+var CORE = ['./', './index.html', './share-meta.js', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './share/itinerary/', './share/plan/', './img/pgW0-planner.webp', './img/thumb-pgG2.webp', './img/thumb-pgO2.webp', './img/thumb-pgW11.webp', './img/thumb-banner-follow.webp', './img/pgG1-hero.jpg', './img/pgG1-steps.jpg', './img/pgG2-cards.jpg', './img/pgG3-hero.jpg', './img/pgG8-hero.jpg', './img/pgG4-hero.jpg', './img/pgW0-hero.jpg',
   './img/pgW6-hero.jpg',
   './img/pgW13-hero.jpg',
   './img/pgW8-hero.jpg',
-  './img/pgW10-hero.jpg',
+  './img/pgW10-hero-v3.jpg',
   './img/pgW11-hero.jpg',
   './img/pgR1-hero.jpg',
   './img/pgR2-hero.jpg',
-  './img/pgO1-hero.jpg',
   './img/pgG5-hero.jpg',
+  './img/pgO1-hero.jpg',
   './img/pgO2-hero.jpg',
   './img/pgG6-hero.jpg',
   './img/pgO4-hero.jpg',
@@ -45,6 +45,12 @@ self.addEventListener('fetch', function(e){
         caches.open(CACHE).then(function(c){ c.put(e.request, copy); });
       }
       return res;
-    }).catch(function(){ return caches.match(e.request); })
+    }).catch(function(){
+      return caches.match(e.request).then(function(hit){
+        if (hit) return hit;
+        if (e.request.mode === 'navigate') return caches.match('./index.html');
+        return Response.error();
+      });
+    })
   );
 });

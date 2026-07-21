@@ -1,4 +1,4 @@
-<!-- build: 2026-07-21 UK — v6.79.0-draft：Outcome-first 首頁、分層計算、規劃入口及 compact saved cards -->
+<!-- build: 2026-07-21 UK — v6.79.0-draft：Outcome-first 首頁、分層計算、計劃選單及新手規劃入口 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -13,7 +13,7 @@
 <link rel="icon" type="image/png" href="data:image/png;base64,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">
 <!-- v6.51 SEO：正式域名 acremiles.app（自訂域名指去 GitHub Pages repo 根目錄）。og:image／canonical／JSON-LD url 一律用絕對網址。 -->
 <meta property="og:title" content="AcreMiles — 里數規劃專員">
-<meta property="og:description" content="每筆消費，都值得有回報。先睇消費可以換到乜，再用自己嘅數字計。">
+<meta property="og:description" content="每筆消費，都值得有回報。先睇消費可以換到乜，再計你自己嘅方案。">
 <meta property="og:image" content="https://acremiles.app/icon-512.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://acremiles.app/">
@@ -21,10 +21,10 @@
 <meta property="og:locale" content="zh_HK">
 <link rel="canonical" href="https://acremiles.app/">
 <meta name="robots" content="index,follow">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AcreMiles","alternateName":"畝里","url":"https://acremiles.app/","description":"香港里數優化 app：大額消費迎新組合、日常儲分分工、寰宇一家環球票規劃，一次過計清楚 Asia Miles / Avios。","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"HKD"},"inLanguage":"zh-HK"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AcreMiles","alternateName":"畝里","url":"https://acremiles.app/","description":"香港消費回報規劃 app：先睇一筆消費可以換到乜，再計迎新組合、日常簽賬及里數旅程。","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"HKD"},"inLanguage":"zh-HK"}</script>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://acremiles.app/icon-512.png">
-<meta name="description" content="AcreMiles — 香港大額消費里數優化器。結婚、裝修、大旅行，一次過計清楚用邊幾張卡儲盡 Asia Miles / Avios。">
+<meta name="description" content="AcreMiles — 幫香港人將本來會發生嘅消費，轉化成更有價值嘅旅行回報。">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -907,17 +907,6 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
 .planner-secondary{min-width:194px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.55)}
 @media(max-width:420px){.planner-launch{padding:19px 15px}.planner-launch-actions{display:grid;grid-template-columns:1fr}.planner-primary,.planner-secondary{width:100%}}
 
-/* v6.79 draft：Outcome-first 首頁及主要流程。 */
-.outcome-hero{overflow:hidden;border-radius:20px;background:linear-gradient(125deg,#073744 0%,#0d7183 57%,#1da9a2 100%);color:#fff;box-shadow:0 12px 30px rgba(4,42,53,.2);margin:2px 0 18px}
-.outcome-hero img{width:100%;aspect-ratio:16/7;object-fit:cover;display:block;opacity:.82}.outcome-copy{padding:18px}.outcome-k{font-size:10.5px;font-weight:900;letter-spacing:1.35px;color:#c8f2f0}.outcome-copy h2{font-size:clamp(23px,6vw,31px);line-height:1.15;margin:6px 0 5px}.outcome-amount{font:900 16px/1.3 var(--mono);color:#d7faf6}.outcome-arrow{font-size:12px;font-weight:800;opacity:.82;margin:15px 0 5px}.outcome-result{font-size:18px;font-weight:900;line-height:1.35}.outcome-result small{display:block;font-size:12px;font-weight:600;opacity:.86;margin-top:4px}.outcome-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}.outcome-actions button{min-height:45px;border-radius:12px;font-weight:850;padding:9px 10px}.outcome-actions .primary{background:#fff;color:#086477}.outcome-actions .secondary{border:1px solid rgba(255,255,255,.6);color:#fff;background:rgba(255,255,255,.1)}
-.scenario-head,.home-section-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:20px 2px 10px}.scenario-head h2,.home-section-head h2{font-size:18px;margin:0}.scenario-head span,.home-section-head span{font-size:11.5px;color:var(--mut)}.scenario-strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(225px,72%);gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:1px 1px 8px}.scenario-card{scroll-snap-align:start;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 4px 14px rgba(12,46,54,.07)}.scenario-card .sc-k{font-size:11px;color:var(--mut);font-weight:750}.scenario-card b{font-size:16px;display:block;margin:5px 0;color:var(--ink)}.scenario-card strong{font-size:14px;color:var(--jade-ink);display:block}.scenario-card small{display:block;color:var(--mut);font-size:10.5px;margin-top:8px}
-.quick-calc{padding:17px!important}.quick-calc h2{font-size:19px;margin:0 0 5px}.quick-calc p{font-size:12.5px;color:var(--mut);margin:0 0 12px}.quick-calc-row{display:grid;grid-template-columns:1fr auto;gap:8px}.quick-calc-row .amt-wrap{margin:0}.quick-calc-row button{min-width:138px;border-radius:12px;background:linear-gradient(135deg,var(--jade-btn),var(--jade-btn2));color:#fff;font-weight:850;padding:8px 12px}
-.journey-choices,.planner-gateway{display:grid;grid-template-columns:1fr 1fr;gap:10px}.journey-choice,.gateway-choice{text-align:left;border:1px solid var(--line);background:var(--card);border-radius:15px;padding:15px}.journey-choice b,.gateway-choice b{display:block;font-size:15px;color:var(--ink)}.journey-choice span,.gateway-choice span{display:block;font-size:11.5px;line-height:1.55;color:var(--mut);margin-top:4px}.gateway-choice.primary{border-color:var(--jade);background:var(--jade-soft)}
-.calc-progressive{border:1px solid var(--line);border-radius:14px;margin:0 0 14px;background:var(--field);overflow:hidden}.calc-progressive summary{cursor:pointer;padding:13px 14px;font-size:14px;font-weight:850;color:var(--ink);list-style:none}.calc-progressive summary::-webkit-details-marker{display:none}.calc-progressive summary::after{content:'＋';float:right;color:var(--jade-ink)}.calc-progressive[open] summary::after{content:'－'}.calc-progressive-body{padding:0 14px 2px}.outcome-first-result{margin:12px 0 14px!important;border-color:var(--jade)!important}.outcome-first-result .eyebrow{color:var(--jade-ink)}
-.saved-row{position:relative;padding:10px 2px;min-height:62px}.saved-row.pinned{border-left:3px solid var(--gold);padding-left:10px}.saved-copy{cursor:pointer}.saved-more{width:40px;height:40px;border:1px solid var(--line);border-radius:11px;background:var(--field);font-size:20px;color:var(--ink)}.saved-menu{position:absolute;right:0;top:52px;z-index:15;min-width:180px;background:var(--card);border:1px solid var(--line);border-radius:13px;box-shadow:0 12px 28px rgba(0,22,28,.2);padding:6px}.saved-menu[hidden]{display:none}.saved-menu button{display:block;width:100%;text-align:left;padding:10px 11px;border-radius:9px;font-size:13px;color:var(--ink)}.saved-menu button:hover{background:var(--field)}.saved-menu .danger{color:var(--red);border-top:1px solid var(--line);border-radius:0;margin-top:3px}
-.beginner-box[hidden]{display:none}.beginner-fields{display:grid;gap:13px}.beginner-result{margin-top:14px}.template-result{border:1px solid var(--line);border-radius:14px;padding:13px;background:var(--paper);margin-top:8px}.template-result b{display:block}.template-result p{font-size:12px;color:var(--mut);line-height:1.55;margin:5px 0 9px}.article-outcome{border:1.5px solid var(--jade);border-radius:16px;padding:14px;margin:0 0 15px;background:linear-gradient(135deg,var(--jade-soft),var(--card))}.article-outcome h2{font-size:17px;margin:0 0 10px}.article-tier{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:7px;align-items:center;padding:9px 0;border-top:1px solid var(--line);font-size:12px}.article-tier:first-of-type{border-top:0}.article-tier b{font-size:13px;color:var(--ink)}.article-tier strong{color:var(--jade-ink)}
-@media(max-width:480px){.outcome-actions,.journey-choices,.planner-gateway{grid-template-columns:1fr}.quick-calc-row{grid-template-columns:1fr}.quick-calc-row button{min-height:46px}.scenario-strip{grid-auto-columns:84%}.article-tier{grid-template-columns:1fr 1fr}.article-tier strong{grid-column:1/-1}.saved-row{flex-direction:row;align-items:center}.saved-actions{width:auto}.saved-more{flex:none}}
-
 /* v6.74：文章／卡資料／行程全站分享。 */
 .share-icon-btn,.share-mini{width:34px;height:34px;flex:none;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;color:var(--jade-ink);background:var(--field);border:1px solid var(--line);padding:0}
 .share-icon-btn svg,.share-mini svg{width:19px;height:19px}
@@ -927,6 +916,120 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
 .card-detail-title{flex:1;min-width:0}
 .card-detail-actions{display:flex;align-items:center;justify-content:flex-end;gap:4px;flex-wrap:wrap}
 @media(max-width:390px){.card-detail-head{flex-direction:column}.card-detail-actions{width:100%;justify-content:flex-start}}
+
+/* v6.79 draft：Outcome-first 首頁、分層計算、compact saved cards、規劃 gateway。 */
+.home-kicker{font-size:10.5px;font-weight:900;letter-spacing:1.4px;color:var(--jade-ink);margin:0 2px 8px}
+.outcome-feature{position:relative;overflow:hidden;border-radius:20px;margin:2px 0 18px;padding:22px 18px;color:#fff;background:linear-gradient(105deg,rgba(4,34,45,.98) 0%,rgba(4,43,54,.93) 52%,rgba(4,43,54,.62) 100%),url('img/pgG2-cards.jpg') center/cover;box-shadow:0 12px 30px rgba(4,34,45,.2)}
+.outcome-feature::after{content:'';position:absolute;inset:auto -35px -58px auto;width:180px;height:180px;border-radius:50%;background:rgba(23,191,166,.17);pointer-events:none}
+.outcome-feature>*{position:relative;z-index:1}
+.outcome-badges{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.outcome-badge{font-size:10.5px;font-weight:850;letter-spacing:.7px;border-radius:999px;padding:4px 9px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.22)}
+.outcome-badge.verified{background:rgba(23,191,166,.23)}
+.outcome-feature h2{font-size:clamp(24px,7vw,33px);line-height:1.08;letter-spacing:-.6px;margin:0 0 7px;max-width:470px}
+.outcome-feature .of-spend{font-size:13px;color:rgba(255,255,255,.82);margin-bottom:15px}
+.outcome-eq{display:grid;grid-template-columns:auto 28px minmax(0,1fr);align-items:center;gap:6px;margin:0 0 15px}
+.outcome-eq .eq-box{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:13px;padding:10px 11px;min-height:63px;display:flex;flex-direction:column;justify-content:center}
+.outcome-eq .eq-box span{font-size:10.5px;color:rgba(255,255,255,.72);font-weight:700}
+.outcome-eq .eq-box b{font-size:17px;line-height:1.2;margin-top:3px}
+.outcome-eq .eq-arr{text-align:center;font-size:20px;color:#BEEBF1}
+.outcome-feature .of-note{font-size:11px;line-height:1.55;color:rgba(255,255,255,.72);margin:12px 0 0}
+.outcome-actions{display:flex;gap:9px;flex-wrap:wrap}
+.outcome-actions button{min-height:44px;border-radius:12px;padding:10px 14px;font-size:13.5px;font-weight:850}
+.outcome-actions .primary{background:linear-gradient(135deg,var(--jade-btn),var(--jade-btn2));color:#fff;border:1px solid rgba(255,255,255,.25)}
+.outcome-actions .secondary{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.48)}
+.home-section{margin:0 0 20px}
+.home-section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:0 2px 10px}
+.home-section-head h2{font-size:18px;line-height:1.25;margin:0;color:var(--ink)}
+.home-section-head span{font-size:11.5px;color:var(--mut)}
+.scenario-strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:1px 1px 7px;margin:0 -1px;scrollbar-width:none}
+.scenario-strip::-webkit-scrollbar{display:none}
+.scenario-card{flex:0 0 min(82%,320px);scroll-snap-align:start;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 4px 13px rgba(15,50,60,.06);color:var(--ink)}
+.scenario-card .sc-context{font-size:11px;font-weight:800;color:var(--jade-ink);margin-bottom:6px}
+.scenario-card h3{font-size:16px;line-height:1.3;margin:0 0 11px}
+.scenario-card .sc-flow{display:grid;grid-template-columns:1fr auto 1fr;gap:6px;align-items:center}
+.scenario-card .sc-flow div{background:var(--field);border-radius:10px;padding:9px 8px;min-height:55px}
+.scenario-card .sc-flow span{display:block;font-size:10px;color:var(--mut);font-weight:700}
+.scenario-card .sc-flow b{display:block;font-size:13px;line-height:1.25;margin-top:3px}
+.scenario-card .sc-flow i{font-style:normal;color:var(--jade-ink)}
+.scenario-card .sc-meta{display:flex;justify-content:space-between;gap:8px;margin-top:10px;font-size:10.5px;color:var(--mut)}
+.home-quick{border:1.5px solid var(--jade);background:linear-gradient(145deg,var(--card),var(--jade-soft));border-radius:18px;padding:16px;margin-bottom:20px}
+.home-quick h2{font-size:20px;margin:0 0 4px;color:var(--ink)}
+.home-quick p{font-size:12.5px;line-height:1.55;color:var(--mut);margin:0 0 12px}
+.home-quick-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:stretch}
+.home-amount{display:flex;align-items:center;gap:7px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);padding:8px 11px}
+.home-amount span{font-family:var(--mono);font-size:12px;color:var(--mut);font-weight:750}
+.home-amount input{min-width:0;width:100%;border:0;outline:0;background:none;color:var(--ink);font-family:var(--mono);font-size:20px;font-weight:800}
+.home-quick button{border-radius:12px;padding:10px 15px;background:linear-gradient(135deg,var(--jade-btn),var(--jade-btn2));color:#fff;font-weight:850;font-size:13.5px}
+.home-planner{margin-top:20px}
+.home-planner-grid,.planner-gateway-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.home-plan-option,.planner-mode-card{position:relative;text-align:left;border:1px solid var(--line);border-radius:16px;background:var(--card);padding:15px;color:var(--ink)}
+.home-plan-option b,.planner-mode-card b{display:block;font-size:15px;line-height:1.3;margin-bottom:5px}
+.home-plan-option span,.planner-mode-card span{display:block;font-size:12px;line-height:1.5;color:var(--mut)}
+.home-plan-option::after,.planner-mode-card::after{content:'›';position:absolute;right:12px;top:12px;color:var(--jade-ink);font-size:21px;font-weight:700}
+.calc-stepbar{display:flex;align-items:center;gap:8px;margin-bottom:12px;color:var(--mut);font-size:11.5px;font-weight:750}
+.calc-stepbar b{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--jade-soft);color:var(--jade-ink)}
+#calcContinue{margin-top:4px}
+.calc-detail-block{border-top:1px solid var(--line);margin-top:18px;padding-top:17px}
+.calc-advanced{border:1px solid var(--line);border-radius:14px;background:var(--field);margin:4px 0 18px;overflow:hidden}
+.calc-advanced summary{cursor:pointer;list-style:none;padding:13px 14px;font-size:14px;font-weight:800;color:var(--ink);display:flex;align-items:center;justify-content:space-between}
+.calc-advanced summary::-webkit-details-marker{display:none}
+.calc-advanced summary::after{content:'＋';color:var(--jade-ink)}
+.calc-advanced[open] summary::after{content:'−'}
+.calc-advanced-body{padding:2px 14px 14px}
+.result-outcomes{border:1.5px solid var(--jade);background:linear-gradient(145deg,var(--card),var(--jade-soft))}
+.result-outcomes+.act-row{margin-top:0}
+.saved-row{position:relative;align-items:stretch;padding:8px 0;gap:7px}
+.saved-main{flex:1;min-width:0;text-align:left;color:var(--ink);padding:5px 4px;border-radius:10px}
+.saved-main:active{background:var(--field)}
+.saved-row .nm{font-size:14px;display:flex;gap:6px;align-items:center}
+.saved-pin{font-size:9.5px;background:var(--gold-soft);color:var(--gold-deep);border-radius:999px;padding:2px 7px}
+.saved-row .mt{font-size:11.5px;line-height:1.45}
+.saved-outcome{display:block;color:var(--jade-ink);font-weight:700;margin-top:2px}
+.saved-more{width:40px;min-height:40px;align-self:center;border-radius:11px;border:1px solid var(--line);background:var(--field);color:var(--ink);font-weight:900;font-size:19px;line-height:1}
+.action-menu-list{display:grid;gap:7px;margin-top:8px}
+.action-menu-item{width:100%;min-height:46px;text-align:left;padding:11px 13px;border-radius:12px;border:1px solid var(--line);background:var(--field);color:var(--ink);font-size:14px;font-weight:750}
+.action-menu-item.danger{color:var(--red);background:var(--red-bg);border-color:#E8C9BC;margin-top:5px}
+#tab-redeem.planner-gateway-mode>:not(#plannerGateway){display:none!important}
+.planner-gateway{margin:2px 0 18px}
+.planner-gateway-hero{padding:18px;border-radius:18px;background:linear-gradient(135deg,#0E6E85,var(--jade) 60%,var(--jade2));color:#fff;margin-bottom:12px}
+.planner-gateway-hero .k{font-size:10.5px;letter-spacing:1.3px;font-weight:850;opacity:.8;margin-bottom:6px}
+.planner-gateway-hero h2{font-size:24px;line-height:1.2;margin:0 0 7px}
+.planner-gateway-hero p{font-size:13px;line-height:1.6;margin:0;opacity:.88}
+.beginner-builder{margin-top:12px;border:1px solid var(--line);border-radius:16px;background:var(--card);padding:15px}
+.beginner-builder h3{font-size:16px;margin:0 0 4px;color:var(--ink)}
+.beginner-builder p{font-size:12px;line-height:1.55;color:var(--mut);margin:0 0 12px}
+.beginner-label{font-size:11.5px;font-weight:850;color:var(--ink);margin:11px 0 7px}
+.beginner-chips{display:flex;flex-wrap:wrap;gap:7px}
+.beginner-chip{border:1px solid var(--line);background:var(--field);color:var(--ink);border-radius:999px;padding:8px 12px;font-size:12.5px;font-weight:750}
+.beginner-chip.on{background:var(--jade-soft);border-color:var(--jade);color:var(--jade-ink)}
+.beginner-match{width:100%;min-height:46px;border-radius:12px;margin-top:15px;background:linear-gradient(135deg,var(--jade-btn),var(--jade-btn2));color:#fff;font-weight:850;font-size:14px}
+.beginner-results{display:grid;gap:9px;margin-top:12px}
+.beginner-result{border:1px solid var(--line);border-radius:14px;background:var(--field);padding:13px;color:var(--ink)}
+.beginner-result h4{font-size:15px;line-height:1.35;margin:0 0 5px}
+.beginner-route{font-size:12px;line-height:1.55;color:var(--mut);margin-bottom:8px}
+.beginner-result-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
+.beginner-result-meta span{font-size:10.5px;font-weight:750;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px 8px}
+.beginner-result button{width:100%;min-height:40px;border-radius:10px;background:var(--card);border:1px solid var(--jade);color:var(--jade-ink);font-size:12.5px;font-weight:800}
+.outcome-tier-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:0 0 12px}
+.outcome-tier{border:1.5px solid var(--jade);border-radius:14px;background:linear-gradient(145deg,var(--paper),var(--jade-soft));padding:13px;color:var(--ink)}
+.outcome-tier span{display:block;font-size:10.5px;color:var(--mut);font-weight:700}
+.outcome-tier b{display:block;font-size:17px;color:var(--jade-ink);margin:4px 0}
+.outcome-tier strong{display:block;font-size:13px;line-height:1.45}
+.outcome-tier-note{font-size:11px;line-height:1.55;color:var(--mut);margin:0 0 12px}
+.outcome-disclosure{border:1px solid var(--line);border-radius:12px;background:var(--paper);margin:0 0 8px;overflow:hidden}
+.outcome-disclosure summary{cursor:pointer;list-style:none;padding:11px 13px;font-size:13.5px;font-weight:800;color:var(--ink)}
+.outcome-disclosure summary::-webkit-details-marker{display:none}
+.outcome-disclosure summary::after{content:'＋';float:right;color:var(--jade-ink)}
+.outcome-disclosure[open] summary::after{content:'−'}
+.outcome-disclosure p{font-size:12.5px;line-height:1.65;color:var(--mut);padding:0 13px 12px;margin:0}
+html.dark .scenario-card,html.dark .home-plan-option,html.dark .planner-mode-card,html.dark .beginner-builder,html.dark .outcome-tier,html.dark .outcome-disclosure{background:var(--field)}
+@media(max-width:430px){
+  .outcome-feature{padding:19px 15px}.outcome-eq{grid-template-columns:1fr 24px 1fr}.outcome-eq .eq-box b{font-size:15px}
+  .outcome-actions{display:grid;grid-template-columns:1fr}.outcome-actions button{width:100%}
+  .home-quick-grid{grid-template-columns:1fr}.home-quick button{min-height:44px}
+  .home-planner-grid,.planner-gateway-grid{grid-template-columns:1fr}
+  .outcome-tier-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -979,7 +1082,7 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
   <div class="tabs-in">
     <button data-tab="opt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8.5 7.2h7M8.7 11.5h.01M12 11.5h.01M15.3 11.5h.01M8.7 15h.01M12 15h.01M15.3 15v3.4M8.7 18.4h.01M12 18.4h.01"/></svg><span>計算</span></button>
     <button data-tab="redeem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3 3 10.6l6.4 2.6L12 21l3.2-7.2L21 3z"/><path d="M9.4 13.2 21 3"/></svg><span>規劃</span></button>
-    <button data-tab="journey" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11.2 12 4l8.5 7.2"/><path d="M5.5 10.2V20h13v-9.8M9.5 20v-6h5v6"/></svg><span>首頁</span></button>
+    <button data-tab="journey" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10.7 12 3.8l8.5 6.9"/><path d="M5.8 9.2v10.3h12.4V9.2M9.5 19.5v-6.2h5v6.2"/></svg><span>首頁</span></button>
     <button data-tab="articles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 12.1 12 20.3 3.8 12V3.8H12l8.2 8.3z"/><circle cx="7.6" cy="7.6" r="1.25"/></svg><span>優惠</span></button>
     <button data-tab="guides"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5.5C10 4 7.5 3.6 5 3.9v13.7c2.5-.3 5 .1 7 1.6 2-1.5 4.5-1.9 7-1.6V3.9c-2.5-.3-5 .1-7 1.6z"/><path d="M12 5.5V19.2"/></svg><span>攻略</span></button>
   </div>
@@ -987,27 +1090,29 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
 
 <main>
 
-<!-- ============ TAB：賺里數計算器（大額消費＋日常儲分＋頁底卡庫） ============ -->
+<!-- ============ TAB：賺里數計算器（今次消費＋日常簽賬＋頁底卡庫） ============ -->
 <section id="tab-opt" hidden>
   <div class="subtabs" id="earnSub"><button type="button" class="on" data-esub="opt">今次消費</button><button type="button" data-esub="daily">日常簽賬</button></div>
 
 
-  <!-- 子頁：大額消費（原優化器） -->
+  <!-- 子頁：今次消費（保留原優化器引擎，介面逐步顯示） -->
   <div id="esub-opt">
   <div class="panel">
+    <div class="calc-stepbar"><b>1</b><span>先講今次會簽幾多</span></div>
     <div class="field">
-      <div class="eyebrow">今次大約簽幾多？</div>
+      <div class="eyebrow">今次會簽幾多？</div>
       <div class="amt-wrap"><span class="cur">HK$</span><input id="amount" type="text" inputmode="numeric" placeholder="200,000" aria-label="總消費金額（港幣）"></div>
-      <div class="hint" id="amountHint">買手機、旅行、結婚或裝修——入你本來就會簽嘅金額。</div>
+      <div class="hint" id="amountHint">買手機、傢俬、旅行、結婚或裝修——入可以用卡簽嘅部分。資料只會存喺你部機。</div>
     </div>
-    <details class="calc-progressive" id="calcProgressive">
-      <summary>下一步：加入其他條件（全部可調整）</summary>
-      <div class="calc-progressive-body">
+    <button class="cta" id="calcContinue" type="button">下一步：睇適合我嘅選項</button>
+    <div id="calcDetails" class="calc-detail-block" hidden>
+    <div class="calc-stepbar"><b>2</b><span>幫你隔走唔適合嘅卡；唔填都可以繼續</span></div>
     <div class="field">
-      <div class="eyebrow">你嘅年薪（用嚟隔走你申請唔到嘅卡）</div>
+      <div class="eyebrow">你嘅年薪（可選）</div>
       <div class="amt-wrap"><span class="cur">HK$</span><input id="income" type="text" inputmode="numeric" placeholder="240,000" aria-label="年薪（港幣）"></div>
-      <div class="hint">唔填都計到，但填咗先唔會叫你申請一張批唔到嘅卡。銀行以最新條款為準。</div>
+      <div class="hint">唔填都計到；填咗只用嚟隔走年薪門檻較高嘅卡，而且只存本機。批核仍以銀行為準。</div>
     </div>
+    <div class="calc-stepbar"><b>3</b><span>幾多人一齊申請</span></div>
     <div class="field">
       <div class="eyebrow">一個人申請，定二人家庭？</div>
       <div class="chips" id="familyChips"></div>
@@ -1017,16 +1122,21 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
       <div class="eyebrow">申請人 B 嘅年薪</div>
       <div class="amt-wrap"><span class="cur">HK$</span><input id="incomeB" type="text" inputmode="numeric" placeholder="240,000" aria-label="申請人B年薪（港幣）"></div>
     </div>
+    <div class="calc-stepbar"><b>4</b><span>今次消費點樣發生</span></div>
     <div class="field">
       <div class="eyebrow">呢筆錢會點洗？</div>
       <div class="chips" id="patternChips"></div>
       <div class="hint" id="patternHint">一炮過（買錶、買車、一次過畀清）＝一日簽晒，抵率有上限嘅卡淨計一個月／一季上限，容易爆頂；分幾個月（婚禮訂金、裝修分期）＝可以攤開，貼住上限計。呢個唔係「幾時開卡」——就算一炮過，都可以提早幾個月開卡籌備（見下面）。分幾個月嘅情況，系統以約 6 個月攤開估算上限。</div>
     </div>
+    <div class="calc-stepbar"><b>5</b><span>想比較邊種回報</span></div>
     <div class="field">
       <div class="eyebrow">想儲邊種里數？</div>
       <div class="chips" id="goalChips"></div>
       <div class="hint">Asia Miles 同 Avios 係二揀一——出嚟嘅組合一係全部儲 Asia Miles、一係全部儲 Avios，唔會溝埋。揀「兩樣都睇」會出兩個 plan 畀你並排比較。</div>
     </div>
+    <details class="calc-advanced" id="calcAdvanced">
+      <summary>進階設定</summary>
+      <div class="calc-advanced-body">
     <div class="field">
       <div class="eyebrow">每人最多開幾多張新卡？</div>
       <div class="chips" id="maxCardChips"></div>
@@ -1043,7 +1153,8 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
     </div>
       </div>
     </details>
-    <button class="cta" id="calcBtn">睇下可以換到乜</button>
+    <button class="cta" id="calcBtn">計推薦組合</button>
+    </div><!-- /calcDetails -->
   </div>
 
   <div id="results" hidden>
@@ -1062,14 +1173,12 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
       <div class="how-detail" id="howDetail" hidden></div>
     </div>
 
-    <div class="panel outcome-first-result" id="outcomeResultPreview">
-      <div class="eyebrow">呢啲里數可以換到乜</div>
-      <div id="redeemListTop"></div>
-    </div>
+    <h2 class="sec-title">可以換到乜？<span style="font-size:12px;color:var(--mut);font-weight:400">（示範參考）</span></h2>
+    <div class="panel result-outcomes" id="redeemList"></div>
 
     <div class="act-row">
-      <button id="sharePlanBtn" type="button">📤 分享呢個 plan</button>
-      <button id="savePlanBtn" type="button">💾 儲存呢次計劃</button>
+      <button id="sharePlanBtn" type="button">分享呢個計劃</button>
+      <button id="savePlanBtn" type="button">儲存呢次計劃</button>
     </div>
 
     <div class="panel whatif">
@@ -1085,15 +1194,12 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
 
     <div id="resWarnings"></div>
 
-    <h2 class="sec-title">✈ 你嘅簽賬登機證</h2>
+    <h2 class="sec-title">你嘅推薦卡組合</h2>
     <div id="passList"></div>
     <p class="fee-note" id="feeNote"></p>
 
     <h2 class="sec-title">行動時間表</h2>
     <div class="panel"><div class="tl" id="timeline"></div></div>
-
-    <h2 class="sec-title">完整兌換示範<span style="font-size:12px;color:var(--mut);font-weight:400">（實際獎勵位及稅費以官方為準）</span></h2>
-    <div class="panel" id="redeemList"></div>
 
     <div id="excludedBox"></div>
   </div>
@@ -1110,7 +1216,7 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
     <div class="field" style="margin-bottom:14px">
       <div class="eyebrow" id="dailyOwnedLab">你手上有邊幾張卡？</div>
       <div class="chips" id="dailyOwnedChips"></div>
-      <div class="hint">大額消費做完，留低嘅卡日常點用先盡其利。唔揀就當睇全市場最抵。</div>
+      <div class="hint">「今次消費」計完，留低嘅卡日常點用先盡其利。唔揀就當比較全部已核實選項。</div>
     </div>
     <div class="field" id="dailyOwnedBField" hidden style="margin-bottom:14px">
       <div class="eyebrow">B 手上有邊幾張卡？</div>
@@ -1153,17 +1259,43 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
 
 <!-- ============ TAB：里數規劃專員（功能三） ============ -->
 <section id="tab-redeem" hidden>
+  <div class="planner-gateway" id="plannerGateway">
+    <div class="planner-gateway-hero">
+      <div class="k">行程規劃</div>
+      <h2>你講想去邊，複雜規則交畀系統。</h2>
+      <p>新手可以用城市同活動配對現有已核實示範；熟悉航段、停留同開口，就直接自己砌。</p>
+    </div>
+    <div class="planner-gateway-grid">
+      <button type="button" class="planner-mode-card" id="plannerBeginner"><b>幫我規劃</b><span>揀目的地同活動，先睇一至三條接近方案。</span></button>
+      <button type="button" class="planner-mode-card" id="plannerAdvanced"><b>自己砌路線</b><span>直接使用現有航段、機場、航司同規則檢查器。</span></button>
+    </div>
+    <div class="beginner-builder" id="beginnerBuilder" hidden>
+      <h3>想去邊、想做乜？</h3>
+      <p>可以同時揀幾個；第一版只會配對現有路線模板，唔會假裝自由生成。</p>
+      <div class="beginner-label">目的地或地區</div>
+      <div class="beginner-chips" id="beginnerDestinations">
+        <button type="button" class="beginner-chip" data-beginner-dest="日本">日本</button>
+        <button type="button" class="beginner-chip" data-beginner-dest="澳洲">澳洲</button>
+        <button type="button" class="beginner-chip" data-beginner-dest="泰國">泰國</button>
+        <button type="button" class="beginner-chip" data-beginner-dest="歐洲">歐洲</button>
+        <button type="button" class="beginner-chip" data-beginner-dest="美國">美國</button>
+        <button type="button" class="beginner-chip" data-beginner-dest="馬爾代夫">馬爾代夫</button>
+        <button type="button" class="beginner-chip" data-beginner-dest="芬蘭">芬蘭</button>
+      </div>
+      <div class="beginner-label">想做嘅活動</div>
+      <div class="beginner-chips" id="beginnerActivities">
+        <button type="button" class="beginner-chip" data-beginner-act="滑雪">滑雪</button>
+        <button type="button" class="beginner-chip" data-beginner-act="Shopping">Shopping</button>
+        <button type="button" class="beginner-chip" data-beginner-act="美食">美食</button>
+        <button type="button" class="beginner-chip" data-beginner-act="沙灘">沙灘</button>
+        <button type="button" class="beginner-chip" data-beginner-act="北極光">北極光</button>
+        <button type="button" class="beginner-chip" data-beginner-act="多城市">多城市</button>
+      </div>
+      <button type="button" class="beginner-match" id="beginnerMatch">配對現有方案</button>
+      <div class="beginner-results" id="beginnerResults" aria-live="polite"></div>
+    </div>
+  </div>
   <div class="warn" style="background:var(--jade-soft);border-color:var(--jade-ink);color:var(--ink)"><b>✅ 國泰標準獎勵（單程／來回）、升艙同寰宇一家環球票嘅里數，已逐格對官方核實（2026-07-11：官方計算機＋官方換算表＋官方 T&C）。</b>Avios 數字、現金稅費同其他參考項目仍未核實——實際換票前，上國泰 Asia Miles／英航 Executive Club 官網確認放位同稅費。</div>
-
-  <div class="panel" id="plannerGateway">
-    <div class="eyebrow">你想點開始？</div>
-    <div class="planner-gateway"><button type="button" class="gateway-choice primary" id="openBeginner"><b>幫我規劃</b><span>揀想去嘅地方同活動，先睇現有已核實示範。</span></button><button type="button" class="gateway-choice" id="openAdvanced"><b>自己砌路線</b><span>適合已經識航段、停留、轉機、開口同機場碼。</span></button></div>
-  </div>
-  <div class="panel beginner-box" id="beginnerPlanner" hidden>
-    <div class="eyebrow">幫我規劃 · 示範配對</div><p class="hint">呢個版本用現有已核實路線做 rule-based 配對，唔係生成式 AI，亦唔會假裝可以自由生成任何路線。</p>
-    <div class="beginner-fields"><div><div class="eyebrow">想去邊一類地方？</div><div class="chips" id="beginnerDest"><button class="chip on" type="button" data-bdest="asia">亞洲</button><button class="chip" type="button" data-bdest="australia">澳洲</button><button class="chip" type="button" data-bdest="europe">歐美</button><button class="chip" type="button" data-bdest="world">跨洲</button></div></div><div><div class="eyebrow">最想做乜？</div><div class="chips" id="beginnerActivity"><button class="chip on" type="button" data-bact="ski">滑雪</button><button class="chip" type="button" data-bact="shopping">Shopping</button><button class="chip" type="button" data-bact="food">美食</button><button class="chip" type="button" data-bact="cities">城市探索</button></div></div></div>
-    <button type="button" class="cta" id="matchTemplates">查看最接近方案</button><div class="beginner-result" id="beginnerResult" hidden></div>
-  </div>
 
   <div class="subtabs" id="redeemSub"><button type="button" class="on" data-rsub="ideas">換咩好？</button><button type="button" data-rsub="oneway">單程／來回</button><button type="button" data-rsub="rtw">環球票</button></div>
 
@@ -1282,52 +1414,71 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
 
 </section>
 
-<!-- ============ TAB：獨家優惠文章（v3.3） ============ -->
-<!-- ============ TAB：我的旅程（v6.1 landing）＝showcase＋儲低嘅規劃＋收藏 ============ -->
+<!-- ============ TAB：首頁（v6.79 outcome-first） ============ -->
 <section id="tab-journey">
-  <article class="outcome-hero" aria-labelledby="outcomeTitle">
-    <img src="img/pgG2-cards.jpg" alt="用信用卡簽賬將原有消費轉成飛行里數">
-    <div class="outcome-copy"><div class="outcome-k">本週已核實示範 · 資料日期 2026-07-20</div><h2 id="outcomeTitle">買部 iPhone</h2><div class="outcome-amount">約 HK$8,000</div><div class="outcome-arrow">按現時公開條款推算</div><div class="outcome-result">20,000 里<small>可換台北經濟來回 14,000 里，另有餘額</small></div><div class="outcome-actions"><button type="button" class="primary" data-open="pgG2">睇下點做到</button><button type="button" class="secondary" data-prefill="8000">用我自己嘅金額計</button></div><p class="art-foot" style="color:rgba(255,255,255,.8);margin-top:12px">示範推算；批核、迎新資格、里數到帳、獎勵位及稅費以官方為準。</p></div>
-  </article>
-  <div class="scenario-head"><h2>更多消費示範</h2><span>向右掃查看更多</span></div>
-  <div class="scenario-strip" aria-label="更多消費示範">
-    <button type="button" class="scenario-card" data-prefill="5000"><span class="sc-k">迎新門檻</span><b>簽 HK$5,000</b><strong>20,000 里 → 台北來回</strong><small>Citi PremierMiles · 核實至 2026-09-30</small></button>
-    <button type="button" class="scenario-card" data-prefill="8000"><span class="sc-k">手機消費</span><b>約 HK$8,000</b><strong>20,000 里 → 台北來回</strong><small>沿用現有已核實 iPhone 示範 · 2026-07-20</small></button>
-    <button type="button" class="scenario-card" data-prefill="30000"><span class="sc-k">較高消費</span><b>簽 HK$30,000</b><strong>26,000 里 → 日本經濟來回</strong><small>AE Explorer · 官方迎新至 2026-08-31</small></button>
-  </div>
-  <div class="panel quick-calc"><h2>你都有一筆消費？</h2><p>先入金額；其他條件去下一步先問，而且只存喺你部機。</p><div class="quick-calc-row"><div class="amt-wrap"><span class="cur">HK$</span><input id="homeAmount" type="text" inputmode="numeric" placeholder="8,000" aria-label="今次消費金額"></div><button type="button" id="homeCalc">睇下可以換到乜</button></div></div>
-  <!-- 宣傳輪播（SHOWCASE，3-5 張，撳咗按內容去對應位） -->
-  <div class="show-wrap" id="showWrap" hidden>
-    <div class="show-row" id="showRow"></div>
-    <div class="show-dots" id="showDots" aria-hidden="true"></div>
-  </div>
-  <!-- 新用戶吉狀態：三步 onboarding -->
-  <div class="panel jr-onboard" id="jrOnboard" hidden>
-    <div class="eyebrow">開始好簡單</div>
-    <div class="ob-steps">
-      <div class="ob-step"><span class="ob-n">1</span>去「計算」入你想簽嘅金額</div>
-      <div class="ob-step"><span class="ob-n">2</span>撳「儲存計劃」</div>
-      <div class="ob-step"><span class="ob-n">3</span>返嚟呢度隨時翻睇、跟住做</div>
+  <div class="home-kicker">先睇一個例子，再用你自己嘅數字計</div>
+  <section class="outcome-feature" id="outcomeFeature" aria-labelledby="outcomeFeatureTitle">
+    <div class="outcome-badges"><span class="outcome-badge">本週示範</span><span class="outcome-badge verified">已核實資料</span></div>
+    <h2 id="outcomeFeatureTitle">買部 iPhone，可以換到一段旅行。</h2>
+    <div class="of-spend">一筆本來就會發生嘅 HK$8,000 消費</div>
+    <div class="outcome-eq">
+      <div class="eq-box"><span>按現有迎新推算</span><b>約 20,000 里</b></div>
+      <div class="eq-arr" aria-hidden="true">→</div>
+      <div class="eq-box"><span>其中一個可達例子</span><b>台北經濟來回</b></div>
     </div>
-    <button class="cta" id="obGo" type="button">計我第一個計劃 →</button>
-  </div>
-  <div class="jr-sec" id="jrSecEarn"><div class="jr-h">賺里數規劃</div>
+    <div class="outcome-actions">
+      <button type="button" class="primary" data-open="pgG2">睇下點做到</button>
+      <button type="button" class="secondary" id="featureUseAmount">用 HK$8,000 試計</button>
+    </div>
+    <p class="of-note">資料日期：2026-07-09。示範推算唔等於保證；批核、迎新資格、里數到帳、獎勵位、稅費同附加費以官方為準。</p>
+  </section>
+
+  <section class="home-section" id="scenarioSection">
+    <div class="home-section-head"><h2>更多消費示範</h2><span>只顯示仍有效嘅已核實資料</span></div>
+    <div class="scenario-strip" id="scenarioStrip"></div>
+  </section>
+
+  <section class="home-quick" aria-labelledby="homeQuickTitle">
+    <h2 id="homeQuickTitle">你都有一筆消費？</h2>
+    <p>第一步只要金額；年薪、已有卡同偏好可以之後先填。</p>
+    <div class="home-quick-grid">
+      <label class="home-amount"><span>HK$</span><input id="homeAmount" type="text" inputmode="numeric" placeholder="8,000" aria-label="今次消費金額"></label>
+      <button type="button" id="homeCalcStart">睇下可以換到乜</button>
+    </div>
+  </section>
+
+  <div id="jrOnboard" hidden></div>
+  <div class="jr-sec" id="jrSecEarn" hidden><div class="jr-h">我的消費計劃</div>
   <div class="panel" id="savedPlansPanel" hidden>
-    <div class="eyebrow">我儲低嘅計劃</div>
     <div id="savedPlansList"></div>
     <div class="hint">開返會用最新卡數據重新計，數字可能同儲嗰陣唔同——迎新成日變。</div>
   </div>
-  <div class="panel jr-empty" id="jrEarnEmpty" hidden>仲未有儲低嘅計劃。去「計算」計一個，撳「儲存計劃」就會出現喺度。</div>
+  <div id="jrEarnEmpty" hidden></div>
   </div>
-  <div class="jr-sec" id="jrSecRtw"><div class="jr-h">換里數規劃</div>
+  <div class="jr-sec" id="jrSecRtw" hidden><div class="jr-h">我的行程</div>
   <div class="panel" id="rtwSavedPanel" hidden><div id="rtwSavedList"></div></div>
-  <div class="panel jr-empty" id="jrRtwEmpty">未有儲低嘅行程。去「規劃」砌條環球線，撳「儲存呢個行程」。</div>
+  <div id="jrRtwEmpty" hidden></div>
   </div>
-  <div class="jr-sec" id="jrSecFav"><div class="jr-h">我的收藏</div>
+
+  <section class="home-section home-planner" aria-labelledby="homePlannerTitle">
+    <div class="home-section-head"><h2 id="homePlannerTitle">想用里數去邊？</h2><span>先揀簡單程度</span></div>
+    <div class="home-planner-grid">
+      <button type="button" class="home-plan-option" data-plan-entry="single"><b>我只係想去一個地方</b><span>揀城市，睇經濟、商務要幾多里。</span></button>
+      <button type="button" class="home-plan-option" data-plan-entry="multiple"><b>我想去幾個地方</b><span>先揀國家同活動，再配對現有路線。</span></button>
+    </div>
+  </section>
+
+  <div class="jr-sec" id="jrSecFav" hidden><div class="jr-h">我的收藏</div>
   <div class="panel"><div id="favList"></div></div>
   </div>
-  <div class="home-section-head"><h2>想規劃旅程？</h2><span>由目標開始</span></div>
-  <div class="journey-choices"><button type="button" class="journey-choice" data-goplan="oneway"><b>我只係想去一個地方</b><span>揀城市，睇經濟／商務要幾多里。</span></button><button type="button" class="journey-choice" data-goplan="beginner"><b>我想去幾個地方</b><span>先揀國家同活動；識砌航段先入進階模式。</span></button></div>
+
+  <section class="home-section">
+    <div class="home-section-head"><h2>優惠同攻略</h2><span>繼續睇點樣做到</span></div>
+    <div class="show-wrap" id="showWrap" hidden>
+      <div class="show-row" id="showRow"></div>
+      <div class="show-dots" id="showDots" aria-hidden="true"></div>
+    </div>
+  </section>
 </section>
 
 <section id="tab-articles" hidden>
@@ -1349,7 +1500,7 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
 
 <!-- ============ TAB：關於我們 ============ -->
 <section id="tab-guides" hidden>
-  <div class="warn" style="background:var(--jade-soft);border-color:var(--jade-ink);color:var(--ink)"><b>📚 攻略。</b>長青玩法教學：點賺、點換、寰宇一家點玩。想遲啲慢慢睇？撳篇文上面個心心，收埋去「旅程」。</div>
+  <div class="warn" style="background:var(--jade-soft);border-color:var(--jade-ink);color:var(--ink)"><b>📚 攻略。</b>長青玩法教學：點賺、點換、寰宇一家點玩。想遲啲慢慢睇？撳篇文上面個心心，收埋去「首頁」嘅收藏。</div>
   <div class="art-controls" data-scope="guides">
     <div class="cat-row">
       <button type="button" class="cat-chip on" data-cat="全部">全部</button>
@@ -1425,6 +1576,20 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
   <button type="button" class="mn-row" data-open="pgTerms">使用條款<svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
   <button type="button" class="mn-row" data-open="pgPriv">私隱政策<svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
   <div class="set-row set-about">AcreMiles · v6.79.0-draft<br><span>借定唔借？還得到先好借！</span></div>
+</section>
+
+<!-- v6.79：儲存計劃／行程低頻操作集中喺 bottom sheet。 -->
+<div class="sheet-bg" id="planActionBg" hidden></div>
+<section class="sheet" id="planActionSheet" hidden role="dialog" aria-modal="true" aria-labelledby="planActionTitle">
+  <div class="sheet-bar" aria-hidden="true"></div>
+  <div class="sheet-head"><b id="planActionTitle">計劃選項</b><button id="planActionClose" type="button" aria-label="閂埋">✕</button></div>
+  <div class="action-menu-list">
+    <button type="button" class="action-menu-item" data-plan-action="open">開啟</button>
+    <button type="button" class="action-menu-item" data-plan-action="share">分享</button>
+    <button type="button" class="action-menu-item" data-plan-action="rename">重新命名</button>
+    <button type="button" class="action-menu-item" data-plan-action="pin">置頂</button>
+    <button type="button" class="action-menu-item danger" data-plan-action="delete">刪除</button>
+  </div>
 </section>
 
 <!-- v6.0 訂閱最新優惠 sheet -->
@@ -1541,11 +1706,8 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
   <div class="page-head"><button type="button" class="pg-back" data-pg="pgG2" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>信用卡砌卡組合</div>
   <div class="art-hero"><div class="art-hero-tag">新手必讀</div><h1 class="art-hero-t">買部 iPhone，換張台北來回</h1><p class="art-hero-sub">重點唔係揀最好嘅卡，係砌最啱嘅組合。</p></div>
   <div class="art-lead">部 iPhone 約 $8,000——已經夠簽起一張迎新。呢一季 Citi PremierMiles 首兩個月簽 <b>$5,000 攞 20,000 里</b>，一張台北來回（14,000 里）仲有剩。你本來就要買，冇為張飛多俾一蚊。</div>
-  <div class="article-outcome"><h2>先睇結果</h2><div class="article-tier"><b>簽 HK$5,000</b><span>20,000 里</span><strong>台北經濟來回 14,000 里，另有餘額</strong></div><div class="article-tier"><b>iPhone 約 HK$8,000</b><span>同一迎新門檻</span><strong>同樣可達台北來回示範</strong></div><p class="art-foot">資料日期：2026-07-20。Citi PremierMiles 現有官方迎新推廣期至 2026-09-30；實際批核、新客資格、合資格簽賬、入帳、獎勵位及稅費以官方為準。</p></div>
   <figure class="art-fig"><img src="img/pgG2-cards.jpg" alt="碌卡買 iPhone 賺北海道來回機票" loading="lazy"></figure>
   <div class="art-kv"><div class="art-kv-i"><span>EveryMile 指定商戶</span><b>$2／里</b></div><div class="art-kv-i"><span>Citi PM 海外</span><b>$3–4／里</b></div><div class="art-kv-i hot"><span>迎新</span><b>$0.25／里</b></div></div>
-  <details class="faq" open><summary>點樣做到</summary><div class="faq-a"><b>第一步：</b>先確認自己符合 Citi 新客資格；<b>第二步：</b>批卡後在兩個月內完成 HK$5,000 合資格簽賬；<b>第三步：</b>預留條款所列入帳時間，再按實際獎勵位換票。</div></details>
-  <details class="faq"><summary>完整計法、規則與伏位</summary><div class="faq-a">迎新 20,000 里係主要回報；交稅、繳費、PayAll、八達通增值等不計迎新門檻。積分達標後可能要約五個月先入帳；申請及簽賬前必須重看銀行最新產品頁、KFS 及 T&amp;C。</div></details>
   <h2 class="art-h">根本冇「最好」嘅卡</h2>
   <p class="art-p">賺率唔係一個數，係睇你喺邊度簽：</p><div class="art-kv"><div class="art-kv-i"><span>EveryMile 指定商戶</span><b>$2/里</b></div><div class="art-kv-i"><span>EveryMile 其他簽賬</span><b>$5/里</b></div><div class="art-kv-i"><span>Citi PM 海外網上</span><b>$3–4/里</b></div><div class="art-kv-i"><span>Citi PM 本地</span><b>$8/里</b></div></div><p class="art-p">強嗰忽賺到盡、弱嗰忽賺得慢——<b>冇一張全能</b>。</p>
   <h2 class="art-h">真正玩法：分工碌</h2>
@@ -1812,6 +1974,14 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
   <div class="page-head"><button type="button" class="pg-back" data-pg="pgO2" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>EveryMile 限時優惠碼：新客爆升至 49,000 里</div>
   <div class="page-body">
   <div class="art-hero"><div class="art-hero-tag">限時優惠 · 07-31 截止</div><h1 class="art-hero-t">一個優惠碼，迎新差唔多翻倍</h1><p class="art-hero-sub">網上申請入優惠碼，新客迎新由 25,000 里跳上 <b>49,000 里</b>——不過<b>每個平台個碼唔同</b>，入錯攞唔到。</p></div>
+  <div class="outcome-tier-grid" aria-label="簽賬門檻同可達結果">
+    <div class="outcome-tier"><span>簽 HK$8,000</span><b>約 49,000 里</b><strong>可參考換台北經濟來回 3 套（42,000 里）</strong></div>
+    <div class="outcome-tier"><span>簽 HK$25,000</span><b>約 58,500 里</b><strong>可參考換倫敦特選經濟單程（52,000 里）</strong></div>
+  </div>
+  <p class="outcome-tier-note">按文章內已核實平台條件同 Asia Miles 表推算；獎勵位、稅費、批核、迎新資格同最終入帳不保證。資料更新：2026-07-16；優惠期限：2026-07-31。</p>
+  <details class="outcome-disclosure"><summary>點樣做到</summary><p>HK$8,000 層要喺批卡後 60 日內完成，並包括至少一次手機支付；HK$25,000 層用另一個平台優惠碼，而且部分獎賞涉及簽賬分期。每次申請只可以使用一個平台碼。</p></details>
+  <details class="outcome-disclosure"><summary>點樣計</summary><p>平台優惠碼連同基本迎新換算成 49,000／58,500 里；台北經濟來回按 14,000 里、倫敦特選經濟單程按 52,000 里作示範。兩個回報只係分開情景，唔可以加埋。</p></details>
+  <details class="outcome-disclosure"><summary>完整規則與伏位</summary><p>要用申請平台對應嘅優惠碼、留意新客定義、手機支付、年薪、年費、排除交易同 Reward+ 兌換要求。下文保留完整平台碼、卡資料、優缺點、官方／第三方連結及免責。</p></details>
   <div class="art-lead">滙豐 EveryMile 本身係日常儲里主力（$5/里、指定類別 $2/里）。7 月網上限時迎新重點：</div><div class="spec"><div class="spec-r"><span>期限</span><b>7 月 13 – 31 日</b></div><div class="spec-r"><span>門檻</span><b>批卡 60 日內簽 $8,000</b>（要包一次手機支付）</div><div class="spec-r hot"><span>新客合共</span><b>$2,450 獎賞錢 ≈ 49,000 里</b></div></div><h2 class="art-h">⚠️ 每個平台優惠碼唔同</h2><p class="art-p"><b>經邊個平台申請，就要用嗰個平台個碼</b>——入錯咗攞唔到加碼。以下三個我逐個核實過：</p><div class="spec"><div class="spec-r hot"><span>里先生</span><b>MILEFLASH</b><br><span style="font-size:12px">簽 $8,000 → 49,000 里</span></div><div class="spec-r hot"><span>MoneyHero</span><b>HEROFLASH</b><br><span style="font-size:12px">簽 $8,000 → 49,000 里</span></div><div class="spec-r hot"><span>MoneySmart</span><b>MARTFLASH</b><br><span style="font-size:12px">簽 $25,000 → 58,500 里</span></div></div><p class="art-p"><b>MoneySmart 個碼畀多 9,500 里，但門檻由 $8,000 跳到 $25,000</b>——簽唔到就得不償失，自己計啱條數先。（$2,925 入面有 $200 要申請簽賬分期先攞到。）</p><p class="art-p">其他平台（小斯、滙豐官網等）可能有自己嘅碼，我未核實到，<b>申請前請喺該平台或滙豐官網嘅迎新頁面睇清楚</b>——每次申請只可以入一個碼。</p><p class="art-p">拆開計：新客<b>額外</b> $1,000 獎賞錢（20,000 里）、舊客額外 $500（10,000 里），再連基本迎新。</p>
   <figure class="art-fig"><img src="img/pgO2-hero.jpg" alt="滙豐 EveryMile 新客迎新即賺 49,000 里，限時優惠碼，7.31 截止" loading="lazy"></figure>
   <h2 class="art-h">三件套逐樣答</h2>
@@ -1901,9 +2071,9 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
 
   <h2 class="art-h">① 點賺？→「計算」</h2>
   <p class="art-p">呢個 tab 答一條問題：<b>我簽呢筆錢，最多榨到幾多里？</b></p>
-  <div class="art-kv"><div class="art-kv-i"><span>大額消費</span><b>結婚・裝修・買車・大旅行</b></div><div class="art-kv-i"><span>日常儲分</span><b>每月固定嗰啲洗費</b></div></div>
+  <div class="art-kv"><div class="art-kv-i"><span>今次消費</span><b>手機・結婚・裝修・買車・大旅行</b></div><div class="art-kv-i"><span>日常簽賬</span><b>每月固定嗰啲洗費</b></div></div>
 
-  <p class="art-p"><b>大額消費：六步</b></p>
+  <p class="art-p"><b>今次消費：六步</b></p>
   <div class="art-list">
     <div class="art-li"><span class="art-li-m">1</span><div class="art-li-t"><b>入金額</b> — 「今次大約簽幾多？」入你打算簽嘅總數。</div></div>
     <div class="art-li"><span class="art-li-m">2</span><div class="art-li-t"><b>入年薪</b> — 用嚟自動隔走你申請唔到嘅卡，唔會畀個計唔到嘅組合你。</div></div>
@@ -1924,9 +2094,9 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
   </div>
   <div class="art-tip"><b>💡 計完記得撳「儲存呢次計劃」</b>——會入咗「旅程」tab，返嚟隨時翻睇，唔使重新入過。</div>
 
-  <p class="art-p"><b>日常儲分：四步</b></p>
+  <p class="art-p"><b>日常簽賬：四步</b></p>
   <div class="art-list">
-    <div class="art-li"><span class="art-li-m">1</span><div class="art-li-t">喺「計算」上面揀「<b>日常儲分</b>」。</div></div>
+    <div class="art-li"><span class="art-li-m">1</span><div class="art-li-t">喺「計算」上面揀「<b>日常簽賬</b>」。</div></div>
     <div class="art-li"><span class="art-li-m">2</span><div class="art-li-t">入你<b>手上有邊幾張卡</b>。</div></div>
     <div class="art-li"><span class="art-li-m">3</span><div class="art-li-t">入每月各類洗費——食飯、超市、網購、外幣。<b>唔使精確</b>，大概就得。</div></div>
     <div class="art-li"><span class="art-li-m">4</span><div class="art-li-t">出：一年大約儲到幾多、<b>每類洗費用邊張卡最抵</b>。</div></div>
@@ -4229,7 +4399,6 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       progBlock('Asia Miles', amMax, aviosOnlyMi, 'Avios 專屬卡（英航系）嘅', 'asiaMiles') +
       progBlock('Avios', aviosMax, amOnlyMi, '渣打國泰只入 Asia Miles，', 'avios') +
       '<p class="fee-note" style="margin-top:6px">幾多 Avios 換到咩機票、幾多 Asia Miles 換到啲乜——去<b>「里數規劃專員」</b>頁逐條航線睇，有齊兩個計劃嘅比較。</p>';
-    if ($('redeemListTop')) $('redeemListTop').innerHTML = $('redeemList').innerHTML;
 
     /* 被年薪排除嘅卡 */
     if (res.excludedByIncome && res.excludedByIncome.length){
@@ -4377,6 +4546,15 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     syncPlanSaveButton();
     if (scroll) $('results').scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', block:'start'});
   }
+  $('calcContinue').addEventListener('click', function(){
+    var amt = parseAmount();
+    if (amt <= 0){ amountEl.focus(); toast('先輸入今次消費金額'); return; }
+    state.amount = amt;
+    store.set('bm_input', state);
+    $('calcDetails').hidden = false;
+    this.hidden = true;
+    setTimeout(function(){ $('calcDetails').scrollIntoView({behavior:reduceMotion ? 'auto' : 'smooth', block:'start'}); }, 30);
+  });
   $('calcBtn').addEventListener('click', function(){ runCalc(true); });
 
   /* ---------- 「里數規劃專員」render（功能三） ---------- */
@@ -4664,7 +4842,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         '<h3>環球商務 ' + BM.fmt(goal) + ' 里</h3>' +
         '<div class="sub">淨計日常開支（未計大額消費同迎新）</div>' +
         '<div class="pmsg" style="margin-top:12px">照你而家嘅日常簽賬，單靠儲分要 <b style="color:var(--gold);font-family:var(--mono)">約 ' + (years > 0 ? years.toFixed(1) : '∞') + ' 年</b>先夠。' +
-        '<br>所以大額消費一次過榨迎新，先係捷徑——切去隔籬「大額消費」分頁睇。</div>';
+        '<br>所以用一筆計劃中嘅消費食迎新，先係捷徑——切去隔籬「今次消費」分頁睇。</div>';
     }
   }
 
@@ -5055,6 +5233,71 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       owState.cabin = 'j';
       owSave(); renderOwSegs(); renderOwResult();
     }
+    var BEGINNER_TEMPLATES = [
+      {key:'z6',name:'日韓泰六站',route:'香港 → 札幌 → 沖繩／東京 → 首爾 → 曼谷 → 吉隆坡 → 香港',destinations:['日本','泰國'],activities:['滑雪','Shopping','美食','沙灘','多城市'],miles:120000,limit:'區 6 教學示例；沖繩至東京係自費開口。'},
+      {key:'z8',name:'日本、澳洲、東南亞',route:'香港 → 札幌 → 福岡／東京 → 悉尼 → 墨爾本 → 新加坡／吉隆坡 → 曼谷 → 香港',destinations:['日本','澳洲','泰國'],activities:['滑雪','Shopping','美食','沙灘','多城市'],miles:170000,limit:'區 8 教學示例；有兩個自費開口。'},
+      {key:'z10',name:'歐美城市線',route:'香港 → 馬德里 → 巴黎／倫敦 → 紐約 → 波士頓 → 西雅圖／溫哥華 → 東京 → 台北 → 香港',destinations:['歐洲','美國','日本'],activities:['Shopping','美食','多城市'],miles:230000,limit:'區 10 已核實示範；指定日期班次同獎勵位仍要另查。'},
+      {key:'z11',name:'馬爾代夫到美國',route:'香港 → 多哈 → 馬爾代夫 → 多哈 → 開羅 → 倫敦 → 紐約 → 洛杉磯 → 香港',destinations:['馬爾代夫','美國','歐洲'],activities:['沙灘','美食','多城市'],miles:250000,limit:'區 11 教學示例；卡塔爾班次變化快。'},
+      {key:'z13',name:'六大洲與北極光',route:'香港 → 悉尼 → 智利／巴西 → 倫敦 → 開普敦／約翰內斯堡 → 紐約 → 洛杉磯 → 赫爾辛基 → 東京 → 香港',destinations:['澳洲','歐洲','美國','芬蘭','日本'],activities:['北極光','美食','多城市'],miles:280000,limit:'區 13 教學示例；洛杉磯至赫爾辛基屬季節線。'}
+    ];
+    var beginnerState = {destinations:[],activities:[]};
+    function openPlannerGateway(openBuilder){
+      $('tab-redeem').classList.add('planner-gateway-mode');
+      $('plannerGateway').hidden = false;
+      $('beginnerBuilder').hidden = !openBuilder;
+      if (openBuilder) setTimeout(function(){ $('beginnerBuilder').scrollIntoView({behavior:'smooth',block:'start'}); }, 40);
+    }
+    function openPlannerAdvanced(templateKey, sub){
+      $('tab-redeem').classList.remove('planner-gateway-mode');
+      $('plannerGateway').hidden = true;
+      var target = sub || 'rtw';
+      var rb = document.querySelector('#redeemSub [data-rsub="' + target + '"]'); if (rb) rb.click();
+      if (templateKey && OW_ZONE_DEMOS[templateKey]) owLoadDemo(OW_ZONE_DEMOS[templateKey]);
+    }
+    window._openPlannerGateway = openPlannerGateway;
+    window._openPlannerAdvanced = function(templateKey, sub){ openPlannerAdvanced(templateKey, sub); };
+    openPlannerGateway(false);
+    $('plannerBeginner').addEventListener('click', function(){ openPlannerGateway(true); });
+    $('plannerAdvanced').addEventListener('click', function(){ openPlannerAdvanced(null, 'rtw'); });
+    document.addEventListener('click', function(e){
+      var chip = e.target.closest ? e.target.closest('.beginner-chip') : null;
+      if (chip){
+        var type = chip.hasAttribute('data-beginner-dest') ? 'destinations' : 'activities';
+        var value = chip.getAttribute(type === 'destinations' ? 'data-beginner-dest' : 'data-beginner-act');
+        var at = beginnerState[type].indexOf(value);
+        if (at >= 0) beginnerState[type].splice(at, 1); else beginnerState[type].push(value);
+        chip.classList.toggle('on', at < 0);
+        return;
+      }
+      var load = e.target.closest ? e.target.closest('[data-beginner-load]') : null;
+      if (load){
+        openPlannerAdvanced(load.getAttribute('data-beginner-load'), 'rtw');
+        setTimeout(function(){ $('owPanel').scrollIntoView({behavior:'smooth',block:'start'}); }, 60);
+        toast('已載入示範路線；可以逐段修改');
+      }
+    });
+    $('beginnerMatch').addEventListener('click', function(){
+      var selected = beginnerState.destinations.length + beginnerState.activities.length;
+      if (!selected){ $('beginnerResults').innerHTML = '<div class="hint">先揀最少一個目的地或活動。</div>'; return; }
+      var ranked = BEGINNER_TEMPLATES.map(function(t){
+        var score = 0;
+        beginnerState.destinations.forEach(function(x){ if (t.destinations.indexOf(x) >= 0) score += 3; });
+        beginnerState.activities.forEach(function(x){ if (t.activities.indexOf(x) >= 0) score += 2; });
+        return {t:t,score:score};
+      }).sort(function(a,b){ return b.score - a.score || a.t.miles - b.t.miles; });
+      var bestScore = ranked[0].score;
+      var picks = ranked.filter(function(x){ return x.score === bestScore && x.score > 0; }).slice(0,3);
+      var intro = '';
+      if (!picks.length){
+        picks = ranked.slice(0,3);
+        intro = '<div class="hint">呢個組合暫時未有現成方案；以下係最接近嘅模板，亦可以改一個條件再試。</div>';
+      }
+      $('beginnerResults').innerHTML = intro + picks.map(function(x){ var t = x.t;
+        return '<article class="beginner-result"><h4>' + esc(t.name) + '</h4><div class="beginner-route">' + esc(t.route) + '</div>' +
+          '<div class="beginner-result-meta"><span>商務 ' + BM.fmt(t.miles) + ' 里</span><span>' + esc(t.limit) + '</span></div>' +
+          '<button type="button" data-beginner-load="' + t.key + '">睇詳細路線並載入修改</button></article>';
+      }).join('');
+    });
     $('owDemo8').addEventListener('click', function(){ owLoadDemo(OW_ZONE_DEMOS.z8); });
     $('owDemo11').addEventListener('click', function(){ owLoadDemo(OW_ZONE_DEMOS.z11); });
     /* 攻略文「加入規劃器 DIY」掣：載入路線→閂文章→跳去規劃tab */
@@ -5103,7 +5346,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       store.set('bm_saved_redeem', list);
       if (typeof renderSavedRedeem === 'function') renderSavedRedeem();
       syncOwSaveButton();
-      toast('儲低咗 ✓ 喺「旅程」搵返');
+      toast('儲低咗 ✓ 喺「首頁」嘅我的行程搵返');
     });
     $('owSharePlan').addEventListener('click', function(){
       if (window.shareAcreMilesTrip){
@@ -5374,19 +5617,17 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     if (tb) tb.click();
   });
   function renderJourney(){
+    renderSpendScenarios();
     renderShowcase();
     if (typeof renderSavedPlans === 'function') renderSavedPlans();
-    var p = $('savedPlansPanel');
-    if ($('jrEarnEmpty')) $('jrEarnEmpty').hidden = !(p && p.hidden);
     renderSavedRedeem();
     renderFavs();
-    /* 吉狀態：三段收埋，齋出 onboarding */
     var f = getFavs();
     var favN = Object.keys(f.cards).length + Object.keys(f.offers).length + Object.keys(f.guides).length;
-    var total = getSavedPlans().length + getSavedRedeem().length + favN;
-    var fresh = total === 0;
-    $('jrOnboard').hidden = !fresh;
-    ['jrSecEarn', 'jrSecRtw', 'jrSecFav'].forEach(function(id){ var el = $(id); if (el) el.hidden = fresh; });
+    $('jrSecEarn').hidden = getSavedPlans().length === 0;
+    $('jrSecRtw').hidden = getSavedRedeem().length === 0;
+    $('jrSecFav').hidden = favN === 0;
+    if ($('jrOnboard')) $('jrOnboard').hidden = true;
   }
   function getSavedRedeem(){
     var l = store.get('bm_saved_redeem');
@@ -5394,24 +5635,19 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   }
   function renderSavedRedeem(){
     var host = $('rtwSavedList'); if (!host) return;
-    var list = getSavedRedeem();
+    var list = getSavedRedeem().slice().sort(function(a,b){ return Number(!!b.pinned) - Number(!!a.pinned) || b.ts - a.ts; });
     $('rtwSavedPanel').hidden = !list.length;
     $('jrRtwEmpty').hidden = !!list.length;
     var CB = {y: '經濟', j: '商務', f: '頭等'};
-    host.innerHTML = list.slice().sort(function(a,b){ return Number(!!b.pinned)-Number(!!a.pinned)||b.ts-a.ts; }).map(function(p){
+    host.innerHTML = list.map(function(p){
       var d = new Date(p.ts);
-      return '<div class="saved-row' + (p.pinned ? ' pinned' : '') + '"><div class="saved-copy" data-rtwload="' + p.id + '"><div class="nm">' + esc(p.name) + (p.pinned ? ' · 已置頂' : '') + '</div>' +
-        '<div class="mt">' + esc(p.route) + ' · ' + (CB[p.cabin] || '') + ' · ' + (d.getMonth() + 1) + '月' + d.getDate() + '日儲</div></div>' +
-        '<button type="button" class="saved-more" data-trip-menu="' + p.id + '" aria-label="' + esc(p.name) + ' 更多操作">⋯</button><div class="saved-menu" data-trip-menu-box="' + p.id + '" hidden><button type="button" data-rtwload="' + p.id + '">開啟</button><button type="button" data-rtwshare="' + p.id + '">分享</button><button type="button" data-rename-trip="' + p.id + '">重新命名</button><button type="button" data-pin-trip="' + p.id + '">' + (p.pinned ? '取消置頂' : '置頂') + '</button><button type="button" class="danger" data-rtwdel="' + p.id + '">刪除</button></div></div>';
+      return '<article class="saved-row"><button type="button" class="saved-main" data-rtwload="' + p.id + '">' +
+        '<span class="nm">' + esc(p.name) + (p.pinned ? '<span class="saved-pin">已置頂</span>' : '') + '</span>' +
+        '<span class="mt">' + (CB[p.cabin] || '') + ' · ' + (d.getMonth() + 1) + '月' + d.getDate() + '日儲<span class="saved-outcome">' + esc(p.route) + '</span></span></button>' +
+        '<button type="button" class="saved-more" data-plan-menu="trip" data-plan-id="' + p.id + '" aria-label="' + esc(p.name) + ' 選項">⋯</button></article>';
     }).join('');
   }
   document.addEventListener('click', function(e){
-    var tripMenu=e.target&&e.target.closest?e.target.closest('[data-trip-menu]'):null;
-    if(tripMenu){e.stopPropagation();var box=document.querySelector('[data-trip-menu-box="'+tripMenu.getAttribute('data-trip-menu')+'"]');Array.prototype.forEach.call(document.querySelectorAll('[data-trip-menu-box]'),function(x){if(x!==box)x.hidden=true;});if(box)box.hidden=!box.hidden;return;}
-    var renameTrip=e.target&&e.target.closest?e.target.closest('[data-rename-trip]'):null;
-    if(renameTrip){var rid=Number(renameTrip.getAttribute('data-rename-trip')),rl=getSavedRedeem(),rh=null;rl.forEach(function(x){if(x.id===rid)rh=x;});if(!rh)return;var rn=window.prompt('行程名稱：',rh.name);if(rn===null)return;rh.name=String(rn).trim()||rh.name;store.set('bm_saved_redeem',rl);renderSavedRedeem();return;}
-    var pinTrip=e.target&&e.target.closest?e.target.closest('[data-pin-trip]'):null;
-    if(pinTrip){var pid=Number(pinTrip.getAttribute('data-pin-trip')),pl=getSavedRedeem();pl.forEach(function(x){if(x.id===pid)x.pinned=!x.pinned;});store.set('bm_saved_redeem',pl);renderSavedRedeem();return;}
     var lb = e.target && e.target.closest ? e.target.closest('[data-rtwload]') : null;
     if (lb){
       var p = null, id = Number(lb.getAttribute('data-rtwload'));
@@ -5420,6 +5656,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       if (window._owLoad) window._owLoad(p.segs, p.cabin);
       var tb = document.querySelector('.tabs button[data-tab="redeem"]');
       if (tb) tb.click();
+      if (window._openPlannerAdvanced) window._openPlannerAdvanced('rtw');
       setTimeout(function(){
         var pn = $('owPanel');
         if (pn) pn.scrollIntoView({behavior: 'smooth', block: 'start'});
@@ -5788,6 +6025,55 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
   /* ══════════ v6.1 SHOWCASE（旅程頂宣傳輪播）＋統一浮層行為 ══════════ */
   var SOCIAL_LINKS = {ig: 'https://www.instagram.com/acremiles', fb: ''}; /* IG 已填(@acremiles)；FB 頁 URL 待 Robert 畀確實 slug；兩者皆空先 toast */
+  /* v6.79：首頁示範集中資料層。正式畫面只 render verified 且未過期項目。 */
+  var SPEND_SCENARIOS = [
+    {id:'iphone-8000', context:'生活消費', title:'買部 iPhone', amountHKD:8000, rewardMiles:20000, rewardExample:'台北經濟來回', rewardThreshold:'14,000 里', sourceDate:'2026-07-09', verified:true, articleId:'pgG2'},
+    {id:'everymile-25000', context:'一筆消費', title:'簽 HK$25,000 食指定迎新', amountHKD:25000, rewardMiles:58500, rewardExample:'倫敦特選經濟單程', rewardThreshold:'52,000 里', sourceDate:'2026-07-16', expires:'2026-07-31', verified:true, articleId:'pgO2'},
+    {id:'explorer-30000', context:'旅行或購物', title:'簽 HK$30,000 食 Explorer 迎新', amountHKD:30000, rewardMiles:26000, rewardExample:'日本經濟來回', rewardThreshold:'26,000 里', sourceDate:'2026-07-16', expires:'2026-07-31', verified:true, articleId:'pgO4'}
+  ];
+  function startSpendCalculator(amount){
+    var a = Number(amount) || 0;
+    if (a > 0){
+      state.amount = a;
+      $('amount').value = BM.fmt(a);
+      store.set('bm_input', state);
+    }
+    if ($('calcDetails')) $('calcDetails').hidden = true;
+    if ($('calcContinue')) $('calcContinue').hidden = false;
+    var b = document.querySelector('.tabs button[data-tab="opt"]');
+    if (b) b.click();
+    var e = document.querySelector('#earnSub [data-esub="opt"]'); if (e) e.click();
+    setTimeout(function(){ if ($('amount')) $('amount').focus(); }, 60);
+  }
+  function renderSpendScenarios(){
+    var host = $('scenarioStrip'), section = $('scenarioSection'); if (!host || !section) return;
+    var today = hkToday();
+    var list = SPEND_SCENARIOS.filter(function(s){ return s.verified && (!s.expires || s.expires >= today); });
+    section.hidden = list.length === 0;
+    host.innerHTML = list.map(function(s){
+      return '<article class="scenario-card"><div class="sc-context">' + esc(s.context) + '</div><h3>' + esc(s.title) + '</h3>' +
+        '<div class="sc-flow"><div><span>消費</span><b>HK$' + BM.fmt(s.amountHKD) + '</b></div><i aria-hidden="true">→</i><div><span>可達例子</span><b>' + esc(s.rewardExample) + '</b></div></div>' +
+        '<div class="sc-meta"><span>約 ' + BM.fmt(s.rewardMiles) + ' 里</span><span>資料 ' + esc(s.sourceDate) + '</span></div>' +
+        '<div style="display:flex;gap:7px;margin-top:10px"><button type="button" class="btn-sm pri" data-scenario-calc="' + s.amountHKD + '">用呢個金額計</button><button type="button" class="btn-sm" data-open="' + esc(s.articleId) + '">睇計法</button></div></article>';
+    }).join('');
+  }
+  document.addEventListener('click', function(e){
+    var c = e.target.closest ? e.target.closest('[data-scenario-calc]') : null;
+    if (c){ startSpendCalculator(Number(c.getAttribute('data-scenario-calc'))); return; }
+    var p = e.target.closest ? e.target.closest('[data-plan-entry]') : null;
+    if (p){
+      var tb = document.querySelector('.tabs button[data-tab="redeem"]'); if (tb) tb.click();
+      if (p.getAttribute('data-plan-entry') === 'single'){
+        if (window._openPlannerAdvanced) window._openPlannerAdvanced(null, 'oneway');
+      } else if (window._openPlannerGateway) window._openPlannerGateway(true);
+    }
+  });
+  if ($('featureUseAmount')) $('featureUseAmount').addEventListener('click', function(){ startSpendCalculator(8000); });
+  if ($('homeCalcStart')) $('homeCalcStart').addEventListener('click', function(){
+    var n = Number(String($('homeAmount').value || '').replace(/[^0-9]/g, ''));
+    if (!n){ $('homeAmount').focus(); toast('先輸入今次消費金額'); return; }
+    startSpendCalculator(n);
+  });
   function buildShowcase(){
     /* v6.44：Robert 指定四格。四張圖全部已 baked 大標題文字 → 一律 bare，唔再疊 tag/標題落去（會重疊）。 */
     var s = [];
@@ -5854,13 +6140,10 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     Array.prototype.forEach.call(document.querySelectorAll('.page'), function(p){ p.hidden = true; });
     var tb = document.querySelector('.tabs button[data-tab="redeem"]');
     if (tb) tb.click();
-    if (g.getAttribute('data-goplan') === 'rtw' || g.getAttribute('data-goplan') === 'advanced'){
+    if (g.getAttribute('data-goplan') === 'rtw'){
+      if (window._openPlannerAdvanced) window._openPlannerAdvanced(null, 'rtw');
       var rb = document.querySelector('[data-rsub="rtw"]');
       if (rb) rb.click();
-    } else if (g.getAttribute('data-goplan') === 'oneway'){
-      var ob = document.querySelector('[data-rsub="oneway"]'); if (ob) ob.click();
-    } else if (g.getAttribute('data-goplan') === 'beginner'){
-      if ($('beginnerPlanner')) $('beginnerPlanner').hidden = false;
     }
     try{ window.scrollTo(0, 0); }catch(_){}
   });
@@ -5873,24 +6156,6 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     var b = document.querySelector('.tabs button[data-tab="opt"]');
     if (b) b.click();
   });
-  function startCalculator(amount){
-    var n = parseInt(String(amount || '').replace(/[^0-9]/g, ''), 10) || 0;
-    var b = document.querySelector('.tabs button[data-tab="opt"]'); if (b) b.click();
-    var input = $('amount');
-    if (input && n){ input.value = BM.fmt(n); input.dispatchEvent(new Event('input', {bubbles:true})); }
-    setTimeout(function(){ if (input) input.focus(); }, 60);
-  }
-  document.addEventListener('click', function(e){ var b=e.target&&e.target.closest?e.target.closest('[data-prefill]'):null; if(b) startCalculator(b.getAttribute('data-prefill')); });
-  if ($('homeCalc')) $('homeCalc').addEventListener('click', function(){ startCalculator($('homeAmount').value); });
-  if ($('openBeginner')) $('openBeginner').addEventListener('click', function(){ $('beginnerPlanner').hidden=false; $('beginnerPlanner').scrollIntoView({behavior:'smooth',block:'start'}); });
-  if ($('openAdvanced')) $('openAdvanced').addEventListener('click', function(){ var rb=document.querySelector('[data-rsub="rtw"]'); if(rb)rb.click(); $('owPanel').scrollIntoView({behavior:'smooth',block:'start'}); });
-  ['beginnerDest','beginnerActivity'].forEach(function(id){ var host=$(id); if(host) host.addEventListener('click',function(e){ var b=e.target.closest('.chip'); if(!b)return; Array.prototype.forEach.call(host.querySelectorAll('.chip'),function(x){x.classList.toggle('on',x===b);}); }); });
-  if ($('matchTemplates')) $('matchTemplates').addEventListener('click', function(){
-    var d=document.querySelector('#beginnerDest .on'), a=document.querySelector('#beginnerActivity .on'), key=d?d.getAttribute('data-bdest'):'asia';
-    var map={asia:{z:'z6',title:'日韓泰六城市',route:'香港、札幌、沖繩、東京、首爾、曼谷、吉隆坡、香港',miles:'商務 120,000 里'},australia:{z:'z8',title:'日澳泰多城市',route:'香港、札幌、福岡、東京、悉尼、墨爾本、新加坡、曼谷、香港',miles:'商務 170,000 里'},europe:{z:'z10',title:'歐美城市線',route:'香港、馬德里、巴黎／倫敦、紐約、波士頓、西雅圖／溫哥華、東京、台北、香港',miles:'商務 230,000 里'},world:{z:'z13',title:'終極環遊世界',route:'六大洲、11 個目的地嘅現有教學示範',miles:'商務 280,000 里'}};
-    var x=map[key]; $('beginnerResult').hidden=false; $('beginnerResult').innerHTML='<div class="template-result"><b>'+x.title+'</b><p>'+x.route+'<br>'+x.miles+'。活動偏好：'+(a?a.textContent:'城市探索')+'。只係最接近嘅現有教學示範；指定日期班次、獎勵位、稅費同最終出票要另行確認。</p><button type="button" class="btn-sm pri" data-load-template="'+x.z+'">載入呢條路線再修改</button></div>';
-  });
-  document.addEventListener('click', function(e){ var b=e.target&&e.target.closest?e.target.closest('[data-load-template]'):null; if(!b)return; var k=b.getAttribute('data-load-template'); if(typeof OW_ZONE_DEMOS!=='undefined'&&OW_ZONE_DEMOS[k]){ owLoadDemo(OW_ZONE_DEMOS[k]); var rb=document.querySelector('[data-rsub="rtw"]'); if(rb)rb.click(); setTimeout(function(){$('owPanel').scrollIntoView({behavior:'smooth',block:'start'});},50); } });
   /* 統一：撳 modal 背景即閂（開場 consent 除外） */
   document.addEventListener('click', function(e){
     var t = e.target;
@@ -6196,7 +6461,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
   /* ══════════ v2.5 新功能模組 ══════════ */
 
-  var APP_VERSION = 'v6.79.0 · build 2026-07-21'; /* Draft 狀態由 branch／PR 表示；版本核對沿用 semver */
+  var APP_VERSION = 'v6.79.0-draft · build 2026-07-21'; /* 同第一行 build marker 一齊改 */
 
   /* ---------- toast ---------- */
   var toastTimer = null;
@@ -6398,9 +6663,24 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   function syncPlanSaveButton(){
     var b = $('savePlanBtn'); if (!b) return;
     var hit = lastRes ? currentSavedPlan() : null;
-    b.textContent = hit ? '✓ 已儲存' : '💾 儲存呢次計劃';
+    b.textContent = hit ? '✓ 已儲存' : '儲存呢次計劃';
     b.classList.toggle('is-saved', !!hit);
     if (hit) b.setAttribute('data-saved-id', hit.id); else b.removeAttribute('data-saved-id');
+  }
+  function savedPlanOutcome(p){
+    var miles = Number(String(p.miles || '').replace(/[^0-9]/g, '')) || 0;
+    var goal = p.snap && p.snap.goal;
+    var choices = [];
+    BM.REDEMPTIONS.forEach(function(r){
+      if (r.highlight) return;
+      var need;
+      if (goal === 'am') need = r.asiaMiles;
+      else if (goal === 'avios') need = r.avios;
+      else need = Math.min(r.asiaMiles == null ? Infinity : r.asiaMiles, r.avios == null ? Infinity : r.avios);
+      if (isFinite(need) && miles >= need) choices.push({need:need,label:r.route + ' · ' + r.cabin + r.trip});
+    });
+    choices.sort(function(a,b){ return b.need - a.need; });
+    return choices.length ? '可參考換 ' + choices[0].label : '未到第一個示範兌換門檻';
   }
   function renderSavedPlans(){
     var plans = getSavedPlans().slice().sort(function(a,b){ return Number(!!b.pinned) - Number(!!a.pinned) || b.ts - a.ts; });
@@ -6408,26 +6688,15 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     if (!plans.length){ $('savedPlansList').innerHTML = ''; return; }
     $('savedPlansList').innerHTML = plans.map(function(p){
       var d = new Date(p.ts);
-      return '<div class="saved-row' + (p.pinned ? ' pinned' : '') + '">' +
-        '<div class="saved-copy" data-load="' + p.id + '"><div class="nm">' + esc(p.name) + (p.pinned ? ' · 已置頂' : '') + '</div>' +
-        '<div class="mt">' + (d.getMonth() + 1) + '月' + d.getDate() + '日 · HK$' + BM.fmt(p.amount) + ' → 約 ' + esc(String(p.miles)) + ' 里</div></div>' +
-        '<button type="button" class="saved-more" data-plan-menu="' + p.id + '" aria-label="' + esc(p.name) + ' 更多操作">⋯</button><div class="saved-menu" data-plan-menu-box="' + p.id + '" hidden><button type="button" data-load="' + p.id + '">開啟</button><button type="button" data-share-saved-plan="' + p.id + '">分享</button><button type="button" data-rename-plan="' + p.id + '">重新命名</button><button type="button" data-pin-plan="' + p.id + '">' + (p.pinned ? '取消置頂' : '置頂') + '</button><button type="button" class="danger" data-del="' + p.id + '">刪除</button></div>' +
-      '</div>';
+      return '<article class="saved-row"><button type="button" class="saved-main" data-load="' + p.id + '">' +
+        '<span class="nm">' + esc(p.name) + (p.pinned ? '<span class="saved-pin">已置頂</span>' : '') + '</span>' +
+        '<span class="mt">' + (d.getMonth() + 1) + '月' + d.getDate() + '日 · HK$' + BM.fmt(p.amount) + ' · 約 ' + esc(String(p.miles)) + ' 里' +
+        '<span class="saved-outcome">' + esc(savedPlanOutcome(p)) + '</span></span></button>' +
+        '<button type="button" class="saved-more" data-plan-menu="plan" data-plan-id="' + p.id + '" aria-label="' + esc(p.name) + ' 選項">⋯</button></article>';
     }).join('');
     Array.prototype.forEach.call($('savedPlansList').querySelectorAll('[data-load]'), function(b){
       b.addEventListener('click', function(){ loadPlan(Number(b.getAttribute('data-load'))); });
     });
-    Array.prototype.forEach.call($('savedPlansList').querySelectorAll('[data-del]'), function(b){
-      b.addEventListener('click', function(){
-        if (!window.confirm('刪除呢個儲低嘅計劃？')) return;
-        store.set('bm_saved_plans', getSavedPlans().filter(function(p){ return p.id !== Number(b.getAttribute('data-del')); }));
-        renderSavedPlans();
-        syncPlanSaveButton();
-      });
-    });
-    Array.prototype.forEach.call($('savedPlansList').querySelectorAll('[data-plan-menu]'), function(b){ b.addEventListener('click', function(e){ e.stopPropagation(); var box=$('savedPlansList').querySelector('[data-plan-menu-box="'+b.getAttribute('data-plan-menu')+'"]'); Array.prototype.forEach.call($('savedPlansList').querySelectorAll('.saved-menu'),function(x){if(x!==box)x.hidden=true;}); if(box)box.hidden=!box.hidden; }); });
-    Array.prototype.forEach.call($('savedPlansList').querySelectorAll('[data-rename-plan]'), function(b){ b.addEventListener('click',function(){var id=Number(b.getAttribute('data-rename-plan')),plans=getSavedPlans(),hit=null;plans.forEach(function(p){if(p.id===id)hit=p;});if(!hit)return;var name=window.prompt('計劃名稱：',hit.name);if(name===null)return;hit.name=String(name).trim()||hit.name;store.set('bm_saved_plans',plans);renderSavedPlans();}); });
-    Array.prototype.forEach.call($('savedPlansList').querySelectorAll('[data-pin-plan]'), function(b){ b.addEventListener('click',function(){var id=Number(b.getAttribute('data-pin-plan')),plans=getSavedPlans();plans.forEach(function(p){if(p.id===id)p.pinned=!p.pinned;});store.set('bm_saved_plans',plans);renderSavedPlans();}); });
     syncPlanSaveButton();
   }
   $('savePlanBtn').addEventListener('click', function(){
@@ -6459,7 +6728,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     store.set('bm_saved_plans', plans);
     renderSavedPlans();
     syncPlanSaveButton();
-    toast('儲低咗 ✓ 喺「賺里數計算器」頁頂搵返');
+    toast('儲低咗 ✓ 喺「首頁」嘅我的消費計劃搵返');
   });
   function loadPlan(id){
     var p = null;
@@ -6481,6 +6750,9 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     $('amount').value = state.amount ? BM.fmt(state.amount) : '';
     $('income').value = state.income ? BM.fmt(state.income) : '';
     $('incomeB').value = state.income2 ? BM.fmt(state.income2) : '';
+    if ($('calcDetails')) $('calcDetails').hidden = false;
+    if ($('calcContinue')) $('calcContinue').hidden = true;
+    if ($('calcAdvanced')) $('calcAdvanced').open = true;
     renderPatternChips(); renderGoalChips(); renderMaxCardChips();
     renderFamilyChips(); renderOwnedChips(); renderOwnedChipsB();
     $('incomeBField').hidden = !state.family;
@@ -6489,6 +6761,84 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     runCalc(true);
     toast('開返「' + p.name + '」，已用最新卡數據重新計');
   }
+
+  /* v6.79：Saved card 低頻操作 sheet；舊資料無 pinned 欄位仍然直接兼容。 */
+  var planMenuContext = null;
+  function closePlanActionMenu(){
+    $('planActionBg').hidden = true;
+    $('planActionSheet').hidden = true;
+    planMenuContext = null;
+  }
+  function findSavedItem(kind, id){
+    var hit = null;
+    (kind === 'trip' ? getSavedRedeem() : getSavedPlans()).forEach(function(x){ if (x.id === id) hit = x; });
+    return hit;
+  }
+  function saveItemList(kind, list){
+    store.set(kind === 'trip' ? 'bm_saved_redeem' : 'bm_saved_plans', list);
+    renderJourney();
+    syncPlanSaveButton();
+    if (window._syncOwSaveButton) window._syncOwSaveButton();
+  }
+  function openSavedTrip(id){
+    var p = findSavedItem('trip', id); if (!p) return;
+    if (window._owLoad) window._owLoad(p.segs, p.cabin);
+    var tb = document.querySelector('.tabs button[data-tab="redeem"]'); if (tb) tb.click();
+    if (window._openPlannerAdvanced) window._openPlannerAdvanced('rtw');
+    setTimeout(function(){ var pn = $('owPanel'); if (pn) pn.scrollIntoView({behavior:'smooth', block:'start'}); }, 80);
+    toast('載返行程 ✓ 用最新規則再驗咗一次');
+  }
+  function openPlanActionMenu(kind, id){
+    var item = findSavedItem(kind, id); if (!item) return;
+    planMenuContext = {kind:kind,id:id};
+    $('planActionTitle').textContent = item.name;
+    var pin = $('planActionSheet').querySelector('[data-plan-action="pin"]');
+    pin.textContent = item.pinned ? '取消置頂' : '置頂';
+    $('planActionBg').hidden = false;
+    $('planActionSheet').hidden = false;
+  }
+  $('planActionClose').addEventListener('click', closePlanActionMenu);
+  $('planActionBg').addEventListener('click', closePlanActionMenu);
+  document.addEventListener('click', function(e){
+    var menu = e.target.closest ? e.target.closest('[data-plan-menu]') : null;
+    if (menu){
+      e.preventDefault(); e.stopPropagation();
+      openPlanActionMenu(menu.getAttribute('data-plan-menu'), Number(menu.getAttribute('data-plan-id')));
+      return;
+    }
+    var act = e.target.closest ? e.target.closest('[data-plan-action]') : null;
+    if (!act || !planMenuContext) return;
+    var kind = planMenuContext.kind, id = planMenuContext.id, action = act.getAttribute('data-plan-action');
+    var item = findSavedItem(kind, id); if (!item){ closePlanActionMenu(); return; }
+    if (action === 'open'){
+      closePlanActionMenu();
+      if (kind === 'trip') openSavedTrip(id); else loadPlan(id);
+      return;
+    }
+    if (action === 'share'){
+      closePlanActionMenu();
+      if (kind === 'trip') shareAcreMilesTrip(item.segs, item.cabin, item.name);
+      else shareAcreMiles({title:item.name + ' | AcreMiles', text:'我用 AcreMiles 計咗個 HK$' + BM.fmt(item.amount) + ' 消費計劃，估計約有 ' + item.miles + ' 里。你都可以免費計自己嗰份 →', url:publicShareUrl('share/plan/')});
+      return;
+    }
+    var list = kind === 'trip' ? getSavedRedeem() : getSavedPlans();
+    if (action === 'rename'){
+      var next = window.prompt('重新命名：', item.name);
+      if (next === null) return;
+      next = String(next).trim(); if (!next){ toast('名稱唔可以留空'); return; }
+      list.forEach(function(x){ if (x.id === id) x.name = next; });
+      closePlanActionMenu(); saveItemList(kind, list); toast('已重新命名'); return;
+    }
+    if (action === 'pin'){
+      list.forEach(function(x){ if (x.id === id) x.pinned = !x.pinned; });
+      closePlanActionMenu(); saveItemList(kind, list); toast(item.pinned ? '已置頂' : '已取消置頂'); return;
+    }
+    if (action === 'delete'){
+      if (!window.confirm('刪除「' + item.name + '」？')) return;
+      list = list.filter(function(x){ return x.id !== id; });
+      closePlanActionMenu(); saveItemList(kind, list); toast('已刪除');
+    }
+  });
 
   /* ---------- AcreMiles 助手（右下角規則式 FAQ） ----------
      CS_EMAIL 留空時顯示「客服電郵開通中」；填入後顯示聯絡掣。 */
@@ -6614,7 +6964,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
      a:'係我哋喺社交平台出嘅優惠分析，精選嗰啲會放入呢個 tab——迎新加碼、限時 flash、換票攻略呢類。唔係乜都放，覺得真係值得留意先上榜。撳「細閱內文」會開新視窗去原文。優惠受條款約束，實際以商戶／銀行官方公佈為準。'},
     {c:'App', q:'點解得四個掣？之前唔係咁㗎喎',
      kw:['四個掣','tab','分頁','點解','介面','改版','咁多掣','導覽','搵唔到'],
-     a:'啱啱改咗版，由五個掣併做四個，搵嘢快啲：<b>賺里數計算器</b>（入面「大額消費」同「日常儲分」兩個分頁，卡庫喺呢頁最底撳開）、<b>里數規劃專員</b>（換咩好？／單程來回／環球票）、<b>獨家優惠文章</b>、<b>關於我們</b>。以前個「卡庫」同「日常儲分」冇消失，係搬咗入「賺里數計算器」度。'},
+     a:'底部有五個入口：<b>計算</b>（今次消費／日常簽賬，卡庫喺頁底）、<b>規劃</b>（幫我規劃／自己砌路線）、<b>首頁</b>（消費示範、我的計劃同行程）、<b>優惠</b>同<b>攻略</b>。第一次用可以先喺首頁睇例子，再用自己嘅金額計。'},
     {c:'App', q:'「已核實」係咩意思？',
      kw:['已核實','verified','核實','tick','剔','綠色'],
      a:'代表嗰張卡用於計算嘅主要數據有可追溯來源，並記低咗資料日期；唔代表所有欄位、當期迎新或未來條款都永久正確。申請前一定要再對銀行官網。'},
@@ -6921,6 +7271,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       var trip = decodeTripPayload(tripToken);
       var tb = document.querySelector('.tabs button[data-tab="redeem"]');
       if (tb) tb.click();
+      if (window._openPlannerAdvanced) window._openPlannerAdvanced(null, 'rtw');
       var rb = document.querySelector('[data-rsub="rtw"]');
       if (rb) rb.click();
       if (trip && window._owLoad){

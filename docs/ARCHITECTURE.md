@@ -1,10 +1,10 @@
 # AcreMiles Architecture
 
 最後更新：2026-07-21  
-基準版本：正式 v6.78.0；候選 v6.79.0-draft
-本文件描述現行真實結構及未發布候選層；產品方向及安全規則以 [`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md) 為準，未來方向另見 [`ROADMAP.md`](ROADMAP.md) 同 [`ARCHITECTURE-SEO.md`](ARCHITECTURE-SEO.md)。
+基準版本：正式 v6.79.0
+本文件描述現行真實結構；產品方向及安全規則以 [`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md) 為準，未來方向另見 [`ROADMAP.md`](ROADMAP.md) 同 [`ARCHITECTURE-SEO.md`](ARCHITECTURE-SEO.md)。
 
-## 0. v6.79.0-draft 候選層
+## 0. v6.79.0 Outcome First 層
 
 - `SPEND_SCENARIOS` 集中管理首頁「消費 → 里數 → 旅行結果」示範，只 render 已標記核實及未過期項目。
 - 計算器保持同一引擎；UI 先問金額，再 reveal 篩卡條件同進階設定。

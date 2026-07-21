@@ -1,7 +1,7 @@
 # AcreMiles Roadmap
 
 最後更新：2026-07-21  
-基準：正式 v6.78.0
+基準：正式 v6.78.0；候選 v6.79.0-draft（`feature/outcome-first-v1`）
 狀態定義：`NOW`＝立即；`NEXT`＝完成 NOW 後；`LATER`＝中期；`HOLD`＝等待用戶／外部資料。
 
 ## 1. 路線圖原則
@@ -13,6 +13,17 @@
 5. 未有用戶明確批准，不將候選版本合併到正式網站。
 
 ## 2. NOW｜資料及發布安全
+
+### R0. Outcome First Big Picture V1 review
+
+狀態：`NOW — DRAFT ONLY`
+
+- v6.79.0-draft 已按 Safety Hardened 交接完成可操作第一版。
+- 等產品擁有人 review 首頁價值示範、計算分層、saved card menu、文章 tier 同 planner gateway。
+- 未發布頁面嘅真瀏覽器截圖、360／390／430 Android Chrome、深淺色及 PWA mode 仍要喺可安全開啟 feature preview 嘅環境補跑。
+- Review 前不得 merge／deploy；如要調整，繼續喺同一 feature branch 做。
+
+完成條件：產品擁有人確認方向、待核實數據處理清楚、真瀏覽器 mobile QA 通過，再另行決定是否進入 release candidate。
 
 ### R1. 每週信用卡更新
 

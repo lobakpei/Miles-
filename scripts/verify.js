@@ -9,8 +9,10 @@ const src = fs.readFileSync(file, 'utf8');
 const root = path.dirname(path.resolve(file));
 const swPath = path.join(root, 'sw.js');
 const manifestPath = path.join(root, 'manifest.json');
+const z10CsvPath = path.join(root, 'docs', 'ZONE-10-ROUTE.csv');
 const sw = fs.existsSync(swPath) ? fs.readFileSync(swPath, 'utf8') : '';
 const manifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : null;
+const z10Csv = fs.existsSync(z10CsvPath) ? fs.readFileSync(z10CsvPath, 'utf8').trim() : '';
 let fails = 0;
 const ok = (n, c) => { console.log((c ? '✓ ' : '❌ ') + n); if (!c) fails++; };
 const near = (a, b, e) => Math.abs(a - b) < (e || 2);
@@ -210,21 +212,32 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
   ok('曼谷至新加坡國泰直航錯誤封鎖已修正', BM.owRouteStatus(bkk, sin, 'CX') === 'verified');
   ok('季節線會另外提示', BM.owRouteSeasonality(BM.owAirport('LAX'), BM.owAirport('HEL'), 'AY') === 'seasonal');
   ok('Hawaiian Airlines 已加入 oneworld 清單', BM.OW_CARRIERS.some(c => c.c === 'HA'));
-  const doh = BM.owAirport('DOH'), ord = BM.owAirport('ORD');
-  ok('區10 新方案六段航線已逐段入核實庫',
-    BM.owRouteStatus(hkg, doh, 'QR') === 'verified' && BM.owRouteStatus(doh, mad, 'QR') === 'verified' &&
-    BM.owRouteStatus(BM.owAirport('LHR'), BM.owAirport('JFK'), 'BA') === 'verified' &&
-    BM.owRouteStatus(BM.owAirport('JFK'), ord, 'AA') === 'verified' &&
-    BM.owRouteStatus(ord, hnd, 'JL') === 'verified' && BM.owRouteStatus(hnd, hkg, 'CX') === 'verified');
+  const pit = BM.owAirport('PIT');
+  const z10Verified = [
+    ['HKG','MAD','CX'], ['MAD','CDG','IB'], ['LHR','JFK','BA'], ['JFK','BOS','AA'],
+    ['BOS','PIT','AA'], ['PIT','ORD','AA'], ['ORD','SEA','AA'], ['YVR','NRT','JL'],
+    ['NRT','TPE','JL'], ['TPE','HKG','CX']
+  ];
+  ok('區10 正式方案十段航線已逐段入核實庫', pit && z10Verified.every(x => BM.owRouteStatus(BM.owAirport(x[0]), BM.owAirport(x[1]), x[2]) === 'verified'));
   const z10Eval = BM.owEvaluate([
-    {from:'HKG',to:'DOH',carrier:'QR',stay:'transit'}, {from:'DOH',to:'MAD',carrier:'QR',stay:'open'},
-    {from:'LHR',to:'JFK',carrier:'BA',stay:'stop'}, {from:'JFK',to:'ORD',carrier:'AA',stay:'stop'},
-    {from:'ORD',to:'HND',carrier:'JL',stay:'transit'}, {from:'HND',to:'HKG',carrier:'CX',stay:'stop'}
+    {from:'HKG',to:'MAD',carrier:'CX',stay:'stop'}, {from:'MAD',to:'CDG',carrier:'IB',stay:'stop'},
+    {from:'LHR',to:'JFK',carrier:'BA',stay:'stop'}, {from:'JFK',to:'BOS',carrier:'AA',stay:'stop'},
+    {from:'BOS',to:'PIT',carrier:'AA',stay:'transit'}, {from:'PIT',to:'ORD',carrier:'AA',stay:'transit'},
+    {from:'ORD',to:'SEA',carrier:'AA',stay:'stop'}, {from:'YVR',to:'NRT',carrier:'JL',stay:'stop'},
+    {from:'NRT',to:'TPE',carrier:'JL',stay:'stop'}, {from:'TPE',to:'HKG',carrier:'CX',stay:'stop'}
   ], 'j');
-  ok('區10 新方案距離、分區同票規重算一致', z10Eval.errors.length === 0 && z10Eval.total === 19496 && z10Eval.zone.z === 10 && z10Eval.need === 230000 && z10Eval.stopovers === 2 && z10Eval.transits === 2 && z10Eval.openJaws === 1);
-  ok('區10 新方案可由文章載入規劃器並保留舊錯誤紀錄',
-    /z10\s*:\s*\[[\s\S]*?HKG[\s\S]*?DOH[\s\S]*?MAD[\s\S]*?LHR[\s\S]*?JFK[\s\S]*?ORD[\s\S]*?HND[\s\S]*?HKG/.test(src) &&
-    /data-owdiy=["']z10["']/.test(src) && /睇返已撤回嘅舊方案紀錄/.test(src));
+  ok('區10 正式方案距離、分區同 5／2／2 票規重算一致', z10Eval.errors.length === 0 && z10Eval.total === 19960 && z10Eval.zone.z === 10 && z10Eval.need === 230000 && z10Eval.stopovers === 5 && z10Eval.transits === 2 && z10Eval.openJaws === 2);
+  ok('區10 正式方案可由文章載入規劃器',
+    /z10\s*:\s*\[[\s\S]*?HKG[\s\S]*?MAD[\s\S]*?CDG[\s\S]*?LHR[\s\S]*?JFK[\s\S]*?BOS[\s\S]*?PIT[\s\S]*?ORD[\s\S]*?SEA[\s\S]*?YVR[\s\S]*?NRT[\s\S]*?TPE[\s\S]*?HKG/.test(src) &&
+    /data-owdiy=["']z10["']/.test(src) && /img\/pgW10-hero\.jpg/.test(src));
+  const z10CsvRows = z10Csv.split(/\r?\n/).slice(1).map(line => line.split(','));
+  const z10CsvFlights = z10CsvRows.filter(row => row[0] === 'flight');
+  ok('區10 CSV 同規劃器十段資料、距離及 5／2／2 一致',
+    z10CsvFlights.length === 10 && z10CsvFlights.reduce((n, row) => n + Number(row[5] || 0), 0) === 19960 &&
+    z10CsvFlights.filter(row => row[4] === 'stop').length === 5 && z10CsvFlights.filter(row => row[4] === 'transit').length === 2 &&
+    z10CsvRows.filter(row => row[0] === 'open_jaw').length === 2 &&
+    z10CsvFlights.map(row => row[1] + '-' + row[2] + '-' + row[3]).join('|') === z10Verified.map(row => row.join('-')).join('|'));
+  ok('現行 Zone 10 程式冇殘留被取代距離或 NRT→KIX', !/19[,.](496|793|918|925)|NRT\s*(?:→|-|&rarr;)\s*KIX/.test(src));
   ok('過期優惠文章保留內容並有首屏灰色存檔提示',
     /function applyExpiryNotices\([\s\S]*?expired-article[\s\S]*?歷史優惠｜已於[\s\S]*?insertBefore\(n, body\.firstChild\)/.test(src));
   ok('取消卡冇出現喺公開卡庫', !/建行\(亞洲\).*BA 白金|中銀.*Cheers|BOC Cheers/.test(src.replace(/\/\*[^]*?\*\//g, '')));

@@ -140,12 +140,16 @@ async function main() {
     await page.goto(base + '?open=pgW10', {waitUntil:'domcontentloaded'});
     await loadQaFonts(page, base);
     await page.waitForTimeout(350);
-    check('區10 新文章同資訊型封面可見', await page.locator('#pgW10').isVisible() && await page.locator('#pgW10 img[src="img/pgW10-hero-v3.jpg"]').isVisible());
+    check('區10 正式文章同現有封面可見', await page.locator('#pgW10').isVisible() && await page.locator('#pgW10 img[src="img/pgW10-hero.jpg"]').isVisible());
+    check('區10 文章顯示 19,960 哩及 5／2／2', (await page.locator('#pgW10 .art-lead').innerText()).includes('19,960 哩') && (await page.locator('#pgW10 .art-lead').innerText()).includes('5 停 2 轉 2 開口'));
     check('RTW 文章清楚標示教學示例而非出票保證', (await page.locator('#pgW10 .route-data-notice').innerText()).includes('教學示例｜唔係出票保證'));
     await page.locator('#pgW10 [data-owdiy="z10"]').click();
     await page.waitForTimeout(180);
     const zone10Values = await page.locator('#owSegs input[data-owf="from"]').evaluateAll(nodes => nodes.map(n => n.value));
-    check('區10 DIY 會載入六段新路線', zone10Values.join(',') === 'HKG,DOH,LHR,JFK,ORD,HND', zone10Values.join(','));
+    check('區10 DIY 會載入十段正式路線', zone10Values.join(',') === 'HKG,MAD,LHR,JFK,BOS,PIT,ORD,YVR,NRT,TPE', zone10Values.join(','));
+    const zone10Summary = await page.locator('#owSummary').innerText();
+    const zone10TwoOfTwo = zone10Summary.match(/2\s*\/\s*2/g) || [];
+    check('區10 DIY 重算為 19,960 哩、5 停、2 轉、2 開', zone10Summary.includes('19,960') && /5\s*\/\s*5/.test(zone10Summary) && zone10TwoOfTwo.length >= 2, zone10Summary);
 
     await page.goto(base, {waitUntil:'domcontentloaded'});
     await loadQaFonts(page, base);

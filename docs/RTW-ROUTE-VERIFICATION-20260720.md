@@ -8,7 +8,7 @@
 - 「自費接駁」＝唔係 RTW 獎勵票航段，旅客要自己買票或搭地面交通。
 - 有直航不等於你指定嗰日有班次；有班次亦不等於有里數獎勵位。
 - 真正出票前仍要逐段查日期、獎勵位，同 Asia Miles 職員確認整張票規。
-- 本報告只核實「示例有冇現行航線依據」，唔係指定日期預訂建議；區 10 已另標記為待重做。
+- 本報告只核實「示例有冇現行航線依據」，唔係指定日期預訂建議；區 10 已於 2026-07-21 更新為正式教學線。
 
 ## 區 6・日韓泰
 
@@ -48,19 +48,24 @@
 
 ## 區 10・歐美城市線
 
-重算：19,496 哩；區 10；商務 230,000 里；2 停留、2 轉機、1 開口。
+重算：19,960 哩；區 10；商務 230,000 里；5 停留、2 轉機、2 開口。
 
 | 行程段 | 航司／方式 | 結果 | 依據 |
 |---|---|---|---|
-| HKG → DOH | QR | 直航已核實 | [卡塔爾航空香港至馬德里頁列明香港先直飛多哈](https://www.qatarairways.com/en-in/destinations/flights-to-madrid/from-hong-kong.html) |
-| DOH → MAD | QR | 直航已核實 | [卡塔爾航空多哈至馬德里官方頁](https://www.qatarairways.com/en-at/destinations/flights-to-madrid/from-doha.html/) |
-| MAD → LHR | 自費開口 | 不計入 RTW 飛行距離 | 旅客自行搭機或安排歐洲地面行程 |
+| HKG → MAD | CX | 直航已核實 | [國泰 HKG–MAD 官方頁](https://flights.cathaypacific.com/destinations/en_HK/flights-from-hong-kong-to-madrid) |
+| MAD → CDG | IB | 直航已核實 | [Iberia 馬德里至巴黎官方頁](https://www.iberia.com/us/cheap-flights/Madrid-Paris/) |
+| CDG → LHR | 自費開口 | 不計入 RTW 飛行距離 | 歐洲之星或自費直航 |
 | LHR → JFK | BA | 直航已核實 | [英航 Reward Flight 頁列明 London–New York](https://hotline.britishairways.com/content/en/gr/the-british-airways-club/avios/spending-avios/reward-flights) |
-| JFK → ORD | AA | 直航已核實 | [美國航空紐約至芝加哥官方訂票頁](https://www.aa.com/en-us/flights-from-new-york-to-chicago) |
-| ORD → HND | JL | 直航已核實 | [日航芝加哥至東京官方航線頁列明每日 ORD→HND](https://www.jal.co.jp/ar/en/offers/new-direct-flights-chicago-tokyo/index.html) |
-| HND → HKG | CX | 直航已核實 | [國泰東京至香港官方頁列明羽田／成田出發](https://flights.cathaypacific.com/destinations/en_JP/flights-from-tokyo-to-hong-kong) |
+| JFK → BOS | AA | 直航已核實 | [美國航空紐約至波士頓官方頁](https://www.aa.com/en-us/flights-from-new-york-to-boston) |
+| BOS → PIT | AA／American Eagle | 直航已核實 | [美國航空波士頓至匹茲堡官方頁](https://www.aa.com/en-us/flights-from-boston-to-pittsburgh) |
+| PIT → ORD | AA／American Eagle | 直航已核實 | [美國航空匹茲堡至芝加哥官方頁](https://www.aa.com/en-us/flights-from-pittsburgh-to-chicago) |
+| ORD → SEA | AA | 直航已核實 | [美國航空 ORD–SEA 官方頁](https://www.aa.com/en-us/flights-from-chicago-to-seattle) |
+| SEA → YVR | 自費開口 | 不計入 RTW 飛行距離 | Amtrak Cascades 或跨境巴士 |
+| YVR → NRT | JL | 直航已核實 | [JAL U.S.／Canada 時刻表列明 JL17 每日](https://www.jal.co.jp/flights/en-us/flight-resumption) |
+| NRT → TPE | JL | 直航已核實 | [JAL FY2026 時刻表列明 JL809／JL802](https://press.jal.co.jp/en/items/uploads/JALJTA%20Announces%20FY2026%20Schedule%20on%20International%20Network-3.pdf) |
+| TPE → HKG | CX | 直航已核實 | [國泰 TPE–HKG 官方頁](https://flights.cathaypacific.com/destinations/en_TW/flights-from-taipei-to-hong-kong) |
 
-判斷：所有獎勵飛行段有官方路線依據，但呢條線未用盡距離、停留、開口及轉機額度，產品上未獲接納為最終示例，等待用戶另行補線後重做。本版不改路線及圖片。舊區 10 方案誤將 HKG→MAD／QR 當直航，舊 19,793 哩與稅費估算維持撤回，並只保留作修正紀錄。
+判斷：10 段獎勵航班有現行航線依據，基本票規重算為 19,960 哩及 5／2／2。oneworld 官方把 American Eagle 列為 American Airlines regional partners；指定日實際營運者、affiliate 兌換資格、獎勵位、稅費同成張票仍要由 Asia Miles 確認。
 
 ## 區 11・遠洲探索
 
@@ -106,7 +111,7 @@
 
 ## 最後結論
 
-五條線嘅「直航是否存在」已逐段處理；區 6、8、11、13 可保留作教學，區 10 待重做。全部都不應宣傳成可以直接照抄出票。用戶揀定日期後，仍有三關：
+五條線嘅「直航是否存在」已逐段處理；區 6、8、10、11、13 可保留作教學。全部都不應宣傳成可以直接照抄出票。用戶揀定日期後，仍有三關：
 
 1. 嗰日真係有班次；
 2. 嗰班有獎勵位；

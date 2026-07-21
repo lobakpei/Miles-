@@ -1,15 +1,15 @@
 # AcreMiles 新對話交接
 
 交接時間：2026-07-21  
-適用版本：正式網站 v6.77.0  
+適用版本：正式網站 v6.78.0
 接手目標：新 AI 喺冇舊對話內容嘅情況下，能夠安全判斷現況、繼續開發及避免重做已完成工作。
 
 ## 1. 接手後頭五分鐘
 
 1. 讀 [`MASTER.md`](MASTER.md) 同根目錄 `AGENTS.md`。
 2. 執行 `git status --short --branch`，保留所有現有變更；唔好 reset、checkout 或覆蓋不明檔案。
-3. 用 GitHub 實際 `main` 核對正式版本。2026-07-21 嘅正式 merge commit 係 `09d743d655baeac0e4abeaa77e4852311a6b6deb`；本地 `origin/main` 可能過時。
-4. 確認 `index.html` 第一行、頁內 `APP_VERSION`、設定頁及 `sw.js` 都係 v6.77.0。
+3. 用 GitHub 實際 `main` 核對正式版本及最新 merge commit；本地 `origin/main` 可能過時。
+4. 確認 `index.html` 第一行、頁內 `APP_VERSION`、設定頁及 `sw.js` 都係 v6.78.0。
 5. 執行：
 
    ```bash
@@ -21,6 +21,15 @@
 6. 再按用戶今次新指示選擇專題文件，唔好因為交接清單有待辦就擅自全部開工。
 
 ## 2. 已完成，不要重做
+
+### v6.78.0（已發布）
+
+- Zone 10 正式線為 `HKG→MAD→CDG ⤳ LHR→JFK→BOS→PIT→ORD→SEA ⤳ YVR→NRT→TPE→HKG`。
+- 規劃器重算 19,960 哩、區 10 商務 230,000 里、5 停留／2 轉機／2 開口，距頂 40 哩。
+- 10 段精確 IATA／航司已加入 `OW_VERIFIED`；PIT 已加入機場庫。
+- 文章、RTW Demo、`ZONE-10-ROUTE.csv`、搜尋索引、分享 metadata、Open Graph wrapper、service worker 及測試已同步。
+- 圖片檔冇修改；現行文章同分享頁沿用 `img/pgW10-hero.jpg`。
+- 來源、逐段距離及 QA 見 [`QA-REPORT-v6.78.0.md`](QA-REPORT-v6.78.0.md)。
 
 ### v6.77.0（已發布）
 
@@ -62,34 +71,24 @@
 
 完整 SOP：[`WEEKLY-CARD-UPDATE.md`](WEEKLY-CARD-UPDATE.md)。
 
-### P1：區 10 重做
+### Zone 10 後續維護
 
-用戶會把 [`ZONE-10-FABLE5-HANDOFF.md`](ZONE-10-FABLE5-HANDOFF.md) 交畀 Fable 5。等待回傳：
+研究及正式更新已完成。往後修改時以 [`ZONE-10-ROUTE.csv`](ZONE-10-ROUTE.csv) 為機器可讀基準，並同步文章、`OW_VERIFIED`、`OW_ZONE_DEMOS.z10`、分享 metadata 同 QA。特別留意：
 
-- 3 條候選線。
-- 每段距離、指定 IATA、營運航司及官方直航來源。
-- 剛好 5 停留、2 轉機、2 開口。
-- 獎勵航段總距離大於 18,000、最多 20,000，目標 19,850–20,000 哩。
-- 兩個開口嘅自費交通及三層核實結論。
-
-收到後嘅正確流程：
-
-1. 獨立重算距離及票規。
-2. 逐段核對現行直航，唔可以只信 Fable 結論。
-3. 列三條候選嘅優缺點同風險，先同用戶揀定。
-4. 用戶再提供／批准新圖片。
-5. 傾好後先改程式、文章、分享圖及區 10 圖片。
-
-未完成以上步驟前，**不可自行優化或替換現有區 10**。
+- 兩個開口係 `CDG⤳LHR` 同 `SEA⤳YVR`，自費段唔計總距離。
+- 兩個轉機係 PIT 同 ORD，必須控制喺 24 小時內。
+- 五個停留係 MAD、JFK、BOS、NRT、TPE。
+- AA 美國短途可能由 American Eagle regional partner 營運；oneworld 官方把 American Eagle 列入 AA regional network，但指定班次同 Asia Miles 兌換資格仍要出票前確認。
+- 唔可以重新加入已排除嘅 `NRT→KIX`，亦唔可以只靠 codeshare 航班號判定實際營運者合格。
 
 ### P1：發布後 QA
 
-v6.77.0 尚欠：
+v6.78.0 尚欠：
 
 - production PageSpeed mobile／desktop 新報告。
 - 真 WhatsApp 分享文章、卡、賺里數計劃、RTW 行程嘅預覽。
 - 真 Facebook 分享及舊 cache 處理。
-- v6.77.0 版本嘅完整 360／768／1440 瀏覽器回歸。
+- v6.78.0 版本嘅完整 360／768／1440 瀏覽器回歸。
 - 真 iPhone Safari／Android Chrome、PWA 安裝及離線重開測試。
 
 注意：AcreMiles 係 GitHub Pages 靜態網站。WhatsApp crawler 睇唔到 URL `#fragment` 內嘅私人行程，所以 v6.77.0 係按「賺／換」分類用固定縮圖；實際金額、里數或路線放喺分享文字／fragment。除非增加後端圖片服務，唔可以聲稱每個結果縮圖會動態顯示數字。
@@ -120,7 +119,7 @@ v6.77.0 尚欠：
 | 區 8 | 接受兩個自費開口作教學選項 |
 | 區 11 | 接受 QR 班次較易變，指定日期再查 |
 | 區 13 | 接受季節航線示例，必須標明季節性 |
-| 區 10 | 現有線不合格；等新線＋用戶確認＋新圖，傾好後先改 |
+| 區 10 | v6.78.0 正式線 19,960 哩、5／2／2；維護時 CSV、Demo、文章、metadata 同測試必須同步 |
 | 過期優惠 | 保留歷史，不刪除；灰化並停止當現行推薦 |
 | 社交內容 | 主要吸流量、App 提供資訊；兩邊都不可誤導，免責要足 |
 | 分享圖 | v6.77 用固定「賺／換」分類圖；每結果動態圖需要後端，未有 |
@@ -173,4 +172,3 @@ v6.77.0 尚欠：
 - `PROJECT-STATUS.md`：保持短，唔可以同正式版本狀態互相矛盾。
 
 任何舊報告都只代表當時版本。若內容衝突，優先次序係：最新 GitHub `main`／正式網站 → `MASTER.md` → `HANDOFF.md` → 最新版本 QA／審計 → 歷史文件。
-

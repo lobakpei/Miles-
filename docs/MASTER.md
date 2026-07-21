@@ -3,17 +3,17 @@
 最後核對：2026-07-21（Europe/London）  
 用途：AcreMiles 專案嘅最高層入口。任何新 AI 或開發者都應先讀 [`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md)，再讀本文件同 [`HANDOFF.md`](HANDOFF.md)。如有衝突，以 Safety Hardened 文件及用戶最新指示為準。
 
-## 0. 目前候選版本（未發布）
+## 0. 目前版本
 
 | 項目 | 現況 |
 |---|---|
-| 候選版本 | **v6.79.0-draft — Outcome First Big Picture V1** |
-| 工作分支 | `feature/outcome-first-v1` |
+| 正式版本 | **v6.79.0 — Outcome First Big Picture V1** |
+| 發布分支 | `feature/outcome-first-v1` → PR #7 → `main` |
 | 基準 commit | `1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049` |
-| 狀態 | 功能第一版完成；只可開 Draft PR，未獲批准不可 merge／deploy |
-| QA | Node release／consent／freshness／HTTP gates 已執行；本地未發布頁面受預覽工具安全限制，真瀏覽器截圖及裝置 QA 待 reviewer 補跑 |
+| 狀態 | 產品擁有人已完成 Preview review並批准發布；Outcome First 第一版、公開 UK Postbox 地址及 UI 互動層級修正一併發布 |
+| QA | Node release／consent／freshness／HTTP／Sites build gates 已通過；真桌面 Agent Preview 已核對，完整手機裝置回歸列入發布後 QA |
 
-正式網站仍然係下面記錄嘅 v6.78.0；候選版本唔可以當已上線功能描述。
+本節記錄 v6.79.0 發布狀態；舊 v6.79.0-draft QA 只屬歷史候選紀錄。
 
 ## 1. 現時正式狀態
 
@@ -22,9 +22,9 @@
 | 正式網站 | <https://acremiles.app/> |
 | GitHub | `lobakpei/Miles-`（public） |
 | 正式分支 | `main` |
-| 正式版本 | **v6.78.0** |
+| 正式版本 | **v6.79.0** |
 | 發布日期 | 2026-07-21 |
-| 上一產品發布 merge | v6.77.0：PR #3，commit `09d743d655baeac0e4abeaa77e4852311a6b6deb` |
+| 上一產品發布 merge | v6.78.0：PR #6，commit `1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049` |
 | 部署方式 | GitHub Pages；合併到 `main` 後自動部署 |
 | 主程式 | 單一 `index.html`，Vanilla HTML／CSS／JavaScript |
 | 資料日期 | 卡庫 `DATA_AS_OF = 2026-07-20` |
@@ -115,7 +115,8 @@ AcreMiles **唔係**：
 - 資料控制者：`Mrs HAU YING OU-YANG`，以 AcreMiles 名義營運。
 - 公開客服 email：`support@acremiles.app`。
 - 私人住宅地址不可加入 public repo、網站或交接文件。
-- 仍要在 ICO 登記加入 `AcreMiles` trading name；公開聯絡地址由用戶另行安排。
+- 私隱政策已加入用戶明確確認可公開嘅 UK Postbox 通訊地址及 Courier Point 地址，並清楚分開郵件／小型郵件同包裹／快遞用途。
+- 仍要在 ICO 登記加入 `AcreMiles` trading name；如 ICO 公開地址需要同步，只可使用同一組已確認服務地址。
 - 現時冇 referral 收益。若日後有推薦費、廣告、收佣、代客介紹申請或個人化信貸建議，發布前必須重新做 FCA／金融推廣及專業法律核對。
 - 社交平台主要負責吸引流量，App 主要負責資訊；但 eye-catching 文案同縮圖本身仍要清晰、公平、不誤導，免責聲明不可補救一篇本身有問題嘅廣告。
 
@@ -137,9 +138,9 @@ AcreMiles **唔係**：
 ## 6. 當前未完成事項
 
 1. 每週信用卡及平台優惠核實；近期 7 個到期提醒優先。
-2. v6.78.0 發布後 production QA：最新 PageSpeed、真 WhatsApp／Facebook 分享預覽、手機／平板／桌面回歸。
+2. v6.79.0 發布後 production QA：最新 PageSpeed、真 WhatsApp／Facebook 分享預覽、手機／平板／桌面回歸。
 4. 核實 GA4 管理頁設定已真正按「儲存」；現有截圖顯示事件 2 個月、使用者 14 個月、活動時重設。
-5. ICO 加 trading name，之後只加入用戶確認可公開嘅聯絡地址。
+5. ICO 加 trading name，並按需要同步已確認 UK Postbox 公開服務地址。
 6. 用戶改名完成後先更新 Instagram／Facebook；程式目前 IG 為 `@acremiles`，Facebook URL 留空。
 7. 中期拆分巨大 `index.html`、加 CI release gates、把文章 wrapper 升級成可索引全文頁。
 
@@ -154,7 +155,7 @@ AcreMiles **唔係**：
    - 信用卡：`WEEKLY-CARD-UPDATE.md`、`CARD-SOURCE-AUDIT.md`
    - RTW：`RTW-AUDIT.md`、`RTW-ROUTE-VERIFICATION-20260720.md`
    - 區 10：`ZONE-10-ROUTE.csv`、`ZONE-10-FABLE5-HANDOFF.md`
-   - QA：最新版本 `QA-REPORT-v6.78.0.md`
+   - QA：最新版本 `QA-REPORT-v6.79.0.md`
    - 私隱／合規：`DATA-RETENTION-SCHEDULE.md`、`SOCIAL-CONTENT-COMPLIANCE.md`
 7. `AGENTS.md`：所有程式及內容改動都必須遵守嘅 repo 級守則。
 

@@ -1,15 +1,25 @@
 # AcreMiles 新對話交接
 
 交接時間：2026-07-21  
-適用版本：正式網站 v6.78.0
+適用版本：正式網站 v6.79.0
 接手目標：新 AI 喺冇舊對話內容嘅情況下，能夠安全判斷現況、繼續開發及避免重做已完成工作。
+
+## 0. v6.79.0 當前交接
+
+- 最高優先執行文件：[`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md)。
+- 發布來源：`feature/outcome-first-v1`／PR #7；baseline：`1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049`。
+- 已完成 Outcome First 首頁、分層計算入口、compact saved cards、優惠文章首屏、Beginner／Advanced planner gateway，同時保留現有計算及 RTW 引擎。
+- 新示範只使用 repo 內可追溯資料；未接 AI API，Beginner planner 係現有 template 嘅 rule-based matching。
+- 產品擁有人已完成 Preview review並批准發布 v6.79.0；正式狀態及剩餘限制見 [`QA-REPORT-v6.79.0.md`](QA-REPORT-v6.79.0.md)。
+- 首次提示、靜態狀態標籤、示範數字卡及提示框已改為平面資料樣式；真正控制項先保留按壓／hover／箭嘴等互動提示。
+- 私隱政策已加入 UK Postbox 公開通訊地址及 Courier Point 地址，兩者用途不可互換。
 
 ## 1. 接手後頭五分鐘
 
-1. 讀 [`MASTER.md`](MASTER.md) 同根目錄 `AGENTS.md`。
+1. 先讀 [`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md)，再讀 [`MASTER.md`](MASTER.md) 同根目錄 `AGENTS.md`。
 2. 執行 `git status --short --branch`，保留所有現有變更；唔好 reset、checkout 或覆蓋不明檔案。
 3. 用 GitHub 實際 `main` 核對正式版本及最新 merge commit；本地 `origin/main` 可能過時。
-4. 確認 `index.html` 第一行、頁內 `APP_VERSION`、設定頁及 `sw.js` 都係 v6.78.0。
+4. 正式 `main` 四處版本必須一致為 v6.79.0。
 5. 執行：
 
    ```bash
@@ -83,12 +93,12 @@
 
 ### P1：發布後 QA
 
-v6.78.0 尚欠：
+v6.79.0 尚欠：
 
 - production PageSpeed mobile／desktop 新報告。
 - 真 WhatsApp 分享文章、卡、賺里數計劃、RTW 行程嘅預覽。
 - 真 Facebook 分享及舊 cache 處理。
-- v6.78.0 版本嘅完整 360／768／1440 瀏覽器回歸。
+- v6.79.0 版本嘅完整 360／390／430／768／1440 瀏覽器回歸。
 - 真 iPhone Safari／Android Chrome、PWA 安裝及離線重開測試。
 
 注意：AcreMiles 係 GitHub Pages 靜態網站。WhatsApp crawler 睇唔到 URL `#fragment` 內嘅私人行程，所以 v6.77.0 係按「賺／換」分類用固定縮圖；實際金額、里數或路線放喺分享文字／fragment。除非增加後端圖片服務，唔可以聲稱每個結果縮圖會動態顯示數字。
@@ -96,7 +106,7 @@ v6.78.0 尚欠：
 ### P1：用戶或外部資料依賴
 
 - GA4：截圖顯示事件資料 2 個月、使用者資料 14 個月、活動時重設；仍要確認當時已按藍色「儲存」。
-- ICO：加入 AcreMiles trading name；待用戶提供可公開聯絡地址，私人住址不可寫入 repo。
+- ICO：加入 AcreMiles trading name；公開聯絡地址已由用戶提供，只可使用網站私隱政策內列明嘅 UK Postbox／Courier Point 服務地址。
 - IG／Facebook：用戶正改名；未提供正式 URL 前不要估。程式內 Facebook 仍為空。
 
 ### P2：技術債
@@ -123,7 +133,7 @@ v6.78.0 尚欠：
 | 過期優惠 | 保留歷史，不刪除；灰化並停止當現行推薦 |
 | 社交內容 | 主要吸流量、App 提供資訊；兩邊都不可誤導，免責要足 |
 | 分享圖 | v6.77 用固定「賺／換」分類圖；每結果動態圖需要後端，未有 |
-| 私隱地址 | 不公開私人住址；只可加入用戶明確確認可公開地址 |
+| 私隱地址 | 不公開私人住址；網站只使用用戶確認嘅 UK Postbox 通訊地址及 Courier Point 快遞地址，兩種用途分開標示 |
 | IG／FB | 等用戶改名完成後先更新 |
 
 ## 5. 同用戶合作方式

@@ -1,7 +1,7 @@
 # AcreMiles Roadmap
 
 最後更新：2026-07-21  
-基準：正式 v6.78.0
+基準：正式 v6.79.0
 狀態定義：`NOW`＝立即；`NEXT`＝完成 NOW 後；`LATER`＝中期；`HOLD`＝等待用戶／外部資料。
 
 ## 1. 路線圖原則
@@ -13,6 +13,17 @@
 5. 未有用戶明確批准，不將候選版本合併到正式網站。
 
 ## 2. NOW｜資料及發布安全
+
+### R0. Outcome First Big Picture V1
+
+狀態：`COMPLETED — v6.79.0`
+
+- v6.79.0 已按 Safety Hardened 交接完成可操作第一版，並獲產品擁有人按 Preview 網站確認整體方向。
+- 首頁價值示範、計算分層、saved card menu、文章 tier 同 planner gateway 已發布。
+- 發布前加入公開 UK Postbox 地址及「可撳／不可撳」視覺層級修正。
+- 完整 360／390／430 Android Chrome、深淺色及 PWA mode 納入發布後 QA。
+
+完成條件：已完成；細節 UI 問題按產品擁有人之後實際使用再逐步調整。
 
 ### R1. 每週信用卡更新
 
@@ -33,7 +44,7 @@
 - App、卡頁、文章、分享 metadata、FAQ 同縮圖數字一致。
 - 所有進入推薦嘅資料有足夠官方依據。
 
-### R2. v6.78.0 production QA 補完
+### R2. v6.79.0 production QA 補完
 
 狀態：`NOW`
 
@@ -47,7 +58,7 @@
 
 完成條件：
 
-- 新報告明確標示 v6.78.0、測試日期及 production URL。
+- 新報告明確標示 v6.79.0、測試日期及 production URL。
 - 預覽圖、標題、描述正確，舊 cache 問題有處理紀錄。
 - 發現問題已修正或以已知限制記錄。
 
@@ -71,7 +82,7 @@
 - 每季保存 GA、Sentry 設定證據。
 - 實測 MailerLite 退訂／刪除／suppression 流程。
 - ICO 登記加入 `AcreMiles` trading name。
-- 只喺用戶提供可公開聯絡地址後更新網站；禁止使用私人住址。
+- 網站已加入用戶確認嘅 UK Postbox 通訊地址及 Courier Point 快遞地址；繼續禁止使用私人住址，亦不可混淆兩種服務用途。
 
 完成條件：`DATA-RETENTION-SCHEDULE.md` 與實際後台設定及證據日期一致。
 

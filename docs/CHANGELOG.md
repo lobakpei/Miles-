@@ -1,5 +1,18 @@
 # AcreMiles Changelog
 
+## v6.79.0 — 2026-07-21
+
+- 首頁改成 Outcome First 架構：先展示已核實消費／里數／旅行結果，再提供個人金額入口；Planner 降到後段，儲存資料只喺真係存在時顯示。
+- 中間 bottom tab 顯示為「首頁」，Header 主句改為「每筆消費，都值得有回報。」；沿用原有品牌、顏色、卡片、深色模式及 PWA shell。
+- 「大額消費／日常儲分」改為「今次消費／日常簽賬」；計算器第一層只問金額，其餘條件逐步 reveal，結果將「可以換到乜」提前。
+- 已儲存計劃同行程改為 compact card＋`⋯` bottom sheet，提供開啟、分享、重新命名、置頂及確認刪除；舊 localStorage schema 保持兼容。
+- `pgO2` 加入多 tier Outcome First 首屏同三層 accordion，原有規則、來源及正文完整保留。
+- 規劃器加入「幫我規劃／自己砌路線」gateway；Beginner 用現有 route templates 作 rule-based matching，冇接 AI API。
+- 靜態資料建立清晰視覺語言：首次提示免責句、狀態標籤、示範數字卡及提示框改為平面資訊樣式；真正控制項先保留實色、邊框反應、箭嘴、hover 或按壓回饋。
+- 私隱政策加入用戶確認可公開嘅 UK Postbox 通訊地址及 Courier Point 地址，清楚分開郵件／小型郵件同包裹／快遞用途。
+- 新增 Safety Hardened 主交接文件、架構／狀態說明及 v6.79.0 QA 報告。
+- 產品擁有人已透過獨立 Preview 完成 big-picture review並批准發布；由 PR #7 合併到 `main`，正式網站更新至 v6.79.0。
+
 ## v6.78.0 — 2026-07-21
 
 - Zone 10 正式改為 `HKG→MAD→CDG ⤳ LHR→JFK→BOS→PIT→ORD→SEA ⤳ YVR→NRT→TPE→HKG`。

@@ -91,6 +91,8 @@ async function main() {
   try {
     const sizes = [
       {name:'mobile-360', width:360, height:800},
+      {name:'mobile-390', width:390, height:844},
+      {name:'mobile-430', width:430, height:932},
       {name:'tablet-768', width:768, height:1024},
       {name:'desktop-1440', width:1440, height:1000}
     ];
@@ -100,10 +102,13 @@ async function main() {
       await page.goto(base, {waitUntil:'domcontentloaded'});
       await loadQaFonts(page, base);
       await page.waitForTimeout(450);
-      const planner = await page.locator('.planner-launch').boundingBox();
-      const primary = await page.locator('.planner-primary').boundingBox();
-      check(`${size.name}: 規劃器主入口可見`, !!planner && planner.width > 250 && planner.height > 150, JSON.stringify(planner));
-      check(`${size.name}: 主按鈕可撳`, !!primary && primary.width > 120 && primary.height >= 40, JSON.stringify(primary));
+      const feature = await page.locator('#outcomeFeature').boundingBox();
+      const primary = await page.locator('#featureUseAmount').boundingBox();
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+      check(`${size.name}: Outcome Showcase 可見`, !!feature && feature.width > 250 && feature.height > 220, JSON.stringify(feature));
+      check(`${size.name}: 試計按鈕可撳`, !!primary && primary.width > 100 && primary.height >= 40, JSON.stringify(primary));
+      check(`${size.name}: 首頁冇橫向 overflow`, overflow <= 1, String(overflow));
+      check(`${size.name}: 中間導覽顯示首頁`, (await page.locator('.tabs button[data-tab="journey"] span').innerText()) === '首頁');
       await page.screenshot({path:path.join(outDir, `${size.name}-home.png`), fullPage:true});
       if (size.name === 'mobile-360') await runAxe(page, 'mobile-360 首頁');
       report.viewports.push({...size, runtimeErrors:[...runtimeErrors]});
@@ -117,25 +122,40 @@ async function main() {
     await loadQaFonts(page, base);
     await page.waitForTimeout(350);
 
-    await page.locator('.planner-primary').click();
-    await page.waitForTimeout(150);
-    check('主入口會打開環球票規劃器', await page.locator('#rsub-rtw').isVisible() && await page.locator('#owPanel').isVisible());
+    await page.locator('#featureUseAmount').click();
+    check('Outcome Showcase 會帶入 HK$8,000', (await page.locator('#amount').inputValue()).replace(/\D/g, '') === '8000');
+    check('計算第一層只顯示金額', await page.locator('#calcDetails').isHidden());
+    await page.locator('#calcContinue').click();
+    check('下一步會顯示篩選及進階設定', await page.locator('#calcDetails').isVisible() && await page.locator('#calcAdvanced').isVisible());
+    await page.screenshot({path:path.join(outDir, 'mobile-390-calculator-step2.png'), fullPage:true});
+    await runAxe(page, 'mobile-390 計算器');
+
+    await page.locator('.tabs button[data-tab="redeem"]').click();
+    check('規劃頁先顯示 Beginner／Advanced gateway', await page.locator('#plannerGateway').isVisible() && await page.locator('#plannerBeginner').isVisible() && await page.locator('#plannerAdvanced').isVisible());
+    await page.locator('#plannerBeginner').click();
+    await page.locator('[data-beginner-dest="日本"]').click();
+    await page.locator('[data-beginner-act="滑雪"]').click();
+    await page.locator('#beginnerMatch').click();
+    check('Beginner 會用現有 template 顯示配對', (await page.locator('#beginnerResults .beginner-result').count()) >= 1);
+    await page.screenshot({path:path.join(outDir, 'mobile-390-planner-beginner.png'), fullPage:true});
     await runAxe(page, 'mobile-390 規劃器');
 
-    await page.goto(base + '?open=pgO1', {waitUntil:'domcontentloaded'});
+    await page.goto(base + '?open=pgO2', {waitUntil:'domcontentloaded'});
     await loadQaFonts(page, base);
     await page.waitForTimeout(350);
-    check('文章分享深連結會直接開文章', await page.locator('#pgO1').isVisible());
-    const heroOk = await page.locator('#pgO1 img[src="img/pgO1-hero.jpg"]').evaluate(img => img.complete && img.naturalWidth >= 1000);
-    check('pgO1 正確封面成功解碼', heroOk);
-    await page.locator('#pgO1 [data-share-page="pgO1"]').click();
+    check('Outcome First 文章深連結會直接開文章', await page.locator('#pgO2').isVisible());
+    check('pgO2 第一屏顯示兩個可重算 tier', (await page.locator('#pgO2 .outcome-tier').count()) === 2);
+    check('pgO2 詳細資料分三層收納', (await page.locator('#pgO2 .outcome-disclosure').count()) === 3);
+    const heroOk = await page.locator('#pgO2 img[src="img/pgO2-hero.jpg"]').evaluate(img => img.complete && img.naturalWidth >= 1000);
+    check('pgO2 正確封面成功解碼', heroOk);
+    await page.locator('#pgO2 [data-share-page="pgO2"]').click();
     const articleShare = await page.evaluate(() => window.__lastShare || null);
-    check('文章分享使用獨立預覽網址', articleShare && /share\/standard-chartered-cathay-july-2026\/$/.test(articleShare.url), articleShare && articleShare.url);
-    await page.evaluate(() => window.applyExpiryNotices('2026-07-24'));
-    check('過期文章首屏清楚標示歷史優惠', await page.locator('#pgO1.expired-article .expired-note').isVisible());
-    check('過期文章仍然保留正文可閱讀', (await page.locator('#pgO1 .art-p').count()) > 0 && await page.locator('#pgO1').isVisible());
-    await page.screenshot({path:path.join(outDir, 'mobile-390-pgO1.png'), fullPage:false});
-    await runAxe(page, 'mobile-390 pgO1 文章');
+    check('文章分享使用獨立預覽網址', articleShare && /share\/hsbc-everymile-july-2026\/$/.test(articleShare.url), articleShare && articleShare.url);
+    await page.evaluate(() => window.applyExpiryNotices('2026-08-01'));
+    check('過期文章首屏清楚標示歷史優惠', await page.locator('#pgO2.expired-article .expired-note').isVisible());
+    check('過期文章仍然保留正文可閱讀', (await page.locator('#pgO2 .art-p').count()) > 0 && await page.locator('#pgO2').isVisible());
+    await page.screenshot({path:path.join(outDir, 'mobile-390-pgO2.png'), fullPage:false});
+    await runAxe(page, 'mobile-390 pgO2 文章');
 
     await page.goto(base + '?open=pgW10', {waitUntil:'domcontentloaded'});
     await loadQaFonts(page, base);
@@ -161,9 +181,12 @@ async function main() {
     check('私隱政策顯示一個曆月回覆期限', privacyText.includes('一個曆月'));
     check('私隱政策列明 GA、Sentry、MailerLite 保存安排', privacyText.includes('事件資料 2 個月') && privacyText.includes('使用者資料 14 個月') && privacyText.includes('30 日') && privacyText.includes('MailerLite'));
     check('私隱 email 連結正確', await page.locator('#pgPriv a[href="mailto:support@acremiles.app"]').count() === 1);
+    check('私隱政策分開列明公開通訊及快遞地址',
+      privacyText.includes('Unit 170198, PO Box 7169') && privacyText.includes('BH15 9EL') &&
+      privacyText.includes('Unit 170198, Courier Point') && privacyText.includes('BH16 6FH'));
     check('ICO 投訴連結安全開新頁', await page.locator('#pgPriv a[href*="ico.org.uk/make-a-complaint"][target="_blank"][rel~="noopener"]').count() === 1);
     const privacyCoversHome = await page.evaluate(() => {
-      const homeButton = document.getElementById('obGo');
+      const homeButton = document.getElementById('homeCalcStart');
       const privacyPage = document.getElementById('pgPriv');
       if (!homeButton || !privacyPage) return false;
       const rect = homeButton.getBoundingClientRect();

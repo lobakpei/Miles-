@@ -151,7 +151,7 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
 
 /* 3.6 產品可信度、私隱、版本同交付結構 gate */
 (function releaseSafety(){
-  const version = (first.match(/—\s*(v\d+\.\d+\.\d+)/) || [])[1];
+  const version = (first.match(/—\s*(v\d+\.\d+\.\d+(?:-[a-z0-9.-]+)?)/i) || [])[1];
   const buildDate = (first.match(/build:\s*(\d{4}-\d{2}-\d{2})/) || [])[1];
   ok('build marker 有可解析版本同日期', !!version && !!buildDate);
   ok('APP_VERSION 同 build marker 一致', !!version && src.includes("var APP_VERSION = '" + version + ' · build ' + buildDate + "'"));
@@ -255,7 +255,7 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
   ok('HTML id 全部唯一', new Set(ids).size === ids.length);
   const blankLinks = [...src.matchAll(/<a\b[^>]*target=["']_blank["'][^>]*>/gi)].map(m => m[0]);
   ok('新視窗連結全部有 noopener', blankLinks.every(tag => /rel=["'][^"']*noopener/.test(tag)));
-  ok('主要 dialog 有 aria-modal 同名稱', ['disclaimer','cardDetail','apPicker','setSheet','subSheet'].every(id => {
+  ok('主要 dialog 有 aria-modal 同名稱', ['disclaimer','cardDetail','apPicker','setSheet','subSheet','planActionSheet'].every(id => {
     const start = src.indexOf('id="' + id + '"');
     return start >= 0 && /role="dialog"[\s\S]{0,160}aria-modal="true"|aria-modal="true"[\s\S]{0,160}role="dialog"/.test(src.slice(Math.max(0, start - 80), start + 260));
   }));
@@ -301,10 +301,38 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
     jpegDimensions(earnOg)?.width === 1200 && jpegDimensions(earnOg)?.height === 675 &&
     jpegDimensions(redeemOg)?.width === 1200 && jpegDimensions(redeemOg)?.height === 675 &&
     /og-earn-plan\.jpg/.test(planShare) && /og-redeem-itinerary\.jpg/.test(tripShare));
-  ok('計算器／規劃器儲存清單使用同一套開啟分享刪除 UI',
-    (src.match(/class="saved-action open"/g) || []).length >= 2 &&
-    (src.match(/class="saved-action share"/g) || []).length >= 2 &&
-    (src.match(/class="saved-action delete"/g) || []).length >= 2 && !/class="dl" data-del/.test(src));
+  ok('計算器／規劃器儲存清單使用同一套 compact card ＋安全操作選單',
+    (src.match(/class="saved-main"/g) || []).length >= 2 &&
+    (src.match(/class="saved-more"/g) || []).length >= 2 &&
+    /data-plan-action="open"/.test(src) && /data-plan-action="share"/.test(src) &&
+    /data-plan-action="rename"/.test(src) && /data-plan-action="pin"/.test(src) &&
+    /data-plan-action="delete"/.test(src) && /window\.confirm\('刪除「'/.test(src) &&
+    !/class="saved-action delete"/.test(src));
+  ok('Outcome First 首頁先展示可理解結果再問金額',
+    /每筆消費，都值得有回報。/.test(src) && /id="outcomeFeature"/.test(src) &&
+    /HK\$8,000[\s\S]*?約 20,000 里[\s\S]*?台北經濟來回/.test(src) &&
+    src.indexOf('id="outcomeFeature"') < src.indexOf('id="homeAmount"'));
+  ok('首頁示範集中資料層並按核實及香港到期日過濾',
+    /var SPEND_SCENARIOS\s*=\s*\[/.test(src) &&
+    /SPEND_SCENARIOS\.filter\(function\(s\)\{ return s\.verified && \(!s\.expires \|\| s\.expires >= today\); \}\)/.test(src));
+  ok('Bottom navigation 中間顯示首頁而且保留原 journey id',
+    /<button data-tab="journey" class="on">[\s\S]*?<span>首頁<\/span><\/button>/.test(src));
+  ok('計算器第一層只問金額，其他條件逐步顯示',
+    /id="calcContinue"/.test(src) && /id="calcDetails"[^>]*hidden/.test(src) &&
+    /id="calcAdvanced"/.test(src) && /calcDetails'\)\.hidden = false/.test(src));
+  ok('計算結果緊接 summary 顯示可以換到乜',
+    src.indexOf('id="redeemList"') > src.indexOf('id="totalMiles"') &&
+    src.indexOf('id="redeemList"') < src.indexOf('id="passList"'));
+  ok('pgO2 使用 outcome-first 多 tier 同三層 disclosure',
+    (src.match(/class="outcome-tier"/g) || []).length >= 2 &&
+    (src.match(/class="outcome-disclosure"/g) || []).length >= 3 &&
+    /id="pgO2"[\s\S]*?資料更新：2026-07-16[\s\S]*?優惠期限：2026-07-31/.test(src));
+  ok('規劃器有 Beginner／Advanced gateway，Beginner 只配對現有 template',
+    /id="plannerBeginner"/.test(src) && /id="plannerAdvanced"/.test(src) &&
+    /var BEGINNER_TEMPLATES\s*=\s*\[/.test(src) && /OW_ZONE_DEMOS\[templateKey\]/.test(src) &&
+    /第一版只會配對現有路線模板，唔會假裝自由生成/.test(src));
+  ok('v6.79 冇新增外部 AI API',
+    !/api\.openai\.com|anthropic\.com\/v1|generativelanguage\.googleapis\.com/.test(src));
   ok('收藏列表有文章縮圖同過期灰階狀態', /class="fav-thumb/.test(src) && /已完結 · 保留作參考/.test(src) && /\.fav-thumb\.expired img/.test(src));
   ok('信用卡頁有官方原文、分享掣、canonical 同 Open Graph 圖', productCardPages.length === 9 && productCardPages.every(p => /銀行官方原文/.test(p) && /id="sharePage"/.test(p) && /rel="canonical"/.test(p) && /property="og:image"/.test(p) && /property="og:image:alt"/.test(p)));
   ok('靜態卡頁無過期人手註記', productCardPages.every(p => !/冇專屬官方文件|07-15 截|仲有 5 日|Robert 已 confirm/.test(p)));

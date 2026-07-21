@@ -1,6 +1,6 @@
 /* AcreMiles service worker — 同源 network-first（保資料新鮮），斷網先食 cache。
    每次改版要跟住升 CACHE 名，舊 cache 自動清。 */
-var CACHE = 'acremiles-v6.79.0';
+var CACHE = 'acremiles-v6.79.0-draft';
 var CORE = ['./', './index.html', './share-meta.js', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './share/itinerary/', './share/plan/', './img/og-earn-plan.jpg', './img/og-redeem-itinerary.jpg', './img/pgW0-planner.webp', './img/thumb-pgG2.webp', './img/thumb-pgO2.webp', './img/thumb-pgW11.webp', './img/thumb-banner-follow.webp', './img/pgG1-hero.jpg', './img/pgG1-steps.jpg', './img/pgG2-cards.jpg', './img/pgG3-hero.jpg', './img/pgG8-hero.jpg', './img/pgG4-hero.jpg', './img/pgW0-hero.jpg',
   './img/pgW6-hero.jpg',
   './img/pgW13-hero.jpg',

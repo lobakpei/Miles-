@@ -1,7 +1,19 @@
 # AcreMiles Master Context
 
 最後核對：2026-07-21（Europe/London）  
-用途：AcreMiles 專案嘅最高層入口。任何新 AI 或開發者都應先讀本文件，再讀 [`HANDOFF.md`](HANDOFF.md)。
+用途：AcreMiles 專案嘅最高層入口。任何新 AI 或開發者都應先讀 [`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md)，再讀本文件同 [`HANDOFF.md`](HANDOFF.md)。如有衝突，以 Safety Hardened 文件及用戶最新指示為準。
+
+## 0. 目前候選版本（未發布）
+
+| 項目 | 現況 |
+|---|---|
+| 候選版本 | **v6.79.0-draft — Outcome First Big Picture V1** |
+| 工作分支 | `feature/outcome-first-v1` |
+| 基準 commit | `1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049` |
+| 狀態 | 功能第一版完成；只可開 Draft PR，未獲批准不可 merge／deploy |
+| QA | Node release／consent／freshness／HTTP gates 已執行；本地未發布頁面受預覽工具安全限制，真瀏覽器截圖及裝置 QA 待 reviewer 補跑 |
+
+正式網站仍然係下面記錄嘅 v6.78.0；候選版本唔可以當已上線功能描述。
 
 ## 1. 現時正式狀態
 
@@ -133,17 +145,18 @@ AcreMiles **唔係**：
 
 ## 7. 新 AI 建議閱讀次序
 
-1. 本文件。
-2. [`HANDOFF.md`](HANDOFF.md)：當前工作、決定同接手步驟。
-3. [`ROADMAP.md`](ROADMAP.md)：優先次序及完成條件。
-4. [`ARCHITECTURE.md`](ARCHITECTURE.md)：程式結構、資料流、儲存及生成檔。
-5. 根據任務再讀專題文件：
+1. [`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md)：Outcome First 方向、驗收及不可違反安全規則。
+2. 本文件。
+3. [`HANDOFF.md`](HANDOFF.md)：當前工作、決定同接手步驟。
+4. [`ROADMAP.md`](ROADMAP.md)：優先次序及完成條件。
+5. [`ARCHITECTURE.md`](ARCHITECTURE.md)：程式結構、資料流、儲存及生成檔。
+6. 根據任務再讀專題文件：
    - 信用卡：`WEEKLY-CARD-UPDATE.md`、`CARD-SOURCE-AUDIT.md`
    - RTW：`RTW-AUDIT.md`、`RTW-ROUTE-VERIFICATION-20260720.md`
    - 區 10：`ZONE-10-ROUTE.csv`、`ZONE-10-FABLE5-HANDOFF.md`
    - QA：最新版本 `QA-REPORT-v6.78.0.md`
    - 私隱／合規：`DATA-RETENTION-SCHEDULE.md`、`SOCIAL-CONTENT-COMPLIANCE.md`
-6. `AGENTS.md`：所有程式及內容改動都必須遵守嘅 repo 級守則。
+7. `AGENTS.md`：所有程式及內容改動都必須遵守嘅 repo 級守則。
 
 ## 8. 最低交付及發布規則
 

@@ -331,7 +331,7 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
     /id="plannerBeginner"/.test(src) && /id="plannerAdvanced"/.test(src) &&
     /var BEGINNER_TEMPLATES\s*=\s*\[/.test(src) && /OW_ZONE_DEMOS\[templateKey\]/.test(src) &&
     /第一版只會配對現有路線模板，唔會假裝自由生成/.test(src));
-  ok('v6.79 draft 冇新增外部 AI API',
+  ok('v6.79 冇新增外部 AI API',
     !/api\.openai\.com|anthropic\.com\/v1|generativelanguage\.googleapis\.com/.test(src));
   ok('收藏列表有文章縮圖同過期灰階狀態', /class="fav-thumb/.test(src) && /已完結 · 保留作參考/.test(src) && /\.fav-thumb\.expired img/.test(src));
   ok('信用卡頁有官方原文、分享掣、canonical 同 Open Graph 圖', productCardPages.length === 9 && productCardPages.every(p => /銀行官方原文/.test(p) && /id="sharePage"/.test(p) && /rel="canonical"/.test(p) && /property="og:image"/.test(p) && /property="og:image:alt"/.test(p)));

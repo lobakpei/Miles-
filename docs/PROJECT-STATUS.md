@@ -7,6 +7,13 @@ GitHub：v6.77.0 為 PR #3／merge commit `09d743d655baeac0e4abeaa77e4852311a6b6
 
 完整接手入口：[`MASTER.md`](MASTER.md) → [`HANDOFF.md`](HANDOFF.md)
 
+## v6.79.0-draft（未發布）
+
+- 分支：`feature/outcome-first-v1`；baseline：`1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049`。
+- 已完成 Outcome First big-picture 第一版；詳見 [`QA-REPORT-v6.79.0-draft.md`](QA-REPORT-v6.79.0-draft.md)。
+- 只可作 Draft PR review；未 merge、未 deploy，正式網站仍係 v6.78.0。
+- 最高優先規格：[`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md)。
+
 ## v6.78.0 已發布
 
 - Zone 10 正式路線更新為 19,960 哩、區 10 商務 230,000 里、5 停留／2 轉機／2 開口。

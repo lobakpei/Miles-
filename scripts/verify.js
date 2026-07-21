@@ -280,6 +280,19 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
       /property="og:image:secure_url"/.test(html) && /property="og:image:alt"/.test(html);
   }));
   ok('行程分享可重新載入且有品牌預覽', fs.existsSync(path.join(root, 'share', 'itinerary', 'index.html')) && /decodeTripPayload/.test(src) && /shareAcreMilesTrip/.test(src));
+  const earnOg = path.join(root, 'img', 'og-earn-plan.jpg');
+  const redeemOg = path.join(root, 'img', 'og-redeem-itinerary.jpg');
+  const planShare = fs.readFileSync(path.join(root, 'share', 'plan', 'index.html'), 'utf8');
+  const tripShare = fs.readFileSync(path.join(root, 'share', 'itinerary', 'index.html'), 'utf8');
+  ok('賺／換分享各有專屬 1200×675 JPEG',
+    jpegDimensions(earnOg)?.width === 1200 && jpegDimensions(earnOg)?.height === 675 &&
+    jpegDimensions(redeemOg)?.width === 1200 && jpegDimensions(redeemOg)?.height === 675 &&
+    /og-earn-plan\.jpg/.test(planShare) && /og-redeem-itinerary\.jpg/.test(tripShare));
+  ok('計算器／規劃器儲存清單使用同一套開啟分享刪除 UI',
+    (src.match(/class="saved-action open"/g) || []).length >= 2 &&
+    (src.match(/class="saved-action share"/g) || []).length >= 2 &&
+    (src.match(/class="saved-action delete"/g) || []).length >= 2 && !/class="dl" data-del/.test(src));
+  ok('收藏列表有文章縮圖同過期灰階狀態', /class="fav-thumb/.test(src) && /已完結 · 保留作參考/.test(src) && /\.fav-thumb\.expired img/.test(src));
   ok('信用卡頁有官方原文、分享掣、canonical 同 Open Graph 圖', productCardPages.length === 9 && productCardPages.every(p => /銀行官方原文/.test(p) && /id="sharePage"/.test(p) && /rel="canonical"/.test(p) && /property="og:image"/.test(p) && /property="og:image:alt"/.test(p)));
   ok('靜態卡頁無過期人手註記', productCardPages.every(p => !/冇專屬官方文件|07-15 截|仲有 5 日|Robert 已 confirm/.test(p)));
   ok('service worker 有離線 navigation fallback', /request\.mode === 'navigate'[\s\S]*?caches\.match\('\.\/index\.html'\)/.test(sw));

@@ -60,5 +60,9 @@
 | `node scripts/smoke-http.js` | 109／109 paths OK |
 | `node scripts/test-social-previews.js` | 64 個 crawler page responses、32 張預覽圖，全部通過 |
 | 舊 Zone 10 數字掃描 | 現行程式、分享 metadata 及正式路線資料冇殘留 19,793／被取代嘅候選距離；研究紀錄只保留淘汰原因 |
+| GitHub 發布 | PR #5 已合併；merge commit `8494c7342be35d4a43d6519519104f532781e775` |
+| GitHub Pages 文章 | v6.78.0、19,960 哩、完整路線、5／2／2、現有封面全部實際顯示；封面成功解碼 |
+| GitHub Pages 規劃器 | 10 段 IATA、CX／IB／BA／AA／JL、逐段距離、10／10 已核實狀態、總距離、Zone 10 同 230,000 里全部一致 |
+| Production 舊資料掃描 | 現行 DOM 冇 19,793、19,496 或 `NRT→KIX`；冇 `acremiles.app` 來源 JavaScript error |
 
-本地環境冇可執行 Chromium，因此 `browser-qa.js` 會留待公開部署後用實際瀏覽器核對。呢個限制唔影響 Node 引擎、HTML 結構、HTTP 資產或 crawler metadata gate；production 驗證結果會喺發布後補入本報告。
+本地環境冇可執行 Chromium，所以未重跑完整 360／768／1440 screenshot／axe suite；呢項仍列入發布後跨 viewport 回歸。發布後已用公開 Chromium 實際打開文章、載入 DIY 規劃器、核對每段 IATA／航司／距離／狀態及封面，核心 Zone 10 production 流程通過。

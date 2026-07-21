@@ -181,6 +181,9 @@ async function main() {
     check('私隱政策顯示一個曆月回覆期限', privacyText.includes('一個曆月'));
     check('私隱政策列明 GA、Sentry、MailerLite 保存安排', privacyText.includes('事件資料 2 個月') && privacyText.includes('使用者資料 14 個月') && privacyText.includes('30 日') && privacyText.includes('MailerLite'));
     check('私隱 email 連結正確', await page.locator('#pgPriv a[href="mailto:support@acremiles.app"]').count() === 1);
+    check('私隱政策分開列明公開通訊及快遞地址',
+      privacyText.includes('Unit 170198, PO Box 7169') && privacyText.includes('BH15 9EL') &&
+      privacyText.includes('Unit 170198, Courier Point') && privacyText.includes('BH16 6FH'));
     check('ICO 投訴連結安全開新頁', await page.locator('#pgPriv a[href*="ico.org.uk/make-a-complaint"][target="_blank"][rel~="noopener"]').count() === 1);
     const privacyCoversHome = await page.evaluate(() => {
       const homeButton = document.getElementById('homeCalcStart');

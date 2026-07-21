@@ -141,6 +141,7 @@ async function main() {
     await loadQaFonts(page, base);
     await page.waitForTimeout(350);
     check('區10 新文章同資訊型封面可見', await page.locator('#pgW10').isVisible() && await page.locator('#pgW10 img[src="img/pgW10-hero-v3.jpg"]').isVisible());
+    check('RTW 文章清楚標示教學示例而非出票保證', (await page.locator('#pgW10 .route-data-notice').innerText()).includes('教學示例｜唔係出票保證'));
     await page.locator('#pgW10 [data-owdiy="z10"]').click();
     await page.waitForTimeout(180);
     const zone10Values = await page.locator('#owSegs input[data-owf="from"]').evaluateAll(nodes => nodes.map(n => n.value));
@@ -154,6 +155,7 @@ async function main() {
     const privacyText = await page.locator('#pgPriv').innerText();
     check('私隱政策顯示英國個人營運者同 ICO 登記', privacyText.includes('Mrs HAU YING OU-YANG') && privacyText.includes('ZC174150'));
     check('私隱政策顯示一個曆月回覆期限', privacyText.includes('一個曆月'));
+    check('私隱政策列明 GA、Sentry、MailerLite 保存安排', privacyText.includes('事件資料 2 個月') && privacyText.includes('使用者資料 14 個月') && privacyText.includes('30 日') && privacyText.includes('MailerLite'));
     check('私隱 email 連結正確', await page.locator('#pgPriv a[href="mailto:support@acremiles.app"]').count() === 1);
     check('ICO 投訴連結安全開新頁', await page.locator('#pgPriv a[href*="ico.org.uk/make-a-complaint"][target="_blank"][rel~="noopener"]').count() === 1);
     const privacyCoversHome = await page.evaluate(() => {
@@ -169,6 +171,16 @@ async function main() {
     /* .page 係 fixed viewport；fullPage 會將底層 document 拼入同一張圖，造成假 overlay。 */
     await page.screenshot({path:path.join(outDir, 'mobile-390-privacy.png'), fullPage:false});
     await runAxe(page, 'mobile-390 私隱政策');
+
+    await page.goto(base, {waitUntil:'domcontentloaded'});
+    await loadQaFonts(page, base);
+    await page.locator('#setBtn').click();
+    await page.locator('#setSheet [data-open="pgTerms"]').click();
+    const termsText = await page.locator('#pgTerms').innerText();
+    check('使用條款列明推薦、RTW、第三方及消費者權利限制',
+      ['計算及推薦限制','環球票及行程示例','第三方及品牌','不可排除嘅消費者權利'].every(text => termsText.includes(text)));
+    await page.screenshot({path:path.join(outDir, 'mobile-390-terms.png'), fullPage:false});
+    await runAxe(page, 'mobile-390 使用條款');
 
     await page.goto(base, {waitUntil:'domcontentloaded'});
     await loadQaFonts(page, base);

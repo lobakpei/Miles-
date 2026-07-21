@@ -15,6 +15,25 @@ let fails = 0;
 const ok = (n, c) => { console.log((c ? '✓ ' : '❌ ') + n); if (!c) fails++; };
 const near = (a, b, e) => Math.abs(a - b) < (e || 2);
 const sum = r => r.rows.reduce((s, x) => s + x.spend, 0);
+function jpegDimensions(filePath) {
+  if (!fs.existsSync(filePath)) return null;
+  const data = fs.readFileSync(filePath);
+  if (data[0] !== 0xff || data[1] !== 0xd8) return null;
+  const sof = new Set([0xc0, 0xc1, 0xc2, 0xc3, 0xc5, 0xc6, 0xc7, 0xc9, 0xca, 0xcb, 0xcd, 0xce, 0xcf]);
+  let offset = 2;
+  while (offset + 8 < data.length) {
+    if (data[offset] !== 0xff) { offset += 1; continue; }
+    while (data[offset] === 0xff) offset += 1;
+    const marker = data[offset++];
+    if (marker === 0xd8 || marker === 0xd9) continue;
+    if (offset + 1 >= data.length) return null;
+    const length = data.readUInt16BE(offset);
+    if (sof.has(marker)) return {height: data.readUInt16BE(offset + 3), width: data.readUInt16BE(offset + 5)};
+    if (length < 2) return null;
+    offset += length;
+  }
+  return null;
+}
 
 /* 1. build marker + 行數 */
 const first = src.split('\n')[0];
@@ -155,13 +174,21 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
   ok('關閉同意會即時停 GA/Sentry', /function stopDiagnostics\([\s\S]*?analytics_storage:\s*'denied'[\s\S]*?disableAcreMilesDiagnostics/.test(src));
   ok('GA 載入前檢查 consent', /function loadGA\([\s\S]*?store\.get\('bm_consent'\)[\s\S]*?if \(!cs \|\| !cs\.analytics\) return/.test(src));
   ok('私隱政策披露三個第三方', ['Google Analytics','Sentry','MailerLite'].every(n => src.includes(n)));
+  ok('私隱政策列明三項保存安排', /Google Analytics[\s\S]*?事件資料 2 個月[\s\S]*?使用者資料 14 個月[\s\S]*?Sentry Developer[\s\S]*?30 日[\s\S]*?MailerLite/.test(src));
+  ok('使用條款清楚講推薦限制及不可排除權利',
+    /唔保證結果係最抵、最完整/.test(src) && /法律上不可排除嘅消費者權利/.test(src));
+  ok('RTW 清楚標示教學示例而非出票保證',
+    /教學示例｜唔係出票保證/.test(src) && /正式確認同最終出票結果為準/.test(src));
   ok('未同意前無靜態第三方 script/stylesheet', !/<script[^>]+src=["']https?:|<link[^>]+rel=["']stylesheet["'][^>]+href=["']https?:/i.test(src));
 
   ok('香港日期 helper 已用於優惠到期', /function hkToday\(/.test(src) && (src.match(/var today = (?:todayStr \|\| )?hkToday\(\);/g) || []).length >= 2);
   ok('未核實卡 UI pool 有硬過濾', /recommendableCards\s*=\s*cards\.filter\(function\(c\)\{\s*return c\.verified\s*&&\s*!c\.pending/.test(src));
   ok('無核實渠道優惠預設下架', !/CHANNEL_OFFERS\s*=\s*\[[\s\S]*?active:\s*true[\s\S]*?verified:\s*false/.test(src));
-  ok('9 張卡全部有銀行官方產品頁及 KFS／T&C', BM.DEFAULT_CARDS.length === 9 && BM.DEFAULT_CARDS.every(c =>
-    /^https:\/\//.test(c.url || '') && !/mrmiles\.hk/i.test(c.url || '') && c.sourceVerifiedAt === '2026-07-20' && Array.isArray(c.sourceDocs) && c.sourceDocs.length >= 2 && c.sourceDocs.every(d => /^https:\/\//.test(d.url || ''))
+  const dataAsOfDate = ((BM.DATA_AS_OF || '').match(/^(\d{4}-\d{2}-\d{2})/) || [])[1];
+  ok('9 張卡全部有銀行官方產品頁及 KFS／T&C', BM.DEFAULT_CARDS.length === 9 && !!dataAsOfDate && BM.DEFAULT_CARDS.every(c =>
+    /^https:\/\//.test(c.url || '') && !/mrmiles\.hk/i.test(c.url || '') &&
+    /^\d{4}-\d{2}-\d{2}$/.test(c.sourceVerifiedAt || '') && c.sourceVerifiedAt <= dataAsOfDate &&
+    Array.isArray(c.sourceDocs) && c.sourceDocs.length >= 2 && c.sourceDocs.every(d => /^https:\/\//.test(d.url || ''))
   ));
   const sc = BM.DEFAULT_CARDS.find(c => c.id === 'sc-cathay');
   ok('渣打 HK$96,000 已正確標為年薪而非簽賬豁免門檻', !!sc && sc.incomeVerified === true && /唔係簽賬門檻/.test(sc.waiveNote || ''));
@@ -236,10 +263,24 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
   ok('pgO1 正確封面已引用及加入離線 cache', fs.existsSync(pgO1) && fs.statSync(pgO1).size > 50000 && src.includes('img/pgO1-hero.jpg') && sw.includes('img/pgO1-hero.jpg'));
   const shareMetaPath = path.join(root, 'share-meta.js');
   const shareMeta = fs.existsSync(shareMetaPath) ? require(shareMetaPath) : {};
+  ok('限時文章同分享頁到期日一致', ['pgO1','pgO2','pgO3','pgO4'].every(id => {
+    const match = src.match(new RegExp(`pg:['"]${id}['"],\\s*expire:['"](\\d{4}-\\d{2}-\\d{2})['"]`));
+    return match && shareMeta[id] && shareMeta[id].expire === match[1];
+  }));
   const sharePages = Object.keys(shareMeta).map(id => path.join(root, 'share', shareMeta[id].slug, 'index.html'));
   ok('每篇文章有獨立 Open Graph 分享頁', sharePages.length >= 20 && sharePages.every(p => fs.existsSync(p) && /og:image/.test(fs.readFileSync(p, 'utf8'))));
+  ok('文章分享圖尺寸同檔案一致，並有 crawler 所需描述', Object.values(shareMeta).every(item => {
+    const p = path.join(root, 'share', item.slug, 'index.html');
+    const imagePath = path.join(root, item.image);
+    if (!fs.existsSync(p)) return false;
+    const html = fs.readFileSync(p, 'utf8');
+    const size = jpegDimensions(imagePath);
+    return !!size && html.includes(`property="og:image:width" content="${size.width}"`) &&
+      html.includes(`property="og:image:height" content="${size.height}"`) &&
+      /property="og:image:secure_url"/.test(html) && /property="og:image:alt"/.test(html);
+  }));
   ok('行程分享可重新載入且有品牌預覽', fs.existsSync(path.join(root, 'share', 'itinerary', 'index.html')) && /decodeTripPayload/.test(src) && /shareAcreMilesTrip/.test(src));
-  ok('信用卡頁有官方原文、分享掣、canonical 同 Open Graph 圖', productCardPages.length === 9 && productCardPages.every(p => /銀行官方原文/.test(p) && /id="sharePage"/.test(p) && /rel="canonical"/.test(p) && /property="og:image"/.test(p)));
+  ok('信用卡頁有官方原文、分享掣、canonical 同 Open Graph 圖', productCardPages.length === 9 && productCardPages.every(p => /銀行官方原文/.test(p) && /id="sharePage"/.test(p) && /rel="canonical"/.test(p) && /property="og:image"/.test(p) && /property="og:image:alt"/.test(p)));
   ok('靜態卡頁無過期人手註記', productCardPages.every(p => !/冇專屬官方文件|07-15 截|仲有 5 日|Robert 已 confirm/.test(p)));
   ok('service worker 有離線 navigation fallback', /request\.mode === 'navigate'[\s\S]*?caches\.match\('\.\/index\.html'\)/.test(sw));
 })();

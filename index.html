@@ -1,4 +1,4 @@
-<!-- build: 2026-07-20 UK — v6.75.0：過期內容存檔、信用卡長版條款、最新渠道優惠及區10重建 -->
+<!-- build: 2026-07-20 UK — v6.76.0：資料保存期、免責條款、每週內容審核及最新 QA -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -594,6 +594,7 @@ html.dark .pass{box-shadow:none}
 .ext-note{font-size:11.5px;color:var(--mut);margin-top:6px;line-height:1.5}
 .danger{color:var(--red);border-color:#E8C9BC}
 footer{max-width:680px;margin:0 auto;padding:0 16px 34px;font-size:11.5px;color:var(--mut);line-height:1.5;text-align:center}
+html:not(.dark) footer{color:#3F5D66}
 .modal-bg{position:fixed;inset:0;background:rgba(10,26,22,.65);backdrop-filter:blur(3px);z-index:100;display:flex;align-items:center;justify-content:center;padding:18px}
 .modal{background:var(--card);border-radius:18px;max-width:440px;width:100%;padding:22px 20px;max-height:86vh;overflow:auto}
 .modal h2{font-size:19px;font-weight:900;margin-bottom:10px}
@@ -914,9 +915,10 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="dc-title">
     <h2 id="dc-title">在開始之前</h2>
     <ul>
-      <li><b>AcreMiles 係計數工具，唔係財務建議。</b>所有結果只供參考，最終決定同後果由你自己負責。</li>
-      <li><b>卡資料可能過時或有錯。</b>迎新、賺里率、年費全部只係示範參考，申請前<b>必須</b>以銀行官網最新條款為準。</li>
+      <li><b>AcreMiles 係教育及規劃工具，唔係財務、信貸、法律、稅務或旅遊預訂建議。</b>計算同推薦係按你輸入嘅資料及已列明假設作估算，唔保證係最抵、最完整或一定獲批／換到。</li>
+      <li><b>卡資料同優惠會變。</b>迎新、賺里率、年費、資格同排除交易可能過時或有錯；申請或簽賬前<b>必須</b>開銀行最新產品頁、KFS 同條款再確認。</li>
       <li><b>申請信用卡會影響信貸紀錄（TU）。</b>請量力而為——一旦找唔清卡數，利息開支會遠遠超過里數價值。</li>
+      <li><b>環球票路線只係教學示例。</b>票規通過唔代表指定日期有班次、獎勵位或一定獲客服接受；最終以航空公司正式確認同出票結果為準。</li>
     </ul>
     <div class="dc-priv"><b>🔒 你嘅私隱：</b>計劃、行程同設定只存喺<b>你自己部機</b>。揀「接受匿名改善」先會載入 Google Analytics（使用統計）同 Sentry（錯誤診斷）；揀「只限必要」就唔會載入兩者，全部核心功能照用。你主動訂閱時，email 先會傳畀 MailerLite。詳情見私隱政策。</div>
     <p style="font-size:13px;color:var(--mut);margin-bottom:16px">利益披露：本 app 目前<b>冇任何</b> referral 或聯盟收益。日後如有，會喺當眼位置清楚標明。</p>
@@ -1377,7 +1379,7 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
   <div class="mn-sec">法律</div>
   <button type="button" class="mn-row" data-open="pgTerms">使用條款<svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
   <button type="button" class="mn-row" data-open="pgPriv">私隱政策<svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
-  <div class="set-row set-about">AcreMiles · v6.75.0<br><span>借定唔借？還得到先好借！</span></div>
+  <div class="set-row set-about">AcreMiles · v6.76.0<br><span>借定唔借？還得到先好借！</span></div>
 </section>
 
 <!-- v6.0 訂閱最新優惠 sheet -->
@@ -1417,9 +1419,10 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
     </ul>
     <h3>免責聲明</h3>
     <ul>
-      <li>AcreMiles 係計數工具，<b>唔係財務建議</b>；結果只供參考。</li>
-      <li>所有卡資料為示範參考，可能過時或有錯，<b>一切以銀行官網為準</b>。</li>
+      <li>AcreMiles 係教育及規劃工具，<b>唔係財務、信貸、法律、稅務或旅遊預訂建議</b>；計算同推薦只係估算，唔保證最抵、最完整、獲批或換到。</li>
+      <li>卡資料、迎新同渠道優惠可能改動、過時或有錯；申請或簽賬前要開銀行最新產品頁、KFS 同條款確認。</li>
       <li>申請信用卡會影響信貸紀錄；請量力而為，切勿為儲里數過度消費。</li>
+      <li>環球票路線係教學示例；票規通過唔等於指定日期有班次、獎勵位或一定出到票，最終以航空公司正式確認同出票結果為準。</li>
       <li>利益披露：目前冇任何 referral 或聯盟收益。卡庫收錄標準係「香港市面主流」，同有冇 referral 完全脫鈎；日後如有 referral link，會喺該張卡清楚標明「呢個係推薦連結」。</li>
     </ul>
     <p><button class="link-btn" id="showDc">重睇免責聲明</button></p>
@@ -1435,13 +1438,19 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
 <div class="page" id="pgTerms" hidden>
   <div class="page-head"><button type="button" class="pg-back" data-pg="pgTerms" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg></button><b>使用條款</b></div>
   <div class="page-body">
-    <div class="panel"><ul style="padding-left:18px;display:grid;gap:10px">
-      <li><b>AcreMiles 係計數工具，唔係財務建議。</b>所有結果只供參考，最終決定同後果由你自己負責。</li>
-      <li><b>卡資料可能過時或有錯。</b>迎新、賺里率、年費全部只係示範參考，申請前<b>必須</b>以銀行官網最新條款為準。</li>
-      <li><b>申請信用卡會影響信貸紀錄（TU）。</b>請量力而為——一旦找唔清卡數，利息開支會遠遠超過里數價值。</li>
-      <li><b>利益披露：</b>本 app 目前<b>冇任何</b> referral 或聯盟收益。日後如有，會喺當眼位置清楚標明。</li>
-    </ul>
-    <p class="slogan-box" style="margin-top:14px">優惠受條款及細則約束，資料只供參考。<br>借定唔借？還得到先好借！</p></div>
+    <div class="panel" style="display:grid;gap:13px;font-size:14px;line-height:1.7">
+      <div><b>服務性質</b><br>AcreMiles 係教育及規劃工具，唔係銀行、航空公司、信貸資料機構或信用中介，亦唔代表你申請信用卡或預訂機票。本服務唔構成財務、信貸、法律、稅務、投資或旅遊預訂建議。</div>
+      <div><b>計算及推薦限制</b><br>結果按你輸入嘅資料、已列明假設同保守計法作估算，未必涵蓋所有產品、費用、排除交易或個人情況。AcreMiles 唔保證結果係最抵、最完整、一定獲批、一定賺到所示里數，亦唔保證慳到所示金額。</div>
+      <div><b>信用卡資料</b><br>迎新、賺里率、年費、申請資格、名額、推廣期同條款可以隨時更改。AcreMiles 會標示資料日期同來源，但仍可能有延誤、遺漏或錯誤；申請、登記或簽賬前，必須自行開發卡銀行最新產品頁、KFS／收費概要及完整條款核對。</div>
+      <div><b>負責任借貸</b><br>申請信用卡可能產生硬查詢並影響信貸紀錄、批核或日後借貸；逾期或未全數還款可產生利息、費用同失去優惠。唔好為賺里數而製造本來唔會有嘅消費，只應申請你理解而且負擔得到嘅產品。借定唔借？還得到先好借！</div>
+      <div><b>環球票及行程示例</b><br>示範路線只用嚟解釋票規上可以點砌，唔係可直接照抄嘅預訂建議或出票保證。自費開口、同城轉機場、季節航線或班次變動可以係教學設計一部分；票規通過亦唔代表指定日期有航班、接駁可行、獎勵位、指定艙等，或里數、稅項及附加費不變。預訂前要逐段查官方時刻、獎勵位同條款，並以航空公司正式確認及最終出票結果為準；客服口徑如有不同，要再次核對。</div>
+      <div><b>第三方及品牌</b><br>銀行、航空公司、比較平台連結及商標只用作識別資料來源或相關產品，唔代表對方認可、贊助 AcreMiles 或同 AcreMiles 有合作。外部網站由第三方負責，使用時受對方條款及私隱政策約束。</div>
+      <div><b>利益披露</b><br>本 app 目前冇 referral／聯盟收益，卡庫收錄同排序唔取決於佣金。日後如有廣告、合作或推薦連結，會喺相關內容當眼位置清楚標明。</div>
+      <div><b>責任範圍</b><br>喺法律容許範圍內，AcreMiles 唔會為因依賴估算、第三方資料、服務中斷或未有先核對官方條款而造成嘅間接或可避免損失負責。呢段條款唔會排除欺詐、因疏忽引致死亡或人身傷害，亦唔會削減法律上不可排除嘅消費者權利。</div>
+      <div><b>問題及更正</b><br>如發現錯誤，請連同頁面、資料日期及截圖電郵 <a href="mailto:support@acremiles.app">support@acremiles.app</a>。重大錯誤會更正並保留必要修正紀錄。</div>
+      <div style="font-size:12px;color:var(--mut)">最後更新：2026-07-20</div>
+      <p class="slogan-box" style="margin:1px 0 0">優惠受條款及細則約束，資料只供參考。<br>借定唔借？還得到先好借！</p>
+    </div>
   </div>
 </div>
 <div class="page" id="pgPriv" hidden>
@@ -1454,7 +1463,7 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
       <div><b>外部連結</b><br>撳銀行、航空公司或比較平台連結後，會離開 AcreMiles，對方按自己嘅私隱政策處理資料。AcreMiles 目前冇 referral／聯盟收益；如有改變會另行披露。</div>
       <div><b>邊個負責處理你嘅資料</b><br>AcreMiles 由 <b>Mrs HAU YING OU-YANG</b> 以個人／sole trader 身份喺英國營運，佢係本服務嘅資料控制者。ICO 登記編號：<b>ZC174150</b>。私隱查詢請電郵 <a href="mailto:support@acremiles.app">support@acremiles.app</a>。</div>
       <div><b>處理資料嘅原因</b><br>本機資料只用嚟提供你主動要求嘅計算、收藏同行程功能；Google Analytics 同 Sentry 只會喺你明確同意後，用嚟了解整體使用情況同修正程式錯誤；優惠電郵只會喺你主動剔選同意後寄出。你可以隨時關閉統計或退訂。</div>
-      <div><b>保存時間</b><br>本機資料會保存到你重設或清除網站資料為止；訂閱 email 會保存到你退訂或要求刪除為止。Google Analytics、Sentry 同 MailerLite 收到嘅資料會按 AcreMiles 實際帳戶設定同各服務嘅保存規則刪除；正式公開前會再核對呢三個帳戶嘅設定。</div>
+      <div><b>保存時間</b><br>本機資料會保存到你重設或清除網站資料為止。截至 2026-07-20，AcreMiles 嘅 Google Analytics 設定顯示：<b>事件資料 2 個月</b>、<b>使用者資料 14 個月</b>，並在有新使用者活動時重設保存期；彙總報表可能按 Google 報表規則保留更久。Sentry Developer 計劃嘅錯誤事件可查閱期係 <b>30 日</b>。MailerLite 會喺訂閱有效期間保存 email；退訂會停止宣傳電郵，但為尊重退訂可能保留最少封鎖紀錄，要求刪除則會按下一段處理。供應商備份、保安、帳務或法律要求嘅資料，可能按各自政策保存較耐。AcreMiles 會定期核對帳戶設定同保存安排。</div>
       <div><b>你嘅選擇及權利</b><br>你可以關閉匿名改善、重設本機資料、退訂電郵，亦可要求查閱、更正、刪除、限制或索取由 AcreMiles 持有嘅個人資料。我哋會盡快處理有效要求，最遲喺收到要求後<b>一個曆月</b>內回覆；複雜要求如依法需要延長，會先通知你同交代理由。如你對處理方式不滿，可向英國 <a href="https://ico.org.uk/make-a-complaint/data-protection-complaints/" target="_blank" rel="noopener noreferrer">Information Commissioner’s Office（ICO）</a>投訴。</div>
       <div style="font-size:12px;color:var(--mut)">最後更新：2026-07-20</div>
     </div>
@@ -5936,7 +5945,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       var lead = page.querySelector('.art-lead');
       var note = document.createElement('div');
       note.className = 'art-tip route-data-notice';
-      note.innerHTML = '<b>⚠️ 路線核實狀態：</b>呢篇係候選行程，唔係可直接出票保證。規劃器只有列入直航核實庫嘅航段先會顯示綠色；未核實段、指定日期班次同獎勵位，出票前要逐段查時刻表及由熱線確認。';
+      note.innerHTML = '<b>⚠️ 教學示例｜唔係出票保證：</b>呢條路線只用嚟示範票規上可以點砌；自費開口、同城轉機場、季節航線或班次變化可以係示範一部分。規劃器顯示票規通過或直航已核實，仍唔代表指定日期有班次、獎勵位、指定艙等，亦唔代表稅項及附加費不變。出票前要逐段查官方資料，並以航空公司正式確認同最終出票結果為準。';
       if (lead && lead.parentNode) lead.parentNode.insertBefore(note, lead.nextSibling);
     });
   })();
@@ -6061,7 +6070,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
   /* ══════════ v2.5 新功能模組 ══════════ */
 
-  var APP_VERSION = 'v6.75.0 · build 2026-07-20'; /* 同第一行 build marker 一齊改 */
+  var APP_VERSION = 'v6.76.0 · build 2026-07-20'; /* 同第一行 build marker 一齊改 */
 
   /* ---------- toast ---------- */
   var toastTimer = null;

@@ -301,10 +301,12 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
     jpegDimensions(earnOg)?.width === 1200 && jpegDimensions(earnOg)?.height === 675 &&
     jpegDimensions(redeemOg)?.width === 1200 && jpegDimensions(redeemOg)?.height === 675 &&
     /og-earn-plan\.jpg/.test(planShare) && /og-redeem-itinerary\.jpg/.test(tripShare));
-  ok('計算器／規劃器儲存清單使用同一套開啟分享刪除 UI',
-    (src.match(/class="saved-action open"/g) || []).length >= 2 &&
-    (src.match(/class="saved-action share"/g) || []).length >= 2 &&
-    (src.match(/class="saved-action delete"/g) || []).length >= 2 && !/class="dl" data-del/.test(src));
+  ok('計算器／規劃器儲存清單使用同一套 compact menu UI',
+    /data-plan-menu=/.test(src) && /data-trip-menu=/.test(src) &&
+    /data-rename-plan=/.test(src) && /data-rename-trip=/.test(src) &&
+    /data-pin-plan=/.test(src) && /data-pin-trip=/.test(src) &&
+    /class="danger" data-del=/.test(src) && /class="danger" data-rtwdel=/.test(src) &&
+    !/class="dl" data-del/.test(src));
   ok('收藏列表有文章縮圖同過期灰階狀態', /class="fav-thumb/.test(src) && /已完結 · 保留作參考/.test(src) && /\.fav-thumb\.expired img/.test(src));
   ok('信用卡頁有官方原文、分享掣、canonical 同 Open Graph 圖', productCardPages.length === 9 && productCardPages.every(p => /銀行官方原文/.test(p) && /id="sharePage"/.test(p) && /rel="canonical"/.test(p) && /property="og:image"/.test(p) && /property="og:image:alt"/.test(p)));
   ok('靜態卡頁無過期人手註記', productCardPages.every(p => !/冇專屬官方文件|07-15 截|仲有 5 日|Robert 已 confirm/.test(p)));

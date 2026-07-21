@@ -108,7 +108,7 @@ const utilityPages = [
     slug: 'itinerary',
     title: '我用 AcreMiles 砌咗條環球行程',
     description: '打開連結就可以載入路線，自己改站、計里數同逐段檢查。',
-    image: 'img/pgW0-hero.jpg',
+    image: 'img/og-redeem-itinerary.jpg',
     target: '../../?trip=',
     dynamic: true
   },
@@ -116,7 +116,7 @@ const utilityPages = [
     slug: 'plan',
     title: '我用 AcreMiles 計咗個里數計劃',
     description: '免費計大額消費可以點分卡、預計儲到幾多里。',
-    image: 'img/pgG2-cards.jpg',
+    image: 'img/og-earn-plan.jpg',
     target: '../../?start=earn',
     dynamic: false
   }

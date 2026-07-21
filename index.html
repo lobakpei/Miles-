@@ -1,4 +1,4 @@
-<!-- build: 2026-07-20 UK — v6.76.0：資料保存期、免責條款、每週內容審核及最新 QA -->
+<!-- build: 2026-07-21 UK — v6.77.0：統一儲存介面、收藏縮圖及賺／換專屬分享圖 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -547,15 +547,18 @@ html.dark .pass{box-shadow:none}
 /* ---------- v2.5：分享／儲存計劃／助手氣泡／toast／合規標語 ---------- */
 .act-row{display:flex;gap:8px;margin:0 0 14px}
 .act-row button{flex:1;min-height:46px;padding:10px 8px;border-radius:12px;font-weight:700;font-size:14.5px;border:1.5px solid var(--jade);color:var(--jade-ink);background:var(--card)}
-.saved-row{display:flex;align-items:center;gap:8px;padding:10px 2px;border-bottom:1px solid var(--line)}
+.saved-row{display:flex;align-items:center;gap:10px;padding:11px 2px;border-bottom:1px solid var(--line)}
 .saved-row:last-child{border-bottom:none}
-.saved-row>div:first-child{flex:1;min-width:0}
+.saved-copy{flex:1;min-width:0}
 .saved-row .nm{font-weight:700;font-size:14.5px}
 .saved-row .mt{font-size:12px;color:var(--mut);margin-top:1px}
-.saved-row .ld{margin-left:auto;flex:none;min-height:40px;padding:8px 13px;border-radius:10px;background:var(--jade);color:#fff;font-weight:700;font-size:13.5px}
-.saved-row .sd{flex:none;min-height:40px;padding:8px 11px;border-radius:10px;border:1px solid var(--jade);color:var(--jade-ink);font-weight:700;font-size:13px}
-.saved-row .dl{flex:none;width:40px;height:40px;color:var(--red);font-size:16px}
-@media(max-width:390px){.saved-row{flex-wrap:wrap}.saved-row>div:first-child{flex-basis:100%}.saved-row .ld{margin-left:0}}
+.saved-actions{display:flex;align-items:center;gap:7px;flex:none}
+.saved-action{min-height:40px;padding:8px 11px;border-radius:10px;border:1.5px solid var(--line);font-weight:750;font-size:13px;white-space:nowrap}
+.saved-action.open{background:var(--jade-btn);border-color:var(--jade-btn);color:#fff}
+.saved-action.share{border-color:var(--jade);color:var(--jade-ink)}
+.saved-action.delete{border-color:#E8C9BC;color:var(--red);background:var(--red-bg)}
+#savePlanBtn.is-saved,#owSavePlan.is-saved{background:var(--jade-soft);border-color:var(--jade);color:var(--jade-ink)}
+@media(max-width:480px){.saved-row{align-items:flex-start;flex-direction:column}.saved-actions{width:100%}.saved-action{flex:1;padding-left:8px;padding-right:8px}}
 .slogan-box{font-size:13.5px;font-weight:700;color:var(--jade-ink);border:1.5px solid var(--jade);border-radius:10px;padding:9px 11px;margin-bottom:16px;text-align:center}
 .slogan-line{font-weight:700;color:var(--ink)}
 .sinje-ico{display:block;background-repeat:no-repeat;background-position:center;background-size:cover;background-image:url("./icon-192.png")}
@@ -691,9 +694,18 @@ html.dark .fav-btn{color:#5E7E86}
 .fav-btn.on .hrt path{fill:currentColor}
 .art-meta{display:flex;align-items:center;gap:8px}
 .art-meta .fav-btn{margin-left:auto}
-.fav-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+.fav-row{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--line)}
 .fav-row:last-child{border-bottom:none}
-.fav-open{flex:1;text-align:left;font-size:14.5px;font-weight:600;color:var(--ink);padding:2px 0}
+.fav-open{flex:1;min-width:0;display:flex;align-items:center;gap:10px;text-align:left;color:var(--ink);padding:0}
+.fav-thumb{position:relative;width:92px;aspect-ratio:16/9;flex:none;border-radius:9px;overflow:hidden;background:linear-gradient(135deg,var(--jade-soft),var(--gold-soft));border:1px solid var(--line)}
+.fav-thumb img{width:100%;height:100%;object-fit:cover;display:block;position:relative;z-index:1}
+.fav-thumb .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--jade-ink);z-index:0}
+.fav-thumb.expired img{filter:grayscale(1);opacity:.56}
+.fav-copy{min-width:0;display:block}
+.fav-copy b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:14.5px;line-height:1.35}
+.fav-copy small{display:block;margin-top:3px;color:var(--mut);font-size:11.5px;font-weight:650}
+.fav-copy small.expired{color:var(--red)}
+@media(max-width:360px){.fav-thumb{width:78px}}
 
 /* ══════════ v6.1：SHOWCASE＋onboarding＋modal-x ══════════ */
 .show-wrap{margin:2px 0 16px}
@@ -1379,7 +1391,7 @@ html.dark .pc-col.bad .pc-h{color:#e0876b}
   <div class="mn-sec">法律</div>
   <button type="button" class="mn-row" data-open="pgTerms">使用條款<svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
   <button type="button" class="mn-row" data-open="pgPriv">私隱政策<svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
-  <div class="set-row set-about">AcreMiles · v6.76.0<br><span>借定唔借？還得到先好借！</span></div>
+  <div class="set-row set-about">AcreMiles · v6.77.0<br><span>借定唔借？還得到先好借！</span></div>
 </section>
 
 <!-- v6.0 訂閱最新優惠 sheet -->
@@ -4321,6 +4333,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     var res = computePlan(amt, state.months);
     renderResults(res, true);
     setupWhatIf(res);
+    syncPlanSaveButton();
     if (scroll) $('results').scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', block:'start'});
   }
   $('calcBtn').addEventListener('click', function(){ runCalc(true); });
@@ -4654,6 +4667,23 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     if (!owState.segs || !owState.segs.length) owState.segs = [{from:'', to:'', carrier:'CX', stay:'stop'}, {from:'', to:'', carrier:'BA', stay:'stop'}];
     if (!owState.cabin) owState.cabin = 'j';
     function owSave(){ store.set('bm_ow', owState); }
+    function owSignature(segs, cabin){
+      try{ return JSON.stringify({c:cabin,s:(segs || []).map(function(s){ return [s.from,s.to,s.carrier,s.stay]; })}); }catch(_){ return ''; }
+    }
+    function currentSavedTrip(){
+      var sig = owSignature(owState.segs, owState.cabin), hit = null;
+      var list = store.get('bm_saved_redeem') || [];
+      list.some(function(p){ if (owSignature(p.segs, p.cabin) === sig){ hit = p; return true; } return false; });
+      return hit;
+    }
+    function syncOwSaveButton(){
+      var b = $('owSavePlan'); if (!b) return;
+      var hit = currentSavedTrip();
+      b.textContent = hit ? '✓ 已儲存' : '💾 儲存呢個行程';
+      b.classList.toggle('is-saved', !!hit);
+      if (hit) b.setAttribute('data-saved-id', hit.id); else b.removeAttribute('data-saved-id');
+    }
+    window._syncOwSaveButton = syncOwSaveButton;
     var CABIN_NAME = {y:'經濟', j:'商務', f:'頭等'};
 
     /* 機場 datalist（一次過起） */
@@ -4809,6 +4839,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     function renderOwResult(){
       var host = $('owResult'), sumHost = $('owSummary');
       if (!host) return;
+      syncOwSaveButton();
       var filled = owState.segs.every(function(s){ return ap(s.from) && ap(s.to); });
       if (!filled){
         if (sumHost) sumHost.innerHTML = '';
@@ -5000,6 +5031,16 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       owSave(); renderOwSegs(); renderOwResult();
     });
     $('owSavePlan').addEventListener('click', function(){
+      var savedId = Number(this.getAttribute('data-saved-id'));
+      if (savedId){
+        var savedList = store.get('bm_saved_redeem') || [], saved = null;
+        savedList.forEach(function(p){ if (p.id === savedId) saved = p; });
+        if (!saved || !window.confirm('刪除已儲存嘅「' + saved.name + '」？')) return;
+        store.set('bm_saved_redeem', savedList.filter(function(p){ return p.id !== savedId; }));
+        if (typeof renderSavedRedeem === 'function') renderSavedRedeem();
+        syncOwSaveButton(); toast('已移除儲存');
+        return;
+      }
       var codes = [];
       for (var i = 0; i < owState.segs.length; i++){
         var s = owState.segs[i], fa = ap(parseCode(s.from)), ta = ap(parseCode(s.to));
@@ -5017,6 +5058,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       if (list.length > 20) list = list.slice(0, 20);
       store.set('bm_saved_redeem', list);
       if (typeof renderSavedRedeem === 'function') renderSavedRedeem();
+      syncOwSaveButton();
       toast('儲低咗 ✓ 喺「旅程」搵返');
     });
     $('owSharePlan').addEventListener('click', function(){
@@ -5247,12 +5289,25 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   function renderFavs(){
     var host = $('favList'); if (!host) return;
     var f = getFavs(), total = 0, out = '';
+    function visual(kind, id){
+      var item = null, i;
+      if (kind === 'guides' && Array.isArray(GUIDES_ORIG)){
+        for (i = 0; i < GUIDES_ORIG.length; i++){ if (GUIDES_ORIG[i].t === id){ item = GUIDES_ORIG[i]; break; } }
+      } else if (kind === 'offers' && Array.isArray(ARTICLES_ORIG)){
+        for (i = 0; i < ARTICLES_ORIG.length; i++){ if (ARTICLES_ORIG[i].t === id){ item = ARTICLES_ORIG[i]; break; } }
+      }
+      if (item) return {img:item.img || 'icon-192.png', expired:!!item.expire && item.expire < hkToday()};
+      return {img:kind === 'cards' ? 'img/og-earn-plan.jpg' : 'icon-192.png', expired:false};
+    }
     [['cards','信用卡'],['offers','優惠'],['guides','攻略']].forEach(function(kk){
       var ids = Object.keys(f[kk[0]]); if (!ids.length) return;
       total += ids.length;
       out += '<div class="eyebrow"' + (out ? ' style="margin-top:12px"' : '') + '>' + kk[1] + '</div>' + ids.map(function(id){
         var nm = (f[kk[0]][id] && f[kk[0]][id].n) || id;
-        return '<div class="fav-row"><button type="button" class="fav-open" data-go="' + kk[0] + '" data-fid="' + esc(id) + '">' + esc(nm) + '</button>' + favHeart(kk[0], id, nm) + '</div>';
+        var v = visual(kk[0], id);
+        return '<div class="fav-row"><button type="button" class="fav-open" data-go="' + kk[0] + '" data-fid="' + esc(id) + '">' +
+          '<span class="fav-thumb' + (v.expired ? ' expired' : '') + '"><span class="ph">A+</span><img src="' + esc(v.img) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'"></span>' +
+          '<span class="fav-copy"><b>' + esc(nm) + '</b><small' + (v.expired ? ' class="expired"' : '') + '>' + (v.expired ? '已完結 · 保留作參考' : kk[1]) + '</small></span></button>' + favHeart(kk[0], id, nm) + '</div>';
       }).join('');
     });
     host.innerHTML = total ? out : '<div class="jr-empty" style="margin:0">未有收藏。喺卡庫詳情、優惠同攻略卡見到心形，撳一下就收入嚟，隨時翻睇。</div>';
@@ -5301,11 +5356,11 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     var CB = {y: '經濟', j: '商務', f: '頭等'};
     host.innerHTML = list.map(function(p){
       var d = new Date(p.ts);
-      return '<div class="fav-row"><div style="flex:1;min-width:0"><b style="font-size:14.5px">' + esc(p.name) + '</b>' +
-        '<div class="hint" style="margin:3px 0 0">' + esc(p.route) + ' · ' + (CB[p.cabin] || '') + ' · ' + (d.getMonth() + 1) + '月' + d.getDate() + '日儲</div></div>' +
-        '<button type="button" class="btn-sm pri" data-rtwload="' + p.id + '">開返</button>' +
-        '<button type="button" class="btn-sm" data-rtwshare="' + p.id + '">分享</button>' +
-        '<button type="button" class="btn-sm" data-rtwdel="' + p.id + '">刪除</button></div>';
+      return '<div class="saved-row"><div class="saved-copy"><div class="nm">' + esc(p.name) + '</div>' +
+        '<div class="mt">' + esc(p.route) + ' · ' + (CB[p.cabin] || '') + ' · ' + (d.getMonth() + 1) + '月' + d.getDate() + '日儲</div></div>' +
+        '<div class="saved-actions"><button type="button" class="saved-action open" data-rtwload="' + p.id + '">開啟</button>' +
+        '<button type="button" class="saved-action share" data-rtwshare="' + p.id + '">分享</button>' +
+        '<button type="button" class="saved-action delete" data-rtwdel="' + p.id + '">刪除</button></div></div>';
     }).join('');
   }
   document.addEventListener('click', function(e){
@@ -5332,6 +5387,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       if (!window.confirm('刪除「' + tgt.name + '」？')) return;
       store.set('bm_saved_redeem', getSavedRedeem().filter(function(x){ return x.id !== did; }));
       renderSavedRedeem();
+      if (window._syncOwSaveButton) window._syncOwSaveButton();
       toast('刪咗');
     }
   });
@@ -6070,7 +6126,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
   /* ══════════ v2.5 新功能模組 ══════════ */
 
-  var APP_VERSION = 'v6.76.0 · build 2026-07-20'; /* 同第一行 build marker 一齊改 */
+  var APP_VERSION = 'v6.77.0 · build 2026-07-21'; /* 同第一行 build marker 一齊改 */
 
   /* ---------- toast ---------- */
   var toastTimer = null;
@@ -6261,6 +6317,21 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     var a = store.get('bm_saved_plans');
     return Array.isArray(a) ? a : [];
   }
+  function planSignature(snap){
+    try{ return JSON.stringify(snap || {}); }catch(_){ return ''; }
+  }
+  function currentSavedPlan(){
+    var sig = planSignature(state), hit = null;
+    getSavedPlans().some(function(p){ if (p.snap && planSignature(p.snap) === sig){ hit = p; return true; } return false; });
+    return hit;
+  }
+  function syncPlanSaveButton(){
+    var b = $('savePlanBtn'); if (!b) return;
+    var hit = lastRes ? currentSavedPlan() : null;
+    b.textContent = hit ? '✓ 已儲存' : '💾 儲存呢次計劃';
+    b.classList.toggle('is-saved', !!hit);
+    if (hit) b.setAttribute('data-saved-id', hit.id); else b.removeAttribute('data-saved-id');
+  }
   function renderSavedPlans(){
     var plans = getSavedPlans();
     $('savedPlansPanel').hidden = plans.length === 0;
@@ -6268,11 +6339,11 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     $('savedPlansList').innerHTML = plans.map(function(p){
       var d = new Date(p.ts);
       return '<div class="saved-row">' +
-        '<div><div class="nm">' + esc(p.name) + '</div>' +
+        '<div class="saved-copy"><div class="nm">' + esc(p.name) + '</div>' +
         '<div class="mt">' + (d.getMonth() + 1) + '月' + d.getDate() + '日 · HK$' + BM.fmt(p.amount) + ' → 約 ' + esc(String(p.miles)) + ' 里</div></div>' +
-        '<button type="button" class="ld" data-load="' + p.id + '">開返</button>' +
-        '<button type="button" class="sd" data-share-saved-plan="' + p.id + '" aria-label="分享 ' + esc(p.name) + '">分享</button>' +
-        '<button type="button" class="dl" data-del="' + p.id + '" aria-label="刪除 ' + esc(p.name) + '">✕</button>' +
+        '<div class="saved-actions"><button type="button" class="saved-action open" data-load="' + p.id + '">開啟</button>' +
+        '<button type="button" class="saved-action share" data-share-saved-plan="' + p.id + '" aria-label="分享 ' + esc(p.name) + '">分享</button>' +
+        '<button type="button" class="saved-action delete" data-del="' + p.id + '" aria-label="刪除 ' + esc(p.name) + '">刪除</button></div>' +
       '</div>';
     }).join('');
     Array.prototype.forEach.call($('savedPlansList').querySelectorAll('[data-load]'), function(b){
@@ -6283,11 +6354,22 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         if (!window.confirm('刪除呢個儲低嘅計劃？')) return;
         store.set('bm_saved_plans', getSavedPlans().filter(function(p){ return p.id !== Number(b.getAttribute('data-del')); }));
         renderSavedPlans();
+        syncPlanSaveButton();
       });
     });
+    syncPlanSaveButton();
   }
   $('savePlanBtn').addEventListener('click', function(){
     if (!lastRes) return;
+    var savedId = Number(this.getAttribute('data-saved-id'));
+    if (savedId){
+      var saved = null;
+      getSavedPlans().forEach(function(p){ if (p.id === savedId) saved = p; });
+      if (!saved || !window.confirm('刪除已儲存嘅「' + saved.name + '」？')) return;
+      store.set('bm_saved_plans', getSavedPlans().filter(function(p){ return p.id !== savedId; }));
+      renderSavedPlans(); syncPlanSaveButton(); toast('已移除儲存');
+      return;
+    }
     var now = new Date();
     var defName = '計劃 ' + (now.getMonth() + 1) + '月' + now.getDate() + '日';
     var name = window.prompt('幫呢個計劃改個名（例：買錶、裝修）：', defName);
@@ -6305,6 +6387,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     if (plans.length > 20) plans = plans.slice(0, 20);
     store.set('bm_saved_plans', plans);
     renderSavedPlans();
+    syncPlanSaveButton();
     toast('儲低咗 ✓ 喺「賺里數計算器」頁頂搵返');
   });
   function loadPlan(id){

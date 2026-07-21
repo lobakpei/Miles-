@@ -1,0 +1,13 @@
+record_type,from,to,carrier,arrival_type,distance_miles
+flight,HKG,MAD,CX,stop,6529
+flight,MAD,CDG,IB,,661
+open_jaw,CDG,LHR,SELF-FUNDED,,
+flight,LHR,JFK,BA,stop,3442
+flight,JFK,BOS,AA,stop,186
+flight,BOS,PIT,AA,transit,495
+flight,PIT,ORD,AA,transit,412
+flight,ORD,SEA,AA,,1716
+open_jaw,SEA,YVR,SELF-FUNDED,,
+flight,YVR,NRT,JL,stop,4662
+flight,NRT,TPE,JL,stop,1356
+flight,TPE,HKG,CX,,501

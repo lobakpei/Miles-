@@ -1,7 +1,7 @@
 # AcreMiles Roadmap
 
 最後更新：2026-07-21  
-基準：正式 v6.77.0  
+基準：正式 v6.78.0
 狀態定義：`NOW`＝立即；`NEXT`＝完成 NOW 後；`LATER`＝中期；`HOLD`＝等待用戶／外部資料。
 
 ## 1. 路線圖原則
@@ -33,7 +33,7 @@
 - App、卡頁、文章、分享 metadata、FAQ 同縮圖數字一致。
 - 所有進入推薦嘅資料有足夠官方依據。
 
-### R2. v6.77.0 production QA 補完
+### R2. v6.78.0 production QA 補完
 
 狀態：`NOW`
 
@@ -47,30 +47,19 @@
 
 完成條件：
 
-- 新報告明確標示 v6.77.0、測試日期及 production URL。
+- 新報告明確標示 v6.78.0、測試日期及 production URL。
 - 預覽圖、標題、描述正確，舊 cache 問題有處理紀錄。
 - 發現問題已修正或以已知限制記錄。
 
-## 3. HOLD／NEXT｜區 10 完整重做
+## 3. COMPLETED｜區 10 正式重做
 
-狀態：`HOLD`，等待 Fable 5 候選線同用戶新圖片。
+狀態：`COMPLETED`（v6.78.0）
 
-階段：
-
-1. Fable 5 按 `ZONE-10-FABLE5-HANDOFF.md` 交 3 條候選線。
-2. AcreMiles 獨立核對票規、距離、IATA 配對、營運航司及現行直航。
-3. 同用戶比較後批准 1 條。
-4. 用戶提供／批准新圖片。
-5. 更新引擎白名單、demo、文章、thumbnail、share metadata、審計及 QA。
-
-硬完成條件：
-
-- 獎勵航段總距離大於 18,000、最多 20,000，目標 19,850–20,000 哩。
-- 剛好 5 停留、2 轉機、2 開口。
-- 每段為指定 IATA 機場之間、指定 oneworld 營運航司嘅真實直航。
-- 清楚分開票規、航線存在、指定日期／獎勵位三層。
-- 圖片城市、次序、里數、停轉開數同文章完全一致。
-- 用戶明確批准後先發布。
+- 正式線：`HKG→MAD→CDG ⤳ LHR→JFK→BOS→PIT→ORD→SEA ⤳ YVR→NRT→TPE→HKG`。
+- 19,960 哩、區 10 商務 230,000 里、5 停留／2 轉機／2 開口。
+- 10 段精確 IATA／航司已入核實庫；CSV、Demo、文章、metadata、分享頁及 QA 已同步。
+- 沿用現有城市 thumbnail，冇修改圖片檔。
+- 往後資料真相來源：`ZONE-10-ROUTE.csv` 及 `QA-REPORT-v6.78.0.md`。
 
 ## 4. NEXT｜私隱、品牌及營運收尾
 
@@ -196,9 +185,8 @@ status = verified | unknown | expired | conflict
 
 | 候選版本 | 合理範圍 |
 |---|---|
-| v6.78.x | 到期信用卡／平台優惠更新＋production QA 修正 |
-| v6.79.x | 已批准嘅區 10 新線、文章及圖片 |
+| v6.78.x | Zone 10 正式線＋production QA 修正 |
+| v6.79.x | 到期信用卡／平台優惠更新 |
 | v7.0.0 | 第一階段資料／引擎拆分；需另開遷移計劃 |
 
 版本號只係建議；真正範圍以當次用戶批准同 diff 為準。
-

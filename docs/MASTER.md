@@ -10,9 +10,9 @@
 | 正式網站 | <https://acremiles.app/> |
 | GitHub | `lobakpei/Miles-`（public） |
 | 正式分支 | `main` |
-| 正式版本 | **v6.77.0** |
+| 正式版本 | **v6.78.0** |
 | 發布日期 | 2026-07-21 |
-| v6.77.0 產品發布 merge | PR #3，commit `09d743d655baeac0e4abeaa77e4852311a6b6deb` |
+| 上一產品發布 merge | v6.77.0：PR #3，commit `09d743d655baeac0e4abeaa77e4852311a6b6deb` |
 | 部署方式 | GitHub Pages；合併到 `main` 後自動部署 |
 | 主程式 | 單一 `index.html`，Vanilla HTML／CSS／JavaScript |
 | 資料日期 | 卡庫 `DATA_AS_OF = 2026-07-20` |
@@ -95,7 +95,7 @@ AcreMiles **唔係**：
 - 區 11：QR 班次變化快，但可保留作示例。
 - 區 13：LAX→HEL 季節線可保留，但要明示季節性。
 
-區 10 現時 19,496 哩、2 停留／2 轉機／1 開口，**不符合用戶要求嘅最終示例**。未收到新候選路線、用戶確認同新圖片前，不可自行改網站。研究 brief 見 [`ZONE-10-FABLE5-HANDOFF.md`](ZONE-10-FABLE5-HANDOFF.md)。
+區 10 已於 v6.78.0 正式更新：`HKG→MAD→CDG ⤳ LHR→JFK→BOS→PIT→ORD→SEA ⤳ YVR→NRT→TPE→HKG`，19,960 哩、5 停留／2 轉機／2 開口、商務 230,000 里。10 段精確 IATA／航司已入核實庫；美國短途可由 American Eagle regional partner 營運，指定班次嘅 affiliate／獎勵資格仍要出票前確認。機器可讀基準見 [`ZONE-10-ROUTE.csv`](ZONE-10-ROUTE.csv)，來源同 QA 見 [`QA-REPORT-v6.78.0.md`](QA-REPORT-v6.78.0.md)。
 
 ### 4.3 法律、免責及社交內容
 
@@ -125,8 +125,7 @@ AcreMiles **唔係**：
 ## 6. 當前未完成事項
 
 1. 每週信用卡及平台優惠核實；近期 7 個到期提醒優先。
-2. 收取 Fable 5 嘅區 10 三條候選線，先研究、同用戶傾定一條，再收新圖及改網站。
-3. v6.77.0 發布後 production QA：最新 PageSpeed、真 WhatsApp／Facebook 分享預覽、手機／平板／桌面回歸。
+2. v6.78.0 發布後 production QA：最新 PageSpeed、真 WhatsApp／Facebook 分享預覽、手機／平板／桌面回歸。
 4. 核實 GA4 管理頁設定已真正按「儲存」；現有截圖顯示事件 2 個月、使用者 14 個月、活動時重設。
 5. ICO 加 trading name，之後只加入用戶確認可公開嘅聯絡地址。
 6. 用戶改名完成後先更新 Instagram／Facebook；程式目前 IG 為 `@acremiles`，Facebook URL 留空。
@@ -141,8 +140,8 @@ AcreMiles **唔係**：
 5. 根據任務再讀專題文件：
    - 信用卡：`WEEKLY-CARD-UPDATE.md`、`CARD-SOURCE-AUDIT.md`
    - RTW：`RTW-AUDIT.md`、`RTW-ROUTE-VERIFICATION-20260720.md`
-   - 區 10：`ZONE-10-FABLE5-HANDOFF.md`
-   - QA：最新版本 `QA-REPORT-v6.77.0.md`
+   - 區 10：`ZONE-10-ROUTE.csv`、`ZONE-10-FABLE5-HANDOFF.md`
+   - QA：最新版本 `QA-REPORT-v6.78.0.md`
    - 私隱／合規：`DATA-RETENTION-SCHEDULE.md`、`SOCIAL-CONTENT-COMPLIANCE.md`
 6. `AGENTS.md`：所有程式及內容改動都必須遵守嘅 repo 級守則。
 

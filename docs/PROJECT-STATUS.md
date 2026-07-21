@@ -1,11 +1,18 @@
 # AcreMiles 現況
 
 更新：2026-07-21
-正式版本：**v6.77.0**
+正式版本：**v6.78.0**
 公開網站：<https://acremiles.app/>
-GitHub：PR #3 已合併；正式 merge commit `09d743d655baeac0e4abeaa77e4852311a6b6deb`
+GitHub：v6.77.0 為 PR #3／merge commit `09d743d655baeac0e4abeaa77e4852311a6b6deb`；v6.78.0 發布紀錄以 `main` 最新 merge 為準。
 
 完整接手入口：[`MASTER.md`](MASTER.md) → [`HANDOFF.md`](HANDOFF.md)
+
+## v6.78.0 已發布
+
+- Zone 10 正式路線更新為 19,960 哩、區 10 商務 230,000 里、5 停留／2 轉機／2 開口。
+- 文章、規劃器 Demo、10 段核實庫、CSV、搜尋索引、分享 metadata、Open Graph wrapper 及 service worker 已同步。
+- 現有 `pgW10-hero.jpg` 繼續使用，冇修改圖片檔。
+- 完整路線及 QA：[`ZONE-10-ROUTE.csv`](ZONE-10-ROUTE.csv)／[`QA-REPORT-v6.78.0.md`](QA-REPORT-v6.78.0.md)。
 
 ## v6.77.0 已發布
 
@@ -42,12 +49,11 @@ GitHub：PR #3 已合併；正式 merge commit `09d743d655baeac0e4abeaa77e485231
 
 1. **GA4 後台**：如果你張截圖影嗰刻仲未撳藍色「儲存」，請補撳一次；其他資料保存設定已記錄。
 2. **ICO**：安排好公開聯絡地址後，加入 AcreMiles trading name；網站暫時唔公開私人地址。
-3. **區 10**：你之後提供新路線及圖片，我哋先重做。
-4. **IG／Facebook**：改名完成後提供新名稱及連結。
+3. **IG／Facebook**：改名完成後提供新名稱及連結。
 
 ## 發布後仍待完成
 
-- v6.77.0 production Lighthouse mobile／desktop。
+- v6.78.0 production Lighthouse mobile／desktop。
 - 真 WhatsApp／Facebook app 分享文章、卡、賺／換結果及 cache 檢查。
-- v6.77.0 嘅 360／768／1440 完整瀏覽器回歸、PWA 安裝及離線重開。
+- v6.78.0 嘅 360／768／1440 完整瀏覽器回歸、PWA 安裝及離線重開。
 - 如日後有 referral、廣告、收佣或代客介紹信用卡申請，發布前重新做 FCA／金融推廣及專業法律核對。

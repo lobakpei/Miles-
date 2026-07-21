@@ -12,7 +12,7 @@
 | 正式分支 | `main` |
 | 正式版本 | **v6.77.0** |
 | 發布日期 | 2026-07-21 |
-| 最新正式 merge | PR #3，commit `09d743d655baeac0e4abeaa77e4852311a6b6deb` |
+| v6.77.0 產品發布 merge | PR #3，commit `09d743d655baeac0e4abeaa77e4852311a6b6deb` |
 | 部署方式 | GitHub Pages；合併到 `main` 後自動部署 |
 | 主程式 | 單一 `index.html`，Vanilla HTML／CSS／JavaScript |
 | 資料日期 | 卡庫 `DATA_AS_OF = 2026-07-20` |
@@ -171,4 +171,3 @@ node scripts/smoke-http.js http://127.0.0.1:4173/
 ```
 
 版本發布要同步：`index.html` 第一行 build marker、`APP_VERSION`、設定頁版本及 `sw.js` cache 名。未經用戶明確批准，不可自行 merge／發布。
-

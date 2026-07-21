@@ -1,17 +1,19 @@
 # AcreMiles 現況
 
 更新：2026-07-21
-正式版本：**v6.78.0**
+正式版本：**v6.79.0**
 公開網站：<https://acremiles.app/>
 GitHub：v6.77.0 為 PR #3／merge commit `09d743d655baeac0e4abeaa77e4852311a6b6deb`；v6.78.0 發布紀錄以 `main` 最新 merge 為準。
 
 完整接手入口：[`MASTER.md`](MASTER.md) → [`HANDOFF.md`](HANDOFF.md)
 
-## v6.79.0-draft（未發布）
+## v6.79.0 已發布
 
-- 分支：`feature/outcome-first-v1`；baseline：`1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049`。
-- 已完成 Outcome First big-picture 第一版；詳見 [`QA-REPORT-v6.79.0-draft.md`](QA-REPORT-v6.79.0-draft.md)。
-- 只可作 Draft PR review；未 merge、未 deploy，正式網站仍係 v6.78.0。
+- 發布來源：`feature/outcome-first-v1`／PR #7；baseline：`1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049`。
+- Outcome First big-picture 第一版已獲產品擁有人 Preview review並批准發布；詳見 [`QA-REPORT-v6.79.0.md`](QA-REPORT-v6.79.0.md)。
+- 首頁、計算、saved card menu、文章 tier、Beginner／Advanced gateway 已上線。
+- 靜態資料與真正按鈕已建立較清楚視覺層級；首次提示免責句不再顯示成第三個按鈕。
+- 私隱政策已加入 UK Postbox 公開通訊地址及 Courier Point 快遞地址。
 - 最高優先規格：[`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md)。
 
 ## v6.78.0 已發布
@@ -55,12 +57,12 @@ GitHub：v6.77.0 為 PR #3／merge commit `09d743d655baeac0e4abeaa77e4852311a6b6
 ## 仍要你參與
 
 1. **GA4 後台**：如果你張截圖影嗰刻仲未撳藍色「儲存」，請補撳一次；其他資料保存設定已記錄。
-2. **ICO**：安排好公開聯絡地址後，加入 AcreMiles trading name；網站暫時唔公開私人地址。
+2. **ICO**：加入 AcreMiles trading name；如要同步地址，只使用網站已確認嘅 UK Postbox 公開服務地址。
 3. **IG／Facebook**：改名完成後提供新名稱及連結。
 
 ## 發布後仍待完成
 
-- v6.78.0 production Lighthouse mobile／desktop。
+- v6.79.0 production Lighthouse mobile／desktop。
 - 真 WhatsApp／Facebook app 分享文章、卡、賺／換結果及 cache 檢查。
-- v6.78.0 嘅 360／768／1440 完整瀏覽器回歸、PWA 安裝及離線重開。
+- v6.79.0 嘅 360／390／430／768／1440 完整瀏覽器回歸、PWA 安裝及離線重開。
 - 如日後有 referral、廣告、收佣或代客介紹信用卡申請，發布前重新做 FCA／金融推廣及專業法律核對。

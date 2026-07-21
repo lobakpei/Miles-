@@ -1,8 +1,17 @@
 # AcreMiles Architecture
 
 最後更新：2026-07-21  
-基準版本：v6.78.0
-本文件描述現行真實結構；未來方向另見 [`ROADMAP.md`](ROADMAP.md) 同 [`ARCHITECTURE-SEO.md`](ARCHITECTURE-SEO.md)。
+基準版本：正式 v6.78.0；候選 v6.79.0-draft
+本文件描述現行真實結構及未發布候選層；產品方向及安全規則以 [`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md) 為準，未來方向另見 [`ROADMAP.md`](ROADMAP.md) 同 [`ARCHITECTURE-SEO.md`](ARCHITECTURE-SEO.md)。
+
+## 0. v6.79.0-draft 候選層
+
+- `SPEND_SCENARIOS` 集中管理首頁「消費 → 里數 → 旅行結果」示範，只 render 已標記核實及未過期項目。
+- 計算器保持同一引擎；UI 先問金額，再 reveal 篩卡條件同進階設定。
+- `bm_saved_plans`／`bm_saved_trips` schema 只新增 optional `pinned` 欄位，舊資料無需 migration；低頻操作集中喺共用 bottom sheet。
+- Beginner planner 只用現有 `OW_ZONE_DEMOS` 及 metadata 作 deterministic matching，再將結果載入原有 Advanced planner；冇 AI API、冇自由生成路線。
+- `pgO2` 先加入 outcome-first tier 同 accordion；原有正文、條款及來源仍保留喺同一文章。
+- 候選層只存在 feature branch；GitHub Pages 繼續由 `main` 部署，所以 Draft PR 本身唔會改 production。
 
 ## 1. 系統總覽
 

@@ -1,5 +1,13 @@
 # AcreMiles Changelog
 
+## 文件交接 — 2026-07-21（無產品功能改動）
+
+- 建立 `MASTER.md`，集中記錄正式版本、產品定位、不可違反決定、現況、來源層級及最低發布規則。
+- 建立 `HANDOFF.md`，令全新 AI 可以喺冇舊對話下接手信用卡更新、區 10、production QA、私隱及發布工作。
+- 建立 `ROADMAP.md`，以 NOW／NEXT／LATER／HOLD 排列依賴、完成條件及明確不做範圍。
+- 建立總體 `ARCHITECTURE.md`，記錄靜態 PWA、單檔主程式、資料模型、localStorage、分享、consent、生成檔及測試架構。
+- 修正 `PROJECT-STATUS.md`：正式網站已於 2026-07-21 發布 v6.77.0，PR #3 merge commit 為 `09d743d`。
+
 ## v6.77.0 — 2026-07-21
 
 - 計算器同行程規劃器嘅已儲存清單統一為「開啟／分享／刪除」，不再用容易誤會成關閉嘅 `✕` 代表刪除。

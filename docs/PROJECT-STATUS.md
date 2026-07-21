@@ -1,16 +1,20 @@
 # AcreMiles 現況
 
 更新：2026-07-21
-候選版本：v6.77.0
-公開網站：**v6.76.0；v6.77.0 尚未合併／發布**
+正式版本：**v6.77.0**
+公開網站：<https://acremiles.app/>
+GitHub：PR #3 已合併；正式 merge commit `09d743d655baeac0e4abeaa77e4852311a6b6deb`
 
-## v6.77.0 已在本地完成
+完整接手入口：[`MASTER.md`](MASTER.md) → [`HANDOFF.md`](HANDOFF.md)
+
+## v6.77.0 已發布
 
 - 計算器／規劃器已儲存清單統一為「開啟／分享／刪除」。
 - Save 掣統一顯示「儲存／✓ 已儲存」，再按已儲存項目前會確認刪除。
 - 收藏文章加入縮圖；過期優惠圖自動灰化及標示「已完結」。
 - 賺里數／換里數分享各有專屬 1200×675 JPEG 及 Open Graph metadata。
-- HTTP 資產 109／109、主 verifier 全部通過；區 10 網站內容及圖片未改。
+- 發布前 HTTP 資產 109／109、主 verifier 全部通過；區 10 網站內容及圖片未改。
+- 正式網站已確認顯示 v6.77.0；新分享圖已上線。
 
 ## v6.76.0 已發布
 
@@ -41,8 +45,9 @@
 3. **區 10**：你之後提供新路線及圖片，我哋先重做。
 4. **IG／Facebook**：改名完成後提供新名稱及連結。
 
-## 發布後先做到
+## 發布後仍待完成
 
-- production Lighthouse mobile／desktop。
-- 真 WhatsApp／Facebook app 分享預覽及 cache 檢查。
+- v6.77.0 production Lighthouse mobile／desktop。
+- 真 WhatsApp／Facebook app 分享文章、卡、賺／換結果及 cache 檢查。
+- v6.77.0 嘅 360／768／1440 完整瀏覽器回歸、PWA 安裝及離線重開。
 - 如日後有 referral、廣告、收佣或代客介紹信用卡申請，發布前重新做 FCA／金融推廣及專業法律核對。

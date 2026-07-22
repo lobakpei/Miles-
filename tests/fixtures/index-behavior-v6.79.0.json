@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "ba8f6db0b087275f63785468ccec424a9d5ad1e2",
+  "normalization": "replace approved card/source/channel/share wiring blocks with fixed sentinels",
+  "bytes": 624402,
+  "sha256": "95de0695ca061c417cd10909abf578a7c0b6ad3fb4c4ae983f09a0aa49393155"
+}

@@ -1,15 +1,15 @@
 # AcreMiles 新對話交接
 
-交接時間：2026-07-22
+交接時間：2026-07-23（香港）
 適用版本：正式網站 v6.79.0
 接手目標：新 AI 喺冇舊對話內容嘅情況下，能夠安全判斷現況、繼續開發及避免重做已完成工作。
 
-## 0. v6.79.0／Phase 0 當前交接
+## 0. v6.79.0／Phase 1 當前交接
 
 - 法律、安全及官方資料真確性規則最高；最新產品方向以 [`ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md`](ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md) 為準，其後係 [`ACREMILES_PRODUCT_BLUEPRINT_V2.md`](ACREMILES_PRODUCT_BLUEPRINT_V2.md)、[`ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md`](ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md) 同 Safety Hardened。
-- Phase 0 基準係 GitHub `main` commit `fb63103778831688b89bf5e4b08dbe1882c2f354`；正式產品仍係 v6.79.0。
-- Phase 0 只做 canonical docs、optimizer fixtures、產品／DOM／localStorage snapshots 同 generated-file drift check；冇改 UI、公式、卡數字、PWA 或生成產品頁。
-- Founder 未明確回覆「Phase 0 approved」前，必須停止；不可開始 Card Data Source Extraction、任何新 IA／UI、Google Login、merge 或 deploy。
+- Phase 0 已獲 Founder 批准並以 `ba8f6db0b087275f63785468ccec424a9d5ad1e2` 合併到 GitHub `main`；正式產品仍係 v6.79.0。
+- Phase 1 以該精確 commit 為 baseline；Stage A 只搬信用卡／渠道／來源資料，Stage B 先處理即將到期更新。兩個 Stage 必須係獨立 commit。
+- Phase 1 仍係候選 Draft PR；不可修改新 IA／UI、Google Login、Engine 公式，亦不可 merge 或 deploy。
 - v6.79.0 歷史發布來源：`feature/outcome-first-v1`／PR #7；當時 baseline：`1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049`。
 - 已完成 Outcome First 首頁、分層計算入口、compact saved cards、優惠文章首屏、Beginner／Advanced planner gateway，同時保留現有計算及 RTW 引擎。
 - 新示範只使用 repo 內可追溯資料；未接 AI API，Beginner planner 係現有 template 嘅 rule-based matching。
@@ -76,13 +76,22 @@
 
 ### P0：Canonical Sync + Regression Lock
 
-狀態：`AWAITING FOUNDER APPROVAL`
+狀態：`COMPLETED — APPROVED AND MERGED`
 
 - 新 IA 同決定已寫入 canonical docs，但**未實作入正式 UI**。
 - 「大額消費」作全站定位、「由目的地出發」作產品核心、一般 Planner 第一層用 Beginner／Advanced，全部已被 2026-07-22 決定取代。
 - 現行 v6.79.0 仍有舊導覽／gateway，呢個係刻意保留嘅 regression baseline，唔係 Phase 0 漏改。
 - 回歸基準見 [`PHASE0-REGRESSION-LOCK.md`](PHASE0-REGRESSION-LOCK.md)；待核實資料見 [`PHASE0-OFFICIAL-VERIFICATION-BACKLOG.md`](PHASE0-OFFICIAL-VERIFICATION-BACKLOG.md)。
-- Founder Verification Pack 同 Draft PR 係 Phase 0 唯一交付；交付後停止。
+- Founder Verification Pack、fixtures、snapshots 同 regression lock 已成 `main` 基準；後續唔可以為令測試轉綠而無解釋重錄。
+
+### P1：Card Data Source Extraction + expiring offers
+
+狀態：`IN PROGRESS — SEPARATE DRAFT PR`
+
+- Stage A：`data/cards-official.js`、`data/card-channels.js#records`、`data/source-registry.js` 分開三個 structured responsibilities；`data/index.js` 提供 Browser／Node 共用 schema gate，舊 mixed presentation prose 只作明示 compatibility layer。
+- Generator、freshness audit、verify 同 regression lock 直接讀 data source；唔再從巨大 HTML regex 抽信用卡資料。
+- Stage A 零 drift 證據見 [`PHASE1A-DATA-MIGRATION-EVIDENCE.md`](PHASE1A-DATA-MIGRATION-EVIDENCE.md)。
+- Stage B 只可用銀行官方來源更新銀行規則；第三方頁只可證明該渠道自己嘅加碼。任何 conflict／unknown 必須保留並披露。
 
 ### 營運 P0：信用卡資料新鮮度
 

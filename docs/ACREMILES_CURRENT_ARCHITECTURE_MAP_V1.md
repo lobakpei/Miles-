@@ -11,6 +11,21 @@
 
 ---
 
+## 2026-07-23 Phase 1A implementation delta
+
+本文件正文係 `fb631037…` 嘅只讀歷史 audit，原始量度、圖同風險判斷保留不改，唔應被當成 Phase 1A 後嘅即時 file map。以正式 `main` `ba8f6db0b087275f63785468ccec424a9d5ad1e2` 為搬遷基準，Phase 1A 候選分支已完成以下責任切割：
+
+| 責任 | Phase 1A Source of Truth | 使用者 |
+|---|---|---|
+| 銀行官方卡資料 | `data/cards-official.js` | `index.html`、optimizer、card generator、verify、regression lock |
+| 申請渠道／平台額外優惠 | `data/card-channels.js` | `index.html`、freshness audit、verify、regression lock |
+| 官方 audit sources 及核實紀錄 | `data/source-registry.js` | data aggregator、card generator、audit、verify；產品／申請 URL 仍跟 card runtime record |
+| schema／runtime view | `data/index.js` | Browser 同 Node 共用，驗證 ID／slug／image／status／來源關聯 |
+
+`generate-card-pages.js` 同 `audit-freshness.js` 已直接 import `data/`；generator 嘅 card ID／filename／image hardcoded maps 已移除。Structured records 已分層，但為維持零 drift，舊 mixed presentation prose 仍以明確 compatibility record 暫存。`index.html` 仍承載 engine、RTW、content 同 UI，所以本次只完成信用卡 structured data layer，唔代表後續分層已完成。靜態 parity 同未執行風險見 [`PHASE1A-DATA-MIGRATION-EVIDENCE.md`](PHASE1A-DATA-MIGRATION-EVIDENCE.md)。
+
+---
+
 # 0. 一句判斷
 
 AcreMiles 現有架構**唔係亂到要重寫**；相反，佢已經有一套幾有價值嘅資料、逐浸計算引擎、RTW 引擎、驗證腳本、官方來源紀錄同安全發布流程。

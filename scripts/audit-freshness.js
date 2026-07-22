@@ -12,9 +12,8 @@
  */
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
-const vm = require('vm');
+const CARD_DATA = require(path.resolve(__dirname, '..', 'data'));
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -22,7 +21,6 @@ function usage() {
   console.log(`AcreMiles 信用卡資料新鮮度檢查
 
 Options:
-  --file PATH       要檢查嘅主頁（預設 index.html）
   --date YYYY-MM-DD 模擬香港今日日期
   --warn-days N     優惠幾多日內到期要提醒（預設 14）
   --stale-days N    卡資料幾多日未核實要提醒（預設 35）
@@ -32,7 +30,6 @@ Options:
 
 function parseArgs(argv) {
   const options = {
-    file: 'index.html',
     date: null,
     warnDays: 14,
     staleDays: 35,
@@ -46,11 +43,10 @@ function parseArgs(argv) {
       process.exit(0);
     } else if (arg === '--strict') {
       options.strict = true;
-    } else if (arg === '--file' || arg === '--date' || arg === '--warn-days' || arg === '--stale-days') {
+    } else if (arg === '--date' || arg === '--warn-days' || arg === '--stale-days') {
       const value = argv[i + 1];
       if (!value || value.startsWith('--')) throw new Error(`${arg} 缺少數值`);
       i += 1;
-      if (arg === '--file') options.file = value;
       if (arg === '--date') options.date = value;
       if (arg === '--warn-days') options.warnDays = Number(value);
       if (arg === '--stale-days') options.staleDays = Number(value);
@@ -90,28 +86,15 @@ function hongKongToday() {
   return `${value.year}-${value.month}-${value.day}`;
 }
 
-function loadCore(file) {
-  const source = fs.readFileSync(file, 'utf8');
-  const match = source.match(/<script\b[^>]*\bid=["']bm-core["'][^>]*>([\s\S]*?)<\/script>/i);
-  if (!match) throw new Error(`搵唔到 <script id="bm-core">：${file}`);
-
-  const sandbox = {module: {exports: {}}, exports: {}};
-  vm.createContext(sandbox);
-  new vm.Script(match[1], {filename: `${file}#bm-core`}).runInContext(sandbox, {timeout: 5000});
-  const data = sandbox.module.exports;
-  if (!data || !Array.isArray(data.DEFAULT_CARDS) || !data.CHANNEL_OFFERS) {
-    throw new Error('bm-core 冇輸出 DEFAULT_CARDS／CHANNEL_OFFERS');
-  }
-  return data;
-}
-
 function run() {
   const options = parseArgs(process.argv.slice(2));
-  const file = path.resolve(options.file);
   const today = options.date || hongKongToday();
   if (!validIsoDate(today)) throw new Error(`日期格式無效：${today}`);
 
-  const BM = loadCore(file);
+  const BM = CARD_DATA;
+  if (!Array.isArray(BM.DEFAULT_CARDS) || !Array.isArray(BM.CHANNEL_RECORDS) || !BM.SOURCE_REGISTRY) {
+    throw new Error('data/ 冇輸出 DEFAULT_CARDS／CHANNEL_RECORDS／SOURCE_REGISTRY');
+  }
   const todayDay = dayNumber(today);
   const errors = [];
   const warnings = [];
@@ -120,33 +103,47 @@ function run() {
   const warn = message => warnings.push(message);
 
   let activeOfferCount = 0;
-  Object.entries(BM.CHANNEL_OFFERS).forEach(([cardId, offers]) => {
-    if (!Array.isArray(offers)) {
-      error(`渠道優惠 ${cardId} 唔係陣列`);
-      return;
-    }
-    offers.forEach((offer, index) => {
-      if (!offer || offer.active !== true) return;
+  let unknownChannelCount = 0;
+  BM.CHANNEL_RECORDS.forEach((offer, index) => {
+      const cardId = offer.cardId || 'unknown';
+      const label = `${cardId}／${offer.platform || offer.id || `優惠 ${index + 1}`}`;
+      if (!offer.id || offer.scope !== 'channel') error(`${label} 缺少 channel provenance`);
+      if (offer.validFrom && !validIsoDate(offer.validFrom)) error(`${label} validFrom 格式無效：${offer.validFrom}`);
+      if (offer.validUntil && !validIsoDate(offer.validUntil)) error(`${label} validUntil 格式無效：${offer.validUntil}`);
+      if (offer.verifiedAt && !validIsoDate(offer.verifiedAt)) error(`${label} verifiedAt 格式無效：${offer.verifiedAt}`);
+      if (offer.status === 'unknown' || offer.status === 'conflict') {
+        unknownChannelCount += 1;
+        warn(`${label} 狀態係 ${offer.status}，Stage B 要重新核實${offer.validUntil ? `（舊記錄至 ${offer.validUntil}）` : ''}`);
+        return;
+      }
+      if (offer.status !== 'active') return;
       activeOfferCount += 1;
-      const label = `${cardId}／${offer.platform || `優惠 ${index + 1}`}`;
-
-      if (offer.verified !== true) error(`${label} 仍然 active，但未核實`);
-      if (!offer.expiry) {
-        error(`${label} 仍然 active，但缺少 expiry`);
+      if (offer.verificationStatus !== 'verified') error(`${label} 仍然 active，但未核實`);
+      if (!offer.sourceUrl) error(`${label} 仍然 active，但缺少平台 sourceUrl`);
+      if (!offer.validUntil) {
+        error(`${label} 仍然 active，但缺少 validUntil`);
         return;
       }
-      if (!validIsoDate(offer.expiry)) {
-        error(`${label} expiry 格式無效：${offer.expiry}`);
-        return;
-      }
-
-      const daysLeft = dayNumber(offer.expiry) - todayDay;
+      const daysLeft = dayNumber(offer.validUntil) - todayDay;
       if (daysLeft < 0) {
-        error(`${label} 已於 ${offer.expiry} 到期，但仍然 active`);
+        error(`${label} 已於 ${offer.validUntil} 到期，但仍然 active`);
       } else if (daysLeft <= options.warnDays) {
-        warn(`${label} 將於 ${offer.expiry} 到期（尚餘 ${daysLeft} 日）`);
+        warn(`${label} 將於 ${offer.validUntil} 到期（尚餘 ${daysLeft} 日）`);
       }
-    });
+  });
+
+  let unknownOfficialPromotionCount = 0;
+  (BM.SOURCE_REGISTRY.promotions || []).forEach(record => {
+    const label = `${(record.cardIds || []).join(',') || 'unknown'}／${record.id || '未命名官方推廣'}`;
+    if (record.validFrom && !validIsoDate(record.validFrom)) error(`${label} validFrom 格式無效：${record.validFrom}`);
+    if (record.validUntil && !validIsoDate(record.validUntil)) error(`${label} validUntil 格式無效：${record.validUntil}`);
+    if (record.verifiedAt && !validIsoDate(record.verifiedAt)) error(`${label} verifiedAt 格式無效：${record.verifiedAt}`);
+    if (record.status === 'unknown' || record.status === 'conflict') {
+      unknownOfficialPromotionCount += 1;
+      warn(`${label} 官方規則狀態係 ${record.status}，Stage B 要用銀行官方來源核實${record.validUntil ? `（舊記錄至 ${record.validUntil}）` : ''}`);
+    } else if (record.status === 'active' && (!record.sourceUrl || !/^https:\/\//.test(record.sourceUrl))) {
+      error(`${label} 仍然 active，但冇銀行官方 sourceUrl`);
+    }
   });
 
   BM.DEFAULT_CARDS.forEach(card => {
@@ -174,7 +171,7 @@ function run() {
   });
 
   notes.push(`香港日期：${today}`);
-  notes.push(`已檢查 ${BM.DEFAULT_CARDS.length} 張卡、${activeOfferCount} 個 active 渠道優惠`);
+  notes.push(`已檢查 ${BM.DEFAULT_CARDS.length} 張卡、${activeOfferCount} 個 active 渠道優惠、${unknownChannelCount} 個渠道 unknown、${unknownOfficialPromotionCount} 個官方推廣 unknown`);
   notes.push(`提醒門檻：優惠 ${options.warnDays} 日內到期；卡資料超過 ${options.staleDays} 日未核實`);
 
   console.log('AcreMiles 每週信用卡資料檢查');

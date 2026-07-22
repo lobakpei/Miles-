@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "ba8f6db0b087275f63785468ccec424a9d5ad1e2",
+  "normalization": "remove all script elements, collapse whitespace",
+  "bytes": 313610,
+  "sha256": "e0f0ff79bd0f5af3673667abe051566247fd1f38f9f48a3956c28cb461542dd0"
+}

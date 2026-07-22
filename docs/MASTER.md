@@ -1,6 +1,6 @@
 # AcreMiles Master Context
 
-最後核對：2026-07-22（Europe/London）
+最後核對：2026-07-23（香港）
 用途：AcreMiles 專案嘅最高層入口。法律、安全及官方資料真確性規則最高；產品方向以 [`ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md`](ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md) 為準，再讀 [`ACREMILES_PRODUCT_BLUEPRINT_V2.md`](ACREMILES_PRODUCT_BLUEPRINT_V2.md)、[`ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md`](ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md) 同 [`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md)。舊文件只可描述現況，不可推翻 2026-07-22 決定。
 
 ## 0. 目前版本
@@ -9,9 +9,10 @@
 |---|---|
 | 正式版本 | **v6.79.0 — Outcome First Big Picture V1** |
 | 發布分支 | `feature/outcome-first-v1` → PR #7 → `main` |
-| 最新 `main` 基準 commit | `fb63103778831688b89bf5e4b08dbe1882c2f354` |
-| Phase 0 狀態 | Canonical Sync + Regression Lock 候選；只新增／更新文件、fixtures、snapshots 同測試，不代表 2026-07-22 新 IA／UI 已實作 |
-| 正式產品狀態 | v6.79.0 仍然上線；Phase 0 不改 `index.html`、計算公式、PWA 或生成產品頁 |
+| 最新 `main` 基準 commit | `ba8f6db0b087275f63785468ccec424a9d5ad1e2` |
+| Phase 0 狀態 | **已獲 Founder 批准並合併**；canonical docs、fixtures、snapshots 同 regression lock 已喺 `main` |
+| Phase 1 狀態 | 獨立候選分支進行中；Stage A 先純搬資料並鎖零 drift，通過後 Stage B 先核實即將到期官方／渠道優惠 |
+| 正式產品狀態 | v6.79.0 仍然上線；Phase 1 PR 未合併、未部署，唔改 UI 或 Engine 公式 |
 
 本節記錄 v6.79.0 發布狀態；舊 v6.79.0-draft QA 只屬歷史候選紀錄。
 
@@ -140,9 +141,9 @@ AcreMiles **唔係**：
 
 ## 6. 當前未完成事項
 
-1. Phase 0 Draft PR 經 Founder 明確回覆「Phase 0 approved」前，停止；不可進 Phase 1。
-2. 獲批後先按獨立 PR 做 Card Data Source Extraction；不可同 UI 或公式修改混埋。
-3. 每週信用卡及平台優惠核實；近期 7 個到期提醒優先。
+1. Phase 0 已獲批並合併；唔好重做或重錄其 snapshots。
+2. Phase 1A 只做 Card Data Source Extraction；必須先證明 22 fixtures、生成頁、排序、可見 UI 同流程零 drift。
+3. Phase 1B 只喺 Stage A 獨立 commit 通過後核實信用卡及平台優惠；近期 7 個到期提醒優先。
 4. v6.79.0 發布後 production QA：最新 PageSpeed、真 WhatsApp／Facebook 分享預覽、手機／平板／桌面回歸。
 5. 核實 GA4 管理頁設定已真正按「儲存」；現有截圖顯示事件 2 個月、使用者 14 個月、活動時重設。
 6. ICO 加 trading name，並按需要同步已確認 UK Postbox 公開服務地址。

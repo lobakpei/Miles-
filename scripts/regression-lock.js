@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const vm = require('vm');
 const { execFileSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -14,6 +15,9 @@ const SNAPSHOT_DIR = path.join(ROOT, 'tests', 'snapshots');
 const FIXTURE_DIR = path.join(ROOT, 'tests', 'fixtures');
 
 const FILES = {
+  cardData: path.join(FIXTURE_DIR, 'card-data-v6.79.0.json'),
+  indexBehavior: path.join(FIXTURE_DIR, 'index-behavior-v6.79.0.json'),
+  visibleSurface: path.join(FIXTURE_DIR, 'visible-surface-v6.79.0.json'),
   optimizer: path.join(FIXTURE_DIR, 'optimizer-v6.79.0.json'),
   product: path.join(SNAPSHOT_DIR, 'product-surface-v6.79.0.json'),
   generated: path.join(SNAPSHOT_DIR, 'generated-files-v6.79.0.json'),
@@ -81,6 +85,9 @@ function recordsHash(records) {
 }
 
 function loadCore() {
+  const cardDataPath = path.join(ROOT, 'data');
+  delete require.cache[require.resolve(cardDataPath)];
+  const cardData = require(cardDataPath);
   const html = read('index.html').toString('utf8');
   const match = html.match(/<script id="bm-core">([\s\S]*?)<\/script>/);
   if (!match) throw new Error('找不到 <script id="bm-core">。');
@@ -89,10 +96,75 @@ function loadCore() {
   try {
     fs.writeFileSync(coreFile, match[1]);
     delete require.cache[coreFile];
+    global.ACREMILES_CARD_DATA = cardData;
     return require(coreFile);
   } finally {
+    delete global.ACREMILES_CARD_DATA;
     fs.rmSync(tempDir, { recursive: true, force: true });
   }
+}
+
+function loadBrowserDataAndCore() {
+  const context = {console};
+  vm.createContext(context);
+  for (const rel of ['data/source-registry.js', 'data/cards-official.js', 'data/card-channels.js', 'data/index.js']) {
+    new vm.Script(read(rel).toString('utf8'), {filename: rel}).runInContext(context);
+  }
+  const html = read('index.html').toString('utf8');
+  const match = html.match(/<script id="bm-core">([\s\S]*?)<\/script>/);
+  if (!match) throw new Error('找不到 <script id="bm-core">。');
+  new vm.Script(match[1], {filename: 'index.html#bm-core'}).runInContext(context);
+  return context;
+}
+
+function cardDataSnapshot() {
+  const cardDataPath = path.join(ROOT, 'data');
+  delete require.cache[require.resolve(cardDataPath)];
+  const data = require(cardDataPath);
+  const browser = loadBrowserDataAndCore();
+  if (stableText(browser.ACREMILES_CARD_DATA) !== stableText(data)) throw new Error('Browser UMD card data 同 Node export drift。');
+  if (!browser.BM || stableText(browser.BM.DEFAULT_CARDS) !== stableText(data.DEFAULT_CARDS) || stableText(browser.BM.CHANNEL_OFFERS) !== stableText(data.CHANNEL_OFFERS)) {
+    throw new Error('Browser bm-core 同直接 card data source drift。');
+  }
+  return {
+    schemaVersion: 1,
+    baselineCommit: 'ba8f6db0b087275f63785468ccec424a9d5ad1e2',
+    DATA_AS_OF: data.DATA_AS_OF,
+    DEFAULT_CARDS: data.DEFAULT_CARDS.map((card) => {
+      const { slug, image, status, ...legacy } = card;
+      return legacy;
+    }),
+    CHANNEL_OFFERS: data.CHANNEL_OFFERS
+  };
+}
+
+function visibleSurfaceSnapshot() {
+  const normalized = read('index.html').toString('utf8')
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return {
+    schemaVersion: 1,
+    baselineCommit: 'ba8f6db0b087275f63785468ccec424a9d5ad1e2',
+    normalization: 'remove all script elements, collapse whitespace',
+    bytes: Buffer.byteLength(normalized),
+    sha256: sha256(Buffer.from(normalized))
+  };
+}
+
+function indexBehaviorSnapshot() {
+  const normalized = read('index.html').toString('utf8')
+    .replace(/<script src="data\/(?:source-registry|cards-official|card-channels|index)\.js"><\/script>\n/g, '')
+    .replace(/  var (?:DATA_AS_OF = '|CARD_DATA = )[\s\S]*?(?=  \/\* 不收錄現金回贈卡)/, '  /* CARD_DATA_SOURCE */\n\n')
+    .replace(/  var CHANNEL_OFFERS = [\s\S]*?(?=  var REDEMPTIONS = \[)/, '  /* CARD_CHANNEL_SOURCE */\n')
+    .replace(/  var CARD_SHARE_PATHS = [\s\S]*?(?=  function publicShareUrl\()/, '  /* CARD_SHARE_PATHS_FROM_DATA */\n');
+  return {
+    schemaVersion: 1,
+    baselineCommit: 'ba8f6db0b087275f63785468ccec424a9d5ad1e2',
+    normalization: 'replace approved card/source/channel/share wiring blocks with fixed sentinels',
+    bytes: Buffer.byteLength(normalized),
+    sha256: sha256(Buffer.from(normalized))
+  };
 }
 
 function normalizeOptimizeResult(result) {
@@ -329,7 +401,7 @@ function generatedSnapshot() {
   const before = fileRecords(['cards', 'share']);
   const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'acremiles-generated-'));
   try {
-    for (const rel of ['index.html', 'share-meta.js', 'img', 'cards', 'share', 'scripts']) copyPath(rel, temp);
+    for (const rel of ['index.html', 'share-meta.js', 'data', 'img', 'cards', 'share', 'scripts']) copyPath(rel, temp);
     const cardOutput = execFileSync(process.execPath, ['scripts/generate-card-pages.js'], { cwd: temp, encoding: 'utf8' }).trim();
     const shareOutput = execFileSync(process.execPath, ['scripts/generate-share-pages.js'], { cwd: temp, encoding: 'utf8' }).trim();
     const after = ['cards', 'share'].flatMap((rel) => {
@@ -359,6 +431,9 @@ function generatedSnapshot() {
 
 function snapshots() {
   return {
+    cardData: cardDataSnapshot(),
+    indexBehavior: indexBehaviorSnapshot(),
+    visibleSurface: visibleSurfaceSnapshot(),
     optimizer: optimizerSnapshot(),
     product: productSnapshot(),
     generated: generatedSnapshot(),
@@ -370,7 +445,58 @@ function snapshots() {
 function writeSnapshots(actual) {
   fs.mkdirSync(SNAPSHOT_DIR, { recursive: true });
   fs.mkdirSync(FIXTURE_DIR, { recursive: true });
-  for (const [name, file] of Object.entries(FILES)) fs.writeFileSync(file, stableText(actual[name]));
+  for (const [name, file] of Object.entries(FILES)) {
+    if (['cardData', 'indexBehavior', 'visibleSurface'].includes(name)) {
+      if (!fs.existsSync(file)) throw new Error(`Immutable migration baseline 缺失，--write 不可重建：${path.relative(ROOT, file)}`);
+      continue;
+    }
+    fs.writeFileSync(file, stableText(actual[name]));
+  }
+}
+
+function semanticDom(value) {
+  const output = JSON.parse(JSON.stringify(value));
+  delete output.indexSha256;
+  delete output.structuralDomSha256;
+  const withoutLine = (item) => {
+    const copy = {...item};
+    delete copy.line;
+    return copy;
+  };
+  output.elements = output.elements.map(withoutLine);
+  output.criticalElements = output.criticalElements.map(withoutLine);
+  return output;
+}
+
+function generatedContract(value) {
+  const output = JSON.parse(JSON.stringify(value));
+  delete output.commandOutput;
+  return output;
+}
+
+function productContract(value, actual) {
+  const output = JSON.parse(JSON.stringify(value));
+  delete output.groups.index;
+  output.scope = output.scope.filter((item) => item !== 'index.html');
+  if (actual) {
+    const swSource = read('sw.js').toString('utf8');
+    const required = ['./data/source-registry.js', './data/cards-official.js', './data/card-channels.js', './data/index.js'];
+    for (const asset of required) {
+      const escaped = asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      if ((swSource.match(new RegExp(`['"]${escaped}['"]`, 'g')) || []).length !== 1) throw new Error(`Service worker 必須精確 precache 一次：${asset}`);
+    }
+    const sw = swSource.replace(/, '\.\/data\/(?:source-registry|cards-official|card-channels|index)\.js'/g, '');
+    const record = {file: 'sw.js', bytes: Buffer.byteLength(sw), sha256: sha256(Buffer.from(sw))};
+    output.groups.serviceWorker = {count: 1, treeSha256: recordsHash([record]), files: [record]};
+  }
+  return output;
+}
+
+function comparable(name, value, actual) {
+  if (name === 'dom') return semanticDom(value);
+  if (name === 'generated') return generatedContract(value);
+  if (name === 'product') return productContract(value, actual);
+  return value;
 }
 
 function checkSnapshots(actual) {
@@ -382,11 +508,12 @@ function checkSnapshots(actual) {
       continue;
     }
     const expected = JSON.parse(fs.readFileSync(file, 'utf8'));
-    if (stableText(expected) !== stableText(actual[name])) {
+    if (stableText(comparable(name, expected, false)) !== stableText(comparable(name, actual[name], true))) {
       console.error(`FAIL ${name}: snapshot drift（如屬刻意改動，須經 Founder 核准後重建）。`);
       failed = true;
     } else {
-      console.log(`PASS ${name}`);
+      const note = name === 'product' ? '（index data wiring／SW precache 由其他 gates 核對）' : (name === 'dom' ? '（忽略純搬遷行號／raw hash）' : '');
+      console.log(`PASS ${name}${note}`);
     }
   }
   if (actual.generated.drift.length) {
@@ -400,7 +527,7 @@ try {
   const actual = snapshots();
   if (WRITE) {
     writeSnapshots(actual);
-    console.log(`WROTE ${actual.optimizer.fixtureCount} optimizer fixtures and 4 regression snapshots.`);
+    console.log(`WROTE ${actual.optimizer.fixtureCount} optimizer fixtures and 4 regression snapshots；immutable card-data／index-behavior／visible-surface baselines 保留。`);
   }
   checkSnapshots(actual);
   if (!process.exitCode) {

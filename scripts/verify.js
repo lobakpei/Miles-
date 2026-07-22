@@ -3,10 +3,14 @@
    做齊：build marker、逐 script block 語法、引擎 invariant、資產、私隱及產品可信度 gate。
    Invariant FAIL = 唔可以交付。快照數字唔算 FAIL（卡數據改咗會變），眼睇合唔合理。 */
 'use strict';
-const fs = require('fs'), cp = require('child_process'), os = require('os'), path = require('path');
+const fs = require('fs'), cp = require('child_process'), os = require('os'), path = require('path'), vm = require('vm');
 const file = process.argv[2] || 'index.html';
 const src = fs.readFileSync(file, 'utf8');
 const root = path.dirname(path.resolve(file));
+const CARD_DATA = require(path.join(root, 'data'));
+const CARDS_OFFICIAL = require(path.join(root, 'data', 'cards-official.js'));
+const CARD_CHANNELS = require(path.join(root, 'data', 'card-channels.js'));
+const SOURCE_REGISTRY = require(path.join(root, 'data', 'source-registry.js'));
 const swPath = path.join(root, 'sw.js');
 const manifestPath = path.join(root, 'manifest.json');
 const z10CsvPath = path.join(root, 'docs', 'ZONE-10-ROUTE.csv');
@@ -67,12 +71,20 @@ if (htmlCheck.status === 2 && /lxml is not installed/.test(htmlCheck.stderr || '
 const consentCheck = cp.spawnSync('node', [path.join(__dirname, 'test-consent-gate.js'), file], { encoding: 'utf8' });
 ok('consent gate runtime', consentCheck.status === 0);
 if (consentCheck.status !== 0) console.log((consentCheck.stderr || consentCheck.stdout || '').slice(0, 1000));
+const browserDataContext = {console};
+vm.createContext(browserDataContext);
+for (const name of ['source-registry.js', 'cards-official.js', 'card-channels.js', 'index.js']) {
+  new vm.Script(fs.readFileSync(path.join(root, 'data', name), 'utf8'), {filename: `data/${name}`}).runInContext(browserDataContext);
+}
+ok('四個 data modules 嘅 browser UMD path 同 Node export 完全一致', JSON.stringify(browserDataContext.ACREMILES_CARD_DATA) === JSON.stringify(CARD_DATA));
 if (fails) { console.log('\n❌ 語法都未過，先修好。'); process.exit(1); }
 
 /* 3. 引擎 invariants */
 let engIdx = blockTags.findIndex(a => /id=["']bm-core["']/.test(a));
 if (engIdx < 0) engIdx = 0;
+global.ACREMILES_CARD_DATA = CARD_DATA;
 const BM = require(path.join(tmp, 'blk' + engIdx + '.js'));
+delete global.ACREMILES_CARD_DATA;
 const base = { amount: 168888, months: 6, goal: 'any', owned: [], income: 300000, spendPattern: 'spread' };
 const X = o => Object.assign({}, base, o || {});
 
@@ -185,7 +197,22 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
 
   ok('香港日期 helper 已用於優惠到期', /function hkToday\(/.test(src) && (src.match(/var today = (?:todayStr \|\| )?hkToday\(\);/g) || []).length >= 2);
   ok('未核實卡 UI pool 有硬過濾', /recommendableCards\s*=\s*cards\.filter\(function\(c\)\{\s*return c\.verified\s*&&\s*!c\.pending/.test(src));
-  ok('無核實渠道優惠預設下架', !/CHANNEL_OFFERS\s*=\s*\[[\s\S]*?active:\s*true[\s\S]*?verified:\s*false/.test(src));
+  const sourceScripts = ['data/source-registry.js','data/cards-official.js','data/card-channels.js','data/index.js'];
+  const sourcePositions = sourceScripts.map(name => src.indexOf(`src="${name}"`));
+  ok('index 以 blocking script 直接讀四個 card data modules', sourcePositions.every(pos => pos >= 0) && sourcePositions.every((pos, i) => !i || pos > sourcePositions[i - 1]) && sourcePositions[3] < src.indexOf('id="bm-core"'));
+  ok('service worker 精確 precache 四個 card data modules', sourceScripts.every(name => (sw.match(new RegExp(`['"]\\./${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}['"]`, 'g')) || []).length === 1));
+  ok('bm-core 冇再內嵌 DEFAULT_CARDS／CHANNEL_OFFERS 正式資料', !/var DEFAULT_CARDS\s*=\s*\[/.test(src) && !/var CHANNEL_OFFERS\s*=\s*\{/.test(src));
+  ok('卡資料三個責任檔齊全', Array.isArray(CARDS_OFFICIAL) && CARD_CHANNELS && Array.isArray(CARD_CHANNELS.records) && SOURCE_REGISTRY && SOURCE_REGISTRY.cards && Array.isArray(SOURCE_REGISTRY.promotions));
+  ok('每張卡自帶唯一 slug、image、status', CARDS_OFFICIAL.length === 9 && new Set(CARDS_OFFICIAL.map(c => c.id)).size === 9 && new Set(CARDS_OFFICIAL.map(c => c.slug)).size === 9 && CARDS_OFFICIAL.every(c => c.slug && c.image && c.status === 'active' && fs.existsSync(path.join(root, c.image))));
+  ok('官方卡檔冇混入具名第三方渠道 prose', !/MoneyHero|MoneySmart|里先生|小斯|mrmiles\.hk|flyformiles\.hk/i.test(fs.readFileSync(path.join(root, 'data', 'cards-official.js'), 'utf8')));
+  ok('非官方 applyWeeks 冇冒充銀行官方卡資料', CARDS_OFFICIAL.every(c => !Object.prototype.hasOwnProperty.call(c, 'applyWeeks')) && SOURCE_REGISTRY.modelAssumptions && SOURCE_REGISTRY.modelAssumptions.applyWeeks && SOURCE_REGISTRY.modelAssumptions.applyWeeks.sourceType === 'none' && SOURCE_REGISTRY.modelAssumptions.applyWeeks.status === 'unknown');
+  ok('第二張卡乘數保留原值但明確標示 unknown', CARDS_OFFICIAL.every(c => !Object.prototype.hasOwnProperty.call(c, 'secondCardMult')) && SOURCE_REGISTRY.modelAssumptions.cardSecondMultiplier.status === 'unknown' && SOURCE_REGISTRY.modelAssumptions.cardSecondMultiplier.values['amex-explorer'] === 0 && SOURCE_REGISTRY.modelAssumptions.cardSecondMultiplier.values['amex-platinum'] === 0.81 && SOURCE_REGISTRY.modelAssumptions.bankSecondCardMultiplier.status === 'unknown' && JSON.stringify(SOURCE_REGISTRY.modelAssumptions.bankSecondCardMultiplier.values) === JSON.stringify({'Citibank':0, '滙豐':0.25, '美國運通':0.65}));
+  const assumedFeeWaiverIds = ['citi-pm', 'dbs-black', 'dahsing-ba', 'hsbc-visasig'];
+  ok('未逐欄官方化嘅 fee waiver 冇冒充官方卡資料', assumedFeeWaiverIds.every(id => { const card = CARDS_OFFICIAL.find(c => c.id === id); return card && !Object.prototype.hasOwnProperty.call(card, 'feeWaivable') && !Object.prototype.hasOwnProperty.call(card, 'waiveNote') && SOURCE_REGISTRY.modelAssumptions.feeWaiver.values[id].status === 'unknown'; }));
+  ok('source registry 完整覆蓋 9 張卡', Object.keys(SOURCE_REGISTRY.cards).length === 9 && CARDS_OFFICIAL.every(c => SOURCE_REGISTRY.cards[c.id]));
+  ok('渠道／官方推廣全部有 machine-readable provenance', CARD_CHANNELS.records.every(r => r.id && r.cardId && r.scope === 'channel' && r.sourceType && r.status && Object.prototype.hasOwnProperty.call(r, 'validFrom') && Object.prototype.hasOwnProperty.call(r, 'validUntil') && Object.prototype.hasOwnProperty.call(r, 'verifiedAt')) && SOURCE_REGISTRY.promotions.every(r => r.id && Array.isArray(r.cardIds) && r.scope === 'bank-official-claim' && r.sourceType && r.status && Object.prototype.hasOwnProperty.call(r, 'validFrom') && Object.prototype.hasOwnProperty.call(r, 'validUntil') && Object.prototype.hasOwnProperty.call(r, 'verifiedAt')));
+  ok('bm-core 同直接 data source 完全一致', JSON.stringify(BM.DEFAULT_CARDS) === JSON.stringify(CARD_DATA.DEFAULT_CARDS) && JSON.stringify(BM.CHANNEL_OFFERS) === JSON.stringify(CARD_DATA.CHANNEL_OFFERS));
+  ok('無核實渠道優惠預設下架', Object.values(CARD_DATA.CHANNEL_OFFERS).flat().every(o => o.verified === true || o.active !== true));
   const dataAsOfDate = ((BM.DATA_AS_OF || '').match(/^(\d{4}-\d{2}-\d{2})/) || [])[1];
   ok('9 張卡全部有銀行官方產品頁及 KFS／T&C', BM.DEFAULT_CARDS.length === 9 && !!dataAsOfDate && BM.DEFAULT_CARDS.every(c =>
     /^https:\/\//.test(c.url || '') && !/mrmiles\.hk/i.test(c.url || '') &&
@@ -196,7 +223,8 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
   ok('渣打 HK$96,000 已正確標為年薪而非簽賬豁免門檻', !!sc && sc.incomeVerified === true && /唔係簽賬門檻/.test(sc.waiveNote || ''));
   const hsbcVs = BM.DEFAULT_CARDS.find(c => c.id === 'hsbc-visasig');
   ok('HSBC Visa Signature 有官方來源但未完成建模前不推薦', !!hsbcVs && hsbcVs.verified === false && hsbcVs.capTotal === 100000 && Array.isArray(hsbcVs.sourceDocs));
-  ok('卡頁由單一卡庫自動產生', fs.existsSync(path.join(root, 'scripts', 'generate-card-pages.js')));
+  const generatorSource = fs.readFileSync(path.join(root, 'scripts', 'generate-card-pages.js'), 'utf8');
+  ok('卡頁由 data source 自動產生，冇 hardcoded card id/file map', /require\(path\.join\(root, 'data'\)\)/.test(generatorSource) && !/fileById|imageById|<script id="bm-core">/.test(generatorSource));
 
   const cts = BM.owAirport('CTS'), fuk = BM.owAirport('FUK');
   const hnl = BM.owAirport('HNL'), hkg = BM.owAirport('HKG'), mad = BM.owAirport('MAD');
@@ -262,15 +290,15 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
 
   const refs = new Set();
   const addRefs = (text, re) => { let m; while ((m = re.exec(text))) refs.add(m[1]); };
-  addRefs(src, /(?:src|href)=["']((?:\.\/)?(?:img\/|cards\/|share\/|share-meta\.js|manifest\.json|icon-[^"']+|apple-touch-icon\.png)[^"']*)["']/g);
+  addRefs(src, /(?:src|href)=["']((?:\.\/)?(?:data\/|img\/|cards\/|share\/|share-meta\.js|manifest\.json|icon-[^"']+|apple-touch-icon\.png)[^"']*)["']/g);
   addRefs(src, /\bimg\s*:\s*["']((?:\.\/)?img\/[^"']+)["']/g);
-  addRefs(sw, /["']((?:\.\/)?(?:img\/|share\/|share-meta\.js|manifest\.json|icon-[^"']+|apple-touch-icon\.png)[^"']*)["']/g);
+  addRefs(sw, /["']((?:\.\/)?(?:data\/|img\/|share\/|share-meta\.js|manifest\.json|icon-[^"']+|apple-touch-icon\.png)[^"']*)["']/g);
   const missingAssets = [...refs].filter(ref => {
     const clean = ref.replace(/^\.\//, '').replace(/[?#].*$/, '');
     const p = path.join(root, clean);
     return clean.endsWith('/') ? !fs.existsSync(path.join(p, 'index.html')) : !fs.existsSync(p);
   });
-  ok('本地圖片、manifest、icon 同 cards 路徑齊全', missingAssets.length === 0);
+  ok('本地 data、圖片、manifest、icon 同 cards 路徑齊全', missingAssets.length === 0);
   if (missingAssets.length) console.log('  缺檔: ' + missingAssets.join(', '));
   const pgO1 = path.join(root, 'img', 'pgO1-hero.jpg');
   ok('pgO1 正確封面已引用及加入離線 cache', fs.existsSync(pgO1) && fs.statSync(pgO1).size > 50000 && src.includes('img/pgO1-hero.jpg') && sw.includes('img/pgO1-hero.jpg'));

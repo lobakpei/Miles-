@@ -1,0 +1,594 @@
+(function(root, factory){
+  'use strict';
+  var value = factory();
+  if (typeof module !== 'undefined' && module.exports) module.exports = value;
+  root.ACREMILES_CARDS_OFFICIAL = value;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function(){
+  'use strict';
+  return [
+  {
+    "id": "sc-cathay",
+    "slug": "scb-cathay-mastercard",
+    "image": "img/pgO1-hero.jpg",
+    "status": "active",
+    "name": "渣打國泰Mastercard",
+    "bank": "渣打",
+    "program": "am",
+    "minIncome": 96000,
+    "incomeVerified": true,
+    "welcome": {
+      "type": "tiered",
+      "months": 2,
+      "tiers": [
+        {
+          "spend": 5000,
+          "miles": 10000
+        },
+        {
+          "spend": 40000,
+          "miles": 20000
+        },
+        {
+          "spend": 110000,
+          "miles": 40000
+        }
+      ],
+      "prereq": "新客＝申請前 6 個月冇持有／取消渣打或 MANHATTAN 主卡；迎新窗口只有 2 個月（比一般短，批卡即刻開簽）",
+      "note": "呢個係綠卡（主打）階梯。優先理財（藍）／優先私人理財（黑）客戶另有更高階版本——迎新更大、海外率更佳（藍 $3、黑 $2/里），高資產用戶申請前值得問一問。"
+    },
+    "rateLocal": 6,
+    "rateOnline": 6,
+    "rateOverseas": 4,
+    "cat": {
+      "dining": 4
+    },
+    "annualFeeFirst": 0,
+    "feeRenewal": 2000,
+    "feeWaivable": true,
+    "waiveNote": "首年免；其後如屬合資格優先理財／Premium 理財或出糧戶口客戶可豁免（官方條款；HK$96,000 係年薪門檻，唔係簽賬門檻）",
+    "convertFee": 0,
+    "url": "https://www.sc.com/hk/credit-cards/cathay/",
+    "note": "全城唯一國泰聯營卡，Asia Miles 每月自動入賬免手續費。食肆＋酒店 HK$4/里、其他港幣 $6、海外 $4、國泰／香港快運 $2（官方產品頁，2026-07-20 再核）。渣打推廣通病：好多優惠要預先登記＋港幣結算海外簽賬（DCC 揀港幣）唔計，仲要畀多 1%。驚喜盲盒 2,000 至 364,000 里 7 月 23 日截。官方申請資格寫明最低年薪 HK$96,000。",
+    "verified": true,
+    "publicDetails": {
+      "eligibility": [
+        "新客＝申請前 6 個月冇持有或取消渣打／MANHATTAN 主卡。",
+        "主庫係大眾綠卡；優先理財藍卡、優先私人理財黑卡嘅迎新及海外率不同，申請前要按自己戶口級別核對。"
+      ],
+      "registration": [
+        "迎新窗口只有批卡後 2 個月。",
+        "渣打部分加碼要預先登記或輸入指定推廣碼；任何大額簽賬前先開當期條款確認。"
+      ],
+      "fees": [
+        "外幣交易費 1.95%。",
+        "海外以港幣結算或非香港註冊商戶港幣交易可另收 1%；DCC 揀港幣通常亦失去海外獎賞。",
+        "電子轉賬類交易每月累計超過 HK$25,000 嘅部分可收 3.5% 手續費。"
+      ],
+      "exclusions": [
+        "已核實：DCC 港幣結算海外簽賬唔計指定推廣；其他排除項目要以申請當期迎新 T&C 為準。"
+      ],
+      "crediting": [
+        "Asia Miles 按月自動存入會員戶口，毋須手動兌換，亦冇兌換手續費。"
+      ],
+      "benefits": [
+        "國泰／香港快運簽賬可達 HK$2/里；食肆及酒店 HK$4/里。",
+        "藍卡及黑卡屬較高資產級別，海外率可較綠卡高。"
+      ]
+    }
+  },
+  {
+    "id": "hsbc-everymile",
+    "slug": "hsbc-everymile",
+    "image": "img/pgO2-hero.jpg",
+    "status": "active",
+    "name": "滙豐 EveryMile",
+    "bank": "滙豐",
+    "program": "flex",
+    "minIncome": 240000,
+    "incomeVerified": true,
+    "welcome": {
+      "type": "threshold",
+      "months": 2,
+      "tiers": [
+        {
+          "spend": 8000,
+          "miles": 20000
+        }
+      ],
+      "prereq": "網上申請；簽賬要落「指定日常消費」類先砌到官方個 $0.4/里——唔係求其簽夠 $8,000 就有"
+    },
+    "rateLocal": 5,
+    "rateOnline": 5,
+    "rateOverseas": 5,
+    "cat": {
+      "transport": 2
+    },
+    "annualFeeFirst": 0,
+    "feeRenewal": 2000,
+    "feeWaivable": true,
+    "waiveNote": "首年免；次年簽夠 HK$80,000 自動豁免（繳費／繳稅唔計入門檻）",
+    "convertFee": 0,
+    "url": "https://www.hsbc.com.hk/credit-cards/products/everymile/",
+    "note": "指定商戶 HK$2/里＝2.5% 獎賞錢 × 優惠兌換率 $1RC=20里（官方核實）。注意：$2 嗰欄餐飲只限「咖啡店及輕便美食」名單（Starbucks 嗰類）——一般餐廳酒樓唔係！交通就齊（巴士／港鐵／的士／油站）。獎賞錢一定要喺 Reward+ App 換里先有優惠價。$2/里上限官方文件未見條文——大額分配呢張暫時保守。滙豐有權隨時改商戶名單。",
+    "verified": true,
+    "publicDetails": {
+      "eligibility": [
+        "最低年薪 HK$240,000。",
+        "迎新要經網上申請，並按當期條款完成指定類別簽賬；唔係所有 HK$8,000 簽賬都必然砌到宣傳嘅每里成本。"
+      ],
+      "registration": [
+        "里數優惠兌換要喺 Reward+ App 進行；網上理財兌換未必享相同兌換率。",
+        "指定商戶名單可隨時改，簽之前要喺滙豐最新名單查一次。"
+      ],
+      "fees": [
+        "外幣交易費 1.95%。",
+        "海外港幣交易或非香港註冊商戶港幣交易可另收 1%。"
+      ],
+      "exclusions": [
+        "官方重要條款索引有列例外交易；現有資料未足以將完整排除清單逐項寫死，所以申請及湊迎新前必須再開官方 T&C。"
+      ],
+      "crediting": [
+        "HK$1「獎賞錢」按優惠兌換率可換 20 里；要用 Reward+ App。"
+      ],
+      "benefits": [
+        "指定交通、咖啡店、輕便美食及旅遊商戶可達 HK$2/里；一般餐廳酒樓未必屬指定名單。",
+        "其他一般本地及海外簽賬以 HK$5/里作保守比較。"
+      ]
+    }
+  },
+  {
+    "id": "citi-pm",
+    "slug": "citi-premiermiles",
+    "image": "img/pgG2-cards.jpg",
+    "status": "active",
+    "name": "Citi PremierMiles",
+    "bank": "Citibank",
+    "program": "flex",
+    "minIncome": 120000,
+    "incomeVerified": true,
+    "welcome": {
+      "type": "threshold",
+      "months": 2,
+      "deadline": "2026-09-30",
+      "tiers": [
+        {
+          "spend": 5000,
+          "miles": 20000
+        }
+      ],
+      "prereq": "首 2 個月內每月最少簽 1 次（唔好一個月簽晒就停手）；發卡 1 個月內啟動實體卡"
+    },
+    "rateLocal": 8,
+    "rateOnline": 8,
+    "rateOverseas": 4,
+    "annualFeeFirst": 0,
+    "feeRenewal": 1800,
+    "convertFee": 200,
+    "url": "https://www.citibank.com.hk/english/credit-cards/premiermiles-cards/index.html",
+    "note": "迎新 $5,000 → 20,000 里（$0.25/里，全場最平浸之一；官方 T&C 至 9 月 30 日）。交稅、繳費、PayAll、八達通增值全部唔計迎新門檻——湊門檻要簽真消費。外幣基本 $4/里，簽賬達 $20,000 先去 $3（官網有門檻，穩陣用 $4 計）。本地 $8/里較弱。積分達標後 5 個月先入賬，換機票預足時間。PayAll 手續費 4%。",
+    "verified": true,
+    "publicDetails": {
+      "eligibility": [
+        "18 歲或以上；最低年薪 HK$120,000。",
+        "新客＝過去 12 個月冇持有或取消任何 Citi 主卡；發卡後 1 個月內要啟動實體卡。"
+      ],
+      "registration": [
+        "迎新期內每個月最少要有一次合資格簽賬，唔可以第一個月簽晒之後完全停手。"
+      ],
+      "fees": [
+        "Citi PayAll 手續費 4%。",
+        "DCC 額外費 1%；年費及其他收費以官方收費表為準。"
+      ],
+      "exclusions": [
+        "FPS、八達通增值、現金透支、結餘轉賬、Quick Cash、FlexiBill／PayLite、繳稅、網上繳費／公用事業、保險、慈善／非牟利、PayAll、基金、銀行費用、DCC 費、賭場、取消或退款交易均不計迎新門檻。"
+      ],
+      "crediting": [
+        "迎新積分可於達標月份後 5 個曆月內存入；換機票要預足時間。",
+        "積分可轉 11 個航空／酒店計劃，包括 Asia Miles、British Airways Club、Qatar、KrisFlyer、Qantas、Flying Blue 及 IHG 等。"
+      ],
+      "clawback": [
+        "發卡後 12 個月內取消主卡，銀行可扣回迎新。"
+      ]
+    }
+  },
+  {
+    "id": "citi-prestige",
+    "slug": "citi-prestige",
+    "image": "img/pgG2-cards.jpg",
+    "status": "active",
+    "name": "Citi Prestige",
+    "bank": "Citibank",
+    "program": "flex",
+    "minIncome": 600000,
+    "incomeVerified": true,
+    "welcome": {
+      "type": "feePurchase",
+      "fee": 3800,
+      "miles": 30000,
+      "months": 0,
+      "note": "交首年年費 HK$3,800 → 30,000 里（每里現金成本 $0.127）。唔使簽賬、唔佔簽賬額度；年費任何情況唔退唔 waive。第二年起每年再獲 30,000 里（年度獻禮）——長線「買里機器」。12 個月內 cut 卡會扣返。"
+    },
+    "rateLocal": 6,
+    "rateOnline": 6,
+    "rateOverseas": 4,
+    "annualFeeFirst": 3800,
+    "feeRenewal": 3800,
+    "feeWaivable": false,
+    "waiveNote": "年費 HK$3,800 硬收（官方KFS核實），唔 waive——係迎新前提",
+    "convertFee": 200,
+    "url": "https://www1.citibank.com.hk/english/credit-cards/prestige-card",
+    "note": "年薪門檻 HK$60萬（官方申請資格）、年費 $3,800 硬收兼要交咗先有迎新。價值喺「年年 30,000 里＋禮遇」（Priority Pass、酒店住4送1），唔喺簽賬賺里（本地 $6/里普通）——啱長線持有嘅高收入用戶，唔啱一次性迎新獵人。產品決策：墊底推介，計算器唔硬推。",
+    "verified": true,
+    "publicDetails": {
+      "eligibility": [
+        "18 歲或以上；官方最低年薪 HK$600,000。",
+        "迎新屬「交年費換積分」，唔係免費迎新，亦唔佔簽賬額度。"
+      ],
+      "registration": [
+        "首年年費要全數入賬及繳清先符合迎新條件。"
+      ],
+      "fees": [
+        "年費 HK$3,800，硬收、不可豁免及不設退款。",
+        "里數兌換手續費按現有收費資料為 HK$200。"
+      ],
+      "exclusions": [
+        "日常優惠排除 FPS、八達通增值、繳稅、PayAll、保險、分期、慈善及取消退款等交易；細節以 Citi 共用條款為準。"
+      ],
+      "crediting": [
+        "交妥年費後，迎新積分可於 2 個曆月內存入。",
+        "第二年起每年交年費可獲年度 30,000 里獻禮；每年續卡前仍要核對當期條款。"
+      ],
+      "clawback": [
+        "12 個月內取消主卡，銀行可扣回迎新。"
+      ],
+      "benefits": [
+        "包括 Priority Pass、指定酒店第 4 晚免費、餐飲、機場接送及高球等禮遇；每項均有各自預約、次數及地區限制。"
+      ]
+    }
+  },
+  {
+    "id": "dbs-black",
+    "slug": "dbs-black-world-mastercard",
+    "image": "img/pgG2-cards.jpg",
+    "status": "active",
+    "name": "DBS Black World Mastercard",
+    "bank": "DBS",
+    "program": "flex",
+    "minIncome": 240000,
+    "incomeVerified": true,
+    "welcome": {
+      "type": "tiered",
+      "months": 3,
+      "expired": true,
+      "tiers": [
+        {
+          "spend": 8000,
+          "miles": 8000
+        },
+        {
+          "spend": 20000,
+          "miles": 12000
+        },
+        {
+          "spend": 60000,
+          "miles": 30000
+        }
+      ],
+      "expiredNote": "上一期迎新（三浸累積：$8,000→8,000、$20,000→12,000、$60,000→30,000，另申請一次 Flexi 分期＋2,000）推廣期 2026-04-29 至 07-06 已完結。DBS 慣性季季有新一期——有官方 Q3 T&C 先入返引擎（週更第一要務）。"
+    },
+    "rateLocal": 6,
+    "rateOnline": 6,
+    "rateOverseas": 4,
+    "annualFeeFirst": 0,
+    "feeRenewal": 3600,
+    "convertFee": 0,
+    "url": "https://www.dbs.com.hk/personal-zh/credit-cards/credit-cards/black-mc",
+    "note": "本地 HK$6/里（官方產品頁結案）。海外基本 $4/里；低至 $2/里要過三關：Card+ App 登記＋該曆月總簽滿 $2 萬＋每月海外首 $2 萬以內（官方推廣至 2026 年底；有門檻未建模，穩陣用 $4 計）。⚠️ 迎新推廣期 7 月 6 日已完結，未有新一期官方 T&C——按資料紀律暫時當佢冇迎新，淨計基本率。儲里記得揀「DBS$ 自選換領」，唔好俾佢自動變現金回贈。",
+    "verified": true,
+    "publicDetails": {
+      "eligibility": [
+        "18 歲或以上香港居民；最低年薪 HK$240,000。",
+        "上一期迎新已於 2026-07-06 完結，只保留做歷史紀錄，唔會進入推薦計算。"
+      ],
+      "registration": [
+        "批卡後要下載、登記及啟動 DBS Card+。",
+        "要選擇「DBS$ 自選換領」先可以按計劃兌換里數。",
+        "海外 HK$2/里推廣要先登記，而且該月總合資格零售簽賬達 HK$20,000。"
+      ],
+      "fees": [
+        "首年免年費；其後年費 HK$3,600。",
+        "其他外幣及跨境收費以 DBS 最新 KFS 為準。"
+      ],
+      "exclusions": [
+        "迎新同海外推廣口徑不同；共通排除包括繳稅、繳費、保險、基金、現金透支、分期供款、取消及退款。上一期迎新曾計部分八達通／電子錢包交易，但唔可以假設下一期相同。"
+      ],
+      "crediting": [
+        "上一期額外迎新最遲可於發卡後 6 個月入賬；呢個時間只屬已完結一期紀錄。"
+      ],
+      "clawback": [
+        "上一期條款列明 12 個月內取消主卡可扣回迎新；新一期要重新核對。"
+      ],
+      "benefits": [
+        "海外優惠率 HK$2/里只適用每月首 HK$20,000 海外簽賬，而且要同月總簽賬達標；未達標或超額以 HK$4/里計。"
+      ]
+    }
+  },
+  {
+    "id": "amex-explorer",
+    "slug": "ae-explorer",
+    "image": "img/pgO4-hero.jpg",
+    "status": "active",
+    "name": "AE Explorer",
+    "bank": "美國運通",
+    "program": "flex",
+    "minIncome": 120000,
+    "incomeVerified": true,
+    "welcome": {
+      "type": "tiered",
+      "months": 3,
+      "deadline": "2026-08-31",
+      "tiers": [
+        {
+          "spend": 8000,
+          "miles": 8000
+        },
+        {
+          "spend": 30000,
+          "miles": 26000
+        }
+      ],
+      "prereq": "指定連結網上申請；批卡即登記「本地簽賬賞」計劃——唔登記迎新唔齊。新客＝過去 12 個月冇任何 AE 香港基本卡"
+    },
+    "rateLocal": 3,
+    "rateOnline": 3,
+    "rateOverseas": 4.8,
+    "cat": {
+      "overseas": {
+        "rate": 1.68,
+        "capMonthly": 3333,
+        "excessRate": 4.8
+      }
+    },
+    "capQuarterly": 15000,
+    "excessRate": 6,
+    "annualFeeFirst": 0,
+    "feeRenewal": 2200,
+    "feeWaivable": true,
+    "waiveNote": "首年免（迎新）；其後年簽 HK$150,000 自動豁免下年度（官方）",
+    "convertFee": 0,
+    "url": "https://www.americanexpress.com/hk/en/credit-cards/explorer-credit-card/",
+    "note": "官方T&C核實（18分=1里，2026-07基準）。迎新兩浸：$8,000→8,000（$1.00/里）、$30,000→26,000（申請至 8 月 31 日；過去 12 個月有任何 AE 卡＝唔合資格）。本地 $3/里要登記「本地簽賬賞」，額外部分每季首 $15,000，超過跌 $6/里。外幣 $1.68/里要登記，每季首 $10,000，另有 2% 外幣手續費。批卡後第一件事：登記晒本地＋外幣＋指定網上商戶三個計劃。部分商戶唔收 AMEX。",
+    "verified": true,
+    "publicDetails": {
+      "eligibility": [
+        "最低年薪 HK$120,000。",
+        "新客＝過去 12 個月冇持有或取消任何 AE 香港基本卡。"
+      ],
+      "registration": [
+        "批卡後立即分別登記本地、外幣及指定網上商戶賺分計劃；冇登記就唔會自動享有宣傳加賞。"
+      ],
+      "fees": [
+        "外幣交易費 2%。",
+        "基本卡連首 2 張附屬卡；第 3 張附屬卡起按官方 KFS 收費。"
+      ],
+      "exclusions": [
+        "電子錢包增值、本地拍賣行港幣交易、年費、結餘轉戶、旅行支票／禮券、財務費、逾期費、海外退稅、繳稅及經 AE 賬戶繳交部分公用事業費不賺分。"
+      ],
+      "crediting": [
+        "Membership Rewards 以 18 分兌 1 里作目前比較基準；兌換率及夥伴名單可改。"
+      ],
+      "clawback": [
+        "12 個月內取消卡，AE 可扣回迎新。"
+      ],
+      "benefits": [
+        "本地優惠率每季首 HK$15,000；超過後回落至 HK$6/里。",
+        "外幣優惠率每季首 HK$10,000，另計 2% 外幣費；部分商戶不接受 AMEX。"
+      ]
+    }
+  },
+  {
+    "id": "dahsing-ba",
+    "slug": "dahsing-ba-platinum",
+    "image": "img/pgG2-cards.jpg",
+    "status": "active",
+    "name": "大新英國航空白金卡",
+    "bank": "大新銀行",
+    "program": "avios",
+    "minIncome": 150000,
+    "incomeVerified": true,
+    "welcome": {
+      "type": "threshold",
+      "months": 3,
+      "deadline": "2026-12-31",
+      "tiers": [
+        {
+          "spend": 12000,
+          "miles": 10000
+        }
+      ],
+      "prereq": "新客＝發卡前 12 個月冇任何大新主卡或附屬卡",
+      "note": "額外 10,000 Avios（連呢 $12,000 嘅基本約 2,000 ＝共約 12,000）。仲有兩個可疊加嘅條件獎：①首 6 個月海外 $2/里（每月首 $10,000、月上限 5,000 Avios）②申請時或發卡 3 個月內網上開優易／VIP i-Account ＋5,000——都係有條件先有，入 note 唔入引擎。"
+    },
+    "rateLocal": 6,
+    "rateOnline": 6,
+    "rateOverseas": 4,
+    "cat": {},
+    "annualFeeFirst": 0,
+    "feeRenewal": 1800,
+    "convertFee": 0,
+    "url": "https://www.dahsing.com/html/en/credit_card/card_products/co_brand/british_airway_card.html",
+    "note": "Avios 每月自動直入 BA Club、費用全免——全庫最省手續嘅 Avios 卡。官方核實：本地 $6/里、海外 $4/里（BA 機票唔算海外）、生日當日 $3/里、BA 官網買 BA 機票 $3/里另有 9 折 code（CARDOFFERH，至 2027-02-28）。⚠️ 13 個月內 cut 主卡罰 HK$1,200（比一般 12 個月長）；Avios 36 個月無動用會歸零。官方產品頁寫明最低年薪 HK$150,000。",
+    "verified": true,
+    "publicDetails": {
+      "eligibility": [
+        "最低年薪 HK$150,000。",
+        "新客＝發卡前 12 個月冇持有任何大新主卡或附屬卡。"
+      ],
+      "registration": [
+        "申請時或發卡後 3 個月內網上開指定新理財戶口，先符合額外開戶 Avios 條件；已有戶口或分行開戶唔計。"
+      ],
+      "fees": [
+        "白金卡年費 HK$1,800；外幣交易費 1.95%，跨境港幣交易費 1%。"
+      ],
+      "exclusions": [
+        "迎新排除八達通增值、PayMe／TNG／WeChat Pay／Alipay 等電子錢包增值、繳稅繳費、分期供款、年費等。",
+        "BA 機票簽賬唔當一般海外簽賬；取消或退款交易會扣回相應 Avios。"
+      ],
+      "crediting": [
+        "Avios 會按月自動兌換並存入 British Airways Club，毋須手動轉換；迎新額外 Avios 可於簽賬期完結後約 6–8 星期入賬。"
+      ],
+      "clawback": [
+        "13 個月內取消主卡可收 HK$1,200 手續費，比一般 12 個月更長。"
+      ],
+      "benefits": [
+        "生日當日及指定 BA 機票簽賬可達 HK$3/Avios。",
+        "指定香港出發 BA 機票 9 折碼 CARDOFFERH 有效期至 2027-02-28，使用前要核對班次及條款。"
+      ]
+    }
+  },
+  {
+    "id": "hsbc-visasig",
+    "slug": "hsbc-visa-signature",
+    "image": "img/pgG2-cards.jpg",
+    "status": "active",
+    "name": "滙豐 Visa Signature",
+    "bank": "滙豐",
+    "program": "flex",
+    "minIncome": 240000,
+    "incomeVerified": true,
+    "welcome": {
+      "type": "threshold",
+      "months": 2,
+      "tiers": [
+        {
+          "spend": 8000,
+          "miles": 2000
+        }
+      ]
+    },
+    "rateLocal": 25,
+    "rateOnline": 25,
+    "rateOverseas": 25,
+    "cat": {
+      "dining": 2.78
+    },
+    "capTotal": 100000,
+    "excessRate": 25,
+    "annualFeeFirst": 0,
+    "feeRenewal": 2000,
+    "convertFee": 0,
+    "url": "https://www.hsbc.com.hk/credit-cards/products/visa-signature/",
+    "note": "「平民黑卡」。官方資料確認：基本 0.4% 獎賞錢＝兌 Cathay 時 HK$25/里；登記最紅自主並將額外倍數放入指定類別，加埋 Visa Signature 自動額外 1.2%，指定類別最高 3.6%＝約 HK$2.78/里。2026 計劃上限係指定類別首 HK$100,000。年薪 HK$240,000、年費 HK$2,000、首兩年免年費均有官方頁／KFS。仍暫停加入推薦，因為迎新各層同例外交易未完全轉成引擎欄位；唔係因為冇官方文件。",
+    "verified": false,
+    "publicDetails": {
+      "eligibility": [
+        "最低年薪 HK$240,000。",
+        "卡資料已有官方文件，但迎新各層及例外交易仍未完全轉入推薦器，所以暫時只供比較。"
+      ],
+      "registration": [
+        "要登記「最紅自主獎賞」並將額外倍數分配到指定類別；類別及上限按每期條款重新設定。"
+      ],
+      "fees": [
+        "官方資料顯示首兩年免年費；其後年費 HK$2,000。",
+        "外幣及跨境港幣費用以滙豐最新 KFS 為準。"
+      ],
+      "exclusions": [
+        "例外交易清單尚未完整轉成引擎欄位；未完成前唔會將 HK$2.78/里當成任何簽賬都適用。"
+      ],
+      "crediting": [
+        "基本 0.4% 獎賞錢；兌 Cathay 時按現行官方兌換率比較。"
+      ],
+      "benefits": [
+        "指定「最紅自主」類別連 Visa Signature 額外獎賞最高約 3.6% 獎賞錢，即約 HK$2.78/里；2026 年指定類別上限為首 HK$100,000。"
+      ]
+    }
+  },
+  {
+    "id": "amex-platinum",
+    "slug": "ae-platinum-card",
+    "image": "img/pgO3-hero.jpg",
+    "status": "active",
+    "name": "AE 白金卡（細頭）",
+    "bank": "美國運通",
+    "program": "flex",
+    "minIncome": 120000,
+    "incomeVerified": true,
+    "welcome": {
+      "type": "tiered",
+      "months": 3,
+      "deadline": "2026-07-29",
+      "tiers": [
+        {
+          "spend": 15000,
+          "miles": 22222
+        },
+        {
+          "spend": 50000,
+          "miles": 55556
+        }
+      ],
+      "altTiers": [
+        {
+          "spend": 15000,
+          "miles": 45000
+        }
+      ],
+      "altNote": "現有 AE 會員（過去12個月冇白金／半島白金）：簽 $15,000 → 810,000 分＝45,000 里（申請期 02-26 至 07-29，16 星期入分）",
+      "condNote": "另有兩浸現金回贈（唔係里數，冇計入上面）：①網上申請＋7 個工作天內交齊文件，批卡後 3 個月內完成首次簽賬 → HK$1,000 回贈；②手機八達通增值單一簽 $600+ → HK$50 回贈。",
+      "prereq": "新客＝過去 12 個月冇任何 AE 香港批核嘅基本卡；官方 T&C（07-15 至 07-29 收件並批核）；批卡即重新登記 9X"
+    },
+    "rateLocal": 9,
+    "rateOnline": 9,
+    "rateOverseas": 4.5,
+    "cat": {
+      "overseas": {
+        "rate": 2,
+        "capMonthly": 5000,
+        "excessRate": 4.5
+      },
+      "groceries": {
+        "rate": 2,
+        "capMonthly": 5000,
+        "excessRate": 9
+      }
+    },
+    "capTotal": 160000,
+    "excessRate": 18,
+    "annualFeeFirst": 9500,
+    "feeRenewal": 9500,
+    "feeWaivable": false,
+    "waiveNote": "年費 HK$9,500 硬收（官方T&C），唔 waive。官方年薪門檻 $120,000，市場公認實際審批睇資產",
+    "convertFee": 300,
+    "url": "https://www.americanexpress.com/hk/en/credit-cards/platinum-card/",
+    "note": "【官方T&C 2026-07-16核實】申請期 07-15 至 07-29：新客簽 $15,000→400,000 分（22,222里）、簽 $50,000→合共 1,000,000 分（55,556里）；現有 AE 會員簽 $15,000→810,000 分（45,000里）。另有網上申請首次簽賬 $1,000 回贈＋手機八達通增值 $50（現金，冇計入引擎）。日常本地 $9/里（Turbo 每年度首 $160,000，超過 $18/里）；外幣／指定超市 $2/里要登記 9X，每類每季首 $15,000。Alipay／WeChat 唔計分，Apple Pay 計。取消退款、儲值增值、年費同稅項唔計簽賬；兌換迎新後 12 個月內取消，AE 有權扣返 $9,500 年費。9X 延續到 2027-12-31，分六階段並要逐階段重新登記。高年費卡只留作候選，唔自動加入推薦。",
+    "verified": true,
+    "publicDetails": {
+      "eligibility": [
+        "官方最低年薪 HK$120,000；實際審批仍由 AE 按整體財務狀況決定。",
+        "新客＝過去 12 個月冇任何 AE 香港批核基本卡；現有 AE 會員有另一套迎新。"
+      ],
+      "registration": [
+        "9X 分階段運作，每個階段都要重新登記；舊階段登記唔會自動延續。"
+      ],
+      "fees": [
+        "年費 HK$9,500，硬收及不可豁免。",
+        "外幣交易費 2%；里數兌換費按現有資料為 HK$300。"
+      ],
+      "exclusions": [
+        "Alipay／WeChat Pay、取消退款、儲值增值、年費及稅項不計指定獎賞；Apple Pay 可按合資格交易計。"
+      ],
+      "crediting": [
+        "現有 AE 會員迎新可於約 16 星期內入分；其他迎新按當期 T&C。"
+      ],
+      "clawback": [
+        "兌換迎新後 12 個月內取消，AE 可扣回 HK$9,500 年費。"
+      ],
+      "benefits": [
+        "Turbo 每計劃年度首 HK$160,000；超過後回落至約 HK$18/里。",
+        "外幣及指定商戶 9X 分類各有獨立上限；9X 計劃現列至 2027-12-31。",
+        "旅遊保險、機場貴賓室及白金秘書安排曾有改動，使用前必須再開官方禮遇頁確認。"
+      ]
+    }
+  }
+];
+});

@@ -281,8 +281,17 @@ function storageSnapshot() {
   const html = read('index.html').toString('utf8');
   const referenced = [...html.matchAll(/['"](bm_[a-z0-9_]+)['"]/g)].map((match) => match[1]);
   const keys = [...new Set(referenced)].sort();
-  const resetMatch = html.match(/const keys=\[([^\]]+)\]/);
-  const resetKeys = resetMatch ? [...resetMatch[1].matchAll(/['"](bm_[a-z0-9_]+)['"]/g)].map((match) => match[1]).sort() : [];
+  const resetMatch = html.match(/\b(?:var|let|const)\s+ACREMILES_STORAGE_KEYS\s*=\s*\[([\s\S]*?)\]\s*;/);
+  const resetKeys = resetMatch
+    ? [...new Set([...resetMatch[1].matchAll(/['"](bm_[a-z0-9_]+)['"]/g)].map((match) => match[1]))].sort()
+    : [];
+  if (!resetKeys.length) {
+    throw new Error('localStorage reset key 清單為空，或未能讀取 ACREMILES_STORAGE_KEYS（var／let／const）。');
+  }
+  const missingResetKeys = keys.filter((key) => !resetKeys.includes(key));
+  if (missingResetKeys.length) {
+    throw new Error(`localStorage reset 未涵蓋實際引用嘅 key：${missingResetKeys.join(', ')}`);
+  }
   return {
     schemaVersion: 1,
     baselineCommit: BASELINE_COMMIT,

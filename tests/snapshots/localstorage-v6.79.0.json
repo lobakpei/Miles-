@@ -37,7 +37,24 @@
     "bm_welcome_ts": 3,
     "bm_zoom": 3
   },
-  "resetKeys": [],
+  "resetKeys": [
+    "bm_card_overrides",
+    "bm_consent",
+    "bm_daily",
+    "bm_esub",
+    "bm_favs",
+    "bm_input",
+    "bm_ok",
+    "bm_ow",
+    "bm_rsub",
+    "bm_sa",
+    "bm_saved_plans",
+    "bm_saved_redeem",
+    "bm_sub",
+    "bm_theme",
+    "bm_welcome_ts",
+    "bm_zoom"
+  ],
   "schemaVersion": 1,
   "schemas": {
     "bm_consent": {

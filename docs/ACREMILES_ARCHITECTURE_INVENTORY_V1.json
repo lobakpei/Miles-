@@ -1,0 +1,143 @@
+{
+  "audit": {
+    "date": "2026-07-22",
+    "mode": "read-only",
+    "repository": "lobakpei/Miles-",
+    "branch": "main",
+    "commit": "fb63103778831688b89bf5e4b08dbe1882c2f354",
+    "version": "v6.79.0",
+    "index_blob_sha": "1eef80e8e4d480b98660bbb576afdee1afc67f43",
+    "repo_changed": false
+  },
+  "runtime": {
+    "hosting": "GitHub Pages",
+    "stack": [
+      "HTML",
+      "CSS",
+      "Vanilla JavaScript"
+    ],
+    "backend": false,
+    "login": false,
+    "cloud_database": false,
+    "pwa": true,
+    "storage": [
+      "localStorage",
+      "Cache Storage"
+    ],
+    "external_services": [
+      "GA4 (consent gated)",
+      "Sentry (consent gated)",
+      "MailerLite (explicit submit)"
+    ]
+  },
+  "index_metrics": {
+    "bytes": 656623,
+    "lines": 7318,
+    "style_blocks": 1,
+    "inline_css_chars": 107843,
+    "script_blocks": 7,
+    "bm_core_chars": 74130,
+    "ui_state_script_chars": 199143,
+    "main_tabs": 5,
+    "overlay_pages": 23,
+    "dom_ids": 206,
+    "details_elements": 67,
+    "storage_keys": 16
+  },
+  "domain_inventory": {
+    "cards": 9,
+    "recommendable_cards": 8,
+    "channel_offers": 8,
+    "active_channel_offers": 6,
+    "redemptions": 10,
+    "oneworld_carriers": 16,
+    "airports": 122,
+    "verified_direct_routes": 41,
+    "known_no_direct_routes": 10,
+    "spend_scenarios": 3
+  },
+  "current_sources": {
+    "official_cards": "index.html#bm-core DEFAULT_CARDS",
+    "card_public_details": "index.html#bm-core CARD_PUBLIC_DETAILS/publicDetails",
+    "channel_offers": "index.html#bm-core CHANNEL_OFFERS",
+    "redemptions": "index.html#bm-core REDEMPTIONS",
+    "earn_engine": "index.html#bm-core optimize + tier helpers",
+    "rtw_engine": "index.html#bm-core",
+    "article_bodies": "index.html overlays",
+    "article_metadata": "share-meta.js",
+    "generated_cards": "cards/*.html",
+    "generated_share_wrappers": "share/*",
+    "client_state": "localStorage bm_* keys"
+  },
+  "priority_risks": [
+    {
+      "priority": "P0",
+      "id": "official-only-conflict",
+      "description": "BANK_SECOND_CARD_RULE contains market-organised defaults marked awaiting official verification but affects recommendations."
+    },
+    {
+      "priority": "P0",
+      "id": "whole-card-verification",
+      "description": "Most source status is whole-card level rather than field-level."
+    },
+    {
+      "priority": "P0",
+      "id": "decision-drift",
+      "description": "Product Blueprint v2 and 2026-07-22 decisions are not canonical in GitHub main."
+    },
+    {
+      "priority": "P0",
+      "id": "redemption-value-data",
+      "description": "Current redemption data cannot yet support annual-average cash-fare ranking."
+    },
+    {
+      "priority": "P1",
+      "id": "monolith",
+      "description": "index.html combines data, engines, content, UI, CSS and state."
+    },
+    {
+      "priority": "P1",
+      "id": "html-regex-generators",
+      "description": "Generators and audits extract data from an HTML script block using regex/VM."
+    },
+    {
+      "priority": "P1",
+      "id": "content-metadata-drift",
+      "description": "Article bodies and share metadata live in different sources."
+    },
+    {
+      "priority": "P1",
+      "id": "no-pr-ci",
+      "description": "Only weekly freshness workflow exists; full PR gates are not automated."
+    },
+    {
+      "priority": "P1",
+      "id": "seo-overlays",
+      "description": "Guides/offers are app overlays; wrappers are noindex redirects rather than full indexable pages."
+    }
+  ],
+  "recommended_first_slice": {
+    "name": "Card Data Source Extraction v1",
+    "new_sources": [
+      "data/cards-official.js",
+      "data/card-channels.js",
+      "data/source-registry.js"
+    ],
+    "must_not_change": [
+      "UI",
+      "Design Language",
+      "optimizer outputs",
+      "localStorage schema",
+      "production deployment"
+    ],
+    "required_gates": [
+      "optimizer fixtures",
+      "generated card drift",
+      "verify.js",
+      "test-consent-gate.js",
+      "audit-freshness.js",
+      "HTTP smoke",
+      "Draft PR only"
+    ]
+  }
+}

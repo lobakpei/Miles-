@@ -1,8 +1,10 @@
 # AcreMiles Roadmap
 
-最後更新：2026-07-21  
+最後更新：2026-07-22
 基準：正式 v6.79.0
 狀態定義：`NOW`＝立即；`NEXT`＝完成 NOW 後；`LATER`＝中期；`HOLD`＝等待用戶／外部資料。
+
+產品順序以 [`ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md`](ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md) 同 [`ACREMILES_PRODUCT_BLUEPRINT_V2.md`](ACREMILES_PRODUCT_BLUEPRINT_V2.md) 為準；本 Roadmap 只排執行次序，唔可自行改產品決定。
 
 ## 1. 路線圖原則
 
@@ -11,23 +13,39 @@
 3. 每次只改一個主要責任邊界，保留可比較嘅輸出快照。
 4. 不一次過轉框架、拆資料、重設計同改計算公式。
 5. 未有用戶明確批准，不將候選版本合併到正式網站。
+6. 「大額消費」作全站定位、「由目的地出發」作產品核心、一般 Planner 第一層用 Beginner／Advanced 已被取代；只能當 v6.79.0 現況／歷史描述，唔再當未來方向。
 
-## 2. NOW｜資料及發布安全
+## 2. 2026-07-22 分階段執行
 
-### R0. Outcome First Big Picture V1
+| Phase | 範圍 | 狀態／閘門 |
+|---|---|---|
+| Phase 0 | Canonical Sync + Regression Lock | `AWAITING FOUNDER APPROVAL`；只改 docs／fixtures／snapshots／tests，Draft PR 後停止 |
+| Phase 1 | Card Data Source Extraction | `HOLD`；只可喺 Founder 回覆「Phase 0 approved」後另開 Draft PR；先搬資料，不改公式／UI |
+| Phase 2 | Immediate UX Repair | `HOLD`；修 Welcome／Consent／header／profile／nav 等已確認問題，不改 Engine 公式 |
+| Phase 3 | 點賺 V1 | `HOLD`；金額先行、result-first、逐浸結果、timeline，同固定「點賺」責任一致 |
+| Phase 4 | 點用 V1 | `HOLD`；里數先行；一般兌換／環球票第一層分流；Beginner／Advanced 只放環球票內 |
+| Phase 5 | Content／SEO CMS | `LATER`；同一內容來源供 App 同可索引頁 |
+| Phase 6 | Wallet／Google Sync／Notifications | `LATER`；local-only 保持基本模式，登入／雲端屬獨立私隱及安全審查 |
 
-狀態：`COMPLETED — v6.79.0`
+每個 Phase 必須有獨立 Draft PR、可比較 regression evidence、Founder review，同埋明確 no-merge／no-deploy 邊界；不可因後續 Phase 已寫入文件就提前實作。
+
+## 3. NOW｜資料及發布安全
+
+### 歷史基準：Outcome First Big Picture V1
+
+狀態：`COMPLETED — v6.79.0；部分產品定位已被 2026-07-22 決定取代`
 
 - v6.79.0 已按 Safety Hardened 交接完成可操作第一版，並獲產品擁有人按 Preview 網站確認整體方向。
 - 首頁價值示範、計算分層、saved card menu、文章 tier 同 planner gateway 已發布。
 - 發布前加入公開 UK Postbox 地址及「可撳／不可撳」視覺層級修正。
 - 完整 360／390／430 Android Chrome、深淺色及 PWA mode 納入發布後 QA。
+- 現行 bottom nav、舊「大額消費／由目的地出發」語意同一般 Planner Beginner／Advanced gateway 只係 regression baseline，不再代表目標 IA。
 
 完成條件：已完成；細節 UI 問題按產品擁有人之後實際使用再逐步調整。
 
 ### R1. 每週信用卡更新
 
-狀態：`NOW`  
+狀態：`NOW`
 原因：2026-07-23、07-29、07-31 有 7 個優惠／迎新提醒。
 
 工作：
@@ -62,7 +80,7 @@
 - 預覽圖、標題、描述正確，舊 cache 問題有處理紀錄。
 - 發現問題已修正或以已知限制記錄。
 
-## 3. COMPLETED｜區 10 正式重做
+## 4. COMPLETED｜區 10 正式重做
 
 狀態：`COMPLETED`（v6.78.0）
 
@@ -72,7 +90,7 @@
 - 沿用現有城市 thumbnail，冇修改圖片檔。
 - 往後資料真相來源：`ZONE-10-ROUTE.csv` 及 `QA-REPORT-v6.78.0.md`。
 
-## 4. NEXT｜私隱、品牌及營運收尾
+## 5. NEXT｜私隱、品牌及營運收尾
 
 ### R3. 私隱設定閉環
 
@@ -95,7 +113,7 @@
 
 完成條件：兩個 URL 可公開開啟、名稱一致、冇舊品牌殘留。
 
-## 5. LATER｜架構及可靠性
+## 6. LATER｜架構及可靠性
 
 ### R5. 完整 PR CI gate
 
@@ -109,6 +127,7 @@
 - HTTP smoke
 - share preview metadata test
 - generated file drift check
+- `scripts/regression-lock.js` optimizer／產品 surface／DOM／localStorage snapshots
 - 可用時嘅 axe／Playwright 核心流程
 
 完成條件：PR 未通過必要 gate 時不可合併；每個 gate 失敗有清楚訊息，唔自動改內容。
@@ -175,7 +194,7 @@ status = verified | unknown | expired | conflict
 
 完成條件：唔犧牲資料正確、無障礙、分享 metadata 或離線功能；production 指標有版本化報告。
 
-## 6. 產品能力候選
+## 7. 產品能力候選
 
 以下未承諾版本，做之前要另行確認範圍：
 
@@ -184,7 +203,7 @@ status = verified | unknown | expired | conflict
 - 帳戶／雲端同步：會改變現時 local-only 私隱模型，必須先做完整 data mapping、security 及 retention review。
 - referral／廣告／合作收入：必須先完成商業披露、FCA／金融推廣／信貸中介及平台規則審查。
 
-## 7. 明確不做
+## 8. 明確不做
 
 - 唔自動申請信用卡、登入銀行或替用戶作信貸決定。
 - 唔聲稱即時獎勵位、即時稅費或保證出票。
@@ -192,7 +211,7 @@ status = verified | unknown | expired | conflict
 - 唔一次過重寫全站。
 - 唔因為某優惠吸引就降低來源或核實門檻。
 
-## 8. 可能版本安排（非承諾）
+## 9. 可能版本安排（非承諾）
 
 | 候選版本 | 合理範圍 |
 |---|---|

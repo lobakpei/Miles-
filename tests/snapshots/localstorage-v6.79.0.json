@@ -1,0 +1,112 @@
+{
+  "baselineCommit": "fb63103778831688b89bf5e4b08dbe1882c2f354",
+  "keyCount": 16,
+  "keys": [
+    "bm_card_overrides",
+    "bm_consent",
+    "bm_daily",
+    "bm_esub",
+    "bm_favs",
+    "bm_input",
+    "bm_ok",
+    "bm_ow",
+    "bm_rsub",
+    "bm_sa",
+    "bm_saved_plans",
+    "bm_saved_redeem",
+    "bm_sub",
+    "bm_theme",
+    "bm_welcome_ts",
+    "bm_zoom"
+  ],
+  "referenceCounts": {
+    "bm_card_overrides": 2,
+    "bm_consent": 6,
+    "bm_daily": 3,
+    "bm_esub": 3,
+    "bm_favs": 3,
+    "bm_input": 11,
+    "bm_ok": 3,
+    "bm_ow": 4,
+    "bm_rsub": 3,
+    "bm_sa": 5,
+    "bm_saved_plans": 5,
+    "bm_saved_redeem": 9,
+    "bm_sub": 4,
+    "bm_theme": 4,
+    "bm_welcome_ts": 3,
+    "bm_zoom": 3
+  },
+  "resetKeys": [
+    "bm_card_overrides",
+    "bm_consent",
+    "bm_daily",
+    "bm_esub",
+    "bm_favs",
+    "bm_input",
+    "bm_ok",
+    "bm_ow",
+    "bm_rsub",
+    "bm_sa",
+    "bm_saved_plans",
+    "bm_saved_redeem",
+    "bm_sub",
+    "bm_theme",
+    "bm_welcome_ts",
+    "bm_zoom"
+  ],
+  "schemaVersion": 1,
+  "schemas": {
+    "bm_consent": {
+      "analytics": "boolean",
+      "ts": "ISO datetime string"
+    },
+    "bm_daily": {
+      "family": "boolean",
+      "owned": "string[]",
+      "owned2": "string[]",
+      "spend": "Record<string, number>"
+    },
+    "bm_favs": "Record<cards|offers|guides, Record<id,{n,ts}>>",
+    "bm_input": {
+      "amount": "number",
+      "excludedCards": "string[]",
+      "family": "boolean",
+      "goal": "string",
+      "income": "number",
+      "income2": "number",
+      "maxNewCards": "number",
+      "months": "number",
+      "owned": "string[]",
+      "owned2": "string[]",
+      "preferProgram": "string",
+      "spendPattern": "lump|spread"
+    },
+    "bm_ow": {
+      "cabin": "string",
+      "segs": "Array<{from,to,carrier,stay}>"
+    },
+    "bm_sa": {
+      "dest": "string",
+      "region": "string",
+      "trip": "string"
+    },
+    "bm_saved_plans": "Array<{id,name,ts,amount,miles,snap,pinned?}>",
+    "bm_saved_redeem": "Array<{id,name,ts,cabin,route,segs,pinned?}>",
+    "bm_sub": {
+      "email": "string",
+      "queued": "boolean",
+      "sent": "boolean",
+      "ts": "ISO datetime string"
+    },
+    "scalars": [
+      "bm_card_overrides",
+      "bm_esub",
+      "bm_ok",
+      "bm_rsub",
+      "bm_theme",
+      "bm_welcome_ts",
+      "bm_zoom"
+    ]
+  }
+}

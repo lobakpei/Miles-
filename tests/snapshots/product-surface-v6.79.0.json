@@ -1,0 +1,410 @@
+{
+  "baselineCommit": "fb63103778831688b89bf5e4b08dbe1882c2f354",
+  "groups": {
+    "cards": {
+      "count": 10,
+      "files": [
+        {
+          "bytes": 10135,
+          "file": "cards/ae-explorer.html",
+          "sha256": "0f01af0ca318ed2c4cdd875a468b59e29b321778346c2ad3b9c5daefc9ec9150"
+        },
+        {
+          "bytes": 10293,
+          "file": "cards/ae-platinum-card.html",
+          "sha256": "842e1487dbd359fe392b3caca6e3b8ec534de16b52b1b0a0ed6af4e449ca7b4c"
+        },
+        {
+          "bytes": 9307,
+          "file": "cards/citi-premiermiles.html",
+          "sha256": "0b627984005a9726d0c877d253a1928fc7df16f4a338c4ed003f72678ee65f8a"
+        },
+        {
+          "bytes": 9048,
+          "file": "cards/citi-prestige.html",
+          "sha256": "c908bfffeeec557eb370d5b0c1b0e71528757408bf1eaabd630abebe06a61423"
+        },
+        {
+          "bytes": 9519,
+          "file": "cards/dahsing-ba-platinum.html",
+          "sha256": "c7c10a15ab8e4ecc9a3be216703b1b4ccc5dd2262a2667a91b62d258c8421fa1"
+        },
+        {
+          "bytes": 10234,
+          "file": "cards/dbs-black-world-mastercard.html",
+          "sha256": "492aac5685c78a54edcbf4969a9846417eee3cf700bc67ada685b46cc4895c79"
+        },
+        {
+          "bytes": 10229,
+          "file": "cards/hsbc-everymile.html",
+          "sha256": "7a97fe4c0b90d1948120feae10d9a8a1a19fa1467702daaf6b402dac639c3338"
+        },
+        {
+          "bytes": 9898,
+          "file": "cards/hsbc-visa-signature.html",
+          "sha256": "232b2e66cbceed8c236181d0c799f26b92d16eaaeb08c2705674ecd9c9a45f72"
+        },
+        {
+          "bytes": 3285,
+          "file": "cards/index.html",
+          "sha256": "56b2174dbd2bcab581b17795f2fe6212b5a9de582f2234a6a45bc37e9ae1bcd8"
+        },
+        {
+          "bytes": 9675,
+          "file": "cards/scb-cathay-mastercard.html",
+          "sha256": "bdaa98e2f9747813238a62febe6ddd0312bf10743a07d4864f944f42390cbdeb"
+        }
+      ],
+      "treeSha256": "71721d3918afc5f2305a894a3256504a342f81355fc4db89c98fb28f306c553e"
+    },
+    "images": {
+      "count": 36,
+      "files": [
+        {
+          "bytes": 150618,
+          "file": "img/banner-follow.jpg",
+          "sha256": "556aa567bc434aede80413a0d701d6bf9dc084306972b8af21fa142115b25a6f"
+        },
+        {
+          "bytes": 92716,
+          "file": "img/banner-sub.jpg",
+          "sha256": "322adbea1f8fcaa988ab7083fc45285dc2bfe46220fa572fd6b5f46ac4444433"
+        },
+        {
+          "bytes": 61629,
+          "file": "img/og-earn-plan.jpg",
+          "sha256": "8a37f7c0f3e56f1e53f028832f25bc952176c35b2ca275586fcd0e58108efb1b"
+        },
+        {
+          "bytes": 64433,
+          "file": "img/og-redeem-itinerary.jpg",
+          "sha256": "01cf5d08da6741a24ee163d588bc9bdce2e179a68c695bfbf36c842eb55b9765"
+        },
+        {
+          "bytes": 117568,
+          "file": "img/pgG1-hero.jpg",
+          "sha256": "4e16c7c14b3657e5232c31884e8e7f96b43631c3fc142d5479d242ee43f91be2"
+        },
+        {
+          "bytes": 109560,
+          "file": "img/pgG1-steps.jpg",
+          "sha256": "9d68fd9940488e13f788d350030631ef5c9f397b96dd8facc551fba4bd9b8479"
+        },
+        {
+          "bytes": 131741,
+          "file": "img/pgG2-cards.jpg",
+          "sha256": "8f8bf3fbfdfd42ce1ddcf0243eda7f37ae676ee7ad5b87ff26d643cbc9f2837e"
+        },
+        {
+          "bytes": 144464,
+          "file": "img/pgG3-hero.jpg",
+          "sha256": "6d1741bd69cf5dea56bc3c34420abbf4c6152ea4ca0b45b26fecb0fa277d97cc"
+        },
+        {
+          "bytes": 165452,
+          "file": "img/pgG4-hero.jpg",
+          "sha256": "b5c5704e34052683dc34cd46e390a946d4c9d36dbd4f090681174ccef28319fe"
+        },
+        {
+          "bytes": 120002,
+          "file": "img/pgG5-hero.jpg",
+          "sha256": "12a53f2cb51c06ada2c8e70b5f6fd5edee642196721cdaf29f7e1c9be65253cb"
+        },
+        {
+          "bytes": 137594,
+          "file": "img/pgG6-hero.jpg",
+          "sha256": "62dbd1b3c7e08927545ff5dc11e48b8a5bd4f8b00fbe19ab5c349da2ea0f1db1"
+        },
+        {
+          "bytes": 382179,
+          "file": "img/pgG7-hero.jpg",
+          "sha256": "6c7cb70efdc4c46480d2fb3e33b00d8437d28e54a6c4459d88bbbde96edd18c0"
+        },
+        {
+          "bytes": 140506,
+          "file": "img/pgG8-hero.jpg",
+          "sha256": "5e479e4fc8546c694152d7cdab6049a3022a37defe5e9dcb14b56a39dc8a0190"
+        },
+        {
+          "bytes": 151907,
+          "file": "img/pgG8-yq.jpg",
+          "sha256": "2120501de604fba11a91fb3eb5904f38c7d8ca32563cadbafcddd66e159e09fb"
+        },
+        {
+          "bytes": 126734,
+          "file": "img/pgO1-hero.jpg",
+          "sha256": "93908c10011f1ab2ff502292037c3c04f0e69a59e775da0080af557610e1b381"
+        },
+        {
+          "bytes": 163089,
+          "file": "img/pgO2-hero.jpg",
+          "sha256": "72c21aff85031aa7d865c9a4fdc4047f5d01bd784d27f2a4799af81a3dd797d9"
+        },
+        {
+          "bytes": 109729,
+          "file": "img/pgO3-hero.jpg",
+          "sha256": "c412bc89a1433a8256325e013b6a67a26fa572c1f24ec9b3f751af1e74097157"
+        },
+        {
+          "bytes": 176807,
+          "file": "img/pgO4-hero.jpg",
+          "sha256": "0e45f0d3d8101563b43eb5f0b059827ad33672dea918d2e7033d3bdcf486325c"
+        },
+        {
+          "bytes": 113849,
+          "file": "img/pgO5-hero.jpg",
+          "sha256": "fd55ef8bb8a97959e802f10406e7d45ef0011dcdc65a9469df4ea8be6f19581a"
+        },
+        {
+          "bytes": 163916,
+          "file": "img/pgR1-hero.jpg",
+          "sha256": "86673f901e645653df6321a229556c33b70f49dbcf93610126f17ae8a51f86fe"
+        },
+        {
+          "bytes": 164173,
+          "file": "img/pgR2-hero.jpg",
+          "sha256": "282217126fd7d53a396a0f187665644e6140143f10c571069c45ccf29cbd08ba"
+        },
+        {
+          "bytes": 141990,
+          "file": "img/pgW0-hero.jpg",
+          "sha256": "7e0f847db06f00933c9b5e0487a7a5852bd46b8ef637fd16fa5ab66e07d9428b"
+        },
+        {
+          "bytes": 53512,
+          "file": "img/pgW0-planner.webp",
+          "sha256": "a3e45c0b94f202cc12e7b95e871f238cf1638b75f4042c40cab87280c345a19e"
+        },
+        {
+          "bytes": 200431,
+          "file": "img/pgW10-hero-v3.jpg",
+          "sha256": "04d8726df8fffeb76a0f099a287d12e2e15950be57669ac4cb893ea0b881febb"
+        },
+        {
+          "bytes": 180290,
+          "file": "img/pgW10-hero.jpg",
+          "sha256": "f05ad384b6866e591b96646db5588364eadb9734999bd192fbefbc8f757842d7"
+        },
+        {
+          "bytes": 234334,
+          "file": "img/pgW10-mid.jpg",
+          "sha256": "745cd9a0fe0cd9c4c6e1ba3dbc4b2d14da0f4b03f2571317a6fbb87ae547e6cc"
+        },
+        {
+          "bytes": 145973,
+          "file": "img/pgW11-hero.jpg",
+          "sha256": "aac837ebde52ce0119ae1f54d1b6a540fd9a97672ce04298bf5b37938cc369bc"
+        },
+        {
+          "bytes": 233006,
+          "file": "img/pgW13-hero.jpg",
+          "sha256": "cd60619574f836fb42d404b61325337095ada87f72b5e5c79a618cbf6774727e"
+        },
+        {
+          "bytes": 285591,
+          "file": "img/pgW13-mid.jpg",
+          "sha256": "1ae9f9eb9574394256349c6e89a247412b57ea24ce1dd1a67ceebe75a363a227"
+        },
+        {
+          "bytes": 242229,
+          "file": "img/pgW6-hero.jpg",
+          "sha256": "8dc062b16581e025a021548ea67f2e4db846ca761859e697dfb7f99e6f0a157f"
+        },
+        {
+          "bytes": 201828,
+          "file": "img/pgW6-mid.jpg",
+          "sha256": "9f941a0cddc9e1fddff04f20b57090837253eb2c647f2d9af88378b23c82dc54"
+        },
+        {
+          "bytes": 221525,
+          "file": "img/pgW8-hero.jpg",
+          "sha256": "f77057113c425a3625ad9dd3f15bd3b841349d45e87f4f831f6afc6187497cd4"
+        },
+        {
+          "bytes": 37656,
+          "file": "img/thumb-banner-follow.webp",
+          "sha256": "52b17bc362a47ca9d6aa10e4a500230befb2e394f0c7696213a6e2b609a45212"
+        },
+        {
+          "bytes": 37864,
+          "file": "img/thumb-pgG2.webp",
+          "sha256": "96f39ef73746a0cc8a11e07d59dad60417a0cfca055d938def0959ac4831ddd5"
+        },
+        {
+          "bytes": 34466,
+          "file": "img/thumb-pgO2.webp",
+          "sha256": "1a2292ac09382c25b08d2e551fb1e57796a872e62fdf47d23d2ab06ae587cae6"
+        },
+        {
+          "bytes": 37716,
+          "file": "img/thumb-pgW11.webp",
+          "sha256": "1fc6945f290c8c41e6bee9d8d0ec69e4f5535f4071624ad415c1e09fb859d31d"
+        }
+      ],
+      "treeSha256": "843893948de4987b946a1be392cfebb4c7be8c12d9f9f514d09a5e32e039b152"
+    },
+    "index": {
+      "count": 1,
+      "files": [
+        {
+          "bytes": 656623,
+          "file": "index.html",
+          "sha256": "6e4297a499038ebd2ec8156d65253765515abbfb53bf4cdaae569a14fab98c5e"
+        }
+      ],
+      "treeSha256": "aabde6e9b4c8dea4fcbd5209168e689d3d40c8019b228396e1a4b7d97833fe91"
+    },
+    "manifest": {
+      "count": 1,
+      "files": [
+        {
+          "bytes": 599,
+          "file": "manifest.json",
+          "sha256": "d8f937a521a7e3e42d7d183d08e5f4f8c328daade3c04fede6855a0f79224e56"
+        }
+      ],
+      "treeSha256": "ed65ff54e9aa43948a43a1ba99b51e3ce8b390c41cb2de3b64f988dfa9f1c4d5"
+    },
+    "serviceWorker": {
+      "count": 1,
+      "files": [
+        {
+          "bytes": 2605,
+          "file": "sw.js",
+          "sha256": "b009105ef6f1d98d8685bc2c22bb37a4e02ca44c32364c2a7710fdb961ac975e"
+        }
+      ],
+      "treeSha256": "a6903a7496cace120ee6a7204305d00bc4140ee68c652b08083fced09d97b8f3"
+    },
+    "share": {
+      "count": 23,
+      "files": [
+        {
+          "bytes": 2765,
+          "file": "share/amex-explorer-july-2026/index.html",
+          "sha256": "51a701eaf49b63fc3cc124034a84af29c6cebceef23c815728c41eaee99c55e1"
+        },
+        {
+          "bytes": 2787,
+          "file": "share/amex-platinum-july-2026/index.html",
+          "sha256": "4f2306c3c8935c46c56528ba95fa07883c1af487fb86166538c226cca675ad76"
+        },
+        {
+          "bytes": 2721,
+          "file": "share/asia-miles-101/index.html",
+          "sha256": "d6b1807ba340c88796f8ff65490cc75ff1d323b42019d9980e491243147039c5"
+        },
+        {
+          "bytes": 2799,
+          "file": "share/beginner-pitfalls/index.html",
+          "sha256": "5336cfe3d174181a144d922df9a4fe00b5d3960a057f1b7caa38e1d6a6bcc9b9"
+        },
+        {
+          "bytes": 2847,
+          "file": "share/comparison-platform-guide/index.html",
+          "sha256": "140710ce5e2a80c0a12710ae61de44ad9484d4aa078bd429cf576c96e17a1a16"
+        },
+        {
+          "bytes": 2815,
+          "file": "share/credit-card-combo/index.html",
+          "sha256": "f58839fc6c9c583480e65e0c7da37f7714a0b50b80e9a2702824520bb94ffb6e"
+        },
+        {
+          "bytes": 2767,
+          "file": "share/flight-awards/index.html",
+          "sha256": "53d478d57a5a69ccce73fab1f80bef92cb1bcb1efa63521c63c16541191ae386"
+        },
+        {
+          "bytes": 2931,
+          "file": "share/fuel-surcharge-yq/index.html",
+          "sha256": "4bc933265fe78eeb69ea7bbc924c9ef8a2e2394743dd2f4abfd10e90b88af4af"
+        },
+        {
+          "bytes": 2811,
+          "file": "share/how-to-use-acremiles/index.html",
+          "sha256": "11d76141f7fecea6acedbdd6c0f9672b17e58c558057718a2d3250c0270af4bb"
+        },
+        {
+          "bytes": 2875,
+          "file": "share/hsbc-everymile-july-2026/index.html",
+          "sha256": "d35223841673d7a06841cb2231e96f4356e28fe8ec66f5e104979c3df696fd04"
+        },
+        {
+          "bytes": 3005,
+          "file": "share/itinerary/index.html",
+          "sha256": "e7d3b2b9c95a0ac6e55a8df4ee1f2cd016a46a4373f55f6d162924beaba7e78e"
+        },
+        {
+          "bytes": 2765,
+          "file": "share/oneworld-rtw/index.html",
+          "sha256": "15a912fc4214d0d2b799ea5c232ddbe95ac7eb2e5626e07f97575e43aed3ac1f"
+        },
+        {
+          "bytes": 2829,
+          "file": "share/plan/index.html",
+          "sha256": "78460a482bf7a0118c9488faffa988ca1dc093df51855a7cc02ad9429dac83bd"
+        },
+        {
+          "bytes": 2921,
+          "file": "share/rtw-example-medium/index.html",
+          "sha256": "98f18347a60ec3c16d878a97839df7e5301db785e37ebb9718d3436eeb751b7b"
+        },
+        {
+          "bytes": 2895,
+          "file": "share/rtw-example-world/index.html",
+          "sha256": "14411115352305b0de9b3f11bb8dc3e0884f3b32698ba6ab27e591f960f5867e"
+        },
+        {
+          "bytes": 2821,
+          "file": "share/rtw-routes/index.html",
+          "sha256": "ff1b65e1f70d0b7a175618fbb0cf2c850fc9323f30f3569ab18f551d264c55d9"
+        },
+        {
+          "bytes": 2334,
+          "file": "share/rtw-zone-10-withdrawn/index.html",
+          "sha256": "b77d33ed48ca78ede6f296b46c32ac886a9d322d0db214ec94f9db94669c67ce"
+        },
+        {
+          "bytes": 3105,
+          "file": "share/rtw-zone-10/index.html",
+          "sha256": "1751a562ceaf7dbb305ad052f00546978eebe157b548e270bf95e7d408ad9148"
+        },
+        {
+          "bytes": 2835,
+          "file": "share/rtw-zone-11/index.html",
+          "sha256": "fb53443ef0704bc8beab06f2e3110c21bf5b33c70ba1960d96c8741688521332"
+        },
+        {
+          "bytes": 2889,
+          "file": "share/rtw-zone-13/index.html",
+          "sha256": "98423fdb5e27788bde533068f301247485eac0339f0088b34f8341ffa80fb9dc"
+        },
+        {
+          "bytes": 2839,
+          "file": "share/rtw-zone-6/index.html",
+          "sha256": "5c9b96538ff784c9043c34f5b0ce5e47c7e3ba2b5330dfa0f8c6f2b7e7ae9bfb"
+        },
+        {
+          "bytes": 2779,
+          "file": "share/rtw-zone-8/index.html",
+          "sha256": "bfd9455a5c3496af5a53b65c7bed0a5ab9c83bb078091322162d76293160df38"
+        },
+        {
+          "bytes": 2951,
+          "file": "share/standard-chartered-cathay-july-2026/index.html",
+          "sha256": "cfbdb7245a175c78aaccd9a47f3ecae4fe6a4dd8845747a3674548aa9a4f114c"
+        }
+      ],
+      "treeSha256": "cc891925c29edb2e4ec4903edf6d46b5e0c9837a691ef135fb44827a64fe03d9"
+    }
+  },
+  "schemaVersion": 1,
+  "scope": [
+    "index.html",
+    "sw.js",
+    "manifest.json",
+    "cards/**",
+    "share/**",
+    "img/**"
+  ]
+}

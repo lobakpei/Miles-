@@ -1,13 +1,16 @@
 # AcreMiles 新對話交接
 
-交接時間：2026-07-21  
+交接時間：2026-07-22
 適用版本：正式網站 v6.79.0
 接手目標：新 AI 喺冇舊對話內容嘅情況下，能夠安全判斷現況、繼續開發及避免重做已完成工作。
 
-## 0. v6.79.0 當前交接
+## 0. v6.79.0／Phase 0 當前交接
 
-- 最高優先執行文件：[`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md)。
-- 發布來源：`feature/outcome-first-v1`／PR #7；baseline：`1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049`。
+- 法律、安全及官方資料真確性規則最高；最新產品方向以 [`ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md`](ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md) 為準，其後係 [`ACREMILES_PRODUCT_BLUEPRINT_V2.md`](ACREMILES_PRODUCT_BLUEPRINT_V2.md)、[`ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md`](ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md) 同 Safety Hardened。
+- Phase 0 基準係 GitHub `main` commit `fb63103778831688b89bf5e4b08dbe1882c2f354`；正式產品仍係 v6.79.0。
+- Phase 0 只做 canonical docs、optimizer fixtures、產品／DOM／localStorage snapshots 同 generated-file drift check；冇改 UI、公式、卡數字、PWA 或生成產品頁。
+- Founder 未明確回覆「Phase 0 approved」前，必須停止；不可開始 Card Data Source Extraction、任何新 IA／UI、Google Login、merge 或 deploy。
+- v6.79.0 歷史發布來源：`feature/outcome-first-v1`／PR #7；當時 baseline：`1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049`。
 - 已完成 Outcome First 首頁、分層計算入口、compact saved cards、優惠文章首屏、Beginner／Advanced planner gateway，同時保留現有計算及 RTW 引擎。
 - 新示範只使用 repo 內可追溯資料；未接 AI API，Beginner planner 係現有 template 嘅 rule-based matching。
 - 產品擁有人已完成 Preview review並批准發布 v6.79.0；正式狀態及剩餘限制見 [`QA-REPORT-v6.79.0.md`](QA-REPORT-v6.79.0.md)。
@@ -16,7 +19,7 @@
 
 ## 1. 接手後頭五分鐘
 
-1. 先讀 [`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md)，再讀 [`MASTER.md`](MASTER.md) 同根目錄 `AGENTS.md`。
+1. 先依次讀 Decision Source of Truth、Product Blueprint v2、Current Architecture Map、Safety Hardened，再讀 [`MASTER.md`](MASTER.md) 同根目錄 `AGENTS.md`。
 2. 執行 `git status --short --branch`，保留所有現有變更；唔好 reset、checkout 或覆蓋不明檔案。
 3. 用 GitHub 實際 `main` 核對正式版本及最新 merge commit；本地 `origin/main` 可能過時。
 4. 正式 `main` 四處版本必須一致為 v6.79.0。
@@ -26,6 +29,7 @@
    node scripts/verify.js index.html
    node scripts/test-consent-gate.js
    node scripts/audit-freshness.js
+   node scripts/regression-lock.js
    ```
 
 6. 再按用戶今次新指示選擇專題文件，唔好因為交接清單有待辦就擅自全部開工。
@@ -70,7 +74,17 @@
 
 ## 3. 現時工作面
 
-### P0：信用卡資料新鮮度
+### P0：Canonical Sync + Regression Lock
+
+狀態：`AWAITING FOUNDER APPROVAL`
+
+- 新 IA 同決定已寫入 canonical docs，但**未實作入正式 UI**。
+- 「大額消費」作全站定位、「由目的地出發」作產品核心、一般 Planner 第一層用 Beginner／Advanced，全部已被 2026-07-22 決定取代。
+- 現行 v6.79.0 仍有舊導覽／gateway，呢個係刻意保留嘅 regression baseline，唔係 Phase 0 漏改。
+- 回歸基準見 [`PHASE0-REGRESSION-LOCK.md`](PHASE0-REGRESSION-LOCK.md)；待核實資料見 [`PHASE0-OFFICIAL-VERIFICATION-BACKLOG.md`](PHASE0-OFFICIAL-VERIFICATION-BACKLOG.md)。
+- Founder Verification Pack 同 Draft PR 係 Phase 0 唯一交付；交付後停止。
+
+### 營運 P0：信用卡資料新鮮度
 
 2026-07-21 執行 `audit-freshness` 結果：0 errors、7 warnings。到期日為 7 月 23、29、31 日。若接手日期已過：
 
@@ -123,6 +137,14 @@ v6.79.0 尚欠：
 
 | 題目 | 決定 |
 |---|---|
+| 北極星 | 「每筆消費，都值得有回報。」完整旅程：橫掂消費 → 順便賺里 → 用里換旅行 → 建立習慣 |
+| 固定 Bottom Nav | 點賺 → 點用 → 首頁 → 優惠 → 攻略；首頁置中 |
+| 點賺 | 第一個輸入係金額；先顯示結果，再逐步調整；唔再用「大額消費」做全站定位 |
+| 點用 | 第一個輸入係里數；第一層只分「一般兌換／環球票」 |
+| 環球票模式 | Beginner／Advanced 只屬環球票內部分流，不可做一般 Planner 第一層 |
+| 首頁 | 連接點賺、點用、個人內容、今日重點；唔再以「由目的地出發」做產品核心 |
+| 資料規則 | 影響推薦嘅資格、迎新、冷河期、年費、兌換等必須 official-only；未知就標 unknown／不入推薦，唔估 |
+| 雲端同步 | local-only 係基本模式；Google Login／cloud sync 屬後期獨立 Phase，不可混入今次 |
 | 推薦器 | 輔助估算；唔宣稱最佳、保證或全市場最抵 |
 | RTW | 全部係教學示例；最終以官方條款、班表、獎勵位及客服出票為準 |
 | 區 6 | 接受 GMP→ICN 自行接駁，保留風險提示 |
@@ -181,4 +203,4 @@ v6.79.0 尚欠：
 - `ARCHITECTURE.md`：只有結構、資料流、接口或部署改變先更新。
 - `PROJECT-STATUS.md`：保持短，唔可以同正式版本狀態互相矛盾。
 
-任何舊報告都只代表當時版本。若內容衝突，優先次序係：最新 GitHub `main`／正式網站 → `MASTER.md` → `HANDOFF.md` → 最新版本 QA／審計 → 歷史文件。
+任何舊報告都只代表當時版本。若內容衝突，優先次序係：法律／安全／官方資料真確性 → `ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md` → `ACREMILES_PRODUCT_BLUEPRINT_V2.md` → `ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md` → Safety Hardened → 最新 GitHub `main`／正式網站（只證明現行實作）→ `MASTER.md`／`HANDOFF.md` → 歷史文件。現行程式同最新產品方向唔一致時，要記錄為待實作，唔可以倒過來用舊程式推翻新決定。

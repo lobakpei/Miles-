@@ -49,7 +49,7 @@ Feature branch：`agent/acremiles-phase1-card-data-20260722`
 | HTTP smoke | PASS，112／112 |
 | Protected product output | `cards/**`、`share/**`、`img/**`、`manifest.json` 零 diff；UI／流程／推薦結果零 drift |
 
-Stage A commit：`a704abbb82fdfe401b45dac0b2f2968d4e5c15b6`（`Phase 1A — Extract card data sources with zero product drift`）。Stage B 只喺以上零 drift gates 全部通過後開始。
+Stage A published commit：`0127d89613a88fa8a50b8b7dda5173f3b889a206`（`Phase 1A — Extract card data sources with zero product drift`；tree SHA `7d2b3d1fa15fd08aacb4d9ff369c7af2a60fae2e`）。Stage B 只喺以上零 drift gates 全部通過後開始。
 
 ## 表二：Official／Channel Update
 
@@ -161,5 +161,7 @@ Stage A commit：`a704abbb82fdfe401b45dac0b2f2968d4e5c15b6`（`Phase 1A — Extr
 | JS／JSON syntax | PASS，JS 17／17；JSON 9／9 |
 | DOM／storage | DOM IDs 209→209、duplicate 0、bottom nav／critical elements exact；localStorage snapshot byte-identical（16 keys／16 reset keys） |
 | Browser／axe | BLOCKED：環境冇可用 Chromium，`browser-qa.js` 明確要求 `CHROMIUM_PATH`；冇虛報 PASS |
-| Stage A protected output | `index.html`、`cards/**`、`share/**`、`img/**`、`manifest.json` 全部零 drift（Stage A 證據） |
+| Stage A protected output | `cards/**`、`share/**`、`img/**`、`manifest.json` 全部零檔案 drift；`index.html`／`sw.js` 只改 data loader／離線 asset wiring，DOM 209 IDs、UI／流程／推薦結果零 drift |
 | Stage B product diff | `sw.js`、`manifest.json`、`img/**` 零 diff；`index.html`、`cards/**`、4 個 share wrappers 只包含上表官方／渠道更新及 DBS safety gate |
+
+Stage B published commit：`39eaa17ae8c70338fec1fb8d316404a3a93c47fc`（`Phase 1B — Refresh expiring official and channel offers`；tree SHA `1107fb66d600130eca3e6504ff16fb9563d37383`）。

@@ -4,7 +4,7 @@
 
 ## 結論先行
 
-Phase 0「Canonical Sync + Regression Lock」已完成候選版；只涉及文件、fixtures、snapshots 同測試工具。正式產品檔、UI、卡數字、optimizer 公式、PWA 同生成頁全部零修改。呢個 PR 只供 Founder 核實；**未 merge、未 deploy，正式網站仍係 v6.79.0。**
+Phase 0「Canonical Sync + Regression Lock」已完成候選版；只涉及文件、fixtures、snapshots 同測試工具。正式產品檔、UI、卡數字、optimizer 公式、PWA 同生成頁全部零修改。呢個 PR 只供 Founder 核實；**未 merge、未 deploy，GitHub `main` 仍係 v6.79.0 baseline，Phase 0 冇令正式網站改變。**
 
 | 項目 | 結果 |
 |---|---|
@@ -194,7 +194,8 @@ Freshness 7 個提醒：渣打兩個渠道 2026-07-23、AE 白金官方迎新 20
 - **冇 force-push。**
 - **冇修改 `main`。**
 - **冇修改正式網站產品檔。**
-- `acremiles.app` 正式網站仍由 v6.79.0 `main` 提供；Phase 0 Draft PR 不會觸發正式部署。
+- GitHub `main` 仍精確指向 v6.79.0 baseline `fb631037…`；Phase 0 Draft PR 不會觸發正式部署，亦冇任何 Phase 0 production mutation。
+- 公開文字抓取器回傳咗一份明顯較舊嘅 cached 頁面；因環境冇可用 live browser，呢份 cache **冇被用作判斷 live build 版本**。正式網站「冇因 Phase 0 改變」嘅依據係 `main` ref 未變、受保護產品檔零 diff、冇 merge／deploy action，而唔係假稱 cache 已通過。
 - Phase 0 完成後停止，等 Founder 明確回覆：`Phase 0 approved`。
 
 ## 備份資料

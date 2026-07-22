@@ -343,7 +343,7 @@
     "treeSha256": "86a30ce2f23c0090dc371b75238dcc9e81fb3b6256d98d3349341cba7830c290"
   },
   "commandOutput": [
-    "Generated 9 card pages and card index from bm-core",
+    "Generated 9 card pages and card index from data/cards-official.js",
     "Generated 22 social share pages"
   ],
   "commands": [

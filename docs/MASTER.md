@@ -85,7 +85,7 @@ AcreMiles **唔係**：
 
 ### 4.1 信用卡資料
 
-來源優先次序：銀行官方產品頁 → 最新迎新 T&C → KFS／收費表 → 獎賞條款 → 第三方比較平台。
+銀行卡規則只可由銀行官方產品頁、最新迎新 T&C、KFS／收費表、獎賞條款及官方資格文件支持。第三方平台只屬另一層渠道優惠來源。
 
 - 第三方平台只可以核對額外平台獎賞，唔可以取代銀行官方條款。
 - 每項時效資料要有來源、核實日、有效期及狀態。
@@ -140,9 +140,9 @@ AcreMiles **唔係**：
 
 ## 6. 當前未完成事項
 
-1. Phase 0 Draft PR 經 Founder 明確回覆「Phase 0 approved」前，停止；不可進 Phase 1。
-2. 獲批後先按獨立 PR 做 Card Data Source Extraction；不可同 UI 或公式修改混埋。
-3. 每週信用卡及平台優惠核實；近期 7 個到期提醒優先。
+1. Phase 0 已獲 Founder 批准並合併；正式 `main` baseline 為 `ba8f6db0b087275f63785468ccec424a9d5ad1e2`。
+2. Phase 1 只做 Card Data Source Extraction 同到期官方／渠道更新；Stage A／B 必須分開 commits，不可混入 UI 或公式修改。
+3. Phase 1A 已將銀行卡、渠道優惠及來源 registry 分開；Phase 1B 必須以 2026-07-23 香港日期處理到期／延長／歷史紀錄。
 4. v6.79.0 發布後 production QA：最新 PageSpeed、真 WhatsApp／Facebook 分享預覽、手機／平板／桌面回歸。
 5. 核實 GA4 管理頁設定已真正按「儲存」；現有截圖顯示事件 2 個月、使用者 14 個月、活動時重設。
 6. ICO 加 trading name，並按需要同步已確認 UK Postbox 公開服務地址。

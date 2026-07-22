@@ -57,6 +57,27 @@
       ],
       "treeSha256": "71721d3918afc5f2305a894a3256504a342f81355fc4db89c98fb28f306c553e"
     },
+    "data": {
+      "count": 3,
+      "files": [
+        {
+          "bytes": 6013,
+          "file": "data/card-channels.js",
+          "sha256": "b6ea127d8e87ec76b9a18c43213cb01738237224de331c3ca142c3fd6434e077"
+        },
+        {
+          "bytes": 27742,
+          "file": "data/cards-official.js",
+          "sha256": "b32c00c61bbad41b62e249220b92b8d0de47bf97cef319e7eed7703967c762eb"
+        },
+        {
+          "bytes": 8326,
+          "file": "data/source-registry.js",
+          "sha256": "84ec8158d7dfedccd7f600ab9a27d68069f1f05dfaa04d45ae288bfdf97a9045"
+        }
+      ],
+      "treeSha256": "597609a4c30a9cdb39dc00bc51cea085bbf79043de024dfaa4c312a4ad7ec819"
+    },
     "images": {
       "count": 36,
       "files": [
@@ -247,12 +268,12 @@
       "count": 1,
       "files": [
         {
-          "bytes": 656623,
+          "bytes": 625359,
           "file": "index.html",
-          "sha256": "6e4297a499038ebd2ec8156d65253765515abbfb53bf4cdaae569a14fab98c5e"
+          "sha256": "9a87d230f01435e77c71b3da4e68b61b642af2e1cd1a402b8673a1629ed08441"
         }
       ],
-      "treeSha256": "aabde6e9b4c8dea4fcbd5209168e689d3d40c8019b228396e1a4b7d97833fe91"
+      "treeSha256": "3507e2f6def7b0dff2e9ea8009cd6ae077e294cc89ab1721dd9e7ab0c3668e97"
     },
     "manifest": {
       "count": 1,
@@ -269,12 +290,12 @@
       "count": 1,
       "files": [
         {
-          "bytes": 2605,
+          "bytes": 2689,
           "file": "sw.js",
-          "sha256": "b009105ef6f1d98d8685bc2c22bb37a4e02ca44c32364c2a7710fdb961ac975e"
+          "sha256": "5c8d36be9261691442bc1dc82bd855aeb887d3194e6ec3540ac9ffe19e90f3f6"
         }
       ],
-      "treeSha256": "a6903a7496cace120ee6a7204305d00bc4140ee68c652b08083fced09d97b8f3"
+      "treeSha256": "6a61ec64c51395396b10fcae1ca59e8363514f68c4c850975486677fd5e03a5a"
     },
     "share": {
       "count": 23,
@@ -403,6 +424,7 @@
     "index.html",
     "sw.js",
     "manifest.json",
+    "data/**",
     "cards/**",
     "share/**",
     "img/**"

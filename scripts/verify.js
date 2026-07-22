@@ -10,9 +10,15 @@ const root = path.dirname(path.resolve(file));
 const swPath = path.join(root, 'sw.js');
 const manifestPath = path.join(root, 'manifest.json');
 const z10CsvPath = path.join(root, 'docs', 'ZONE-10-ROUTE.csv');
+const sourceRegistryPath = path.join(root, 'data', 'source-registry.js');
+const cardsOfficialPath = path.join(root, 'data', 'cards-official.js');
+const cardChannelsPath = path.join(root, 'data', 'card-channels.js');
 const sw = fs.existsSync(swPath) ? fs.readFileSync(swPath, 'utf8') : '';
 const manifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : null;
 const z10Csv = fs.existsSync(z10CsvPath) ? fs.readFileSync(z10CsvPath, 'utf8').trim() : '';
+const sourceRegistry = fs.existsSync(sourceRegistryPath) ? require(sourceRegistryPath) : null;
+const cardsOfficial = fs.existsSync(cardsOfficialPath) ? require(cardsOfficialPath) : null;
+const cardChannels = fs.existsSync(cardChannelsPath) ? require(cardChannelsPath) : null;
 let fails = 0;
 const ok = (n, c) => { console.log((c ? '✓ ' : '❌ ') + n); if (!c) fails++; };
 const near = (a, b, e) => Math.abs(a - b) < (e || 2);
@@ -57,6 +63,18 @@ blocks.forEach((b, i) => {
   ok('block ' + i + ' 語法', r.status === 0);
   if (r.status !== 0) console.log(r.stderr.slice(0, 500));
 });
+[
+  ['data/source-registry.js', sourceRegistryPath],
+  ['data/cards-official.js', cardsOfficialPath],
+  ['data/card-channels.js', cardChannelsPath]
+].forEach(([label, dataPath]) => {
+  const result = cp.spawnSync('node', ['--check', dataPath], {encoding: 'utf8'});
+  ok(label + ' 語法', result.status === 0);
+  if (result.status !== 0) console.log((result.stderr || '').slice(0, 500));
+});
+ok('三層信用卡資料來源可由 Node 直接讀取',
+  !!sourceRegistry && !!cardsOfficial && !!cardChannels &&
+  Array.isArray(cardsOfficial.DEFAULT_CARDS) && !!cardChannels.CHANNEL_OFFERS);
 const htmlCheck = cp.spawnSync('python3', [path.join(__dirname, 'verify-html.py'), file], { encoding: 'utf8' });
 if (htmlCheck.status === 2 && /lxml is not installed/.test(htmlCheck.stderr || '')) {
   console.log('⚠ HTML 結構檢查跳過（要安裝 lxml）');
@@ -72,7 +90,13 @@ if (fails) { console.log('\n❌ 語法都未過，先修好。'); process.exit(1
 /* 3. 引擎 invariants */
 let engIdx = blockTags.findIndex(a => /id=["']bm-core["']/.test(a));
 if (engIdx < 0) engIdx = 0;
-const BM = require(path.join(tmp, 'blk' + engIdx + '.js'));
+const engineRuntimePath = path.join(tmp, 'bm-core-runtime.cjs');
+fs.writeFileSync(engineRuntimePath,
+  `var AcreMilesCardsOfficial = require(${JSON.stringify(cardsOfficialPath)});\n` +
+  `var AcreMilesCardChannels = require(${JSON.stringify(cardChannelsPath)});\n` +
+  blocks[engIdx]
+);
+const BM = require(engineRuntimePath);
 const base = { amount: 168888, months: 6, goal: 'any', owned: [], income: 300000, spendPattern: 'spread' };
 const X = o => Object.assign({}, base, o || {});
 
@@ -185,13 +209,26 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
 
   ok('香港日期 helper 已用於優惠到期', /function hkToday\(/.test(src) && (src.match(/var today = (?:todayStr \|\| )?hkToday\(\);/g) || []).length >= 2);
   ok('未核實卡 UI pool 有硬過濾', /recommendableCards\s*=\s*cards\.filter\(function\(c\)\{\s*return c\.verified\s*&&\s*!c\.pending/.test(src));
-  ok('無核實渠道優惠預設下架', !/CHANNEL_OFFERS\s*=\s*\[[\s\S]*?active:\s*true[\s\S]*?verified:\s*false/.test(src));
+  const channelOffers = cardChannels && cardChannels.getOffers ? cardChannels.getOffers() : {};
+  ok('無核實渠道優惠預設下架',
+    Object.values(channelOffers).flat().every(o => o.active !== true || o.verified === true));
   const dataAsOfDate = ((BM.DATA_AS_OF || '').match(/^(\d{4}-\d{2}-\d{2})/) || [])[1];
   ok('9 張卡全部有銀行官方產品頁及 KFS／T&C', BM.DEFAULT_CARDS.length === 9 && !!dataAsOfDate && BM.DEFAULT_CARDS.every(c =>
     /^https:\/\//.test(c.url || '') && !/mrmiles\.hk/i.test(c.url || '') &&
     /^\d{4}-\d{2}-\d{2}$/.test(c.sourceVerifiedAt || '') && c.sourceVerifiedAt <= dataAsOfDate &&
     Array.isArray(c.sourceDocs) && c.sourceDocs.length >= 2 && c.sourceDocs.every(d => /^https:\/\//.test(d.url || ''))
   ));
+  const slugs = BM.DEFAULT_CARDS.map(c => c.slug);
+  ok('每張卡自己包含 slug、image、status 同官方 sourceRef',
+    BM.DEFAULT_CARDS.every(c => !!c.slug && !!c.image && !!c.status && !!c.sourceRef) &&
+    new Set(slugs).size === slugs.length &&
+    BM.DEFAULT_CARDS.every(c => fs.existsSync(path.join(root, c.image)) && sourceRegistry.CARD_SOURCES[c.sourceRef]));
+  ok('官方來源 registry 有銀行來源及文件類型',
+    BM.DEFAULT_CARDS.every(c => {
+      const source = sourceRegistry.CARD_SOURCES[c.sourceRef];
+      return source && source.sourceType === 'bank-official' &&
+        Array.isArray(source.sourceDocs) && source.sourceDocs.every(d => /^official-/.test(d.sourceType || ''));
+    }));
   const sc = BM.DEFAULT_CARDS.find(c => c.id === 'sc-cathay');
   ok('渣打 HK$96,000 已正確標為年薪而非簽賬豁免門檻', !!sc && sc.incomeVerified === true && /唔係簽賬門檻/.test(sc.waiveNote || ''));
   const hsbcVs = BM.DEFAULT_CARDS.find(c => c.id === 'hsbc-visasig');
@@ -262,9 +299,9 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
 
   const refs = new Set();
   const addRefs = (text, re) => { let m; while ((m = re.exec(text))) refs.add(m[1]); };
-  addRefs(src, /(?:src|href)=["']((?:\.\/)?(?:img\/|cards\/|share\/|share-meta\.js|manifest\.json|icon-[^"']+|apple-touch-icon\.png)[^"']*)["']/g);
+  addRefs(src, /(?:src|href)=["']((?:\.\/)?(?:data\/|img\/|cards\/|share\/|share-meta\.js|manifest\.json|icon-[^"']+|apple-touch-icon\.png)[^"']*)["']/g);
   addRefs(src, /\bimg\s*:\s*["']((?:\.\/)?img\/[^"']+)["']/g);
-  addRefs(sw, /["']((?:\.\/)?(?:img\/|share\/|share-meta\.js|manifest\.json|icon-[^"']+|apple-touch-icon\.png)[^"']*)["']/g);
+  addRefs(sw, /["']((?:\.\/)?(?:data\/|img\/|share\/|share-meta\.js|manifest\.json|icon-[^"']+|apple-touch-icon\.png)[^"']*)["']/g);
   const missingAssets = [...refs].filter(ref => {
     const clean = ref.replace(/^\.\//, '').replace(/[?#].*$/, '');
     const p = path.join(root, clean);

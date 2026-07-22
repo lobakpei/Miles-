@@ -12,6 +12,10 @@ const WRITE = process.argv.includes('--write');
 const BASELINE_COMMIT = 'fb63103778831688b89bf5e4b08dbe1882c2f354';
 const SNAPSHOT_DIR = path.join(ROOT, 'tests', 'snapshots');
 const FIXTURE_DIR = path.join(ROOT, 'tests', 'fixtures');
+const CARD_DATA_FIXTURE = path.join(FIXTURE_DIR, 'card-data-v6.79.0.json');
+const SOURCE_REGISTRY_PATH = path.join(ROOT, 'data', 'source-registry.js');
+const CARDS_OFFICIAL_PATH = path.join(ROOT, 'data', 'cards-official.js');
+const CARD_CHANNELS_PATH = path.join(ROOT, 'data', 'card-channels.js');
 
 const FILES = {
   optimizer: path.join(FIXTURE_DIR, 'optimizer-v6.79.0.json'),
@@ -87,12 +91,56 @@ function loadCore() {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'acremiles-core-'));
   const coreFile = path.join(tempDir, 'bm-core.cjs');
   try {
-    fs.writeFileSync(coreFile, match[1]);
+    fs.writeFileSync(coreFile,
+      `var AcreMilesCardsOfficial = require(${JSON.stringify(CARDS_OFFICIAL_PATH)});\n` +
+      `var AcreMilesCardChannels = require(${JSON.stringify(CARD_CHANNELS_PATH)});\n` +
+      match[1]
+    );
     delete require.cache[coreFile];
     return require(coreFile);
   } finally {
     fs.rmSync(tempDir, { recursive: true, force: true });
   }
+}
+
+function checkCardDataMigration() {
+  if (!fs.existsSync(CARD_DATA_FIXTURE)) throw new Error('缺少 card-data-v6.79.0 migration fixture。');
+  const baseline = JSON.parse(fs.readFileSync(CARD_DATA_FIXTURE, 'utf8'));
+  const sourceRegistry = require(SOURCE_REGISTRY_PATH);
+  const cardsOfficial = require(CARDS_OFFICIAL_PATH);
+  const cardChannels = require(CARD_CHANNELS_PATH);
+  const BM = loadCore();
+  const legacyCards = BM.DEFAULT_CARDS.map((card) => {
+    const copy = JSON.parse(JSON.stringify(card));
+    ['slug', 'image', 'status', 'sourceRef'].forEach((key) => delete copy[key]);
+    return copy;
+  });
+  if (stableText(legacyCards) !== stableText(baseline.cards)) {
+    throw new Error('獨立 cards-official data 同搬遷前 DEFAULT_CARDS 有數值 drift。');
+  }
+  if (stableText(cardChannels.getOffers()) !== stableText(baseline.channelOffers)) {
+    throw new Error('獨立 card-channels data 同搬遷前 CHANNEL_OFFERS 有數值 drift。');
+  }
+  const cards = cardsOfficial.getCards();
+  const ids = cards.map((card) => card.id);
+  const slugs = cards.map((card) => card.slug);
+  if (cards.length !== 9 || new Set(ids).size !== cards.length || new Set(slugs).size !== cards.length) {
+    throw new Error('獨立信用卡資料嘅 id／slug 唔完整或重複。');
+  }
+  for (const card of cards) {
+    const source = sourceRegistry.CARD_SOURCES[card.sourceRef];
+    if (!source || !card.image || !card.status) throw new Error(`卡資料生成 metadata／source 缺漏：${card.id}`);
+    const legacySourceDocs = (source.sourceDocs || []).map((doc) => ({label: doc.label, url: doc.url}));
+    if (card.url !== source.url || card.sourceVerifiedAt !== source.sourceVerifiedAt ||
+        card.sourceStatus !== source.sourceStatus || stableText(card.sourceDocs) !== stableText(legacySourceDocs)) {
+      throw new Error(`卡資料同 official source registry 不一致：${card.id}`);
+    }
+    if (source.sourceType !== 'bank-official' ||
+        !(source.sourceDocs || []).every((doc) => /^official-/.test(doc.sourceType || ''))) {
+      throw new Error(`官方來源類型缺漏：${card.id}`);
+    }
+  }
+  console.log('PASS data');
 }
 
 function normalizeOptimizeResult(result) {
@@ -192,6 +240,7 @@ function productSnapshot() {
     index: fileRecords(['index.html']),
     serviceWorker: fileRecords(['sw.js']),
     manifest: fileRecords(['manifest.json']),
+    data: fileRecords(['data']),
     cards: fileRecords(['cards']),
     share: fileRecords(['share']),
     images: fileRecords(['img'])
@@ -199,7 +248,7 @@ function productSnapshot() {
   return {
     schemaVersion: 1,
     baselineCommit: BASELINE_COMMIT,
-    scope: ['index.html', 'sw.js', 'manifest.json', 'cards/**', 'share/**', 'img/**'],
+    scope: ['index.html', 'sw.js', 'manifest.json', 'data/**', 'cards/**', 'share/**', 'img/**'],
     groups: Object.fromEntries(Object.entries(groups).map(([name, records]) => [name, {
       count: records.length,
       treeSha256: recordsHash(records),
@@ -329,7 +378,7 @@ function generatedSnapshot() {
   const before = fileRecords(['cards', 'share']);
   const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'acremiles-generated-'));
   try {
-    for (const rel of ['index.html', 'share-meta.js', 'img', 'cards', 'share', 'scripts']) copyPath(rel, temp);
+    for (const rel of ['index.html', 'share-meta.js', 'data', 'img', 'cards', 'share', 'scripts']) copyPath(rel, temp);
     const cardOutput = execFileSync(process.execPath, ['scripts/generate-card-pages.js'], { cwd: temp, encoding: 'utf8' }).trim();
     const shareOutput = execFileSync(process.execPath, ['scripts/generate-share-pages.js'], { cwd: temp, encoding: 'utf8' }).trim();
     const after = ['cards', 'share'].flatMap((rel) => {
@@ -397,6 +446,7 @@ function checkSnapshots(actual) {
 }
 
 try {
+  checkCardDataMigration();
   const actual = snapshots();
   if (WRITE) {
     writeSnapshots(actual);

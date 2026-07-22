@@ -4,12 +4,13 @@
 適用版本：正式網站 v6.79.0
 接手目標：新 AI 喺冇舊對話內容嘅情況下，能夠安全判斷現況、繼續開發及避免重做已完成工作。
 
-## 0. v6.79.0／Phase 0 當前交接
+## 0. v6.79.0／Phase 1 當前交接
 
 - 法律、安全及官方資料真確性規則最高；最新產品方向以 [`ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md`](ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md) 為準，其後係 [`ACREMILES_PRODUCT_BLUEPRINT_V2.md`](ACREMILES_PRODUCT_BLUEPRINT_V2.md)、[`ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md`](ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md) 同 Safety Hardened。
-- Phase 0 基準係 GitHub `main` commit `fb63103778831688b89bf5e4b08dbe1882c2f354`；正式產品仍係 v6.79.0。
-- Phase 0 只做 canonical docs、optimizer fixtures、產品／DOM／localStorage snapshots 同 generated-file drift check；冇改 UI、公式、卡數字、PWA 或生成產品頁。
-- Founder 未明確回覆「Phase 0 approved」前，必須停止；不可開始 Card Data Source Extraction、任何新 IA／UI、Google Login、merge 或 deploy。
+- Phase 0 已獲 Founder 批准並合併；Phase 1 `main` baseline 係 `ba8f6db0b087275f63785468ccec424a9d5ad1e2`，正式產品仍係 v6.79.0。
+- backup branch：`backup/pre-phase1-card-data-20260722`；Phase 1 feature branch：`agent/acremiles-phase1-card-data-20260722`。
+- Phase 1A 只搬銀行卡、渠道優惠及來源 registry；optimizer 22 fixtures、卡排序、生成頁同 UI 輸出必須零 drift。Phase 1B 只處理 2026-07-23 已核實嘅到期官方／渠道資料。
+- Phase 1 未經 Founder 批准前只可保持 Draft PR；不可 merge、deploy、開始新 IA／UI、Google Login 或 Phase 2。
 - v6.79.0 歷史發布來源：`feature/outcome-first-v1`／PR #7；當時 baseline：`1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049`。
 - 已完成 Outcome First 首頁、分層計算入口、compact saved cards、優惠文章首屏、Beginner／Advanced planner gateway，同時保留現有計算及 RTW 引擎。
 - 新示範只使用 repo 內可追溯資料；未接 AI API，Beginner planner 係現有 template 嘅 rule-based matching。
@@ -74,15 +75,14 @@
 
 ## 3. 現時工作面
 
-### P0：Canonical Sync + Regression Lock
+### P0：Phase 1 Card Data Source Extraction + Expiring Offers
 
-狀態：`AWAITING FOUNDER APPROVAL`
+狀態：`IN PROGRESS — DRAFT ONLY`
 
-- 新 IA 同決定已寫入 canonical docs，但**未實作入正式 UI**。
-- 「大額消費」作全站定位、「由目的地出發」作產品核心、一般 Planner 第一層用 Beginner／Advanced，全部已被 2026-07-22 決定取代。
-- 現行 v6.79.0 仍有舊導覽／gateway，呢個係刻意保留嘅 regression baseline，唔係 Phase 0 漏改。
-- 回歸基準見 [`PHASE0-REGRESSION-LOCK.md`](PHASE0-REGRESSION-LOCK.md)；待核實資料見 [`PHASE0-OFFICIAL-VERIFICATION-BACKLOG.md`](PHASE0-OFFICIAL-VERIFICATION-BACKLOG.md)。
-- Founder Verification Pack 同 Draft PR 係 Phase 0 唯一交付；交付後停止。
+- Phase 1A 資料搬遷由 `data/cards-official.js`、`data/card-channels.js`、`data/source-registry.js` 承擔；`index.html`、generator、freshness、verifier 同 regression 直接讀資料來源。
+- v6.79.0 搬遷 fixture 鎖定 9 張卡及渠道資料；五段舊渠道展示文案喺渠道層重組，銀行官方 raw records 不再混入平台聲稱。
+- Phase 1B 研究已確認 DBS Q3 接續生效；HSBC base／flash、SC／DBS／AE marketed totals 同 Engine baseMiles 存在語義衝突，唔可喺本 Phase 靜默改公式。
+- 完成兩個獨立 commits 後只開新 Draft PR，提供 preview 同完整差異證據，等 Founder 回覆「Phase 1 approved」。
 
 ### 營運 P0：信用卡資料新鮮度
 

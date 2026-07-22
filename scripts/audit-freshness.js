@@ -14,7 +14,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const vm = require('vm');
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -22,7 +21,7 @@ function usage() {
   console.log(`AcreMiles 信用卡資料新鮮度檢查
 
 Options:
-  --file PATH       要檢查嘅主頁（預設 index.html）
+  --file PATH       用嚟定位同層 data/ 嘅主頁（預設 index.html）
   --date YYYY-MM-DD 模擬香港今日日期
   --warn-days N     優惠幾多日內到期要提醒（預設 14）
   --stale-days N    卡資料幾多日未核實要提醒（預設 35）
@@ -90,19 +89,21 @@ function hongKongToday() {
   return `${value.year}-${value.month}-${value.day}`;
 }
 
-function loadCore(file) {
-  const source = fs.readFileSync(file, 'utf8');
-  const match = source.match(/<script\b[^>]*\bid=["']bm-core["'][^>]*>([\s\S]*?)<\/script>/i);
-  if (!match) throw new Error(`搵唔到 <script id="bm-core">：${file}`);
-
-  const sandbox = {module: {exports: {}}, exports: {}};
-  vm.createContext(sandbox);
-  new vm.Script(match[1], {filename: `${file}#bm-core`}).runInContext(sandbox, {timeout: 5000});
-  const data = sandbox.module.exports;
-  if (!data || !Array.isArray(data.DEFAULT_CARDS) || !data.CHANNEL_OFFERS) {
-    throw new Error('bm-core 冇輸出 DEFAULT_CARDS／CHANNEL_OFFERS');
+function loadData(file) {
+  const root = path.dirname(path.resolve(file));
+  const cardsPath = path.join(root, 'data', 'cards-official.js');
+  const channelsPath = path.join(root, 'data', 'card-channels.js');
+  if (!fs.existsSync(cardsPath) || !fs.existsSync(channelsPath)) {
+    throw new Error(`搵唔到獨立信用卡資料來源：${path.join(root, 'data')}`);
   }
-  return data;
+  const cardsOfficial = require(cardsPath);
+  const cardChannels = require(channelsPath);
+  const cards = cardsOfficial.getCards();
+  const offers = cardChannels.getOffers();
+  if (!Array.isArray(cards) || !offers || typeof offers !== 'object') {
+    throw new Error('獨立資料來源冇輸出 cards／channel offers');
+  }
+  return {DEFAULT_CARDS: cards, CHANNEL_OFFERS: offers};
 }
 
 function run() {
@@ -111,7 +112,7 @@ function run() {
   const today = options.date || hongKongToday();
   if (!validIsoDate(today)) throw new Error(`日期格式無效：${today}`);
 
-  const BM = loadCore(file);
+  const BM = loadData(file);
   const todayDay = dayNumber(today);
   const errors = [];
   const warnings = [];

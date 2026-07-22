@@ -1,6 +1,6 @@
 # AcreMiles Roadmap
 
-最後更新：2026-07-22
+最後更新：2026-07-23
 基準：正式 v6.79.0
 狀態定義：`NOW`＝立即；`NEXT`＝完成 NOW 後；`LATER`＝中期；`HOLD`＝等待用戶／外部資料。
 
@@ -19,8 +19,8 @@
 
 | Phase | 範圍 | 狀態／閘門 |
 |---|---|---|
-| Phase 0 | Canonical Sync + Regression Lock | `AWAITING FOUNDER APPROVAL`；只改 docs／fixtures／snapshots／tests，Draft PR 後停止 |
-| Phase 1 | Card Data Source Extraction | `HOLD`；只可喺 Founder 回覆「Phase 0 approved」後另開 Draft PR；先搬資料，不改公式／UI |
+| Phase 0 | Canonical Sync + Regression Lock | `COMPLETED`；已獲 Founder 批准並合併至 `main` |
+| Phase 1 | Card Data Source Extraction＋到期官方／渠道更新 | `NOW`；Stage A／B 獨立 commits，Draft PR，唔改公式／UI |
 | Phase 2 | Immediate UX Repair | `HOLD`；修 Welcome／Consent／header／profile／nav 等已確認問題，不改 Engine 公式 |
 | Phase 3 | 點賺 V1 | `HOLD`；金額先行、result-first、逐浸結果、timeline，同固定「點賺」責任一致 |
 | Phase 4 | 點用 V1 | `HOLD`；里數先行；一般兌換／環球票第一層分流；Beginner／Advanced 只放環球票內 |
@@ -43,9 +43,9 @@
 
 完成條件：已完成；細節 UI 問題按產品擁有人之後實際使用再逐步調整。
 
-### R1. 每週信用卡更新
+### R1. Phase 1 信用卡資料來源及每週更新
 
-狀態：`NOW`
+狀態：`NOW — Stage A extraction／Stage B verified refresh`
 原因：2026-07-23、07-29、07-31 有 7 個優惠／迎新提醒。
 
 工作：
@@ -138,7 +138,7 @@
 
 建議次序：
 
-1. `data/cards.js`
+1. `data/cards-official.js`＋`data/card-channels.js`＋`data/source-registry.js`（Phase 1A）
 2. `data/redemptions.js`
 3. `data/rtw-routes.js`
 4. `content/articles.js`

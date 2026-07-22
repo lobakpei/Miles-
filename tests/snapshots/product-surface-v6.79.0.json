@@ -5,78 +5,78 @@
       "count": 10,
       "files": [
         {
-          "bytes": 10135,
+          "bytes": 10196,
           "file": "cards/ae-explorer.html",
-          "sha256": "0f01af0ca318ed2c4cdd875a468b59e29b321778346c2ad3b9c5daefc9ec9150"
+          "sha256": "48bf3def8f0ab3dea90900981ff517ca0d66d3940e13cc0a3843c6b7d36bc780"
         },
         {
           "bytes": 10293,
           "file": "cards/ae-platinum-card.html",
-          "sha256": "842e1487dbd359fe392b3caca6e3b8ec534de16b52b1b0a0ed6af4e449ca7b4c"
+          "sha256": "ceb2e762e39198355fd5e2f29ad9c226992dfe134406c26e18bd316acf121f4f"
         },
         {
           "bytes": 9307,
           "file": "cards/citi-premiermiles.html",
-          "sha256": "0b627984005a9726d0c877d253a1928fc7df16f4a338c4ed003f72678ee65f8a"
+          "sha256": "68aaefb4dbb34287cddedfd3d41d4505d942a22f7c922c13153dc2c72fd005b9"
         },
         {
-          "bytes": 9048,
+          "bytes": 9382,
           "file": "cards/citi-prestige.html",
-          "sha256": "c908bfffeeec557eb370d5b0c1b0e71528757408bf1eaabd630abebe06a61423"
+          "sha256": "4cf031f5e17d503f02e43ac41b2019eca8fc86c8859106df0e38aa45c7bc2c7b"
         },
         {
           "bytes": 9519,
           "file": "cards/dahsing-ba-platinum.html",
-          "sha256": "c7c10a15ab8e4ecc9a3be216703b1b4ccc5dd2262a2667a91b62d258c8421fa1"
+          "sha256": "3e8894253c5da38ac0674f47d0c215512e85a958a6f879df1f1c2cea2aab3f8b"
         },
         {
-          "bytes": 10234,
+          "bytes": 11251,
           "file": "cards/dbs-black-world-mastercard.html",
-          "sha256": "492aac5685c78a54edcbf4969a9846417eee3cf700bc67ada685b46cc4895c79"
+          "sha256": "400eff205c053c88dca939a3a6ad67a5a25505bba11f4e8046e0e038113d8b63"
         },
         {
-          "bytes": 10229,
+          "bytes": 11206,
           "file": "cards/hsbc-everymile.html",
-          "sha256": "7a97fe4c0b90d1948120feae10d9a8a1a19fa1467702daaf6b402dac639c3338"
+          "sha256": "a7e74f3e74a7804627834c60d52b8242d433630a041951bab569d1dc9da6878f"
         },
         {
-          "bytes": 9898,
+          "bytes": 10490,
           "file": "cards/hsbc-visa-signature.html",
-          "sha256": "232b2e66cbceed8c236181d0c799f26b92d16eaaeb08c2705674ecd9c9a45f72"
+          "sha256": "319a30282d7c7ee72a021e822ba412d65c216d5a3506e8262aa26803ba64953b"
         },
         {
           "bytes": 3285,
           "file": "cards/index.html",
-          "sha256": "56b2174dbd2bcab581b17795f2fe6212b5a9de582f2234a6a45bc37e9ae1bcd8"
+          "sha256": "4267aa25b9b166ec8a5fc1be66434dba128d111f6fad756d8ca9d3ad421fb2ff"
         },
         {
-          "bytes": 9675,
+          "bytes": 10174,
           "file": "cards/scb-cathay-mastercard.html",
-          "sha256": "bdaa98e2f9747813238a62febe6ddd0312bf10743a07d4864f944f42390cbdeb"
+          "sha256": "fe8b5ce365cc4ad4cb601011179ed999907a16fd6d1eef284928293dc2101d3f"
         }
       ],
-      "treeSha256": "71721d3918afc5f2305a894a3256504a342f81355fc4db89c98fb28f306c553e"
+      "treeSha256": "fa16b4ca83f8486b5a556ba864ea6149bcac62be1881d15c2a0e74717a9acb58"
     },
     "data": {
       "count": 3,
       "files": [
         {
-          "bytes": 6013,
+          "bytes": 27165,
           "file": "data/card-channels.js",
-          "sha256": "b6ea127d8e87ec76b9a18c43213cb01738237224de331c3ca142c3fd6434e077"
+          "sha256": "7b188d06fc3b15cbca4cb250a6f507d44f244f5ca7fb1134bd6bea3126d02aa7"
         },
         {
-          "bytes": 27742,
+          "bytes": 32899,
           "file": "data/cards-official.js",
-          "sha256": "b32c00c61bbad41b62e249220b92b8d0de47bf97cef319e7eed7703967c762eb"
+          "sha256": "2ca084b6e116d49dc0e95c475bef817ec683f8ed35ab090047aad938e61c55da"
         },
         {
-          "bytes": 8326,
+          "bytes": 23811,
           "file": "data/source-registry.js",
-          "sha256": "84ec8158d7dfedccd7f600ab9a27d68069f1f05dfaa04d45ae288bfdf97a9045"
+          "sha256": "f861b8a4a41321212fb44d880db9169c1cb6b3a31cb44570a8a673afee278145"
         }
       ],
-      "treeSha256": "597609a4c30a9cdb39dc00bc51cea085bbf79043de024dfaa4c312a4ad7ec819"
+      "treeSha256": "d2fad967a1905ee4d8b24e9132ac0cc6b0d228289b65e4cefaa26cf9edcee484"
     },
     "images": {
       "count": 36,
@@ -268,12 +268,12 @@
       "count": 1,
       "files": [
         {
-          "bytes": 625359,
+          "bytes": 629628,
           "file": "index.html",
-          "sha256": "9a87d230f01435e77c71b3da4e68b61b642af2e1cd1a402b8673a1629ed08441"
+          "sha256": "e50da5c56439cb27fd1999e87b5ef9fe8107e48116819ce5ffec3cb8fe3fca8f"
         }
       ],
-      "treeSha256": "3507e2f6def7b0dff2e9ea8009cd6ae077e294cc89ab1721dd9e7ab0c3668e97"
+      "treeSha256": "e591d0287c8353800f57ef2a85d9cd407fea4424972758942fecb53ed70f1f50"
     },
     "manifest": {
       "count": 1,
@@ -301,14 +301,14 @@
       "count": 23,
       "files": [
         {
-          "bytes": 2765,
+          "bytes": 2873,
           "file": "share/amex-explorer-july-2026/index.html",
-          "sha256": "51a701eaf49b63fc3cc124034a84af29c6cebceef23c815728c41eaee99c55e1"
+          "sha256": "b12a7707f3701c977791bb39a7cb071819c97f6d5dc16f68e86c869d7f8b867a"
         },
         {
-          "bytes": 2787,
+          "bytes": 2939,
           "file": "share/amex-platinum-july-2026/index.html",
-          "sha256": "4f2306c3c8935c46c56528ba95fa07883c1af487fb86166538c226cca675ad76"
+          "sha256": "4e71eed812c877efbf1cd18249fe5991fe0a0652358ae55a150a2ee224ba345b"
         },
         {
           "bytes": 2721,
@@ -346,9 +346,9 @@
           "sha256": "11d76141f7fecea6acedbdd6c0f9672b17e58c558057718a2d3250c0270af4bb"
         },
         {
-          "bytes": 2875,
+          "bytes": 2963,
           "file": "share/hsbc-everymile-july-2026/index.html",
-          "sha256": "d35223841673d7a06841cb2231e96f4356e28fe8ec66f5e104979c3df696fd04"
+          "sha256": "3261a9327a61967f3466543c54c2d8e7f40e61fe9bd1471fed94202738bbb0c9"
         },
         {
           "bytes": 3005,
@@ -411,12 +411,12 @@
           "sha256": "bfd9455a5c3496af5a53b65c7bed0a5ab9c83bb078091322162d76293160df38"
         },
         {
-          "bytes": 2951,
+          "bytes": 3055,
           "file": "share/standard-chartered-cathay-july-2026/index.html",
-          "sha256": "cfbdb7245a175c78aaccd9a47f3ecae4fe6a4dd8845747a3674548aa9a4f114c"
+          "sha256": "d590f50b9a60b2b66bd81e258238a5fe20087646136c2339f3bc31f99c23de97"
         }
       ],
-      "treeSha256": "cc891925c29edb2e4ec4903edf6d46b5e0c9837a691ef135fb44827a64fe03d9"
+      "treeSha256": "1dc9bd68fd2e0d2bda5d1b46dc1eac09a1b201cf2d28992dbc2f50c4630cbe20"
     }
   },
   "schemaVersion": 1,

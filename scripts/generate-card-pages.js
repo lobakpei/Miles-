@@ -58,6 +58,13 @@ function programName(program) {
 
 function welcomeHtml(card) {
   const w = card.welcome || {};
+  const modelNotice = w.engineEligible === false
+    ? `<p class="notice amber"><b>資料已更新，但暫不計入推薦：</b>${esc(w.note || '官方數字同現有 Engine 語義有衝突，未修正前唔會估。')}</p>`
+    : (w.modelStatus === 'partial-components'
+      ? `<p class="notice amber"><b>部分模型：</b>${esc(w.note || '')}</p>`
+      : (w.modelStatus === 'legacy-model-conflict'
+        ? `<p class="notice amber"><b>模型語義衝突：</b>${esc(w.note || '官方 marketed total 包含基本簽賬獎賞；現有 Engine 暫沿用舊語義，未喺今次資料更新改公式。')}</p>`
+        : ''));
   if (w.expired) {
     return `<p class="notice archive"><b>歷史優惠｜已完結，唔會進入推薦。</b><br>${esc(w.expiredNote || '上一期已完，等銀行公布新一期正式條款。')}</p>`;
   }
@@ -68,7 +75,7 @@ function welcomeHtml(card) {
   const rows = w.tiers.map((tier, index) => `<tr><td>第 ${index + 1} 級</td><td>累積簽 HK$${fmt(tier.spend)}</td><td>${fmt(tier.miles)} 里</td></tr>`).join('');
   return `<table><thead><tr><th>級別</th><th>達標條件</th><th>累積里數</th></tr></thead><tbody>${rows}</tbody></table>
     <p class="small">限期：批卡後 ${esc(w.months)} 個月${w.deadline ? `；申請截止 ${esc(w.deadline)}` : ''}。</p>
-    ${w.prereq ? `<p class="notice amber"><b>重要條件：</b>${esc(w.prereq)}</p>` : ''}`;
+    ${w.prereq ? `<p class="notice amber"><b>重要條件：</b>${esc(w.prereq)}</p>` : ''}${modelNotice}`;
 }
 
 function rateRows(card) {

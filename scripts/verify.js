@@ -210,8 +210,46 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
   ok('香港日期 helper 已用於優惠到期', /function hkToday\(/.test(src) && (src.match(/var today = (?:todayStr \|\| )?hkToday\(\);/g) || []).length >= 2);
   ok('未核實卡 UI pool 有硬過濾', /recommendableCards\s*=\s*cards\.filter\(function\(c\)\{\s*return c\.verified\s*&&\s*!c\.pending/.test(src));
   const channelOffers = cardChannels && cardChannels.getOffers ? cardChannels.getOffers() : {};
+  const flatChannelOffers = Object.values(channelOffers).flat();
   ok('無核實渠道優惠預設下架',
-    Object.values(channelOffers).flat().every(o => o.active !== true || o.verified === true));
+    flatChannelOffers.every(o => o.active !== true || o.verified === true));
+  ok('渠道優惠有獨立來源、核實日、有效期及狀態',
+    flatChannelOffers.every(o =>
+      !!o.id && /^https:\/\//.test(o.sourceUrl || '') && !!o.sourceType &&
+      /^\d{4}-\d{2}-\d{2}$/.test(o.verifiedAt || '') && !!o.status && o.expiry === o.validUntil &&
+      (o.active !== true || (/^active/.test(o.status) && /^\d{4}-\d{2}-\d{2}$/.test(o.validUntil || '')))
+    ));
+  ok('渠道精確截止時間同香港日期一致', flatChannelOffers.every(o =>
+    (!o.startsAt || (Number.isFinite(Date.parse(o.startsAt)) && o.startsAt.slice(0, 10) === o.validFrom)) &&
+    (!o.expiresAt || (Number.isFinite(Date.parse(o.expiresAt)) && o.expiresAt.slice(0, 10) === o.validUntil))
+  ));
+  const aePlatMoneyHero = flatChannelOffers.find(o => o.id === 'amex-platinum-moneyhero-2026-07');
+  ok('MoneyHero AE Platinum 18:00 HKT 邊界會準時下架', !!aePlatMoneyHero &&
+    cardChannels.isOfferCurrent(aePlatMoneyHero, new Date('2026-07-29T09:59:00Z')) === true &&
+    cardChannels.isOfferCurrent(aePlatMoneyHero, new Date('2026-07-29T10:01:00Z')) === false);
+  const mrMilesOffers = flatChannelOffers.filter(o => o.platform === '里先生' && o.active && o.fixedBonus && o.fixedBonus.unit === 'MM Credit');
+  ok('四項里先生 88 係有資格條件嘅最高值而非人人固定', mrMilesOffers.length === 4 && mrMilesOffers.every(o =>
+    o.fixedBonus.maxAmount === 88 && !Object.prototype.hasOwnProperty.call(o.fixedBonus, 'amount') &&
+    Array.isArray(o.fixedBonus.components) && o.fixedBonus.components.length === 2 &&
+    o.fixedBonus.components.some(c => c.amount === 38 && /新會員/.test(c.eligibility || '')) &&
+    o.fixedBonus.components.some(c => c.amount === 50 && /批卡/.test(c.eligibility || ''))
+  ));
+  const scMoneySmart = flatChannelOffers.find(o => o.id === 'sc-cathay-moneysmart-2026-07');
+  ok('MoneySmart 渣打禮品價值同盲盒期限完全分開', !!scMoneySmart &&
+    scMoneySmart.fixedBonus.options.some(o => o.claimedValueHKD === 3980) &&
+    scMoneySmart.fixedBonus.options.filter(o => o.faceValueHKD === 900).length === 3 &&
+    scMoneySmart.randomBonus.validUntil === '2026-07-23' && scMoneySmart.randomBonus.approvalDeadline === '2026-08-13' &&
+    cardChannels.isPeriodCurrent(scMoneySmart.randomBonus, new Date('2026-07-23T15:59:00Z')) === true &&
+    cardChannels.isPeriodCurrent(scMoneySmart.randomBonus, new Date('2026-07-23T16:01:00Z')) === false &&
+    cardChannels.isPeriodExpired(scMoneySmart.randomBonus, new Date('2026-07-23T16:01:00Z')) === true);
+  const hsbcChannelClaims = flatChannelOffers.filter(o => /^hsbc-everymile-/.test(o.id) && o.issuerOfferClaim);
+  ok('EveryMile 渠道 headline 已拆 base／mobile flash／分期，58.5k residual 不當保證', hsbcChannelClaims.length === 3 &&
+    hsbcChannelClaims.every(o => o.issuerOfferClaim.components.some(c => c.type === 'july-flash' && c.requiresMobilePayment === true && !c.requiresMobileOrQrPayment)) &&
+    hsbcChannelClaims.some(o => o.issuerOfferClaim.derivedUnexplainedResidual && o.issuerOfferClaim.deterministic === false));
+  const dbsChannel = flatChannelOffers.find(o => o.id === 'dbs-black-moneyhero-cardplus-2026-q3');
+  ok('DBS HK$50 已分類為 issuer existing-customer welcome 而非平台 fixed bonus', !!dbsChannel &&
+    dbsChannel.fixedBonus === null && dbsChannel.issuerOfferClaim && dbsChannel.issuerOfferClaim.customerType === 'existing' &&
+    dbsChannel.issuerOfferClaim.singleRetailSpendHKD === 200);
   const dataAsOfDate = ((BM.DATA_AS_OF || '').match(/^(\d{4}-\d{2}-\d{2})/) || [])[1];
   ok('9 張卡全部有銀行官方產品頁及 KFS／T&C', BM.DEFAULT_CARDS.length === 9 && !!dataAsOfDate && BM.DEFAULT_CARDS.every(c =>
     /^https:\/\//.test(c.url || '') && !/mrmiles\.hk/i.test(c.url || '') &&
@@ -229,10 +267,34 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
       return source && source.sourceType === 'bank-official' &&
         Array.isArray(source.sourceDocs) && source.sourceDocs.every(d => /^official-/.test(d.sourceType || ''));
     }));
+  ok('官方優惠 registry 保存 URL、類型、核實日、有效期及狀態',
+    BM.DEFAULT_CARDS.every(c => Array.isArray(c.officialOffers) && c.officialOffers.length > 0 &&
+      c.officialOffers.every(o => /^https:\/\//.test(o.sourceUrl || '') && !!o.sourceType &&
+        /^\d{4}-\d{2}-\d{2}$/.test(o.verifiedAt || '') && !!o.status &&
+        (o.status === 'conflict' ? o.validFrom == null && o.validUntil == null :
+          /^\d{4}-\d{2}-\d{2}$/.test(o.validFrom || '') && /^\d{4}-\d{2}-\d{2}$/.test(o.validUntil || '')))));
   const sc = BM.DEFAULT_CARDS.find(c => c.id === 'sc-cathay');
   ok('渣打 HK$96,000 已正確標為年薪而非簽賬豁免門檻', !!sc && sc.incomeVerified === true && /唔係簽賬門檻/.test(sc.waiveNote || ''));
   const hsbcVs = BM.DEFAULT_CARDS.find(c => c.id === 'hsbc-visasig');
   ok('HSBC Visa Signature 有官方來源但未完成建模前不推薦', !!hsbcVs && hsbcVs.verified === false && hsbcVs.capTotal === 100000 && Array.isArray(hsbcVs.sourceDocs));
+  const dbs = BM.DEFAULT_CARDS.find(c => c.id === 'dbs-black');
+  ok('DBS Q3 已更新但 model conflict 未無解釋計入 Result', !!dbs && dbs.welcome.deadline === '2026-10-05' &&
+    dbs.welcome.engineEligible === false && dbs.welcome.history.some(o => o.status === 'historical') && dbs.welcomeMiles === 0);
+  const everyMile = BM.DEFAULT_CARDS.find(c => c.id === 'hsbc-everymile');
+  ok('HSBC official code／mobile-only Flash／海外上限已結構化但冇擴大 Engine', !!everyMile &&
+    everyMile.welcome.prereq.includes('HSBCFLASH') && !/QR/.test(everyMile.welcome.prereq) &&
+    everyMile.officialOffers.some(o => o.id === 'hsbc-everymile-overseas-2026-h2' && o.maxExtraRewardCashTotalHKD === 450 && o.engineStatus === 'excluded-conditional-rate'));
+  ok('DBS Q3 選項、現有客 HK$50、Flexi component 同海外上限已結構化', !!dbs &&
+    dbs.officialOffers.some(o => o.id === 'dbs-black-welcome-2026-q3' && o.newCustomerComponents &&
+      o.existingCustomerComponent.singleRetailSpendHKD === 200 && o.newCustomerComponents.flexiShopping.independentOfSpendTier === true) &&
+    dbs.officialOffers.some(o => o.id === 'dbs-black-overseas-2026' && o.maxExtraDbsDollarMonthly === 240 && o.maxExtraDbsDollarTotal === 2880));
+  const explorer = BM.DEFAULT_CARDS.find(c => c.id === 'amex-explorer');
+  ok('AE Explorer 26k marketed total 已披露本地 HK$15k＋登記條件及 legacy conflict', !!explorer &&
+    explorer.welcome.modelStatus === 'legacy-model-conflict' && /HK\$15,000/.test(explorer.welcome.prereq || '') && /Local Spend Bonus/.test(explorer.welcome.note || ''));
+  ok('SC／AE legacy model conflict 已顯示喺生成卡頁', ['scb-cathay-mastercard.html', 'ae-explorer.html'].every(fileName => {
+    const page = fs.readFileSync(path.join(root, 'cards', fileName), 'utf8');
+    return /模型語義衝突/.test(page);
+  }));
   ok('卡頁由單一卡庫自動產生', fs.existsSync(path.join(root, 'scripts', 'generate-card-pages.js')));
 
   const cts = BM.owAirport('CTS'), fuk = BM.owAirport('FUK');
@@ -363,7 +425,7 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
   ok('pgO2 使用 outcome-first 多 tier 同三層 disclosure',
     (src.match(/class="outcome-tier"/g) || []).length >= 2 &&
     (src.match(/class="outcome-disclosure"/g) || []).length >= 3 &&
-    /id="pgO2"[\s\S]*?資料更新：2026-07-16[\s\S]*?優惠期限：2026-07-31/.test(src));
+    /id="pgO2"[\s\S]*?資料更新：2026-07-23[\s\S]*?flash 期限：2026-07-31/.test(src));
   ok('規劃器有 Beginner／Advanced gateway，Beginner 只配對現有 template',
     /id="plannerBeginner"/.test(src) && /id="plannerAdvanced"/.test(src) &&
     /var BEGINNER_TEMPLATES\s*=\s*\[/.test(src) && /OW_ZONE_DEMOS\[templateKey\]/.test(src) &&

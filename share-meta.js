@@ -17,10 +17,10 @@
     pgW13: {slug:'rtw-zone-13', title:'區13・終極版環遊世界 280,000 里', description:'十一個目的地、六大洲、兩個開口嘅候選終極環球線。', image:'img/pgW13-hero.jpg', kind:'路線'},
     pgG5:  {slug:'beginner-pitfalls', title:'新手最易中嘅七個伏', description:'迎新條件、取消卡、燃油費同里數過期等常見陷阱。', image:'img/pgG5-hero.jpg', kind:'攻略'},
     pgG6:  {slug:'how-to-use-acremiles', title:'點用 AcreMiles 幫你計', description:'由賺里數、換機票到環球行程，逐步教你用規劃工具。', image:'img/pgG6-hero.jpg', kind:'教學'},
-    pgO1:  {slug:'standard-chartered-cathay-july-2026', title:'渣打國泰 7 月加碼：高達 143,000 里', description:'2026-07-23 截止嘅限時優惠拆解；過期後仍保留作紀錄。', image:'img/pgO1-hero.jpg', kind:'優惠', expire:'2026-07-23'},
-    pgO2:  {slug:'hsbc-everymile-july-2026', title:'EveryMile 7 月限時優惠碼', description:'2026-07-31 截止；比較三個平台優惠碼、申請流程同重要條件。', image:'img/pgO2-hero.jpg', kind:'優惠', expire:'2026-07-31'},
-    pgO3:  {slug:'amex-platinum-july-2026', title:'AE 白金 7 月迎新', description:'2026-07-29 截止；官方申請期、迎新門檻同 9X 優惠重點。', image:'img/pgO3-hero.jpg', kind:'優惠', expire:'2026-07-29'},
-    pgO4:  {slug:'amex-explorer-july-2026', title:'AE Explorer 7 月版', description:'2026-07-31 截止；迎新里數、平台加碼同批卡後登記。', image:'img/pgO4-hero.jpg', kind:'優惠', expire:'2026-07-31'},
+    pgO1:  {slug:'standard-chartered-cathay-july-2026', title:'渣打國泰 7 月：官方／渠道分開睇', description:'base welcome、盲盒期限、MoneySmart 禮品價值同最高 88 MM Credit 條件逐項拆開。', image:'img/pgO1-hero.jpg', kind:'優惠', expire:'2026-07-31'},
+    pgO2:  {slug:'hsbc-everymile-july-2026', title:'EveryMile base＋flash 分開計', description:'2026-07-31 截止；HSBCFLASH、mobile-only flash、base、分期同渠道 headline 逐項拆開。', image:'img/pgO2-hero.jpg', kind:'優惠', expire:'2026-07-31'},
+    pgO3:  {slug:'amex-platinum-july-2026', title:'AE 白金 7 月迎新', description:'官方申請至 2026-07-29；里先生最高 88 MM Credit 渠道期至 07-31，MoneyHero 方案不可疊加。', image:'img/pgO3-hero.jpg', kind:'優惠', expire:'2026-07-31'},
+    pgO4:  {slug:'amex-explorer-july-2026', title:'AE Explorer 7 月版', description:'官方至 2026-08-31；26,000 marketed total 要至少 HK$15,000 本地簽賬及完成登記。', image:'img/pgO4-hero.jpg', kind:'優惠', expire:'2026-08-31'},
     pgO5:  {slug:'comparison-platform-guide', title:'三大平台獨家獎賞點樣拎', description:'小斯、里先生同 MoneyHero 嘅申請、追蹤同領獎流程。', image:'img/pgO5-hero.jpg', kind:'教學'}
   };
 

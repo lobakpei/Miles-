@@ -3,22 +3,15 @@
   var registry = typeof module !== 'undefined' && module.exports
     ? require('./source-registry.js')
     : root.AcreMilesSourceRegistry;
-  var channels = typeof module !== 'undefined' && module.exports
-    ? require('./card-channels.js')
-    : root.AcreMilesCardChannels;
-  var api = factory(registry, channels);
+  var api = factory(registry);
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.AcreMilesCardsOfficial = api;
-})(typeof globalThis !== 'undefined' ? globalThis : this, function(registry, channels){
+})(typeof globalThis !== 'undefined' ? globalThis : this, function(registry){
   'use strict';
 
   if (!registry || !registry.CARD_SOURCES || !registry.DATA_AS_OF) {
     throw new Error('AcreMiles official source registry is required before cards-official.js');
   }
-  if (!channels || typeof channels.applyLegacyPresentation !== 'function') {
-    throw new Error('AcreMiles channel source is required before cards-official.js');
-  }
-
   var CARD_RECORDS = [
   {
     "id": "sc-cathay",
@@ -30,6 +23,11 @@
     "welcome": {
       "type": "tiered",
       "months": 2,
+      "validFrom": "2026-05-01",
+      "deadline": "2026-07-30",
+      "status": "active-expiring",
+      "offerRef": "sc-cathay-welcome-2026-05",
+      "modelStatus": "legacy-model-conflict",
       "tiers": [
         {
           "spend": 5000,
@@ -44,8 +42,8 @@
           "miles": 40000
         }
       ],
-      "prereq": "新客＝申請前 6 個月冇持有／取消渣打或 MANHATTAN 主卡；迎新窗口只有 2 個月（比一般短，批卡即刻開簽）",
-      "note": "呢個係綠卡（主打）階梯。優先理財（藍）／優先私人理財（黑）客戶另有更高階版本——迎新更大、海外率更佳（藍 $3、黑 $2/里），高資產用戶申請前值得問一問。"
+      "prereq": "網上申請；新客＝現時冇持有渣打／MANHATTAN 主卡，而且申請前 6 個月冇取消；每人只可一份迎新；最遲 2026-10-31 發卡",
+      "note": "呢個係綠卡（主打）階梯。官方 T&C 列明 10,000／20,000／40,000 里總數包括正常簽賬里數；現有 Engine 沿用 v6.79.0 語義，相關 double-count 留待獨立 Engine Phase 修正。優先理財（藍）／優先私人理財（黑）係另一產品級別。"
     },
     "rateLocal": 6,
     "rateOnline": 6,
@@ -59,11 +57,12 @@
     "waiveNote": "首年免；其後如屬合資格優先理財／Premium 理財或出糧戶口客戶可豁免（官方條款；HK$96,000 係年薪門檻，唔係簽賬門檻）",
     "convertFee": 0,
     "applyWeeks": 3,
-    "note": "全城唯一國泰聯營卡，Asia Miles 每月自動入賬免手續費。食肆＋酒店 HK$4/里、其他港幣 $6、海外 $4、國泰／香港快運 $2（官方產品頁，2026-07-20 再核）。渣打推廣通病：好多優惠要預先登記＋港幣結算海外簽賬（DCC 揀港幣）唔計，仲要畀多 1%。驚喜盲盒 2,000 至 364,000 里 7 月 23 日截。官方申請資格寫明最低年薪 HK$96,000。",
+    "note": "全城唯一國泰聯營卡，Asia Miles 每月自動入賬免手續費。食肆＋酒店 HK$4/里、其他港幣 $6、海外 $4、國泰／香港快運 $2（官方產品頁，2026-07-23 再核）。渣打推廣多數要預先登記；DCC 港幣結算海外簽賬唔計指定獎賞，亦可能另收 1%。驚喜盲盒申請期至 7 月 23 日，只屬抽獎，唔會計入 Result。官方最低年薪 HK$96,000。",
     "verified": true,
     "publicDetails": {
       "eligibility": [
-        "新客＝申請前 6 個月冇持有或取消渣打／MANHATTAN 主卡。",
+        "新客＝申請時冇持有渣打／MANHATTAN 主卡，而且申請前 6 個月冇取消同類主卡。",
+        "每人只可一份迎新；現行申請期至 2026-07-30，最遲 2026-10-31 發卡。",
         "主庫係大眾綠卡；優先理財藍卡、優先私人理財黑卡嘅迎新及海外率不同，申請前要按自己戶口級別核對。"
       ],
       "registration": [
@@ -101,13 +100,19 @@
     "welcome": {
       "type": "threshold",
       "months": 2,
+      "validFrom": "2026-07-13",
+      "deadline": "2026-07-31",
+      "status": "active-expiring",
+      "offerRef": "hsbc-everymile-july-flash-2026",
+      "modelStatus": "partial-components",
       "tiers": [
         {
           "spend": 8000,
           "miles": 20000
         }
       ],
-      "prereq": "網上申請；簽賬要落「指定日常消費」類先砌到官方個 $0.4/里——唔係求其簽夠 $8,000 就有"
+      "prereq": "申請時輸入合資格 flash 推廣碼（官方直申碼 HSBCFLASH 或所選渠道碼）；發卡後 60 日內累積簽 HK$8,000，並至少有一次流動電話付款；附屬卡申請人及過去 12 個月取消任何滙豐主卡者不合資格",
+      "note": "呢 20,000 里只係 7 月 flash 額外 component。全年新客 base 為 60 日簽 HK$25,000 得 25,000 里；現有 schema 未能安全疊加 base＋flash＋分期，所以 Result 暫只計有清晰門檻嘅 20,000 里 flash，屬保守 partial model。"
     },
     "rateLocal": 5,
     "rateOnline": 5,
@@ -121,14 +126,17 @@
     "waiveNote": "首年免；次年簽夠 HK$80,000 自動豁免（繳費／繳稅唔計入門檻）",
     "convertFee": 0,
     "applyWeeks": 2,
-    "note": "指定商戶 HK$2/里＝2.5% 獎賞錢 × 優惠兌換率 $1RC=20里（官方核實）。注意：$2 嗰欄餐飲只限「咖啡店及輕便美食」名單（Starbucks 嗰類）——一般餐廳酒樓唔係！交通就齊（巴士／港鐵／的士／油站）。獎賞錢一定要喺 Reward+ App 換里先有優惠價。$2/里上限官方文件未見條文——大額分配呢張暫時保守。滙豐有權隨時改商戶名單。",
+    "note": "指定日常／旅遊商戶 HK$2/里＝2.5% 獎賞錢 × $1RC=20里；官方產品頁列呢類指定商戶優惠為 unlimited。餐飲只限咖啡店及輕便美食名單，一般餐廳酒樓未必計；交通包括巴士／港鐵／的士／油站。另一路 2026 海外 HK$2/里推廣有每期門檻及 RC 上限，Engine 冇用嗰個限時海外率。獎賞錢要喺 Reward+ App 兌換。",
     "verified": true,
     "publicDetails": {
       "eligibility": [
         "最低年薪 HK$240,000。",
-        "迎新要經網上申請，並按當期條款完成指定類別簽賬；唔係所有 HK$8,000 簽賬都必然砌到宣傳嘅每里成本。"
+        "現行 7 月 flash 要網上申請並輸入合資格推廣碼；新客 base 同 flash 係兩個 component。",
+        "附屬卡申請人不合資格；過去 12 個月取消任何滙豐主卡亦不合資格。新客／現有客按批核處理時有冇持有滙豐主卡判定。",
+        "官方 Red Hot campaign 頁列現有客 base HK$200 獎賞錢，但相連 base T&C 表格列 N/A，而且正面 claim 冇獨立有效期；已標 conflict，冇自行揀數或套用全年日期。"
       ],
       "registration": [
+        "官方直申 flash 碼係 HSBCFLASH；第三方渠道碼要按所選渠道頁核對，每次申請只可用一個碼。",
         "里數優惠兌換要喺 Reward+ App 進行；網上理財兌換未必享相同兌換率。",
         "指定商戶名單可隨時改，簽之前要喺滙豐最新名單查一次。"
       ],
@@ -142,8 +150,12 @@
       "crediting": [
         "HK$1「獎賞錢」按優惠兌換率可換 20 里；要用 Reward+ App。"
       ],
+      "clawback": [
+        "發卡後 13 個月內取消相關主卡，滙豐可按條款扣回迎新。"
+      ],
       "benefits": [
         "指定交通、咖啡店、輕便美食及旅遊商戶可達 HK$2/里；一般餐廳酒樓未必屬指定名單。",
+        "指定商戶 HK$2/里產品優惠列為 unlimited；另一路限時海外 HK$2/里係不同推廣，須每期海外簽 HK$12,000，額外 RC 每期上限 HK$225。",
         "其他一般本地及海外簽賬以 HK$5/里作保守比較。"
       ]
     },
@@ -162,7 +174,10 @@
     "welcome": {
       "type": "threshold",
       "months": 2,
+      "validFrom": "2026-07-01",
       "deadline": "2026-09-30",
+      "status": "active",
+      "offerRef": "citi-premiermiles-welcome-2026-q3",
       "tiers": [
         {
           "spend": 5000,
@@ -222,6 +237,10 @@
       "fee": 3800,
       "miles": 30000,
       "months": 0,
+      "validFrom": "2026-07-01",
+      "deadline": "2026-09-30",
+      "status": "active",
+      "offerRef": "citi-prestige-welcome-2026-q3",
       "note": "交首年年費 HK$3,800 → 30,000 里（每里現金成本 $0.127）。唔使簽賬、唔佔簽賬額度；年費任何情況唔退唔 waive。第二年起每年再獲 30,000 里（年度獻禮）——長線「買里機器」。12 個月內 cut 卡會扣返。"
     },
     "rateLocal": 6,
@@ -238,10 +257,12 @@
     "publicDetails": {
       "eligibility": [
         "18 歲或以上；官方最低年薪 HK$600,000。",
+        "新客＝申請時冇持有 Citi 主卡，而且由申請月份起計過去 12 個月冇持有或取消 Citi 主卡；發卡後 1 個月內要啟動實體卡。",
         "迎新屬「交年費換積分」，唔係免費迎新，亦唔佔簽賬額度。"
       ],
       "registration": [
-        "首年年費要全數入賬及繳清先符合迎新條件。"
+        "首年年費要全數入賬及繳清先符合 30,000 里迎新條件。",
+        "另一路 HK$1,200 現金回贈要首兩月累積簽 HK$5,000，並且每個月最少一宗合資格交易；現金 component 冇計入 Engine。"
       ],
       "fees": [
         "年費 HK$3,800，硬收、不可豁免及不設退款。",
@@ -276,7 +297,12 @@
     "welcome": {
       "type": "tiered",
       "months": 3,
-      "expired": true,
+      "validFrom": "2026-07-07",
+      "deadline": "2026-10-05",
+      "status": "active-model-conflict",
+      "offerRef": "dbs-black-welcome-2026-q3",
+      "engineEligible": false,
+      "modelStatus": "conflict",
       "tiers": [
         {
           "spend": 8000,
@@ -291,7 +317,21 @@
           "miles": 30000
         }
       ],
-      "expiredNote": "上一期迎新（三浸累積：$8,000→8,000、$20,000→12,000、$60,000→30,000，另申請一次 Flexi 分期＋2,000）推廣期 2026-04-29 至 07-06 已完結。DBS 慣性季季有新一期——有官方 Q3 T&C 先入返引擎（週更第一要務）。"
+      "prereq": "新客須經 DBS Card+ 登記、啟動及確認實體卡；可揀三級里數或簽 HK$8,000 換 DAYCROWN 行李箱。一次 Flexi Shopping 額外 2,000 里係獨立條件；現有客另按實體卡確認＋單一 HK$200 交易領 HK$50 一扣即享",
+      "note": "Q3 已於 2026-07-07 接續生效。新客／現有客用 12 個月 lookback，批核時已有申請／持卡亦算現有客；同一申請多卡只把第一張視為新客，其後視為現有客。官方 clause 16 列明 8,000／12,000／30,000 總里數包括 basic DBS$；現有 Engine 會 double-count，所以今次只更新及展示官方 offer，迎新暫不計入 Result。",
+      "history": [
+        {
+          "validFrom": "2026-04-29",
+          "validUntil": "2026-07-06",
+          "status": "historical",
+          "offerRef": "dbs-black-welcome-2026-q2",
+          "tiers": [
+            {"spend": 8000, "miles": 8000},
+            {"spend": 20000, "miles": 12000},
+            {"spend": 60000, "miles": 30000}
+          ]
+        }
+      ]
     },
     "rateLocal": 6,
     "rateOnline": 6,
@@ -302,16 +342,19 @@
     "waiveNote": "首年免年費（官方產品頁）；次年 HK$3,600（官方KFS），多數要打電話試 waive",
     "convertFee": 0,
     "applyWeeks": 2,
-    "note": "本地 HK$6/里（官方產品頁結案）。海外基本 $4/里；低至 $2/里要過三關：Card+ App 登記＋該曆月總簽滿 $2 萬＋每月海外首 $2 萬以內（官方推廣至 2026 年底；有門檻未建模，穩陣用 $4 計）。⚠️ 迎新推廣期 7 月 6 日已完結，未有新一期官方 T&C——按資料紀律暫時當佢冇迎新，淨計基本率。儲里記得揀「DBS$ 自選換領」，唔好俾佢自動變現金回贈。",
+    "note": "本地 HK$6/里。海外基本 HK$4/里；2026 海外 HK$2/里要先用 Card+ 登記、每月總合資格簽賬 HK$20,000，優惠約只覆蓋每月首 HK$20,000 海外簽賬，所以 Engine 保守用 HK$4。Q3 迎新已接續至 10 月 5 日，但因 marketed total 包 basic DBS$ 嘅模型衝突，暫不計入 Result。儲里要揀『DBS$ 自選換領』。",
     "verified": true,
     "publicDetails": {
       "eligibility": [
         "18 歲或以上香港居民；最低年薪 HK$240,000。",
-        "上一期迎新已於 2026-07-06 完結，只保留做歷史紀錄，唔會進入推薦計算。"
+        "新客＝批核時冇申請／持有 DBS 主卡，且申請前 12 個月冇持有或取消；否則按現有客處理。同一申請多卡只把第一張視為新客。",
+        "Q2 已於 2026-07-06 完結並保留歷史；Q3 由 2026-07-07 至 10-05，數值相同。",
+        "Q3 總里數包括 basic DBS$；未完成『included base miles』模型前，迎新唔計入推薦 Result。"
       ],
       "registration": [
         "批卡後要下載、登記及啟動 DBS Card+。",
         "要選擇「DBS$ 自選換領」先可以按計劃兌換里數。",
+        "新客可揀里數 tier 或 DAYCROWN 28 吋行李箱；Flexi Shopping 2,000 里係獨立額外 component。現有客要三個月內確認實體卡，並以實體卡單一簽 HK$200 或以上先見到 HK$50 一扣即享。",
         "海外 HK$2/里推廣要先登記，而且該月總合資格零售簽賬達 HK$20,000。"
       ],
       "fees": [
@@ -319,13 +362,13 @@
         "其他外幣及跨境收費以 DBS 最新 KFS 為準。"
       ],
       "exclusions": [
-        "迎新同海外推廣口徑不同；共通排除包括繳稅、繳費、保險、基金、現金透支、分期供款、取消及退款。上一期迎新曾計部分八達通／電子錢包交易，但唔可以假設下一期相同。"
+        "迎新同海外推廣口徑不同；共通排除包括繳稅、繳費、保險、基金、現金透支、分期供款、取消及退款。Q3 精確口徑以現行官方 T&C 為準。"
       ],
       "crediting": [
-        "上一期額外迎新最遲可於發卡後 6 個月入賬；呢個時間只屬已完結一期紀錄。"
+        "Q3 迎新入賬時間及實體卡確認要求以 2026 Q3 T&C 為準。"
       ],
       "clawback": [
-        "上一期條款列明 12 個月內取消主卡可扣回迎新；新一期要重新核對。"
+        "Q3 條款列明 12 個月內取消主卡可扣回迎新。"
       ],
       "benefits": [
         "海外優惠率 HK$2/里只適用每月首 HK$20,000 海外簽賬，而且要同月總簽賬達標；未達標或超額以 HK$4/里計。"
@@ -346,7 +389,11 @@
     "welcome": {
       "type": "tiered",
       "months": 3,
+      "validFrom": "2026-07-02",
       "deadline": "2026-08-31",
+      "status": "active",
+      "offerRef": "amex-explorer-welcome-2026-summer",
+      "modelStatus": "legacy-model-conflict",
       "tiers": [
         {
           "spend": 8000,
@@ -357,7 +404,8 @@
           "miles": 26000
         }
       ],
-      "prereq": "指定連結網上申請；批卡即登記「本地簽賬賞」計劃——唔登記迎新唔齊。新客＝過去 12 個月冇任何 AE 香港基本卡"
+      "prereq": "指定連結網上申請；新客＝過去 12 個月冇任何 AE 香港基本卡。要取 marketed total 26,000 里，HK$30,000 入面至少 HK$15,000 必須係合資格本地港幣簽賬，並成功登記「本地簽賬賞」；否則唔會有齊該 total",
+      "note": "官方 26,000 里係 welcome points 加 Local Spend Bonus 嘅 marketed total，唔係單一迎新 component；現有 Engine 沿用 v6.79.0 語義，相關 double-count 留待獨立 Engine Phase 修正。"
     },
     "rateLocal": 3,
     "rateOnline": 3,
@@ -378,7 +426,7 @@
     "waiveNote": "首年免（迎新）；其後年簽 HK$150,000 自動豁免下年度（官方）",
     "convertFee": 0,
     "applyWeeks": 2,
-    "note": "官方T&C核實（18分=1里，2026-07基準）。迎新兩浸：$8,000→8,000（$1.00/里）、$30,000→26,000（申請至 8 月 31 日；過去 12 個月有任何 AE 卡＝唔合資格）。本地 $3/里要登記「本地簽賬賞」，額外部分每季首 $15,000，超過跌 $6/里。外幣 $1.68/里要登記，每季首 $10,000，另有 2% 外幣手續費。批卡後第一件事：登記晒本地＋外幣＋指定網上商戶三個計劃。部分商戶唔收 AMEX。",
+    "note": "官方T&C核實（18分=1里，2026-07基準）。HK$8,000 本地簽賬→8,000里；marketed HK$30,000→26,000里要至少 HK$15,000 合資格本地港幣簽賬並登記 Local Spend Bonus，總數包含簽賬獎賞，現有 Engine 保留 legacy conflict。申請至 8 月 31 日；過去 12 個月有任何 AE 卡＝唔合資格。本地 $3/里要登記，額外部分每季首 $15,000，超過跌 $6/里。外幣 $1.68/里要登記，每季首 $10,000，另有 2% 外幣手續費。",
     "verified": true,
     "publicDetails": {
       "eligibility": [
@@ -386,7 +434,7 @@
         "新客＝過去 12 個月冇持有或取消任何 AE 香港基本卡。"
       ],
       "registration": [
-        "批卡後立即分別登記本地、外幣及指定網上商戶賺分計劃；冇登記就唔會自動享有宣傳加賞。"
+        "批卡後立即分別登記本地、外幣及指定網上商戶賺分計劃；marketed 26,000 里要 HK$30,000 入面至少 HK$15,000 係合資格本地港幣簽賬，冇登記 Local Spend Bonus 就唔會有齊宣傳總數。"
       ],
       "fees": [
         "外幣交易費 2%。",
@@ -421,7 +469,10 @@
     "welcome": {
       "type": "threshold",
       "months": 3,
+      "validFrom": "2025-11-23",
       "deadline": "2026-12-31",
+      "status": "active",
+      "offerRef": "dahsing-ba-welcome-2025-2026",
       "tiers": [
         {
           "spend": 12000,
@@ -484,12 +535,20 @@
     "welcome": {
       "type": "threshold",
       "months": 2,
+      "validFrom": "2026-03-01",
+      "deadline": "2027-02-28",
+      "status": "active-reference-only",
+      "offerRef": "hsbc-visasig-base-2026",
+      "modelStatus": "reference-only",
       "tiers": [
         {
           "spend": 8000,
-          "miles": 2000
+          "miles": 8000
         }
-      ]
+      ],
+      "altTiers": [{"spend": 8000, "miles": 2000}],
+      "altNote": "現有客 base：HK$200 獎賞錢≈2,000里；7 月 flash 另有新客約10,000／現有客約5,000里，但完整 stacked model 未完成。",
+      "prereq": "網上申請並輸入合資格碼；7 月 flash 要發卡後 60 日內簽 HK$8,000，當中至少一次流動電話付款。附屬卡申請人及過去 12 個月取消任何滙豐主卡者不合資格"
     },
     "rateLocal": 25,
     "rateOnline": 25,
@@ -510,9 +569,11 @@
     "publicDetails": {
       "eligibility": [
         "最低年薪 HK$240,000。",
+        "附屬卡申請人不合資格；過去 12 個月取消任何滙豐主卡亦不合資格。新客／現有客按批核處理時有冇持有滙豐主卡判定。",
         "卡資料已有官方文件，但迎新各層及例外交易仍未完全轉入推薦器，所以暫時只供比較。"
       ],
       "registration": [
+        "官方直申 flash 碼係 HSBCFLASH；申請後 60 日內簽 HK$8,000，並至少一次流動電話付款。",
         "要登記「最紅自主獎賞」並將額外倍數分配到指定類別；類別及上限按每期條款重新設定。"
       ],
       "fees": [
@@ -524,6 +585,9 @@
       ],
       "crediting": [
         "基本 0.4% 獎賞錢；兌 Cathay 時按現行官方兌換率比較。"
+      ],
+      "clawback": [
+        "發卡後 13 個月內取消相關主卡，滙豐可按條款扣回迎新。"
       ],
       "benefits": [
         "指定「最紅自主」類別連 Visa Signature 額外獎賞最高約 3.6% 獎賞錢，即約 HK$2.78/里；2026 年指定類別上限為首 HK$100,000。"
@@ -544,7 +608,10 @@
     "welcome": {
       "type": "tiered",
       "months": 3,
+      "validFrom": "2026-07-15",
       "deadline": "2026-07-29",
+      "status": "active-expiring",
+      "offerRef": "amex-platinum-new-2026-july",
       "tiers": [
         {
           "spend": 15000,
@@ -589,7 +656,7 @@
     "waiveNote": "年費 HK$9,500 硬收（官方T&C），唔 waive。官方年薪門檻 $120,000，市場公認實際審批睇資產",
     "convertFee": 300,
     "applyWeeks": 2,
-    "note": "【官方T&C 2026-07-16核實】申請期 07-15 至 07-29：新客簽 $15,000→400,000 分（22,222里）、簽 $50,000→合共 1,000,000 分（55,556里）；現有 AE 會員簽 $15,000→810,000 分（45,000里）。另有網上申請首次簽賬 $1,000 回贈＋手機八達通增值 $50（現金，冇計入引擎）。日常本地 $9/里（Turbo 每年度首 $160,000，超過 $18/里）；外幣／指定超市 $2/里要登記 9X，每類每季首 $15,000。Alipay／WeChat 唔計分，Apple Pay 計。取消退款、儲值增值、年費同稅項唔計簽賬；兌換迎新後 12 個月內取消，AE 有權扣返 $9,500 年費。9X 延續到 2027-12-31，分六階段並要逐階段重新登記。高年費卡只留作候選，唔自動加入推薦。",
+    "note": "【官方T&C 2026-07-23核實】申請期 07-15 至 07-29：新客簽 $15,000→400,000 分（22,222里）、簽 $50,000→合共 1,000,000 分（55,556里）；現有 AE 會員簽 $15,000→810,000 分（45,000里）。另有網上申請首次簽賬 $1,000 回贈＋手機八達通增值 $50（現金，冇計入引擎）。日常本地 $9/里（Turbo 每年度首 $160,000，超過 $18/里）；外幣／指定超市 $2/里要登記 9X，每類每季首 $15,000。Alipay／WeChat 唔計分，Apple Pay 計。取消退款、儲值增值、年費同稅項唔計簽賬；兌換迎新後 12 個月內取消，AE 有權扣返 $9,500 年費。9X 延續到 2027-12-31，分六階段並要逐階段重新登記。高年費卡只留作候選，唔自動加入推薦。",
     "verified": true,
     "publicDetails": {
       "eligibility": [
@@ -639,7 +706,8 @@
     card.sourceDocs = (source.sourceDocs || []).map(function(doc){
       return { label: doc.label, url: doc.url };
     });
-    return channels.applyLegacyPresentation(card);
+    card.officialOffers = clone((registry.OFFICIAL_OFFERS || {})[record.id] || []);
+    return card;
   }
 
   function getCards() {

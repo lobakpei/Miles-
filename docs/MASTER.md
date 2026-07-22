@@ -1,7 +1,7 @@
 # AcreMiles Master Context
 
-最後核對：2026-07-21（Europe/London）  
-用途：AcreMiles 專案嘅最高層入口。任何新 AI 或開發者都應先讀 [`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md)，再讀本文件同 [`HANDOFF.md`](HANDOFF.md)。如有衝突，以 Safety Hardened 文件及用戶最新指示為準。
+最後核對：2026-07-22（Europe/London）
+用途：AcreMiles 專案嘅最高層入口。法律、安全及官方資料真確性規則最高；產品方向以 [`ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md`](ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md) 為準，再讀 [`ACREMILES_PRODUCT_BLUEPRINT_V2.md`](ACREMILES_PRODUCT_BLUEPRINT_V2.md)、[`ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md`](ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md) 同 [`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md)。舊文件只可描述現況，不可推翻 2026-07-22 決定。
 
 ## 0. 目前版本
 
@@ -9,9 +9,9 @@
 |---|---|
 | 正式版本 | **v6.79.0 — Outcome First Big Picture V1** |
 | 發布分支 | `feature/outcome-first-v1` → PR #7 → `main` |
-| 基準 commit | `1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049` |
-| 狀態 | 產品擁有人已完成 Preview review並批准發布；Outcome First 第一版、公開 UK Postbox 地址及 UI 互動層級修正一併發布 |
-| QA | Node release／consent／freshness／HTTP／Sites build gates 已通過；真桌面 Agent Preview 已核對，完整手機裝置回歸列入發布後 QA |
+| 最新 `main` 基準 commit | `fb63103778831688b89bf5e4b08dbe1882c2f354` |
+| Phase 0 狀態 | Canonical Sync + Regression Lock 候選；只新增／更新文件、fixtures、snapshots 同測試，不代表 2026-07-22 新 IA／UI 已實作 |
+| 正式產品狀態 | v6.79.0 仍然上線；Phase 0 不改 `index.html`、計算公式、PWA 或生成產品頁 |
 
 本節記錄 v6.79.0 發布狀態；舊 v6.79.0-draft QA 只屬歷史候選紀錄。
 
@@ -34,12 +34,15 @@
 
 ## 2. 產品定位
 
-AcreMiles 係一個「由目的地出發，再反推所需里數同儲里方案」嘅規劃工具。主要協助使用者：
+北極星係：**「每筆消費，都值得有回報。」**完整旅程係：**橫掂消費 → 順便賺里 → 用里換旅行 → 建立習慣。**產品分工固定為：
 
-1. 估算一筆大額消費可以點樣分配到香港里數信用卡。
-2. 比較 Asia Miles／Avios 等里數目標同兌換需要。
-3. 學習 oneworld 多航空公司獎勵票規則，並砌教學示例行程。
-4. 收藏攻略、已儲存計劃同行程，再分享出去。
+1. 「點賺」回答一筆／每筆消費點樣賺里；第一個輸入係金額。
+2. 「點用」回答手上里數可以換到乜；第一個輸入係里數。
+3. 首頁負責連接點賺、點用、個人內容同今日重點。
+4. 優惠負責時效性、可比較、可行動嘅卡／渠道優惠。
+5. 攻略負責教育、SEO 同內部連結。
+
+**已取代（superseded）：**「大額消費」唔再係全站定位，只係現行計算器其中一種使用情境；「由目的地出發」唔再係產品核心；Beginner／Advanced 唔可以做一般 Planner 第一層，只可放喺「點用 → 環球票」入面。現行 v6.79.0 仍有舊導覽字眼同 planner gateway，屬待後續 Phase 實作嘅已知差距，Phase 0 不改 UI。
 
 AcreMiles **唔係**：
 
@@ -53,7 +56,7 @@ AcreMiles **唔係**：
 
 ## 3. 已上線功能
 
-### 3.1 規劃及計算
+### 3.1 現行 v6.79.0 規劃及計算（屬基準，不代表新 IA）
 
 - 大額消費賺里數計算器：金額、時間、收入、現有卡、剔除卡、目標計劃、家庭模式等。
 - 日常簽賬分類工具。
@@ -137,27 +140,30 @@ AcreMiles **唔係**：
 
 ## 6. 當前未完成事項
 
-1. 每週信用卡及平台優惠核實；近期 7 個到期提醒優先。
-2. v6.79.0 發布後 production QA：最新 PageSpeed、真 WhatsApp／Facebook 分享預覽、手機／平板／桌面回歸。
-4. 核實 GA4 管理頁設定已真正按「儲存」；現有截圖顯示事件 2 個月、使用者 14 個月、活動時重設。
-5. ICO 加 trading name，並按需要同步已確認 UK Postbox 公開服務地址。
-6. 用戶改名完成後先更新 Instagram／Facebook；程式目前 IG 為 `@acremiles`，Facebook URL 留空。
-7. 中期拆分巨大 `index.html`、加 CI release gates、把文章 wrapper 升級成可索引全文頁。
+1. Phase 0 Draft PR 經 Founder 明確回覆「Phase 0 approved」前，停止；不可進 Phase 1。
+2. 獲批後先按獨立 PR 做 Card Data Source Extraction；不可同 UI 或公式修改混埋。
+3. 每週信用卡及平台優惠核實；近期 7 個到期提醒優先。
+4. v6.79.0 發布後 production QA：最新 PageSpeed、真 WhatsApp／Facebook 分享預覽、手機／平板／桌面回歸。
+5. 核實 GA4 管理頁設定已真正按「儲存」；現有截圖顯示事件 2 個月、使用者 14 個月、活動時重設。
+6. ICO 加 trading name，並按需要同步已確認 UK Postbox 公開服務地址。
+7. 用戶改名完成後先更新 Instagram／Facebook；程式目前 IG 為 `@acremiles`，Facebook URL 留空。
+8. 中期拆分巨大 `index.html`、加 CI release gates、把文章 wrapper 升級成可索引全文頁。
 
 ## 7. 新 AI 建議閱讀次序
 
-1. [`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md)：Outcome First 方向、驗收及不可違反安全規則。
-2. 本文件。
-3. [`HANDOFF.md`](HANDOFF.md)：當前工作、決定同接手步驟。
-4. [`ROADMAP.md`](ROADMAP.md)：優先次序及完成條件。
-5. [`ARCHITECTURE.md`](ARCHITECTURE.md)：程式結構、資料流、儲存及生成檔。
-6. 根據任務再讀專題文件：
+1. [`ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md`](ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md)：最新產品決定；法律、安全、官方資料真確性規則仍然更高。
+2. [`ACREMILES_PRODUCT_BLUEPRINT_V2.md`](ACREMILES_PRODUCT_BLUEPRINT_V2.md)：完整產品藍圖。
+3. [`ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md`](ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md)：現況、風險同目標分層。
+4. [`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md)：既有安全邊界。
+5. 本文件同 [`HANDOFF.md`](HANDOFF.md)。
+6. [`ROADMAP.md`](ROADMAP.md) 同 [`ARCHITECTURE.md`](ARCHITECTURE.md)。
+7. 根據任務再讀專題文件：
    - 信用卡：`WEEKLY-CARD-UPDATE.md`、`CARD-SOURCE-AUDIT.md`
    - RTW：`RTW-AUDIT.md`、`RTW-ROUTE-VERIFICATION-20260720.md`
    - 區 10：`ZONE-10-ROUTE.csv`、`ZONE-10-FABLE5-HANDOFF.md`
    - QA：最新版本 `QA-REPORT-v6.79.0.md`
    - 私隱／合規：`DATA-RETENTION-SCHEDULE.md`、`SOCIAL-CONTENT-COMPLIANCE.md`
-7. `AGENTS.md`：所有程式及內容改動都必須遵守嘅 repo 級守則。
+8. `AGENTS.md`：所有程式及內容改動都必須遵守嘅 repo 級守則。
 
 ## 8. 最低交付及發布規則
 
@@ -166,6 +172,7 @@ AcreMiles **唔係**：
 ```bash
 node scripts/verify.js index.html
 node scripts/test-consent-gate.js
+node scripts/regression-lock.js
 ```
 
 信用卡或分享 metadata 改動後，再做：

@@ -1,0 +1,355 @@
+{
+  "after": {
+    "count": 33,
+    "files": [
+      {
+        "bytes": 10135,
+        "file": "cards/ae-explorer.html",
+        "sha256": "0f01af0ca318ed2c4cdd875a468b59e29b321778346c2ad3b9c5daefc9ec9150"
+      },
+      {
+        "bytes": 10293,
+        "file": "cards/ae-platinum-card.html",
+        "sha256": "842e1487dbd359fe392b3caca6e3b8ec534de16b52b1b0a0ed6af4e449ca7b4c"
+      },
+      {
+        "bytes": 9307,
+        "file": "cards/citi-premiermiles.html",
+        "sha256": "0b627984005a9726d0c877d253a1928fc7df16f4a338c4ed003f72678ee65f8a"
+      },
+      {
+        "bytes": 9048,
+        "file": "cards/citi-prestige.html",
+        "sha256": "c908bfffeeec557eb370d5b0c1b0e71528757408bf1eaabd630abebe06a61423"
+      },
+      {
+        "bytes": 9519,
+        "file": "cards/dahsing-ba-platinum.html",
+        "sha256": "c7c10a15ab8e4ecc9a3be216703b1b4ccc5dd2262a2667a91b62d258c8421fa1"
+      },
+      {
+        "bytes": 10234,
+        "file": "cards/dbs-black-world-mastercard.html",
+        "sha256": "492aac5685c78a54edcbf4969a9846417eee3cf700bc67ada685b46cc4895c79"
+      },
+      {
+        "bytes": 10229,
+        "file": "cards/hsbc-everymile.html",
+        "sha256": "7a97fe4c0b90d1948120feae10d9a8a1a19fa1467702daaf6b402dac639c3338"
+      },
+      {
+        "bytes": 9898,
+        "file": "cards/hsbc-visa-signature.html",
+        "sha256": "232b2e66cbceed8c236181d0c799f26b92d16eaaeb08c2705674ecd9c9a45f72"
+      },
+      {
+        "bytes": 3285,
+        "file": "cards/index.html",
+        "sha256": "56b2174dbd2bcab581b17795f2fe6212b5a9de582f2234a6a45bc37e9ae1bcd8"
+      },
+      {
+        "bytes": 9675,
+        "file": "cards/scb-cathay-mastercard.html",
+        "sha256": "bdaa98e2f9747813238a62febe6ddd0312bf10743a07d4864f944f42390cbdeb"
+      },
+      {
+        "bytes": 2765,
+        "file": "share/amex-explorer-july-2026/index.html",
+        "sha256": "51a701eaf49b63fc3cc124034a84af29c6cebceef23c815728c41eaee99c55e1"
+      },
+      {
+        "bytes": 2787,
+        "file": "share/amex-platinum-july-2026/index.html",
+        "sha256": "4f2306c3c8935c46c56528ba95fa07883c1af487fb86166538c226cca675ad76"
+      },
+      {
+        "bytes": 2721,
+        "file": "share/asia-miles-101/index.html",
+        "sha256": "d6b1807ba340c88796f8ff65490cc75ff1d323b42019d9980e491243147039c5"
+      },
+      {
+        "bytes": 2799,
+        "file": "share/beginner-pitfalls/index.html",
+        "sha256": "5336cfe3d174181a144d922df9a4fe00b5d3960a057f1b7caa38e1d6a6bcc9b9"
+      },
+      {
+        "bytes": 2847,
+        "file": "share/comparison-platform-guide/index.html",
+        "sha256": "140710ce5e2a80c0a12710ae61de44ad9484d4aa078bd429cf576c96e17a1a16"
+      },
+      {
+        "bytes": 2815,
+        "file": "share/credit-card-combo/index.html",
+        "sha256": "f58839fc6c9c583480e65e0c7da37f7714a0b50b80e9a2702824520bb94ffb6e"
+      },
+      {
+        "bytes": 2767,
+        "file": "share/flight-awards/index.html",
+        "sha256": "53d478d57a5a69ccce73fab1f80bef92cb1bcb1efa63521c63c16541191ae386"
+      },
+      {
+        "bytes": 2931,
+        "file": "share/fuel-surcharge-yq/index.html",
+        "sha256": "4bc933265fe78eeb69ea7bbc924c9ef8a2e2394743dd2f4abfd10e90b88af4af"
+      },
+      {
+        "bytes": 2811,
+        "file": "share/how-to-use-acremiles/index.html",
+        "sha256": "11d76141f7fecea6acedbdd6c0f9672b17e58c558057718a2d3250c0270af4bb"
+      },
+      {
+        "bytes": 2875,
+        "file": "share/hsbc-everymile-july-2026/index.html",
+        "sha256": "d35223841673d7a06841cb2231e96f4356e28fe8ec66f5e104979c3df696fd04"
+      },
+      {
+        "bytes": 3005,
+        "file": "share/itinerary/index.html",
+        "sha256": "e7d3b2b9c95a0ac6e55a8df4ee1f2cd016a46a4373f55f6d162924beaba7e78e"
+      },
+      {
+        "bytes": 2765,
+        "file": "share/oneworld-rtw/index.html",
+        "sha256": "15a912fc4214d0d2b799ea5c232ddbe95ac7eb2e5626e07f97575e43aed3ac1f"
+      },
+      {
+        "bytes": 2829,
+        "file": "share/plan/index.html",
+        "sha256": "78460a482bf7a0118c9488faffa988ca1dc093df51855a7cc02ad9429dac83bd"
+      },
+      {
+        "bytes": 2921,
+        "file": "share/rtw-example-medium/index.html",
+        "sha256": "98f18347a60ec3c16d878a97839df7e5301db785e37ebb9718d3436eeb751b7b"
+      },
+      {
+        "bytes": 2895,
+        "file": "share/rtw-example-world/index.html",
+        "sha256": "14411115352305b0de9b3f11bb8dc3e0884f3b32698ba6ab27e591f960f5867e"
+      },
+      {
+        "bytes": 2821,
+        "file": "share/rtw-routes/index.html",
+        "sha256": "ff1b65e1f70d0b7a175618fbb0cf2c850fc9323f30f3569ab18f551d264c55d9"
+      },
+      {
+        "bytes": 2334,
+        "file": "share/rtw-zone-10-withdrawn/index.html",
+        "sha256": "b77d33ed48ca78ede6f296b46c32ac886a9d322d0db214ec94f9db94669c67ce"
+      },
+      {
+        "bytes": 3105,
+        "file": "share/rtw-zone-10/index.html",
+        "sha256": "1751a562ceaf7dbb305ad052f00546978eebe157b548e270bf95e7d408ad9148"
+      },
+      {
+        "bytes": 2835,
+        "file": "share/rtw-zone-11/index.html",
+        "sha256": "fb53443ef0704bc8beab06f2e3110c21bf5b33c70ba1960d96c8741688521332"
+      },
+      {
+        "bytes": 2889,
+        "file": "share/rtw-zone-13/index.html",
+        "sha256": "98423fdb5e27788bde533068f301247485eac0339f0088b34f8341ffa80fb9dc"
+      },
+      {
+        "bytes": 2839,
+        "file": "share/rtw-zone-6/index.html",
+        "sha256": "5c9b96538ff784c9043c34f5b0ce5e47c7e3ba2b5330dfa0f8c6f2b7e7ae9bfb"
+      },
+      {
+        "bytes": 2779,
+        "file": "share/rtw-zone-8/index.html",
+        "sha256": "bfd9455a5c3496af5a53b65c7bed0a5ab9c83bb078091322162d76293160df38"
+      },
+      {
+        "bytes": 2951,
+        "file": "share/standard-chartered-cathay-july-2026/index.html",
+        "sha256": "cfbdb7245a175c78aaccd9a47f3ecae4fe6a4dd8845747a3674548aa9a4f114c"
+      }
+    ],
+    "treeSha256": "86a30ce2f23c0090dc371b75238dcc9e81fb3b6256d98d3349341cba7830c290"
+  },
+  "baselineCommit": "fb63103778831688b89bf5e4b08dbe1882c2f354",
+  "before": {
+    "count": 33,
+    "files": [
+      {
+        "bytes": 10135,
+        "file": "cards/ae-explorer.html",
+        "sha256": "0f01af0ca318ed2c4cdd875a468b59e29b321778346c2ad3b9c5daefc9ec9150"
+      },
+      {
+        "bytes": 10293,
+        "file": "cards/ae-platinum-card.html",
+        "sha256": "842e1487dbd359fe392b3caca6e3b8ec534de16b52b1b0a0ed6af4e449ca7b4c"
+      },
+      {
+        "bytes": 9307,
+        "file": "cards/citi-premiermiles.html",
+        "sha256": "0b627984005a9726d0c877d253a1928fc7df16f4a338c4ed003f72678ee65f8a"
+      },
+      {
+        "bytes": 9048,
+        "file": "cards/citi-prestige.html",
+        "sha256": "c908bfffeeec557eb370d5b0c1b0e71528757408bf1eaabd630abebe06a61423"
+      },
+      {
+        "bytes": 9519,
+        "file": "cards/dahsing-ba-platinum.html",
+        "sha256": "c7c10a15ab8e4ecc9a3be216703b1b4ccc5dd2262a2667a91b62d258c8421fa1"
+      },
+      {
+        "bytes": 10234,
+        "file": "cards/dbs-black-world-mastercard.html",
+        "sha256": "492aac5685c78a54edcbf4969a9846417eee3cf700bc67ada685b46cc4895c79"
+      },
+      {
+        "bytes": 10229,
+        "file": "cards/hsbc-everymile.html",
+        "sha256": "7a97fe4c0b90d1948120feae10d9a8a1a19fa1467702daaf6b402dac639c3338"
+      },
+      {
+        "bytes": 9898,
+        "file": "cards/hsbc-visa-signature.html",
+        "sha256": "232b2e66cbceed8c236181d0c799f26b92d16eaaeb08c2705674ecd9c9a45f72"
+      },
+      {
+        "bytes": 3285,
+        "file": "cards/index.html",
+        "sha256": "56b2174dbd2bcab581b17795f2fe6212b5a9de582f2234a6a45bc37e9ae1bcd8"
+      },
+      {
+        "bytes": 9675,
+        "file": "cards/scb-cathay-mastercard.html",
+        "sha256": "bdaa98e2f9747813238a62febe6ddd0312bf10743a07d4864f944f42390cbdeb"
+      },
+      {
+        "bytes": 2765,
+        "file": "share/amex-explorer-july-2026/index.html",
+        "sha256": "51a701eaf49b63fc3cc124034a84af29c6cebceef23c815728c41eaee99c55e1"
+      },
+      {
+        "bytes": 2787,
+        "file": "share/amex-platinum-july-2026/index.html",
+        "sha256": "4f2306c3c8935c46c56528ba95fa07883c1af487fb86166538c226cca675ad76"
+      },
+      {
+        "bytes": 2721,
+        "file": "share/asia-miles-101/index.html",
+        "sha256": "d6b1807ba340c88796f8ff65490cc75ff1d323b42019d9980e491243147039c5"
+      },
+      {
+        "bytes": 2799,
+        "file": "share/beginner-pitfalls/index.html",
+        "sha256": "5336cfe3d174181a144d922df9a4fe00b5d3960a057f1b7caa38e1d6a6bcc9b9"
+      },
+      {
+        "bytes": 2847,
+        "file": "share/comparison-platform-guide/index.html",
+        "sha256": "140710ce5e2a80c0a12710ae61de44ad9484d4aa078bd429cf576c96e17a1a16"
+      },
+      {
+        "bytes": 2815,
+        "file": "share/credit-card-combo/index.html",
+        "sha256": "f58839fc6c9c583480e65e0c7da37f7714a0b50b80e9a2702824520bb94ffb6e"
+      },
+      {
+        "bytes": 2767,
+        "file": "share/flight-awards/index.html",
+        "sha256": "53d478d57a5a69ccce73fab1f80bef92cb1bcb1efa63521c63c16541191ae386"
+      },
+      {
+        "bytes": 2931,
+        "file": "share/fuel-surcharge-yq/index.html",
+        "sha256": "4bc933265fe78eeb69ea7bbc924c9ef8a2e2394743dd2f4abfd10e90b88af4af"
+      },
+      {
+        "bytes": 2811,
+        "file": "share/how-to-use-acremiles/index.html",
+        "sha256": "11d76141f7fecea6acedbdd6c0f9672b17e58c558057718a2d3250c0270af4bb"
+      },
+      {
+        "bytes": 2875,
+        "file": "share/hsbc-everymile-july-2026/index.html",
+        "sha256": "d35223841673d7a06841cb2231e96f4356e28fe8ec66f5e104979c3df696fd04"
+      },
+      {
+        "bytes": 3005,
+        "file": "share/itinerary/index.html",
+        "sha256": "e7d3b2b9c95a0ac6e55a8df4ee1f2cd016a46a4373f55f6d162924beaba7e78e"
+      },
+      {
+        "bytes": 2765,
+        "file": "share/oneworld-rtw/index.html",
+        "sha256": "15a912fc4214d0d2b799ea5c232ddbe95ac7eb2e5626e07f97575e43aed3ac1f"
+      },
+      {
+        "bytes": 2829,
+        "file": "share/plan/index.html",
+        "sha256": "78460a482bf7a0118c9488faffa988ca1dc093df51855a7cc02ad9429dac83bd"
+      },
+      {
+        "bytes": 2921,
+        "file": "share/rtw-example-medium/index.html",
+        "sha256": "98f18347a60ec3c16d878a97839df7e5301db785e37ebb9718d3436eeb751b7b"
+      },
+      {
+        "bytes": 2895,
+        "file": "share/rtw-example-world/index.html",
+        "sha256": "14411115352305b0de9b3f11bb8dc3e0884f3b32698ba6ab27e591f960f5867e"
+      },
+      {
+        "bytes": 2821,
+        "file": "share/rtw-routes/index.html",
+        "sha256": "ff1b65e1f70d0b7a175618fbb0cf2c850fc9323f30f3569ab18f551d264c55d9"
+      },
+      {
+        "bytes": 2334,
+        "file": "share/rtw-zone-10-withdrawn/index.html",
+        "sha256": "b77d33ed48ca78ede6f296b46c32ac886a9d322d0db214ec94f9db94669c67ce"
+      },
+      {
+        "bytes": 3105,
+        "file": "share/rtw-zone-10/index.html",
+        "sha256": "1751a562ceaf7dbb305ad052f00546978eebe157b548e270bf95e7d408ad9148"
+      },
+      {
+        "bytes": 2835,
+        "file": "share/rtw-zone-11/index.html",
+        "sha256": "fb53443ef0704bc8beab06f2e3110c21bf5b33c70ba1960d96c8741688521332"
+      },
+      {
+        "bytes": 2889,
+        "file": "share/rtw-zone-13/index.html",
+        "sha256": "98423fdb5e27788bde533068f301247485eac0339f0088b34f8341ffa80fb9dc"
+      },
+      {
+        "bytes": 2839,
+        "file": "share/rtw-zone-6/index.html",
+        "sha256": "5c9b96538ff784c9043c34f5b0ce5e47c7e3ba2b5330dfa0f8c6f2b7e7ae9bfb"
+      },
+      {
+        "bytes": 2779,
+        "file": "share/rtw-zone-8/index.html",
+        "sha256": "bfd9455a5c3496af5a53b65c7bed0a5ab9c83bb078091322162d76293160df38"
+      },
+      {
+        "bytes": 2951,
+        "file": "share/standard-chartered-cathay-july-2026/index.html",
+        "sha256": "cfbdb7245a175c78aaccd9a47f3ecae4fe6a4dd8845747a3674548aa9a4f114c"
+      }
+    ],
+    "treeSha256": "86a30ce2f23c0090dc371b75238dcc9e81fb3b6256d98d3349341cba7830c290"
+  },
+  "commandOutput": [
+    "Generated 9 card pages and card index from bm-core",
+    "Generated 22 social share pages"
+  ],
+  "commands": [
+    "node scripts/generate-card-pages.js",
+    "node scripts/generate-share-pages.js"
+  ],
+  "drift": [],
+  "schemaVersion": 1
+}

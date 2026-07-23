@@ -6,6 +6,95 @@
 
 Feature branch：`agent/acremiles-phase1-card-data-20260722`
 
+## Preview correction（2026-07-23）
+
+Founder 首次收到嘅 Preview 係 Android 單一 `content://.../index.html`。Phase 1A 已將 runtime
+信用卡資料搬到 sibling files，所以單檔 Preview 唔再係有效交付方式。
+
+- 原 PR head：`782e8f2334293c1d54ef9f95b64e538909e7fa8c`
+- 原 PR tree：`f872c65728f9956d1ffc134420bde149ccd72be8`
+- 隔離 HTTPS Preview：<https://acremiles-phase1-pr9-preview.lobakpei.chatgpt.site>
+- Preview hosting 與 `acremiles.app`／GitHub Pages production 完全分開；冇 merge、冇 production deploy。
+- Preview 由同一 origin 提供完整 repository tree；單一 `file://`／`content://` `index.html`
+  明確列為不受支援。
+
+### 單檔 failure reproduction
+
+用原 PR head 只保留 `index.html`、刻意唔提供 sibling assets，可穩定重現 Founder 所見狀態：
+
+1. `./data/source-registry.js`、`./data/card-channels.js`、`./data/cards-official.js` 無法取得。
+2. `bm-core` 拋出 `AcreMiles official card data source is unavailable`。
+3. 後續 UI 初始化再因 `BM.DEFAULT_CARDS` 不存在而終止。
+4. Welcome 自動離場 timer 尚未註冊，畫面停留喺舊 Welcome copy，同時出現全局紅色 error banner。
+
+呢個結果證明 Phase 1 Preview 必須用 HTTP／HTTPS server；唔會把 card database inline 回
+`index.html` 去遷就單檔開啟。
+
+### HTTPS runtime regression 與修正
+
+完整 same-origin tree 首次透過 HTTP Preview 開啟後，三個 data scripts 可以載入，但 browser
+console 額外揭露 Stage B regression：
+
+```text
+ReferenceError: CHANNEL_DATA_SOURCE is not defined
+at channelOfferIsCurrent
+at renderCardLib
+```
+
+Root cause：`CHANNEL_DATA_SOURCE` 只喺 `BM` IIFE 內宣告；Stage B 新增嘅 UI expiry helpers
+喺另一個 IIFE 直接引用同名變數。Node verifier 只執行 `bm-core`，所以舊 gate 冇覆蓋到呢個
+browser scope boundary。
+
+Corrective change 只喺 UI IIFE 由現有 `AcreMilesCardChannels` global 重新綁定
+`CHANNEL_DATA_SOURCE`，並加 verifier invariant。冇改資料、optimizer、公式、Welcome、
+Consent、Profile、Bottom Nav、copy、timing 或 design。
+
+### Mobile／browser evidence
+
+| 驗證 | 結果 |
+|---|---|
+| Mobile viewport | PASS；390 × 844 iframe viewport |
+| Welcome | PASS；2 秒正常離場，保留「畝・里 · 香港里數優化」 |
+| Global red error banner | 0 |
+| Home | PASS |
+| Bottom Nav | 計算／規劃／首頁／優惠／攻略，5／5 可開 |
+| Earn calculator | PASS；HK$30,000、年薪 HK$300,000 產生約 65,000 里結果 |
+| Card library | PASS；展開後 9 張卡 |
+| Offers／Guides | PASS；兩頁均可開 |
+| Browser console（post-fix fresh tab） | 0 個 app-origin errors；只有 browser extension 自身 metadata noise |
+
+![Phase 1 mobile Welcome](evidence/phase1-preview/mobile-welcome.jpg)
+
+![Phase 1 mobile Home](evidence/phase1-preview/mobile-home.jpg)
+
+![Phase 1 calculator result](evidence/phase1-preview/calculator-result.jpg)
+
+### Network／完整 tree
+
+| Path | 同源 app server（通過 Sites access gate 後） |
+|---|---:|
+| `data/source-registry.js` | HTTP 200 |
+| `data/card-channels.js` | HTTP 200 |
+| `data/cards-official.js` | HTTP 200 |
+| `share-meta.js` | HTTP 200 |
+| `img/pgW0-planner.webp`、`img/pgO1-hero.jpg` | HTTP 200 |
+| `cards/index.html`、`share/plan/index.html` | HTTP 200 |
+| `manifest.json`、`sw.js` | HTTP 200 |
+
+完整 HTTP smoke 係 112／112。Sites URL 使用 Founder／owner access；未登入嘅 raw request
+會先由 hosting access gate 回覆 401，唔代表 app asset missing。
+
+### Corrective snapshot differences
+
+- `data`：零 drift。
+- `optimizer`：22／22 byte-identical，零 drift。
+- `generated`：33 個 `cards/**`＋`share/**` before／after tree hash 一致，零 drift。
+- `storage`：16 keys／16 reset keys，零 drift。
+- `product`：只係 `index.html` 增加 107 bytes；index SHA-256
+  `e50da5c5…` → `cc29767f…`，其他 product groups 零 drift。
+- `DOM`：209 IDs、0 duplicate、structural DOM hash、critical elements、Bottom Nav 全部不變；
+  只係 `cd-name`、`subEdit`、dynamic FAQ 三個記錄行號 +1，以及 index hash 更新。
+
 ## 安全基準
 
 - Backup branch：`backup/pre-phase1-card-data-20260722`，指向 baseline。

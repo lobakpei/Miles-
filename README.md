@@ -10,6 +10,11 @@ python3 -m http.server 4173 --bind 127.0.0.1
 
 開啟 `http://127.0.0.1:4173/`。PWA 及離線功能需要經 HTTP／HTTPS 測試，唔建議直接雙擊 `index.html`。
 
+Phase 1 起，Preview **必須**由同一個 HTTP／HTTPS origin 提供完整 repository tree，包括
+`index.html`、`share-meta.js`、`data/**`、`img/**`、`cards/**`、`share/**`、
+`manifest.json` 同 `sw.js`。不可再將單一 `index.html` sandbox link 當成 Preview；
+`file://`／Android `content://` 單檔開啟無法保證 sibling data scripts 可用，唔屬於受支援嘅執行方式。
+
 ## 發佈前檢查
 
 ```bash

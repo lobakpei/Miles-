@@ -75,6 +75,8 @@ blocks.forEach((b, i) => {
 ok('三層信用卡資料來源可由 Node 直接讀取',
   !!sourceRegistry && !!cardsOfficial && !!cardChannels &&
   Array.isArray(cardsOfficial.DEFAULT_CARDS) && !!cardChannels.CHANNEL_OFFERS);
+ok('UI runtime 有重新綁定渠道資料來源',
+  /var CHANNEL_DATA_SOURCE\s*=\s*\(typeof AcreMilesCardChannels !== ['"]undefined['"]\)\s*\?\s*AcreMilesCardChannels\s*:\s*null;/.test(src));
 const htmlCheck = cp.spawnSync('python3', [path.join(__dirname, 'verify-html.py'), file], { encoding: 'utf8' });
 if (htmlCheck.status === 2 && /lxml is not installed/.test(htmlCheck.stderr || '')) {
   console.log('⚠ HTML 結構檢查跳過（要安裝 lxml）');

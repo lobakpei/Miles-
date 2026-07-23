@@ -3279,6 +3279,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     set:function(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} },
     del:function(k){ try{ localStorage.removeItem(k); }catch(e){} }
   };
+  var CHANNEL_DATA_SOURCE = (typeof AcreMilesCardChannels !== 'undefined') ? AcreMilesCardChannels : null;
   /* 所有到期判斷一律用香港曆日；用 UTC 日期會令香港 00:00–07:59 慢一日。 */
   function hkToday(date){
     var d = date || new Date();

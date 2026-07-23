@@ -14,9 +14,9 @@ function collect(text, regex) {
   while ((match = regex.exec(text))) targets.add(match[1]);
 }
 
-collect(index, /(?:src|href)=["']((?:\.\/)?(?:img\/|cards\/|share\/|share-meta\.js|manifest\.json|icon-[^"']+|apple-touch-icon\.png)[^"']*)["']/g);
+collect(index, /(?:src|href)=["']((?:\.\/)?(?:data\/|img\/|cards\/|share\/|share-meta\.js|manifest\.json|icon-[^"']+|apple-touch-icon\.png)[^"']*)["']/g);
 collect(index, /\bimg\s*:\s*["']((?:\.\/)?img\/[^"']+)["']/g);
-collect(sw, /["']((?:\.\/)?(?:img\/|share\/|share-meta\.js|manifest\.json|icon-[^"']+|apple-touch-icon\.png)[^"']*)["']/g);
+collect(sw, /["']((?:\.\/)?(?:data\/|img\/|share\/|share-meta\.js|manifest\.json|icon-[^"']+|apple-touch-icon\.png)[^"']*)["']/g);
 
 for (const name of fs.readdirSync(path.join(root, 'cards')).filter(n => n.endsWith('.html'))) {
   targets.add('./cards/' + name);

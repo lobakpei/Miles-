@@ -4,12 +4,14 @@
 適用版本：正式網站 v6.79.0
 接手目標：新 AI 喺冇舊對話內容嘅情況下，能夠安全判斷現況、繼續開發及避免重做已完成工作。
 
-## 0. v6.79.0／Phase 0 當前交接
+## 0. v6.79.0／Phase 1 當前交接
 
 - 法律、安全及官方資料真確性規則最高；最新產品方向以 [`ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md`](ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md) 為準，其後係 [`ACREMILES_PRODUCT_BLUEPRINT_V2.md`](ACREMILES_PRODUCT_BLUEPRINT_V2.md)、[`ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md`](ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md) 同 Safety Hardened。
-- Phase 0 基準係 GitHub `main` commit `fb63103778831688b89bf5e4b08dbe1882c2f354`；正式產品仍係 v6.79.0。
-- Phase 0 只做 canonical docs、optimizer fixtures、產品／DOM／localStorage snapshots 同 generated-file drift check；冇改 UI、公式、卡數字、PWA 或生成產品頁。
-- Founder 未明確回覆「Phase 0 approved」前，必須停止；不可開始 Card Data Source Extraction、任何新 IA／UI、Google Login、merge 或 deploy。
+- Phase 0 已獲 Founder 批准並合併；Phase 1 `main` baseline 係 `ba8f6db0b087275f63785468ccec424a9d5ad1e2`，正式產品仍係 v6.79.0。
+- backup branch：`backup/pre-phase1-card-data-20260722`；Phase 1 feature branch：`agent/acremiles-phase1-card-data-20260722`。
+- Phase 1A 已以 commit `a704abbb82fdfe401b45dac0b2f2968d4e5c15b6` 完成銀行卡、渠道優惠及來源 registry 零 drift 搬遷。Phase 1B 候選只處理 2026-07-23 已核實嘅到期官方／渠道資料，完整差異見 [`PHASE1-CARD-DATA-VERIFICATION.md`](PHASE1-CARD-DATA-VERIFICATION.md)。
+- Stage B 候選嘅 `source-registry` schema 2 有 19 個官方 records（17 active*），`card-channels` schema 3 有 17 個渠道 records（12 active、3 unknown、2 historical-unverified）；精確時間優惠用帶 `+08:00` 嘅 `startsAt`／`expiresAt`，其餘按香港日曆日判定。
+- Phase 1 未經 Founder 批准前只可保持 Draft PR；不可 merge、deploy、開始新 IA／UI、Google Login 或 Phase 2。
 - v6.79.0 歷史發布來源：`feature/outcome-first-v1`／PR #7；當時 baseline：`1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049`。
 - 已完成 Outcome First 首頁、分層計算入口、compact saved cards、優惠文章首屏、Beginner／Advanced planner gateway，同時保留現有計算及 RTW 引擎。
 - 新示範只使用 repo 內可追溯資料；未接 AI API，Beginner planner 係現有 template 嘅 rule-based matching。
@@ -74,19 +76,23 @@
 
 ## 3. 現時工作面
 
-### P0：Canonical Sync + Regression Lock
+### P0：Phase 1 Card Data Source Extraction + Expiring Offers
 
-狀態：`AWAITING FOUNDER APPROVAL`
+狀態：`STAGE A COMMITTED；STAGE B CANDIDATE — DRAFT ONLY`
 
-- 新 IA 同決定已寫入 canonical docs，但**未實作入正式 UI**。
-- 「大額消費」作全站定位、「由目的地出發」作產品核心、一般 Planner 第一層用 Beginner／Advanced，全部已被 2026-07-22 決定取代。
-- 現行 v6.79.0 仍有舊導覽／gateway，呢個係刻意保留嘅 regression baseline，唔係 Phase 0 漏改。
-- 回歸基準見 [`PHASE0-REGRESSION-LOCK.md`](PHASE0-REGRESSION-LOCK.md)；待核實資料見 [`PHASE0-OFFICIAL-VERIFICATION-BACKLOG.md`](PHASE0-OFFICIAL-VERIFICATION-BACKLOG.md)。
-- Founder Verification Pack 同 Draft PR 係 Phase 0 唯一交付；交付後停止。
+- Phase 1A 資料搬遷由 `data/cards-official.js`、`data/card-channels.js`、`data/source-registry.js` 承擔；`index.html`、generator、freshness、verifier 同 regression 直接讀資料來源。
+- v6.79.0 搬遷 fixture 鎖定 9 張卡及渠道資料；五段舊渠道展示文案喺渠道層重組，銀行官方 raw records 不再混入平台聲稱。
+- Phase 1B 已保存 DBS Q3 現行 offer，但以 `engineEligible:false` 隔離已知 basic-miles double-count；HSBC base／flash 已分 component，SC／AE marketed-total 衝突亦已披露，冇改 Engine 公式。
+- HSBC EveryMile flash 只要求流動電話付款；QR 條件只屬 Pulse／UnionPay，官方直申碼係 `HSBCFLASH`。現有客 HK$200 RC 因 Red Hot campaign 頁同 base PDF 衝突、而且冇獨立日期，保持 `excluded-conflict`。
+- HSBC／DBS 2026 海外條件式優惠已各自保存為官方 records，但因登記、門檻及上限，Engine 分別繼續用基本 HK$5／HK$4 每里。
+- DBS Q3 已拆新客 12 個月資格、多卡規則、DAYCROWN alternative、Flexi Shopping 2,000 里同現有客 HK$50；MoneyHero 只保存 Card+ 申請路徑，HK$50 係 issuer claim，唔係平台固定賞。
+- AE Explorer 26,000 里要 HK$30,000 當中至少 HK$15,000 合資格本地港幣簽賬並成功登記 Local Spend Bonus；Citi Prestige 已記錄 12 個月新客、1 個月內啟動實體卡，以及 HK$1,200 現金 component 每月最少一宗交易。
+- 渠道 schema 已將平台條件式上限、issuer claim、抽獎、promo code、日期、條件同可否疊加分開；里先生 88 MM Credit 係最高 38 新會員＋50 成功批卡填表，唔係人人固定 88。SC MoneyHero 及 AE Explorer MoneySmart／MoneyHero 因資料不完整保持 `unknown`／`active:false`。
+- 完成兩個獨立 commits 後只開新 Draft PR，提供 preview 同完整差異證據，等 Founder 回覆「Phase 1 approved」。未獲批准不得 merge、deploy 或開始 Phase 2。
 
 ### 營運 P0：信用卡資料新鮮度
 
-2026-07-21 執行 `audit-freshness` 結果：0 errors、7 warnings。到期日為 7 月 23、29、31 日。若接手日期已過：
+Phase 1B 候選於 2026-07-23 執行 `audit-freshness`：9 張卡、19 個官方 records（17 active*）、17 個渠道 records（12 active），0 errors、17 reminders。提醒包括 7 月 23、29、30、31 日及之後獨立期限；若接手日期已過：
 
 1. 先查銀行官方產品頁、最新 T&C、KFS／收費表。
 2. 再查平台加碼；唔好用平台文案取代銀行條款。
@@ -173,7 +179,7 @@ v6.79.0 尚欠：
 ### 改信用卡或優惠
 
 - 先研究、列來源同差異。
-- 更新 `index.html` 主卡庫／渠道資料。
+- 更新 `data/cards-official.js`／`data/source-registry.js` 銀行官方資料，同 `data/card-channels.js` 渠道資料；`index.html` 只調整直接消費呢啲來源嘅展示邏輯。
 - 重新產生 `cards/` 同 `share/`。
 - 跑 freshness、verifier、consent、HTTP、分享 crawler。
 - 檢查文章標題、縮圖、FAQ、搜尋及過期狀態同步。

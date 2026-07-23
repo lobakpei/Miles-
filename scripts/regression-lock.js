@@ -12,6 +12,11 @@ const WRITE = process.argv.includes('--write');
 const BASELINE_COMMIT = 'fb63103778831688b89bf5e4b08dbe1882c2f354';
 const SNAPSHOT_DIR = path.join(ROOT, 'tests', 'snapshots');
 const FIXTURE_DIR = path.join(ROOT, 'tests', 'fixtures');
+const CARD_DATA_BASELINE_FIXTURE = path.join(FIXTURE_DIR, 'card-data-v6.79.0.json');
+const CARD_DATA_REFRESH_FIXTURE = path.join(FIXTURE_DIR, 'card-data-phase1b-20260723.json');
+const SOURCE_REGISTRY_PATH = path.join(ROOT, 'data', 'source-registry.js');
+const CARDS_OFFICIAL_PATH = path.join(ROOT, 'data', 'cards-official.js');
+const CARD_CHANNELS_PATH = path.join(ROOT, 'data', 'card-channels.js');
 
 const FILES = {
   optimizer: path.join(FIXTURE_DIR, 'optimizer-v6.79.0.json'),
@@ -87,12 +92,126 @@ function loadCore() {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'acremiles-core-'));
   const coreFile = path.join(tempDir, 'bm-core.cjs');
   try {
-    fs.writeFileSync(coreFile, match[1]);
+    fs.writeFileSync(coreFile,
+      `var AcreMilesCardsOfficial = require(${JSON.stringify(CARDS_OFFICIAL_PATH)});\n` +
+      `var AcreMilesCardChannels = require(${JSON.stringify(CARD_CHANNELS_PATH)});\n` +
+      match[1]
+    );
     delete require.cache[coreFile];
     return require(coreFile);
   } finally {
     fs.rmSync(tempDir, { recursive: true, force: true });
   }
+}
+
+function checkCardDataMigration() {
+  if (!fs.existsSync(CARD_DATA_BASELINE_FIXTURE)) throw new Error('缺少 card-data-v6.79.0 migration fixture。');
+  if (!fs.existsSync(CARD_DATA_REFRESH_FIXTURE)) throw new Error('缺少 card-data-phase1b-20260723 refresh fixture。');
+  const baseline = JSON.parse(fs.readFileSync(CARD_DATA_BASELINE_FIXTURE, 'utf8'));
+  const refresh = JSON.parse(fs.readFileSync(CARD_DATA_REFRESH_FIXTURE, 'utf8'));
+  const sourceRegistry = require(SOURCE_REGISTRY_PATH);
+  const cardsOfficial = require(CARDS_OFFICIAL_PATH);
+  const cardChannels = require(CARD_CHANNELS_PATH);
+  if (sourceRegistry.schemaVersion !== 2 || cardsOfficial.schemaVersion !== 1 || cardChannels.schemaVersion !== 3) {
+    throw new Error('Phase 1 data source schema version 未鎖定。');
+  }
+  const BM = loadCore();
+  const legacyCards = BM.DEFAULT_CARDS.map((card) => {
+    const copy = JSON.parse(JSON.stringify(card));
+    ['slug', 'image', 'status', 'sourceRef'].forEach((key) => delete copy[key]);
+    return copy;
+  });
+  if (!Array.isArray(baseline.cards) || baseline.cards.length !== 9 || !baseline.channelOffers) {
+    throw new Error('Stage A 搬遷前 card fixture 已損壞。');
+  }
+  if (sha256(stableText(legacyCards)) !== refresh.cardsSha256) {
+    throw new Error('Phase 1B official card data 同已審閱 refresh fixture 有 drift。');
+  }
+  if (sha256(stableText(cardChannels.getOffers())) !== refresh.channelOffersSha256) {
+    throw new Error('Phase 1B channel data 同已審閱 refresh fixture 有 drift。');
+  }
+  const cards = cardsOfficial.getCards();
+  const ids = cards.map((card) => card.id);
+  const slugs = cards.map((card) => card.slug);
+  if (cards.length !== 9 || new Set(ids).size !== cards.length || new Set(slugs).size !== cards.length) {
+    throw new Error('獨立信用卡資料嘅 id／slug 唔完整或重複。');
+  }
+  for (const card of cards) {
+    const source = sourceRegistry.CARD_SOURCES[card.sourceRef];
+    if (!source || !card.image || !card.status) throw new Error(`卡資料生成 metadata／source 缺漏：${card.id}`);
+    const legacySourceDocs = (source.sourceDocs || []).map((doc) => ({label: doc.label, url: doc.url}));
+    if (card.url !== source.url || card.sourceVerifiedAt !== source.sourceVerifiedAt ||
+        card.sourceStatus !== source.sourceStatus || stableText(card.sourceDocs) !== stableText(legacySourceDocs)) {
+      throw new Error(`卡資料同 official source registry 不一致：${card.id}`);
+    }
+    if (source.sourceType !== 'bank-official' ||
+        !(source.sourceDocs || []).every((doc) => /^official-/.test(doc.sourceType || ''))) {
+      throw new Error(`官方來源類型缺漏：${card.id}`);
+    }
+    if (stableText(card.officialOffers || []) !== stableText((sourceRegistry.OFFICIAL_OFFERS || {})[card.id] || [])) {
+      throw new Error(`卡資料同 official offer registry 不一致：${card.id}`);
+    }
+  }
+  const dbs = cards.find((card) => card.id === 'dbs-black');
+  if (!dbs || dbs.welcome.deadline !== '2026-10-05' || dbs.welcome.engineEligible !== false ||
+      !Array.isArray(dbs.welcome.history) || !dbs.welcome.history.some((offer) => offer.status === 'historical')) {
+    throw new Error('DBS Q3／Q2 history／Engine conflict gate 未完整保存。');
+  }
+  const everyMile = cards.find((card) => card.id === 'hsbc-everymile');
+  if (!everyMile || everyMile.welcome.deadline !== '2026-07-31' || everyMile.welcome.modelStatus !== 'partial-components') {
+    throw new Error('HSBC EveryMile base／flash 拆分狀態缺漏。');
+  }
+  const allChannelRecords = Object.values(cardChannels.getOffers()).flat();
+  for (const offer of allChannelRecords) {
+    if (!offer.id || !offer.sourceUrl || !offer.sourceType || !offer.verifiedAt || !offer.status || offer.expiry !== offer.validUntil) {
+      throw new Error(`渠道資料 schema／日期缺漏：${offer.id || offer.platform || 'unknown'}`);
+    }
+    if (offer.active === true && (offer.verified !== true || !offer.validUntil || !/^active/.test(offer.status))) {
+      throw new Error(`渠道現行狀態未完整核實：${offer.id}`);
+    }
+  }
+  const mrMiles = allChannelRecords.filter((offer) => offer.platform === '里先生' && offer.active && offer.fixedBonus && offer.fixedBonus.unit === 'MM Credit');
+  if (mrMiles.length !== 4 || mrMiles.some((offer) => offer.fixedBonus.maxAmount !== 88 ||
+      Object.prototype.hasOwnProperty.call(offer.fixedBonus, 'amount') || offer.fixedBonus.components.length !== 2)) {
+    throw new Error('里先生 88 MM Credit 必須保持「有條件最高值」結構。');
+  }
+  const scMoneySmart = allChannelRecords.find((offer) => offer.id === 'sc-cathay-moneysmart-2026-07');
+  if (!scMoneySmart || !scMoneySmart.fixedBonus.options.some((option) => option.claimedValueHKD === 3980) ||
+      scMoneySmart.fixedBonus.options.filter((option) => option.faceValueHKD === 900).length !== 3 ||
+      scMoneySmart.randomBonus.validUntil !== '2026-07-23' || scMoneySmart.randomBonus.approvalDeadline !== '2026-08-13' ||
+      !cardChannels.isPeriodCurrent(scMoneySmart.randomBonus, new Date('2026-07-23T15:59:00Z')) ||
+      cardChannels.isPeriodCurrent(scMoneySmart.randomBonus, new Date('2026-07-23T16:01:00Z')) ||
+      !cardChannels.isPeriodExpired(scMoneySmart.randomBonus, new Date('2026-07-23T16:01:00Z'))) {
+    throw new Error('MoneySmart 渣打禮品同盲盒期限再次混淆。');
+  }
+  const hsbcClaims = allChannelRecords.filter((offer) => /^hsbc-everymile-/.test(offer.id) && offer.issuerOfferClaim);
+  if (hsbcClaims.length !== 3 || hsbcClaims.some((offer) =>
+      !offer.issuerOfferClaim.components.some((component) => component.type === 'july-flash' &&
+        component.requiresMobilePayment === true && !component.requiresMobileOrQrPayment))) {
+    throw new Error('EveryMile Flash 必須保持 mobile-only component。');
+  }
+  const dbsChannel = allChannelRecords.find((offer) => offer.id === 'dbs-black-moneyhero-cardplus-2026-q3');
+  if (!dbsChannel || dbsChannel.fixedBonus !== null || !dbsChannel.issuerOfferClaim ||
+      dbsChannel.issuerOfferClaim.customerType !== 'existing' || dbsChannel.issuerOfferClaim.singleRetailSpendHKD !== 200) {
+    throw new Error('DBS HK$50 必須分類為 issuer existing-customer welcome。');
+  }
+  const aeMoneyHero = allChannelRecords.find((offer) => offer.id === 'amex-platinum-moneyhero-2026-07');
+  if (!aeMoneyHero || !cardChannels.isOfferCurrent(aeMoneyHero, new Date('2026-07-29T09:59:00Z')) ||
+      cardChannels.isOfferCurrent(aeMoneyHero, new Date('2026-07-29T10:01:00Z'))) {
+    throw new Error('MoneyHero AE Platinum 18:00 HKT 下架邊界失效。');
+  }
+  const hsbcOverseas = (sourceRegistry.OFFICIAL_OFFERS['hsbc-everymile'] || []).find((offer) => offer.id === 'hsbc-everymile-overseas-2026-h2');
+  const dbsOverseas = (sourceRegistry.OFFICIAL_OFFERS['dbs-black'] || []).find((offer) => offer.id === 'dbs-black-overseas-2026');
+  if (!hsbcOverseas || hsbcOverseas.maxExtraRewardCashTotalHKD !== 450 || hsbcOverseas.engineStatus !== 'excluded-conditional-rate' ||
+      !dbsOverseas || dbsOverseas.maxExtraDbsDollarMonthly !== 240 || dbsOverseas.maxExtraDbsDollarTotal !== 2880 ||
+      dbsOverseas.engineStatus !== 'excluded-conditional-rate') {
+    throw new Error('HSBC／DBS 海外 HK$2/里條件式推廣來源鎖失效。');
+  }
+  const explorer = cards.find((card) => card.id === 'amex-explorer');
+  if (!explorer || !/HK\$15,000/.test(explorer.welcome.prereq || '') || explorer.welcome.modelStatus !== 'legacy-model-conflict') {
+    throw new Error('AE Explorer 26k 本地 HK$15k＋登記條件／legacy conflict 缺漏。');
+  }
+  console.log('PASS data');
 }
 
 function normalizeOptimizeResult(result) {
@@ -192,6 +311,7 @@ function productSnapshot() {
     index: fileRecords(['index.html']),
     serviceWorker: fileRecords(['sw.js']),
     manifest: fileRecords(['manifest.json']),
+    data: fileRecords(['data']),
     cards: fileRecords(['cards']),
     share: fileRecords(['share']),
     images: fileRecords(['img'])
@@ -199,7 +319,7 @@ function productSnapshot() {
   return {
     schemaVersion: 1,
     baselineCommit: BASELINE_COMMIT,
-    scope: ['index.html', 'sw.js', 'manifest.json', 'cards/**', 'share/**', 'img/**'],
+    scope: ['index.html', 'sw.js', 'manifest.json', 'data/**', 'cards/**', 'share/**', 'img/**'],
     groups: Object.fromEntries(Object.entries(groups).map(([name, records]) => [name, {
       count: records.length,
       treeSha256: recordsHash(records),
@@ -329,7 +449,7 @@ function generatedSnapshot() {
   const before = fileRecords(['cards', 'share']);
   const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'acremiles-generated-'));
   try {
-    for (const rel of ['index.html', 'share-meta.js', 'img', 'cards', 'share', 'scripts']) copyPath(rel, temp);
+    for (const rel of ['index.html', 'share-meta.js', 'data', 'img', 'cards', 'share', 'scripts']) copyPath(rel, temp);
     const cardOutput = execFileSync(process.execPath, ['scripts/generate-card-pages.js'], { cwd: temp, encoding: 'utf8' }).trim();
     const shareOutput = execFileSync(process.execPath, ['scripts/generate-share-pages.js'], { cwd: temp, encoding: 'utf8' }).trim();
     const after = ['cards', 'share'].flatMap((rel) => {
@@ -397,6 +517,7 @@ function checkSnapshots(actual) {
 }
 
 try {
+  checkCardDataMigration();
   const actual = snapshots();
   if (WRITE) {
     writeSnapshots(actual);

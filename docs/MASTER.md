@@ -1,6 +1,6 @@
 # AcreMiles Master Context
 
-最後核對：2026-07-22（Europe/London）
+最後核對：2026-07-23（Asia/Hong_Kong）
 用途：AcreMiles 專案嘅最高層入口。法律、安全及官方資料真確性規則最高；產品方向以 [`ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md`](ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md) 為準，再讀 [`ACREMILES_PRODUCT_BLUEPRINT_V2.md`](ACREMILES_PRODUCT_BLUEPRINT_V2.md)、[`ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md`](ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md) 同 [`ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md`](ACREMILES_PRODUCT_HANDOFF_V1_1_SAFETY_HARDENED.md)。舊文件只可描述現況，不可推翻 2026-07-22 決定。
 
 ## 0. 目前版本
@@ -9,9 +9,10 @@
 |---|---|
 | 正式版本 | **v6.79.0 — Outcome First Big Picture V1** |
 | 發布分支 | `feature/outcome-first-v1` → PR #7 → `main` |
-| 最新 `main` 基準 commit | `fb63103778831688b89bf5e4b08dbe1882c2f354` |
-| Phase 0 狀態 | Canonical Sync + Regression Lock 候選；只新增／更新文件、fixtures、snapshots 同測試，不代表 2026-07-22 新 IA／UI 已實作 |
-| 正式產品狀態 | v6.79.0 仍然上線；Phase 0 不改 `index.html`、計算公式、PWA 或生成產品頁 |
+| 最新 `main` 基準 commit | `ba8f6db0b087275f63785468ccec424a9d5ad1e2` |
+| Phase 0 狀態 | `COMPLETED`；Canonical Sync + Regression Lock 已獲 Founder 批准並合併 |
+| Phase 1 狀態 | Stage A 已 commit；Stage B 係未發布候選，只可留喺 Draft PR 等 Founder 核對 |
+| 正式產品狀態 | v6.79.0 仍然上線；Phase 1 branch 未 merge／deploy，正式 UI、計算公式及 PWA 未變 |
 
 本節記錄 v6.79.0 發布狀態；舊 v6.79.0-draft QA 只屬歷史候選紀錄。
 
@@ -27,7 +28,7 @@
 | 上一產品發布 merge | v6.78.0：PR #6，commit `1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049` |
 | 部署方式 | GitHub Pages；合併到 `main` 後自動部署 |
 | 主程式 | 單一 `index.html`，Vanilla HTML／CSS／JavaScript |
-| 資料日期 | 卡庫 `DATA_AS_OF = 2026-07-20` |
+| 資料日期 | 正式卡庫 `DATA_AS_OF = 2026-07-20`；Phase 1 候選核對至 2026-07-23 |
 | 語言／市場 | 香港繁體中文、香港信用卡及飛行里數 |
 
 重要：部分本地工作目錄嘅 `origin/main` 可能停留喺舊 commit。判斷正式版本時，要以 GitHub `main`、正式網站 build marker 同本表三者核對，唔可以單靠本地 remote ref。
@@ -64,10 +65,11 @@ AcreMiles **唔係**：
 - oneworld RTW 規劃器：距離、艙等、停留、轉機、開口、航司組合及逐段航線核實。
 - 已儲存計劃同行程；v6.77.0 已統一為「開啟／分享／刪除」。
 
-### 3.2 資料及內容
+### 3.2 正式資料及 Phase 1 候選
 
 - 9 張信用卡公開資料頁；其中 8 張可以按現有模型進入推薦，HSBC Visa Signature 只供參考。
-- DBS Black 嘅上一期迎新已完結；卡仍可按基本賺里率參與，但迎新按 0 計。
+- DBS Black Q2 已完結並保留歷史；Q3 已由 2026-07-07 接續至 10-05。因官方總里數包括 basic DBS$、現有 Engine 會 double-count，Q3 迎新候選以 `engineEligible:false` 隔離；卡仍可按基本賺里率參與。
+- Phase 1 候選以 `source-registry` schema 2 保存 19 個官方 offer records（17 active*），以 `card-channels` schema 3 保存 17 個渠道 records（12 active、3 unknown、2 historical-unverified）；未發布前唔代表 production 已更新。
 - 20 個文章／路線／優惠分享 metadata 項目。
 - 5 條 RTW 教學示例：區 6、8、10、11、13。
 - 過期優惠不刪除，會轉灰及標示「歷史優惠／已完結」。
@@ -85,7 +87,7 @@ AcreMiles **唔係**：
 
 ### 4.1 信用卡資料
 
-來源優先次序：銀行官方產品頁 → 最新迎新 T&C → KFS／收費表 → 獎賞條款 → 第三方比較平台。
+銀行卡規則只可由銀行官方產品頁、最新迎新 T&C、KFS／收費表、獎賞條款及官方資格文件支持。第三方平台只屬另一層渠道優惠來源。
 
 - 第三方平台只可以核對額外平台獎賞，唔可以取代銀行官方條款。
 - 每項時效資料要有來源、核實日、有效期及狀態。
@@ -127,22 +129,25 @@ AcreMiles **唔係**：
 
 ## 5. 立即要留意嘅狀態
 
-以下日期係以 2026-07-21 香港資料狀態計。新 AI 接手時如日期已過，第一件事係重新查官方資料，唔可以沿用舊優惠：
+以下日期係以 2026-07-23 香港核實結果計。新 AI 接手時如日期已過，第一件事係重新查官方／平台原文，唔可以沿用舊優惠：
 
 | 日期 | 項目 | 到期後預設處理 |
 |---|---|---|
-| 2026-07-23 | 渣打國泰：小斯、里先生平台優惠 | 轉歷史／下架現行加碼，除非有新條款 |
-| 2026-07-29 | AE 白金卡官方迎新 | 未有新官方 T&C 時停止計迎新 |
-| 2026-07-31 | HSBC EveryMile：里先生、MoneyHero | 轉歷史／下架現行加碼 |
-| 2026-07-31 | AE Explorer：里先生、小斯 | 轉歷史／下架現行加碼 |
+| 2026-07-23 | 渣打 blind box、里先生渠道 | 香港日期完結後轉 historical；渣打 base welcome 同其他渠道不可一併提早下架 |
+| 2026-07-29 | AE 白金官方迎新、MoneyHero alternative offer | 未有新一期就轉 historical；MoneyHero HK$6,000 不可同 issuer welcome 疊加 |
+| 2026-07-30 | 渣打國泰綠卡 base welcome | 未有官方延長／新 T&C 就停止當現行迎新；保存歷史 |
+| 2026-07-31 | HSBC July flash／lucky draw、相關三個渠道；SC 小斯／MoneySmart；AE Explorer 渠道；AE Platinum 里先生 | 各 record 獨立轉 historical；唔影響仍有效嘅全年 base offer |
+| 2026-08-31 | AE Explorer 官方迎新 | 未有新官方 T&C 時停止計迎新；渠道 07-31 到期唔等於官方迎新到期 |
+| 2026-10-05 | DBS Black Q3 | 未有 Q4 官方 T&C 時轉 historical；現時因 marketed-total model conflict 不入 Result |
+| 2026-12-31 | HSBC EveryMile／DBS Black 海外簽賬優惠、大新 BA 迎新 | 各自按官方新一期處理；有登記、門檻或上限嘅海外率唔可自動變成 Engine 基本率 |
 
 系統會按日期變灰及每週提示，但**唔會自動上網搵新優惠、改資料或發布**。
 
 ## 6. 當前未完成事項
 
-1. Phase 0 Draft PR 經 Founder 明確回覆「Phase 0 approved」前，停止；不可進 Phase 1。
-2. 獲批後先按獨立 PR 做 Card Data Source Extraction；不可同 UI 或公式修改混埋。
-3. 每週信用卡及平台優惠核實；近期 7 個到期提醒優先。
+1. Phase 0 已獲 Founder 批准並合併；正式 `main` baseline 為 `ba8f6db0b087275f63785468ccec424a9d5ad1e2`。
+2. Phase 1 只做 Card Data Source Extraction 同到期官方／渠道更新；Stage A／B 必須分開 commits，不可混入 UI 或公式修改。
+3. Phase 1A 已以獨立 commit `a704abbb82fdfe401b45dac0b2f2968d4e5c15b6` 完成零 drift 搬遷；Phase 1B 已按 2026-07-23 香港日期整理候選更新，必須保持 Draft PR 等 Founder 核對，未批准不可 merge／deploy。
 4. v6.79.0 發布後 production QA：最新 PageSpeed、真 WhatsApp／Facebook 分享預覽、手機／平板／桌面回歸。
 5. 核實 GA4 管理頁設定已真正按「儲存」；現有截圖顯示事件 2 個月、使用者 14 個月、活動時重設。
 6. ICO 加 trading name，並按需要同步已確認 UK Postbox 公開服務地址。

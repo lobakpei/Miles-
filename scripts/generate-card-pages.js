@@ -2,32 +2,12 @@
 
 const fs = require('fs');
 const path = require('path');
-const vm = require('vm');
 
 const root = path.resolve(__dirname, '..');
-const indexPath = path.join(root, 'index.html');
 const cardsDir = path.join(root, 'cards');
 const origin = 'https://acremiles.app/';
+const cardsOfficial = require(path.join(root, 'data', 'cards-official.js'));
 let dataDate = '';
-
-const fileById = {
-  'sc-cathay': 'scb-cathay-mastercard.html',
-  'hsbc-everymile': 'hsbc-everymile.html',
-  'citi-pm': 'citi-premiermiles.html',
-  'citi-prestige': 'citi-prestige.html',
-  'dbs-black': 'dbs-black-world-mastercard.html',
-  'amex-explorer': 'ae-explorer.html',
-  'amex-platinum': 'ae-platinum-card.html',
-  'dahsing-ba': 'dahsing-ba-platinum.html',
-  'hsbc-visasig': 'hsbc-visa-signature.html'
-};
-
-const imageById = {
-  'sc-cathay': 'img/pgO1-hero.jpg',
-  'hsbc-everymile': 'img/pgO2-hero.jpg',
-  'amex-platinum': 'img/pgO3-hero.jpg',
-  'amex-explorer': 'img/pgO4-hero.jpg'
-};
 
 function esc(value) {
   return String(value == null ? '' : value)
@@ -42,15 +22,15 @@ function fmt(value) {
 }
 
 function loadCards() {
-  const html = fs.readFileSync(indexPath, 'utf8');
-  const match = html.match(/<script id="bm-core">([\s\S]*?)<\/script>/);
-  if (!match) throw new Error('bm-core script not found');
-  const context = {console};
-  vm.createContext(context);
-  vm.runInContext(match[1], context, {filename: 'bm-core.js'});
-  if (!context.BM || !Array.isArray(context.BM.DEFAULT_CARDS)) throw new Error('card data not found');
-  dataDate = ((context.BM.DATA_AS_OF || '').match(/^(\d{4}-\d{2}-\d{2})/) || [])[1] || '未標示';
-  return context.BM.DEFAULT_CARDS.filter(card => fileById[card.id]);
+  const cards = cardsOfficial.getCards();
+  if (!Array.isArray(cards) || !cards.length) throw new Error('official card data not found');
+  cards.forEach(card => {
+    if (!card.slug || !card.image || !card.status) throw new Error(`card generation metadata missing: ${card.id || 'unknown'}`);
+    const expectedStatus = card.verified === true && !card.pending ? 'active' : (card.pending ? 'pending' : 'reference-only');
+    if (card.status !== expectedStatus) throw new Error(`card status conflicts with recommendation gate: ${card.id}`);
+  });
+  dataDate = ((cardsOfficial.DATA_AS_OF || '').match(/^(\d{4}-\d{2}-\d{2})/) || [])[1] || '未標示';
+  return cards;
 }
 
 function jpegDimensions(relativePath) {
@@ -78,6 +58,13 @@ function programName(program) {
 
 function welcomeHtml(card) {
   const w = card.welcome || {};
+  const modelNotice = w.engineEligible === false
+    ? `<p class="notice amber"><b>資料已更新，但暫不計入推薦：</b>${esc(w.note || '官方數字同現有 Engine 語義有衝突，未修正前唔會估。')}</p>`
+    : (w.modelStatus === 'partial-components'
+      ? `<p class="notice amber"><b>部分模型：</b>${esc(w.note || '')}</p>`
+      : (w.modelStatus === 'legacy-model-conflict'
+        ? `<p class="notice amber"><b>模型語義衝突：</b>${esc(w.note || '官方 marketed total 包含基本簽賬獎賞；現有 Engine 暫沿用舊語義，未喺今次資料更新改公式。')}</p>`
+        : ''));
   if (w.expired) {
     return `<p class="notice archive"><b>歷史優惠｜已完結，唔會進入推薦。</b><br>${esc(w.expiredNote || '上一期已完，等銀行公布新一期正式條款。')}</p>`;
   }
@@ -88,7 +75,7 @@ function welcomeHtml(card) {
   const rows = w.tiers.map((tier, index) => `<tr><td>第 ${index + 1} 級</td><td>累積簽 HK$${fmt(tier.spend)}</td><td>${fmt(tier.miles)} 里</td></tr>`).join('');
   return `<table><thead><tr><th>級別</th><th>達標條件</th><th>累積里數</th></tr></thead><tbody>${rows}</tbody></table>
     <p class="small">限期：批卡後 ${esc(w.months)} 個月${w.deadline ? `；申請截止 ${esc(w.deadline)}` : ''}。</p>
-    ${w.prereq ? `<p class="notice amber"><b>重要條件：</b>${esc(w.prereq)}</p>` : ''}`;
+    ${w.prereq ? `<p class="notice amber"><b>重要條件：</b>${esc(w.prereq)}</p>` : ''}${modelNotice}`;
 }
 
 function rateRows(card) {
@@ -136,15 +123,15 @@ function publicDetailsHtml(card) {
 }
 
 function renderCard(card) {
-  const file = fileById[card.id];
+  const file = `${card.slug}.html`;
   const canonical = new URL(`cards/${file}`, origin).href;
-  const imagePath = imageById[card.id] || 'img/pgG2-cards.jpg';
+  const imagePath = card.image;
   const image = new URL(imagePath, origin).href;
   const imageSize = jpegDimensions(imagePath);
   const title = `${card.name}｜迎新、賺里率、年費｜AcreMiles`;
   const desc = `${card.name} 官方資料快覽：迎新、賺里率、年費、申請門檻同銀行原文連結。`;
   const firstFee = card.annualFeeFirst || 0;
-  const status = card.verified
+  const status = card.status === 'active'
     ? '<span class="badge good">✓ 可進入推薦</span>'
     : '<span class="badge warn">⚠ 只供參考，暫不進入推薦</span>';
   const capNotes = [];
@@ -197,13 +184,13 @@ ${publicDetailsHtml(card)}
 }
 
 function renderIndex(cards) {
-  const items = cards.map(card => `<li><a href="./${esc(fileById[card.id])}">${esc(card.name)}</a><span>${card.verified ? '可進入推薦' : '只供參考'}</span></li>`).join('');
+  const items = cards.map(card => `<li><a href="./${esc(card.slug)}.html">${esc(card.name)}</a><span>${card.status === 'active' ? '可進入推薦' : '只供參考'}</span></li>`).join('');
   const image = `${origin}img/pgG2-cards.jpg`;
   return `<!doctype html><html lang="zh-Hant-HK"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="香港主流里數信用卡官方資料快覽。"><title>AcreMiles 信用卡資料庫</title><link rel="canonical" href="${origin}cards/"><meta property="og:title" content="AcreMiles 信用卡資料庫"><meta property="og:description" content="香港主流里數信用卡迎新、賺里率、年費同銀行官方原文。"><meta property="og:image" content="${image}"><meta property="og:image:secure_url" content="${image}"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="675"><meta property="og:image:alt" content="AcreMiles 信用卡資料庫縮圖"><meta property="og:type" content="website"><meta property="og:url" content="${origin}cards/"><meta property="og:site_name" content="AcreMiles"><meta property="og:locale" content="zh_HK"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="${image}"><meta name="twitter:image:alt" content="AcreMiles 信用卡資料庫縮圖"><style>body{font-family:-apple-system,BlinkMacSystemFont,"PingFang HK","Microsoft JhengHei",sans-serif;background:#f2f5f2;color:#14231f;margin:0;line-height:1.6}header{background:#075768;color:#fff;padding:22px 16px}header div,main,footer{max-width:720px;margin:auto}header a{color:#d9eff2;text-decoration:none}h1{margin:10px 0 3px}main{padding:18px 14px}ul{list-style:none;padding:0}li{display:flex;justify-content:space-between;gap:12px;background:#fff;border:1px solid #d6ded8;border-radius:12px;padding:12px 14px;margin-bottom:9px}li a{color:#075768;font-weight:800}li span{color:#586961;font-size:12px;white-space:nowrap}footer{color:#586961;font-size:12px;padding:0 16px 30px;text-align:center}</style></head><body><header><div><a href="../">← 返回 AcreMiles 規劃器</a><h1>AcreMiles 信用卡資料庫</h1><p>由主卡庫產生，避免 App 同分享頁各自一套數。</p></div></header><main><ul>${items}</ul><p>銀行優惠變得快；每張卡頁都有產品頁、KFS 同條款原文，申請當日請再確認。</p></main><footer>更新：${dataDate}。借定唔借？還得到先好借！</footer></body></html>`;
 }
 
 const cards = loadCards();
 fs.mkdirSync(cardsDir, {recursive: true});
-cards.forEach(card => fs.writeFileSync(path.join(cardsDir, fileById[card.id]), renderCard(card), 'utf8'));
+cards.forEach(card => fs.writeFileSync(path.join(cardsDir, `${card.slug}.html`), renderCard(card), 'utf8'));
 fs.writeFileSync(path.join(cardsDir, 'index.html'), renderIndex(cards), 'utf8');
-console.log(`Generated ${cards.length} card pages and card index from bm-core`);
+console.log(`Generated ${cards.length} card pages and card index from data/cards-official.js`);

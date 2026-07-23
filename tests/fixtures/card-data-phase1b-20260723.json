@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "ba8f6db0b087275f63785468ccec424a9d5ad1e2",
+  "migrationBaseline": "tests/fixtures/card-data-v6.79.0.json",
+  "verifiedAt": "2026-07-23",
+  "marketTimezone": "Asia/Hong_Kong",
+  "cardCount": 9,
+  "officialOfferCount": 19,
+  "channelOfferCount": 17,
+  "cardsSha256": "df7c1b1857edd93274658711adbe6ead8597641e35e0225e99e24a5fde0fe9a7",
+  "channelOffersSha256": "45c98ec4a7a65e8070af2b447828535465b0505a01ea4a7674515e7bac5d15b3",
+  "reviewedChanges": [
+    "All nine card sourceVerifiedAt values moved to 2026-07-23 after official-source review.",
+    "DBS Black Q2 is historical and Q3 is active through 2026-10-05, but its welcome is engine-gated because the official total includes basic DBS$.",
+    "HSBC EveryMile July flash is separated from the annual base welcome, is mobile-payment-only, and remains active through 2026-07-31; the official HSBCFLASH code is retained.",
+    "HSBC and DBS conditional overseas HK$2-per-mile promotions are first-class official records with registration, spend gates and caps, but remain excluded from the unchanged Engine.",
+    "HSBC Visa Signature base welcome is corrected for new versus existing customers while the card remains reference-only.",
+    "DBS Q3 eligibility, DAYCROWN alternative, Flexi component and issuer-funded existing-customer HK$50 are structured without misclassifying the HK$50 as a MoneyHero platform bonus.",
+    "American Express Explorer 26,000 marketed miles retain the official HK$15,000 local-spend and registration conditions and remain marked as a legacy-model conflict.",
+    "Channel rewards are split into conditional platform bonus, issuer claim, random reward, promo code, conditions, exact Hong Kong cut-off time and stackability; unknown records are inactive.",
+    "Four MrMiles records preserve 88 MM Credit as a conditional maximum of 38 for new platform members plus 50 after successful approval and form submission, not a fixed reward for everyone.",
+    "Historical MrMiles and MoneyHero American Express Platinum records are retained."
+  ]
+}

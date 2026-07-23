@@ -20,16 +20,29 @@
 | Phase | 範圍 | 狀態／閘門 |
 |---|---|---|
 | Phase 0 | Canonical Sync + Regression Lock | `COMPLETED`；已獲 Founder 批准並合併至 `main` |
-| Phase 1 | Card Data Source Extraction＋到期官方／渠道更新 | `FOUNDER REVIEW`；Stage A 已零 drift commit，Stage B 候選待 Draft PR 核對；唔改公式／UI |
-| Phase 2 | Immediate UX Repair | `HOLD`；修 Welcome／Consent／header／profile／nav 等已確認問題，不改 Engine 公式 |
-| Phase 3 | 點賺 V1 | `HOLD`；金額先行、result-first、逐浸結果、timeline，同固定「點賺」責任一致 |
-| Phase 4 | 點用 V1 | `HOLD`；里數先行；一般兌換／環球票第一層分流；Beginner／Advanced 只放環球票內 |
+| Phase 1 | Card Data Source Extraction＋到期官方／渠道更新 | `COMPLETED`；PR #9 已獲 Founder 批准並合併至 `main` |
+| Phase 2A | Welcome＋Consent＋Header＋Profile Hub＋Bottom Navigation＋最後 Header correction | `FOUNDER REVIEW`；同一 Open Draft PR #10，未批准／未 merge／未 production deploy |
+| Phase 2B | Homepage、三 Hero、direct-to-result、點賺／點用 core、Card Detail及連接 | `IMPLEMENTED CANDIDATE — DRAFT ONLY`；同 PR #10等待 exact-tree證據同 Founder combined Preview review |
+| Phase 3 | 點賺 deeper Engine／ranking工作 | `HOLD`；core UI已按今輪授權納入 Phase 2B，但公式、heuristic同 CPM/value conflict冇重寫 |
+| Phase 4 | 點用 deeper data工作 | `HOLD`；core UI已納入 Phase 2B；Avios逐格核實同一年平均現金票價 dataset未完成 |
 | Phase 5 | Content／SEO CMS | `LATER`；同一內容來源供 App 同可索引頁 |
 | Phase 6 | Wallet／Google Sync／Notifications | `LATER`；local-only 保持基本模式，登入／雲端屬獨立私隱及安全審查 |
 
-每個 Phase 必須有獨立 Draft PR、可比較 regression evidence、Founder review，同埋明確 no-merge／no-deploy 邊界；不可因後續 Phase 已寫入文件就提前實作。
+一般情況每個 Phase要有獨立 Draft PR；今輪 Founder明確決定將最後 Phase 2A correction同 Phase 2B合併喺既有 PR #10，避免另一輪 review。呢個係單次 scope決定，唔授權開始 Phase 3／4 deeper work；仍要可比較 regression evidence、Founder review同明確 no-merge／no-deploy邊界。
 
 ## 3. NOW｜資料及發布安全
+
+### Combined Phase 2A＋Phase 2B Draft review
+
+狀態：`NOW — OPEN DRAFT，未批准`
+
+- 完成 exact final tree全量 gates、Hero input/output核對、mobile／desktop Browser QA同所需 screenshots。
+- 保持 `BM.optimize()`及 `costPerMile = amount / totalMiles`不變；年費分開顯示。
+- 保持 CPM priority conflict disclosure gate；唔將現有 heuristic寫成已完成新排序。
+- 保持 `sc-cathay`／`amex-explorer`灰色預設排除及可恢復警告，唔虛構修復。
+- 保持 Avios `待官方逐格覆核`，並因缺少一年平均現金票價 dataset而省略 cash-value ranking。
+- 把 final SHA、tree、Preview、tests同 screenshots填入 `PHASE2B-CORE-UI-VERIFICATION.md`；未有 exact evidence唔可以填 PASS。
+- PR #10保持 Open Draft；唔 mark Ready、merge、production deploy或開始下一 Phase。
 
 ### 歷史基準：Outcome First Big Picture V1
 
@@ -45,7 +58,7 @@
 
 ### R1. Phase 1 信用卡資料來源及每週更新
 
-狀態：`FOUNDER REVIEW — Stage A committed／Stage B verified candidate`
+狀態：`COMPLETED — merged by PR #9；之後按每週流程維護`
 原因：2026-07-23 香港核實已完成；07-23、07-29、07-30、07-31、08-31、10-05 仍有獨立官方／渠道期限，必須逐 record 維護。
 
 工作：
@@ -202,6 +215,8 @@ status = verified | unknown | expired | conflict
 
 - 動態結果分享圖：需要後端 OG image 服務、資料最小化、濫用防護同保存政策。
 - optimizer 全域最優解：要先正式定義目標函數、約束、費用、轉分摩擦、批卡時間及風險偏好。
+- Avios官方逐格 redemption dataset：要有逐航線／艙等來源、核實日、有效期同更新責任。
+- 一年平均現金票價：要先定義採樣窗、來源、艙等、稅費、多人計價同缺失值處理；未有 dataset唔做 cash-value ranking。
 - 帳戶／雲端同步：會改變現時 local-only 私隱模型，必須先做完整 data mapping、security 及 retention review。
 - referral／廣告／合作收入：必須先完成商業披露、FCA／金融推廣／信貸中介及平台規則審查。
 

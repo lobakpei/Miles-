@@ -268,12 +268,12 @@
       "count": 1,
       "files": [
         {
-          "bytes": 629735,
+          "bytes": 673258,
           "file": "index.html",
-          "sha256": "cc29767f9ebca62c9fd9972d68639b196d351882c15a978a563bb5f68f6fb233"
+          "sha256": "e966322dcc844ab3b7c2df8ac72f46cb041e351e8100401be10b87921ec7bf49"
         }
       ],
-      "treeSha256": "7c61867182280e832c116602cfcc69197614153ea29ab320df5b2769fc8b7996"
+      "treeSha256": "7ed613eda5661ef0877afdff842a71ca75634f9652217f948d2bd39595c99658"
     },
     "manifest": {
       "count": 1,
@@ -292,10 +292,10 @@
         {
           "bytes": 2689,
           "file": "sw.js",
-          "sha256": "5c8d36be9261691442bc1dc82bd855aeb887d3194e6ec3540ac9ffe19e90f3f6"
+          "sha256": "94f09e1bd909b96d9818d0cae701fdb94caabdae443c50b890b8bc6eaab62c6e"
         }
       ],
-      "treeSha256": "6a61ec64c51395396b10fcae1ca59e8363514f68c4c850975486677fd5e03a5a"
+      "treeSha256": "a602eae1704d7c73a9b6406eaf3777516ac57235f2a8bde61def84441e2c0308"
     },
     "share": {
       "count": 23,

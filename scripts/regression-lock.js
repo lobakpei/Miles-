@@ -379,9 +379,11 @@ function domSnapshot() {
   const criticalIds = [
     'welcome', 'dc-title', 'dc-ok', 'dc-min', 'heroAsk',
     'tab-opt', 'tab-redeem', 'tab-journey', 'tab-articles', 'tab-guides',
-    'calcContinue', 'calcDetails', 'calcAdvanced',
+    'amount', 'calcDetails', 'allowAnnualFee', 'results', 'earnNewCardCount', 'opportunityPanel',
+    'redeemMiles', 'redeemMode', 'generalRedeem', 'rtwRedeem',
     'plannerGateway', 'plannerBeginner', 'plannerAdvanced',
-    'scenarioSection', 'scenarioStrip'
+    'homeHero', 'scenarioStrip', 'homeOffers', 'homeUserContent',
+    'homeAdvertisements', 'homeTodayHighlights', 'cardDetail'
   ];
 
   return {
@@ -424,7 +426,8 @@ function storageSnapshot() {
       bm_input: {
         amount: 'number', income: 'number', months: 'number', goal: 'string', spendPattern: 'lump|spread',
         owned: 'string[]', family: 'boolean', income2: 'number', owned2: 'string[]', maxNewCards: 'number',
-        excludedCards: 'string[]', preferProgram: 'string'
+        excludedCards: 'string[]', restoredConflictCards: 'string[]', allowAnnualFee: 'boolean',
+        preferProgram: 'string'
       },
       bm_daily: { owned: 'string[]', owned2: 'string[]', family: 'boolean', spend: 'Record<string, number>' },
       bm_ow: { cabin: 'string', segs: 'Array<{from,to,carrier,stay}>' },

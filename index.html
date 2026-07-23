@@ -1,4 +1,4 @@
-<!-- build: 2026-07-21 UK — v6.79.0：Outcome-first 首頁、清晰互動層級、公開聯絡地址 -->
+<!-- build: 2026-07-23 UK — v6.80.0：Phase 2B：首頁 Hero、結果先行點賺、里數先行點用、精簡卡詳情 -->
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -1037,24 +1037,233 @@ html.dark .scenario-card,html.dark .home-plan-option,html.dark .planner-mode-car
   .home-planner-grid,.planner-gateway-grid{grid-template-columns:1fr}
   .outcome-tier-grid{grid-template-columns:1fr}
 }
+
+/* ══════════ Phase 2B：Homepage／Hero／點賺／點用／Card Detail ══════════ */
+.phase2b-eyebrow{font-size:10.5px;font-weight:900;letter-spacing:1.25px;color:var(--jade-ink);margin:0 2px 8px}
+.home-hero{position:relative;margin:2px 0 22px}
+.home-hero-viewport{overflow:hidden;border-radius:22px;background:var(--card);box-shadow:0 14px 34px rgba(5,46,55,.13)}
+.home-hero-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;touch-action:pan-y pinch-zoom}
+.home-hero-track::-webkit-scrollbar{display:none}
+.home-hero-slide{position:relative;flex:0 0 100%;min-height:356px;scroll-snap-align:start;padding:24px 22px 21px;display:flex;flex-direction:column;justify-content:space-between;color:var(--ink);background:radial-gradient(circle at 88% 12%,rgba(23,191,166,.18),transparent 34%),linear-gradient(145deg,var(--card),var(--jade-soft))}
+.home-hero-slide::after{content:'';position:absolute;right:-54px;bottom:-88px;width:210px;height:210px;border:1px solid rgba(14,110,133,.18);border-radius:50%;pointer-events:none}
+.hero-proof{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:17px}
+.hero-proof span{font-size:10.5px;font-weight:850;padding:4px 8px;border-radius:999px;background:var(--paper);border:1px solid var(--line);color:var(--jade-ink)}
+.hero-scenario-k{font-size:11px;font-weight:850;letter-spacing:1.1px;color:var(--mut);margin-bottom:7px}
+.home-hero-slide h2{max-width:500px;font-size:clamp(27px,7.4vw,38px);line-height:1.08;letter-spacing:-.7px;margin:0 0 9px}
+.hero-amount{font-family:var(--mono);font-size:15px;color:var(--mut);font-weight:760}
+.hero-result{display:grid;grid-template-columns:auto 1fr;gap:9px 13px;align-items:end;margin:23px 0 16px;padding:15px;border-radius:14px;background:rgba(255,255,255,.62);border:1px solid rgba(14,110,133,.15)}
+html.dark .hero-result{background:rgba(0,0,0,.16)}
+.hero-result span{grid-column:1/-1;font-size:11.5px;color:var(--mut);font-weight:720}
+.hero-result b{font-size:28px;line-height:1;color:var(--jade-ink)}
+.hero-result small{font-size:11.5px;line-height:1.4;color:var(--mut);text-align:right}
+.hero-cta{position:relative;z-index:1;width:100%;min-height:48px;border-radius:13px;background:linear-gradient(135deg,var(--jade-btn),var(--jade-btn2));color:#fff;font-size:15px;font-weight:900;box-shadow:0 7px 18px rgba(0,89,78,.18)}
+.hero-fine{position:relative;z-index:1;font-size:10.5px;line-height:1.5;color:var(--mut);margin:9px 0 0}
+.hero-controls{display:flex;align-items:center;justify-content:center;gap:11px;margin-top:11px}
+.hero-arrow,.strip-arrow{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:21px;display:flex;align-items:center;justify-content:center}
+.hero-dots{display:flex;align-items:center;justify-content:center;gap:7px;min-width:58px}
+.hero-dots button{width:8px;height:8px;border-radius:50%;background:var(--line);padding:0}
+.hero-dots button.on{width:22px;border-radius:999px;background:var(--jade)}
+.spend-strip-shell{position:relative}
+.spend-strip-controls{display:flex;justify-content:flex-end;gap:7px;margin:-2px 0 8px}
+.spend-example-strip{display:flex;gap:11px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:1px 1px 8px;overscroll-behavior-x:contain;cursor:grab}
+.spend-example-strip::-webkit-scrollbar{display:none}
+.spend-example-strip.dragging{cursor:grabbing;scroll-snap-type:none}
+.spend-example{flex:0 0 min(78%,286px);scroll-snap-align:start;border:1px solid var(--line);border-radius:16px;background:var(--card);padding:15px;color:var(--ink)}
+.spend-example .demo-tag{font-size:10.5px;font-weight:850;color:var(--jade-ink)}
+.spend-example h3{font-size:16px;margin:6px 0 12px}
+.demo-numbers{display:flex;justify-content:space-between;gap:12px;align-items:end}
+.demo-numbers span{display:block;font-size:10.5px;color:var(--mut)}
+.demo-numbers b{display:block;font-family:var(--mono);font-size:16px;margin-top:2px}
+.spend-example button{width:100%;min-height:42px;margin-top:13px;border:1px solid var(--jade);border-radius:11px;color:var(--jade-ink);background:var(--jade-soft);font-weight:850}
+.demo-disclosure{font-size:10.5px;line-height:1.55;color:var(--mut);margin:8px 1px 0}
+.home-offer-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.home-offer-card{position:relative;text-align:left;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:13px;color:var(--ink)}
+.home-offer-card span{display:block;font-size:10px;color:var(--jade-ink);font-weight:850;margin-bottom:4px}
+.home-offer-card b{display:block;font-size:14px;line-height:1.4;padding-right:18px}
+.home-offer-card::after{content:'›';position:absolute;right:11px;top:12px;color:var(--jade-ink);font-size:20px}
+.home-user-content{border:1px solid var(--line);border-radius:18px;background:var(--field);padding:15px;margin-bottom:20px}
+.home-user-content>.home-section-head{margin-bottom:2px}
+.home-user-content .jr-sec{margin-top:14px}
+.home-user-empty{font-size:12.5px;line-height:1.55;color:var(--mut);padding:12px 0 2px}
+.today-highlights{border:1px solid var(--line);border-radius:15px;background:var(--card);margin:0 0 20px;overflow:hidden}
+.today-highlights summary{list-style:none;cursor:pointer;padding:14px 15px;font-size:15px;font-weight:850;color:var(--ink)}
+.today-highlights summary::-webkit-details-marker{display:none}
+.today-highlights summary::after{content:'＋';float:right;color:var(--jade-ink)}
+.today-highlights[open] summary::after{content:'−'}
+.today-highlights-body{border-top:1px solid var(--line);padding:12px 15px;font-size:12.5px;line-height:1.65;color:var(--mut)}
+.earn-start{border:1.5px solid var(--jade);background:linear-gradient(145deg,var(--card),var(--jade-soft))}
+#esub-opt{display:flex;flex-direction:column}
+#esub-opt>.earn-start{order:1}
+#esub-opt>#results{order:2}
+#esub-opt>#calcDetails{order:3}
+.earn-start .calc-stepbar{margin-bottom:8px}
+.earn-auto-status{font-size:11.5px;color:var(--mut);margin-top:9px;min-height:18px}
+.earn-summary-lines{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0 2px}
+.earn-summary-line{padding:10px 11px;border-radius:10px;background:rgba(255,255,255,.13)}
+.earn-summary-line span{display:block;font-size:10.5px;color:rgba(255,255,255,.76)}
+.earn-summary-line b{display:block;font-size:17px;margin-top:3px}
+.earn-refinements{border:1px solid var(--line);border-radius:16px;background:var(--card);margin:16px 0;overflow:hidden}
+.earn-refinements>summary{list-style:none;cursor:pointer;padding:15px;font-size:15px;font-weight:850;color:var(--ink)}
+.earn-refinements>summary::-webkit-details-marker{display:none}
+.earn-refinements>summary::after{content:'＋';float:right;color:var(--jade-ink)}
+.earn-refinements[open]>summary::after{content:'−'}
+.earn-refinements-body{padding:0 15px 15px;border-top:1px solid var(--line)}
+.check-row{display:flex;gap:10px;align-items:flex-start;padding:12px 0}
+.check-row input{width:20px;height:20px;accent-color:var(--jade);flex:none;margin-top:1px}
+.check-row b{display:block;font-size:13.5px}
+.check-row small{display:block;font-size:11.5px;line-height:1.5;color:var(--mut);margin-top:3px}
+.opportunity-panel{border:1px solid var(--line);border-radius:16px;background:var(--card);margin:14px 0;overflow:hidden}
+.opportunity-panel summary{list-style:none;cursor:pointer;padding:14px 15px;font-size:15px;font-weight:850}
+.opportunity-panel summary::-webkit-details-marker{display:none}
+.opportunity-panel summary::after{content:'＋';float:right;color:var(--jade-ink)}
+.opportunity-panel[open] summary::after{content:'−'}
+.opportunity-grid{display:grid;gap:8px;padding:0 14px 14px}
+.opportunity-item{border-left:3px solid var(--jade);border-radius:7px;background:var(--field);padding:10px 11px}
+.opportunity-item b{display:block;font-size:12.5px;margin-bottom:3px}
+.opportunity-item span{display:block;font-size:12px;line-height:1.55;color:var(--mut)}
+.engine-gate{font-size:11.5px;line-height:1.55;color:var(--gold-deep);background:var(--gold-soft);border:1px solid var(--gold);border-radius:10px;padding:9px 11px;margin:10px 0}
+.redeem-start{border:1.5px solid var(--jade);background:linear-gradient(145deg,var(--card),var(--jade-soft));margin-bottom:13px}
+.redeem-mode{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 0}
+.redeem-mode button{min-height:45px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:14px;font-weight:850}
+.redeem-mode button.on{border-color:var(--jade);background:var(--jade-soft);color:var(--jade-ink)}
+.redeem-filters{display:grid;gap:12px;margin:13px 0}
+.redeem-filter-label{font-size:11.5px;font-weight:850;color:var(--ink);margin-bottom:7px}
+.coming-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0}
+.coming-card{border:1px dashed var(--line);border-radius:11px;padding:9px 7px;text-align:center;font-size:11.5px;color:var(--mut)}
+.coming-card b{display:block;color:var(--ink);font-size:12.5px;margin-bottom:2px}
+.redeem-results{display:grid;gap:9px}
+.redeem-result-card{border:1px solid var(--line);border-radius:14px;background:var(--card);padding:13px}
+.redeem-result-top{display:flex;justify-content:space-between;gap:12px}
+.redeem-result-card h3{font-size:15px;line-height:1.35;margin:0}
+.redeem-result-card .need{font-family:var(--mono);font-size:14px;font-weight:850;color:var(--jade-ink);white-space:nowrap}
+.redeem-result-card p{font-size:11.5px;line-height:1.55;color:var(--mut);margin:7px 0 0}
+.redeem-result-card details{margin-top:8px;font-size:11.5px;color:var(--mut)}
+.redeem-limit{font-size:11.5px;line-height:1.55;color:var(--mut);margin:10px 1px 0}
+.card-detail-section{margin-top:17px;padding-top:15px;border-top:1px solid var(--line)}
+.card-detail-section h3{font-size:13px;color:var(--jade-ink);margin:0 0 7px}
+.card-detail-section p,.card-detail-section li{font-size:12.8px;line-height:1.65;color:var(--ink)}
+.card-detail-section ul{margin:0;padding-left:18px}
+.card-source-scope{border-radius:12px;padding:12px;margin-top:10px}
+.card-source-scope.official{border:1px solid var(--jade);background:var(--jade-soft)}
+.card-source-scope.channel{border:1px solid var(--line);background:var(--field)}
+.card-source-scope strong{display:block;font-size:12px;margin-bottom:7px}
+.card-apply-cta{display:block;width:100%;min-height:48px;margin-top:16px;border-radius:13px;background:linear-gradient(135deg,var(--jade-btn),var(--jade-btn2));color:#fff;text-align:center;padding:13px;font-size:15px;font-weight:900}
+@media(max-width:430px){
+  .home-hero-slide{min-height:372px;padding:21px 17px 18px}
+  .hero-result{grid-template-columns:1fr}.hero-result small{text-align:left}
+  .hero-arrow{display:none}.hero-controls{margin-top:9px}
+  .home-offer-list{grid-template-columns:1fr}
+  .earn-summary-lines{grid-template-columns:1fr}
+  .spend-example{flex-basis:86%}
+}
+
+/* ══════════ Phase 2A：Welcome／Consent／Header／Profile Hub／Bottom Nav ══════════ */
+#welcome{transition:opacity .22s ease}
+.wc-inner{gap:11px;transform:none;animation:wcFade .34s ease-out .03s both}
+.wc-badge{width:96px;height:96px;animation:wcGlow .75s ease-out both}
+.wc-name{font-size:27px;font-weight:850;letter-spacing:1.5px}
+.wc-tag{font-size:15px;font-weight:650;letter-spacing:.4px;text-align:center}
+@keyframes wcFade{from{opacity:0}to{opacity:1}}
+@keyframes wcGlow{from{opacity:.72;filter:drop-shadow(0 2px 8px rgba(255,255,255,.08))}to{opacity:1;filter:drop-shadow(0 6px 18px rgba(0,0,0,.28)) drop-shadow(0 0 12px rgba(255,255,255,.12))}}
+
+body.overlay-scroll-locked{overscroll-behavior:none}
+#disclaimer{z-index:1000;padding:calc(14px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom))}
+#disclaimer .modal{max-height:min(86vh,720px);padding:20px 18px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+#disclaimer .dc-lead{font-size:14px;line-height:1.6;margin:0 0 12px;color:var(--ink)}
+#disclaimer .dc-core{list-style:none;padding:0;margin:0 0 12px;display:grid;gap:8px}
+#disclaimer .dc-core li{margin:0;padding:9px 0 9px 12px;border-left:3px solid var(--line);font-size:13.5px;line-height:1.55}
+#disclaimer .dc-core li:nth-child(3){border-left-color:rgba(190,145,41,.58)}
+#disclaimer .dc-priv{margin-bottom:10px}
+.dc-more{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:8px 0 14px}
+.dc-more summary{list-style:none;cursor:pointer;padding:11px 0;font-size:13.5px;font-weight:800;color:var(--jade-ink)}
+.dc-more summary::-webkit-details-marker{display:none}
+.dc-more summary::after{content:'＋';float:right}
+.dc-more[open] summary::after{content:'−'}
+.dc-more-body{padding:0 0 12px;font-size:12.5px;line-height:1.65;color:var(--mut)}
+.dc-more-body p{margin:0 0 8px}
+.dc-more-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:9px}
+.dc-more-links button{font-size:13px;color:var(--jade-ink);font-weight:800;text-decoration:underline}
+#disclaimer .slogan-box{margin-bottom:12px}
+#disclaimer .dc-btns{align-items:center}
+#disclaimer #dc-ok{width:78%;max-width:310px;margin-top:0;padding:11px 12px;border-radius:11px;font-size:14.5px;letter-spacing:.4px;box-shadow:0 2px 7px rgba(0,89,78,.16)}
+#disclaimer #dc-min{width:78%;max-width:310px;padding:10px;border-color:var(--line);box-shadow:none;font-size:14px;background:var(--field)}
+
+.hdr-btns{gap:0}
+.profile-btn{width:42px!important;height:42px!important;border-radius:50%!important;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.13)!important;border:1px solid rgba(255,255,255,.38)!important;padding:0!important;filter:drop-shadow(0 2px 5px rgba(0,0,0,.24))!important}
+.profile-btn svg{width:24px!important;height:24px!important}
+
+.profile-sheet{padding-left:16px;padding-right:16px}
+.profile-sheet .sheet-head{padding:0 2px 7px}
+.profile-sheet .sheet-head b{font-size:19px}
+.profile-row{width:100%;min-height:50px;display:flex;align-items:center;gap:12px;padding:10px 2px;border-bottom:1px solid var(--line);text-align:left;font-size:15.5px;font-weight:720}
+.profile-row-ico{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:var(--jade-soft);color:var(--jade-ink);flex:none}
+.profile-row-ico svg{width:19px;height:19px}
+.profile-row-copy{min-width:0;flex:1}
+.profile-row-copy small{display:block;font-size:11.5px;line-height:1.45;color:var(--mut);font-weight:550;margin-top:1px}
+.profile-badge{font-size:10.5px;font-weight:800;color:var(--mut);background:var(--field);border:1px solid var(--line);padding:3px 7px;border-radius:999px;white-space:nowrap}
+.profile-settings{border-bottom:1px solid var(--line)}
+.profile-settings>summary{list-style:none;cursor:pointer}
+.profile-settings>summary::-webkit-details-marker{display:none}
+.profile-settings>summary .mn-chv{transition:transform .18s ease}
+.profile-settings[open]>summary .mn-chv{transform:rotate(90deg)}
+.profile-settings-body{padding:0 2px 4px 46px}
+.profile-settings-body .set-row{padding:13px 0}
+.profile-settings-body .mn-sec{margin-left:0}
+.profile-sheet .set-about{padding-bottom:8px}
+
+.tabs button{position:relative;min-height:54px}
+.tabs button.on::before{content:'';position:absolute;top:1px;width:18px;height:3px;border-radius:3px;background:var(--jade-ink)}
+.tabs button.on svg{stroke-width:2.15}
+
+@media (prefers-reduced-motion:reduce){
+  #welcome,.wc-inner,.wc-badge,.profile-settings>summary .mn-chv{animation:none!important;transition:none!important}
+}
 </style>
 </head>
 <body>
-<!-- v4.5 welcome 開場動畫：每次開 app 播 4 秒自動入（無掣）；片載唔到 2.5s 直接入，唔會卡 -->
-<div id="welcome" aria-hidden="true"><div class="wc-inner"><img class="wc-badge" src="data:image/png;base64,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" alt=""><div class="wc-name">AcreMiles</div><div class="wc-tag">畝・里 · 香港里數優化</div></div></div>
+<!-- Phase 2A Welcome：2240ms 後開始 260ms fade，正常約 2.5 秒離場；獨立 3000ms fallback 確保其他 script 出錯都唔會卡住。 -->
+<div id="welcome" aria-hidden="true"><div class="wc-inner"><img class="wc-badge" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAI4AAAB4CAYAAAAkNsoMAAAnE0lEQVR42u19aZgc1Xnu+53qnulZtQuEQMJgdhxijLEBEyAYjBPs2IklgxPji4Xh2vdx4lyy2Nf3ZlBiZ7cdO7k8kZfY4OXGIxtkxzgyS8QexQjMog1hSUhC0oxGs3RPr1XnfO/9UVU9Pc3s062ZEdTztKTRdHdVnXrP+73fcr4jOA4OkiIi2HQ0t/yc+Y1fTgKtCqiEvxYAoEIACAxgAGLodxL9gwSgUAEMjAIw4fsUEGj4L2MMQDYUgOe/9vjjf7j2qqssXj/mLHA8ADjo+3/CY3jsHCz8euX5X0uHOR7Yxhjjvr5jR1uL8W4JCQI2+rterwAA56cSH4sv4/XpO0fZZncxeI8jSeeUWneyUZIcdC775EDhjQCFpHmdceYYdgBgftJ81ACAMaGaGQ6uWp9TALhWY1pOaUl8GBDGWun1Y26wjSEpz2SzFxScK0RMoMdI4jhSmbZ2z4aenjaJzObrjDNHDhHhsmTjbSljUpH+kGM3dqrtnveGC9sXrObxw+DHN3A6SCMi+khv7ynzEmYVAKqqITnMNE3UTMWfG+k1BmwJAK0ebusgExFwXz/mgig+4NvPRKbDqipVp26pJvtZVSWdU5/O7SoUrn0tueZmjoJGIKLrDh5sbvPkZgDUKZqoamYZn2WGmUkA1CSMWZBoWBOZyddd89nONntKpdURR7jpMM30vHKnJDVH5p7IZM4GXxuu+Vy9QUVHh5nnebdGNMNw9h9T8AIQkEagqs1A88qmppshr7vms/LoJD2Q8lwu9/aic/YYu+BjuObkIPnyA+n0Iogc9675nGOcVQAhwhNSqVsajfGgqrNghhvAaSuw8oxUy/vCdOnx7ZrPqZsjaYyIbhkYOL3NmFUkEaarZ0VEiQDYnpA1q0INpngNBQRnPXAA4FAp+KvYBeesOUKh7JPuxSB4pxznrrmZQ6AREdGfHj3a3pZI3BC5vbNoRgsAaBIwi4y5JfLJ+TpwZsm1ntPW9tutBqdGD2WWXX9oNluA67dkimeLiB6vrvncuKlQK2jHpk2JeYnEbQCgszO4LwBcypiWE1uSN1dS0evHzJgpDwBeKgRXBqHrq8pZe7ioVufljQMDC+U4dc3nCo0SANobzJpEeM0qEwfddAA7lQs1UNVWY1a+qbX1/TxOXXMzB9jGAOB/pYtntgLvm6y2mU5EeSqflVDqEACbRW7r2MoGHIdZ87kwE0RE+IbW5JpmY1oxTs3NVJKV0/1s5efKplUd2ox564feWHonjkPX3MxythEA+rPDg0tbgQ9NxAWPWUJEpsw2k/1s5TlJhj8bUQ/A4mRyjYT5K74OnGN4fSLCcxc13tBkzMkR25iJsMVUtc1UWOpV5yRj15wtxrxry+Dgm44319zMZrYxxrhv7t2bave8j2GcmptqppmSPpnC5yrPV/68xGv8oI1Ay/JU6qbjzTWfzTPAkMQVy05+V6sx5wOgGed6J8IW1e8hCVXlVNlpnHMKADQbueGedHqRiLjjxTWfzcBRAJiXNDebCpd8ul5Q9XtEAGPMlCr3JsBQBoC2G+/ki1ta3jvHQiBzDzixFtjc13dBszHvQp3SCyRRdI6Hstn+kB3qol8JAC1SkTV/HTh19cG5sq3tIykgFSUYZDoi9lV0pqoigpziu3c/++xFWdV94VfWNplB0AMcW4y55C8tLhcRdr4G15rX/eiIFtk9cuTIsgJ5uDKMX+MaCC3R+fvJiwHgcBB8sX6lGtaSZLcL/rWSUWd+rDtMx/Hi6cWBsv2+f3udQFMGxwC5qWPTpkRHR4fZViq9uUjWazWoKpUF57LPFYtnzQh4SIkmpRe9pCpeNqdBIyTlm3v3pgboniOprj7AcSS5z9qPR+dNAECPcw9EoKkD6zhLkj10n6ucIPXWitUgqTw+u2fbyi/njp583LDN3mLwPlsntnHOKUnmyCP39/ScFJ03CQC7S6Xfi9+mdcua2wMbBwYW1numv+q7Ozsb7u7vf8PD2exNO0ulz+33/fu7g6D/CF33Y77/9smyYGI2uuBtSbnNm6ALPln/xhgoAC9n7X3XLllyKBosCwBPFwo/XZxIHGg35hQCKoSpYcjOANBW4518XmvrKgDrov9zNfYqgDDtwY253MUrk8lLDHl1q2dOS3lm+UKY+dUfecn55wDYPCcDlLGn8Xw6fUmRzo8Xuk1fXGjVv50WydL2aJbF541n24FS6W/LOqjGVT+x2U07+/N1ZDI2zbVmmlWkt71U+srgiIztHJ2zzjnrSM045x7J5S6eTaJ9SrGbniD4enR/djrruscSxUedezBqhiTV5380nT4z61wmOp/W2pUjnVoqdxaLv1VrrRN/13/l8x8qnzIcR0s6F4v0SpM94NyR7+VCk93R0WHmJGiezudX5h0HSGp8Y5MFzWiNB7RCZ+wulG4Z6aGVV1EEwXdi8Ookzjmx6wwnxCvW3ldrnRPfzy6/+LXoXoMxtJ6LJtGziJlmEtcyWxAmAHBiMnlzk8E8AGrEyGRSCaOlAcpZ8zAfZQaBV14qFe6p1FTV19Fn7b+UVMMWoxMINE4usRpmzdtFrny0WDw3KsWo1XOI2q4kF0XPVka/CkMAKJKHEWbuJVq+PDeAQ1KMiPt6T09bmzE3RlFd4RQTANVFVfHDNMYoAAxa+/3r5s/vI+lJ1UAJoCRl/ebNj+bIp6Pv0TpMEm0zpvkUz7sJtVrmEy0fuv7HP24W8vTKiTAiutTFqH9mKliYDYxjCOCaBQve3WrMmQBUoqzjVEazsryiaqxMQTV/uFi8C6N5bCGQzNqrrrKDqncDkHhmThSwE71MAphnEh/87sDAglpkzTui4XrHeectNsCpYwFHKrDqk90A8PBc86hICkjpJ++fSsi/UluMoTMsSR6x9kfj6Yo4BL+xt/eUtHNHoiCkjuatTaWZU9iQKdRbO61dUwuRHJu7nw0Onp9xrjhc2g0LYZcbQlmSzwXBu6dy/hllnNgV3gW8rRm4Krz+yd1ApbYYQ2eIBZC2/IaMc99ro0q96xYtOpBR9yMAYkbIaE+nRFVEoNFXLhb56Fu2bEli+mvNBQASzr2p1ZhGAMoRWCSsMxPCGMkDOJjP9wPA+vXr5543dShw/1LHteCOpPY699wX9u9vmkjspLOz0yMpT+dyFxUc/ZAkahvTiQmrROe2+f6vVU6kqRyborTJs/n87eONZeyx9jl3+Av79y+fU/kqkgYieHJg4I2DzqXr2OfGkuQBy09NhpKjgZQj1v57HUFtSfJQEHx/ugG4+L52lIp3TuB6Q9Pt3JOYopacSVMlIHFaS8tHW41pRx1azSpAgF5O9eiedN8PMbkefQYAj1r7tdj/qEOjbQOAbcZc/2ixeK6EptpM/XaBlkTypIl+IAAOAIBO4ZxmhthGAOimTGZxizEfHssDmOZTUUCQg95zxaJFB+KOFxN9ECTlsd7ejQPqtiFccVEX17zVmOaTPW/NlNvAhffFld/8ZipBPS1C0bjfk7O2a7JjH5u0mWIcIyI8o7n5A63jLHuZZjDMFFVtd4nfAgTr16+f8ABFMR5z2/Ll+azT74/qwteIeRcYs+q7mcziqbjm8UWtfvuvLEwAJ04ADAIA1sPTY4GxgzSdQ/U7XjTxOCN6qLLmpt+GNTf1LNY6at3D6OgwsWaZinjf1NNzds65bD10mFZc6w7r3zoV1zi+znvS6TPTZLa8X8AYp8yT/C/fvwQA1m3ZkuTwIq9RJ/Gixze0zZQo9kjKriC41tat9GUoL7W/ZG+eTpykIn/1/2olknXowdoodxWQZJe1O/7u8OGWye4LEXtjDw4MXFMqh4p0TKymncs9mMmcO+p5Nm1K/N2hPSt/0NP1vi2l7C3PFPP/tN0vbtwf+Hu20f73majHoYiwKwjWhE/SKABvvKjsJGMlCsAMqjvwfMHbUCkepxof6QmCOxcmEqsao0j35Llaw2XACgogEvYu9GILnVMNApHB0088MUUgN5lvXhX9vTyVam8on2vkAVMoDAysavqdG9btw01/zNufffYN7zjj1IUnSMNpLSIXNhrvV9oT5qQkZGW7MQsaqr7jkOoNMxK3eTpTPKdADtbbBT/k3F/WKCorqzo7vS7nHpsM6wyxyqvf3+9cd49zD+8Ogi/tIq9/qFQ676M7Hm+boulPkvSey+X+Ps7Ajzeo2SAIdudyDx5y7qFDQZDuj7LlozC3paMl6ZN0B1zw3WNupgCgy7m/negDqAztTySo5qICsAKZ25zNXjDd+Ejldb9YKt3kRihp1YprDYNrzla/Z5AsdDv35Ct0f/2LUmlVZy63fCogGa3gHAC2Fwo/HqmWaTJ1tbH5dOFP5VHXod9zZ1D6/LF2wbGpu/vErGN3mAMaWd9Ug2SiUVutGLSjzm2oVUQ0/o570ulFA3QHKwlFVems02hGDntgabrDXc79ZIfv/8GjxeK56BgO4IgtyoK0+lpJSqVXM9K1rXn++RM6e3sveTyT+fjRIDjCMngnpMotSRsx45jRcQ2TXCyRfDYovudYahwDwJ2xaNHvtRgshaqaCfYonqS+MQogo/rNyvNOy18OXVAjIr17fP+n85LmFgDqHOEJKJ7xYp02oNqdBzb1W/vj7UGwaXVra9ewoE0EgDvuuINRXCi+Nuno6JAOUs4DZFWoBXXYta9b13z3e997wkmNzZctbmq4aEEyeVYKvKDJSyxrq9CDUXHB2HoxLFvxQMKMXFFQLUwpgJSA7IDKy8fUBf8p2Zh27vnx1ktNKdtc8Z39zm2/+zBbarlrXTn7nE6/LevcMG83Q9d7yLl/21Eq3fyto0eXj8IqpiqJKR0dHaaT9DpJb6SLvGLTptb1PT1XPpXNrtldKt150Pd39jubHsPM1LM1Ylwx+Mu/7uubd0y1zb4geO+IGqGqNGIqCcOoVMCS5D7f/0wtRPGIJqujw+y39r4CqV3OPbzd2k/9JJ9fWQ2yEdczRSJ7NKB8Ytuelf9r+/YLv7h960ce7+//Xpe1Lw2ODpKApI3Mkk5kB9vqEtdJloSEDoe1/4HOTk+OFeOICI46d98iY94d0W+NHmroHKsqjYjkyYHnff/NlzQ1vRyZF63xfXATeWJzEJz8ts9//hmsXasVOihsbFlRWdjR0WHOu+OOStNTZpxP7Nm24sSg4Ypmg7c0ilxA61/QTrRefcYZiZO9YSrCVVi7qda4TS/EoepgjDmg+jcrPO8zddc4nWGJpvt5tvTmFuBq1LzzRFwaCgXEG3S8px6gqUhD4CqRLgBdsWa5Y7gekQ7SRDpFRUSxdm1oerZubf01z3vr/Mbk5U2Q61IG5za1p+YlPQMNAiAX4B3LV2CZl1CoEkOFkN40YlpT1o1R/zkCUGMMHSBHjD4MHIMFeauiVMqKpsTNKWMaass2lYMJU4Jqb+Dumkp6YQpelkgIGAeElYPnAfJBY9zaCsb5/a27V5zW6r21Cbg+ZeSyBHhGc3MTJHCwxQJcNqdFkOosL1y81CxrbhYlR/Ub6rQvV3y9jJKGRFzzVQHcQ8APbsfjD5GUugIn3nD1afKk9rD5IzTuW19LJiAVYkxO9enHm5L/eW6Imrr1oYmbQZKU9aRXZpb4vg/uPfsENFw33/OubrD27cmG5OKUZ1AsFhCUfNh+34UBZAjEGNBiQUMDT1+4SGrFKOMDpbKdi4knspiq8HsWOOKguwac+9lWL/nFR+QqC7K+VxitJHCv+P5nlyeTn6sH21SmGPY7d9vKROKr8XnrdFPSCZhqzfLp3bvPPK2l5TfajVyfAi5pTzU1J5QIcjn4QUmdkj5UHGBAQqkQCCAGvl/khUuX4pyFS0SpMHJsixZ8QC2QCaDdBWWfhTwRkM8PkF37bPal9zcteJX7nagzneu3d+1qb/O8/zZMkNQBNBnVg7tyuR9OMy81JnveEfZcdqsjsdqxb99JpzU2Xtks+qEm8d6xoLVtHmwAP5eDzaSdY1gkFa7aIBII13VTNOxoqAKriqaEh2Ut7VJHUzRMHxVUB4vAoyVjdmWdO+Q8/c8e2AMbkO79grcsN5KKjOJPZeFfT1NlRMTttfb6dmPeiJrX3JRTjQSAQdV7r5k3r7emoriKXdYCOPnJJ5v+4qxzr1hk+Hspdde0pBqXJqko5QsI+vodIXCihqCnkUAggZDcGf8AIUEBrAKLGhrR1tgYPSSZ4M0rh1xKCMYI+lWY2JiZP312Q8Odo7kacZByPYBtANeKaDWD1xM42rFpU2K+eLdVCbBaelNhsRZg+3zeVWO2NJXs8qVXes5a0ZK4sQX4nXbPnD8v1YBSNovSYFZ9gIHSwBgPZPToBaSCDGeME4WJlx1IOPM1DN1ifmMTvDE8Jg5ptni2GKACKGbi04wAeoLgQHSPyUg+8A4Ad4SQxkTMfKJOlOgZI25nyb+0GXp52HmWXh1oWAF4edVNP2xOPjPJ0tAxzREAh86tDd955ynXLhT9cJvnXbewtaWdhTxK+QKzhYKSMEY8A1UkogUvLnr4hizPFAUhEBCEEQNHhYAQKDwq5zelZCQ3OF6WI6EuLMMjp5otAvvUmE054Ml8JnPBOe3tfxoawpHrKaKFsSananNB0B32Iux0q2V1GSRrJzFW9WIcJYEFnvfJhpBCnYjUQRSrOBj0WnvX2sZGvSOkWDcFoJuYytcC+NyRI8ve2tR0wwKRDzUmGy5q8gA/n4ff1+ccIFE1jacMl2RSCKGBIaAm6n8cmZ3K2h2WIcGQPihshEF7Q1xFQ3pCDd3guF4HCADkgZfyqo/lyUd7PPvkHx545pXNKy4tAMAT2WwGwJ+G5suM6JnFOkGBnl5j9oShklVTnmSJOrCNERH9xWDpvDaY34hiA5NyweMbH8c1VcCYtLo9j2YyP56KKK4EDAB89Uj6zDPnpT7WorzpxFTjUlqLXC6rJVpSxYiIFzJJKF4MCUeivF4/ApLG8z7SMRKGDCJbE5spBUFp8jxtTSYVADwzlCzNQHuyiq2+Mff1BcFTjyZzz/+ht2Cg6vobALhn/eLbpExtI49ZHJuxBt1f3LUrPd3nXA/GEQA4qTnx0ZRBM1SdMcab6NL6yqYBY4NHCRjkHL51y5Ilg5NxwTurYi/fy2bffGqi4ePzjaxenEzMK5V8BOlBF4AiEOPBlMWtRj0IYjaJoIDYMBlBaIRUI1YhtCyMw08qQRAqClnQ0mJaEkkAwIDqkUGDjQPOPrCvZDe9p6XlYLUEGG7N4ETE7QqCZRMIEBIAAsWRpy+6KIjTJ7MCOOUNVzOZJc3AjVEuQOJZNtFQeCVYRvkcQfGKgsGXCrnOiYrveO+rGGA/SacvXd7Y+Mk2471/YTLRWCr6KBSzLiBCdgFRbtYvhCHgiYFVhjWgEYC8CDxWFKDACKAiQ0klEkJAQFV1NMbzEqkWzzqLIOFluoHNA0GwYVsyueF3RA5Xi/T1YQT+VZ5N1ElDmoSnxnmX8Y5BZ3MVE5yzhXEMAHd+c/MNrcYsQ9RjRjD5tdXjimIRL+3cA1fPm/fieC54tUnaMDh41crGxj9YCLxnSTJp8iUf+VzOWaoRMV7o4eiQqiwLXTOE22jOiwg8AC7EDBiKnrDGJdzrgVBVAF5DY6NBIoGBwWyuWCw+ioTXeZR8/DKRX1Zdq1TETNwYk5TXb9nSnIRZEdnpcUOHYmRzLWJqiVqyDQDt3L+/qV3kVkwicFPJMOOF3COLZxzCBkjE6HmpyEsqA+aeTOYdZ6Sab1/gyfuWGINcMUAmKDoKTcIYTyhwqqHYHUpnQCo9IUYdJUXgqGWAsYL1iRAwhqLGS3oNbU1eJp/DoO8/F5SC7/Ulkj/91IoVW6uZBdWpi8jLK3sCFaYl+n+++6STViZFTo5gPfrAqQqMQUDZU4vnXUvGMSLi9gTBNW3GnA9VyhQq/MZjG4nETVZ159Z0+pFzcQKJ4c2PKuMwawH829GBi89oa/qTeZ73/sWeZ/KBQy4InJLGiOdRNKycC7OWoafEcDUAo1gLoxPHWkeieE0cj4lVF6kqECSTSeM1pbx0LlfM+f7GgYRZt915j3xp5YpCfI3rAbOtqtKvGkSjuch3RO7zBYsXtzQaaR53YhojAcCMtf1xcG+2ACdcu2zMrSa0tyo1z0uFLosYg4zVe1efcEK2ShRLZLYcAPfl7u7TL1uw4DMrPHPTEuMlC06R9a0D4IkRT0AYEI6x+RmKwbg45CuAaMgyjAIlEadAROBIOABKVQMg0dxknAjyxVJXoVD8XsZLfOcjS5f+olKYjwSW9WGEGuUYEoCOvXtPfevCee9d1txy9pFEw19cB3RFk2vI1bCls5uTyTEJnhL6fSVgMAu8jCgiPOPAiRaE6Qs5/63twDVhRMJ4tY33ERrVG+SA3EG6b1eKYpLGRKHxT+7a1b7m5BWfOqEh8ftLPW9RACDrnAPFSKhlQ4aJvCGN2GRIYUvkKcWOkECifUhiB0kk8qRU1YBItjabPBU9xeJTRco3BltaN3ysra0biIq5zjtPVq9apasrBO6rAo4APvXy9mUfWHrK1Uu8htXzPe/yxZ433wDYrjYtXvIzrIpVJVUuDF1x5ejiOPx/3zm3o9BvZ42pinI57CM/lgIaQjex1mwjMIYKwOtT/eElqdSO2Esqs86qVd5Td921+qSGxs+e5JnzACDv1CmMEQlLB0wMCBKUMAZjGLnQiM1PRdCu7FVVuNRhQkcNFKm2FpOjotf3N2fIf/iXpSdu2ChSAsI+O9tWreLaKuFeGQ5YC+CsDRva/vGdV166tCF1wwnGe9eJXmJZxdsDAGapMTeu6+v7axFJV5akzm9oaBvPo4pjOE5wePP+I0cjU8e1Mwmc2KP5eT5/Sgr6AcCwHjU3UUzNFKE8UAg6Sco2IHG+iA/AbUynLz2/KfX55cmGKwHAQZ0NEeNJZFrKkds4+aght1BCQCmiUADC5ZpaxsgQEwmdColUa6spqUWvdY/3GvzjlxcsvucREVsFDFeZMCVgPGNczDpfPbzvvPPnL/7g8kRy9dJE8qzUkJBVGFDDzGVSAF0Es/LS9pZVAL7+MOBdGbFOgzGnTjAjDIXs+M6v/mquFongRE2oAMDyZPKWJpgFAJypQ82NiCpgzIDT5+7vOfzQpS2nmvNF/P+58+DiNW9Y/NkVicQnWo1pCAuUCIF4xoTCVRhCxw5LBkk5PiNR0tpAoJE7HTMMI/NEpwoompqbTV6ArsA+UfDwlXe3z/shIiB0kt5qYJg5inWXEXESPewfDfRed3Zz25rFnvfuhca0VFxVeJORU2EqcWQMloh36xXc9K0rw8Afr9u1qzEpOGmi7nUBehSz4Ygp897+/vkZ5/bVcZugcmPpg+SfxuffXCy+r8vaF4fWbzgbV/urKgN1LKmy4MJXzloO2oDpwOeAH7C/FLC3WGJvocij+SK78wUeyuf4SjbHlzNZ7h7M8KWBjL7U32f3FLLcGfh8IpfZ8pPBwRuxaVNimMYbYRkOyaEU9rp1yYcGB1fvLZUeLgxfsWDH67wwtJWAc5uDwrXxV35h9+43ddugGK2K0XHGTndb/9NVEegZA0647KVU+kh9QUMllVl1/Menn7/oZ4XCGw4EwfdKVQMz9GZHpaVVx6IbAk7BOWatZSYIOOCHr37fZ1/J59FCid2FAg/n8zyYy3FfNss9mbR9OZfjQZJP5bPbNxayN39k797UeICpDDpi1SrvocGBG18Jgs12CCzxmnKd9MRxwfdjdrkvk7ksOzTsOsY2AFZJbrN2Va2Ak5gGagRRzU27l1gz0bD/NFIZ6BkY4OktTf/09lTq9HZg8VDOxnjDbaeAUb7TQODKlyVRLikUMEMCGUPCNzQYmhQxLW3t3pGSPzDg+//3xaaWv79ZZGAMk/Qq3be+v+fKt7TO//MVicTl3lDIgjTGm3yoIjRf84z5zfszmbOvbWvbuaBQOClVmbijQgRUkCbc+wah9DeJPnX9Bz3viVAY38GZZht50fcvL0WdPcdaFFaLrp1W3fAfx1x4ZunU0VqNWMex4JR5p8xay7Tvc6Dks79UYm/JZ2/RZ1c2r93ZnO0nuS8I+GzR/+6/Rzvajccw1Uzzn4XCx/qdC4a2bKlJIyBLkrut/TQAbPP93w87SbgSnbMcpePEIHnkRfK3hzHhDLrjBMD5Irc1RDkqGWP9z2SLuEZKPYSBIdWo+u1VqwmHmjtKOV1AAB4FzsjQ7yWOw0REQ4JK15BMemhIeId9/+dHyDuuTKX+vWKS6HjZ95hpHujtveT8hoZ/ajUmoVF1gKlMmEw99SIA2AJ8/Dcfe2xdgjwbgAczxLgFoFiC7ikBXVZ1u2/ksd0ItlwjTXumW+g2beAwLMDWLYXC6e3GvAdh6YCJdwUbbT+FiQJm9M8IJpDHG3pAEhbIaFTOIBLGySqyl4BCDSkNTY1elw16+4Lgb/5s376vbDzzzBKHcl2TKQ6TU9va/ijy8KwxJlHlgI56vxMYJwOoO8HzVtx65hv/T69feDzb0LA8UHukYBKHc3A7B3y3476Ghh1rRYojgXpWiOKuIPjLkfrcTG4bnum3N6k+ryuf39Gqo+8sS86yqMq8s8w5x6zvOFgIbEHJXpLPBf6/3sPC6VXR8El7mOjsbNofBL+cbG/Did6ri/adOmCDHeNdT7yGvR47/SamABoxIu4X5PxW1d8tF6VMiDHGT3ZOcga++vPlgqkoHEOW2aZcGkGqESKVSnivQPd3gX9ycbLh+5MxSyNyoQjY328dMBDXANawlCQyv2IgyiVe4o2bg8JVb0ukHtkGJM4bSkOEUapo0SBmy1He3rlUuqWWG59OhaFG7HbBCsaho2rolpecsugc89ZaZbhP9B7nvn1vPn9KTOUdNerctbVU+nzdurFXdOV42QXfqqXgrechJOXWLVuSvc7+PN5prdb7HEyviYtWvGz4p3P0rVM/sI4ke5x75Xlrf7f6gU872dvZ6QFA59GjF2fI4tCWDTVvVKOkMu1cf2e+b8WsB088wNsKwdWluC/LDIPmVbroVeBRuih4Zknuc+6en5Ara8Uyo2md3dZ/kHXbw7yiN7Lvf3ZWRIMnEqM47NwP6rgxxjSBMwQYS0vnAhttWprZTvs/as0yo02uJ0r5G+u1d3pllL7bRb2RQ30osxM0pDxbKp1fCBtz16vV7PS1Eh2tC5QMHEl2kU895vtvAQB2dNScZUbwZuSTu3a1H3JuV71SMfHmtAHJZ4vF35m1rBNf1CHnvjRb2Ga0IbUuBIwluZ/un798lO3HcmDj87zgF/93nccq3FHY1X5H4Zoc8Qx9NMMlGfKwMmqJqjr7cBN5HINk3zbyw1ONy9TCpP+gmD5jINwDgnViZyWpg7SFh1ibns51mUEHfP9TFc0LZxXLhM0jbdjjmG7rZvIt8bXPxEyMH+Bea9cfC9bZ54J1xxI4ZiI2GxD9wv79Ta1e3Hlidnl+CqEIFcbzDqnecx/MFW8XeZpkQkTcdFYsTid0AQAvF4vfKAIKqGFd7j3cLG0ezOp78/lTRETJDjNr2ObFYvH9sZcwyyyUY9S79WXyc4hmXOfMC0URALdyS3Kf9V8IzYqra5HbDr/4x7NGJJe33XHu36ZCufWM80R5G+ac83f69uMxQ3bMEjsfP8Bnivk/mqyJn8y4uWjyHKF7YR3ZzAlsWFt30JCULdnshXmyNFUXvE7gsSSZJbtfCILrZ1LPjOdUrOs7uKKP7IkKc7TWY6YVtPNMEHxgxlknZptu574aeywT28Xl1d27JzUQ478/DOqROzaTF8zmyGk8hjt8/2vjVRJMq5og8iZfcW7jjLrm8eL3BwYGTsuTA5GN1mPFLiN9T/Q/AUn20D1xP3nSbA+3x1WDG/PpS7NRSYTWKMFb9Tklnebpio/5/lsQ7TwzY/b55SD4q4lom+q9GKYLoFG+J96C8KFOcuGsz9FUeqadnd4+Zx8sj2UV00y19mjos0PhiD0u+MaMxHQYLjXGPa+kF6Wde4X123B1Qmylw6r83Y//pqenbZZ4TpPLX+XzN/o18kxHGqs4a95H1xNvpHZMHYWyC+77t810wC8aIMswffDt63btapz1ZQQjTEQB8Inu7taDzu4e9pxrn7+KdxS+/ZgzMklZtXVrQ5e1T0WewIwAp3LHu33OfR3RAre5BJpX5a+C0trK2Esdglqha+7szo7u7tZj5prHN7glm722FM72YxLvG6muZiic7tYhGoCOOQiaSob8bqbn7H66QZLq6ldd4BzJ52zpxmPGOuWAn7U/mqkseCVo9jr3z4gqD2dlvckUxvYl6x+T/NVhugfBDlP3cYs2DpXHstkL8s4VZ6LmZph5Ir8WM81cB82w8S0MvjNf3tmubhNPC6TdnM9fznq75uUsuHNfmcGam4Ak9zt3Fzo7veMFNNEAC0k5d+vWhgMu0o/18lbL2jC4u67ORKwd7u3tPSXj3NE62+AxKfaAc98BmTiuQFM1OZ/2C5+sp8caP7sBuoEfFAZOqxt44hva7dvbZ4htgsgub1hFNsxlITxujAzAP3R1nXDE2S5SJ5y/mrJr7kp31EckR90gOvbuTfU4t+1YBfyqywIO0z3+5aNH2+eqyz3ZSfp8UPhinSepi9Izezq6t7bWcjvtYTfybKn0wXpV5o8RUo+q9viLH5LLcJyDpvL+7h0cfFOaLh/LAq1hyqZ6Vj5TD9c8zqV0WbupnsGp0WZEr3M7f8Jw7+65kkaolcnaY/2fsobrr0YAXJw1vx+11IwxAn+Rz19WjPvcjJJ8m+gsGGkD+urvcpEoTJOHNpPnzpWEZa1Z/vFi7rdsNFlVNQqATL4EZYxEqZLUrHP+Eyy9uWaMHn/JK0Fwd4zQY7A605JkxrnC5iC4CgA2kQm8xg6SciuZfNna/6h0EGosBcrjvdsFd9ZOCpDyUDp9VsbaIVtbg3T/GGI/IMmsc5lng+C3X2tMM9Kk3ZBOn9Xr3JEYPDpJppmwa+5c37353lNQK491dxD8eSUyyxdVI5vrnFUX1aBE5mnH8+Qlr2XQVIPn0Xz+sqPOdcfPITLlWsOCOUuS223xz2oy7nfuG1jQ79wvI9lhI8Fam5ejizpskiQLpDtM3tlJLnkdNMNTEQBwT7F4zgHnHhjBgZj2K3y2znW7YE/H0aPtmK5rvrVY7Ki3oMmQh7ucu+sF8tLqmfb6MRw8IORZa2/qons0TVesx/N4wZZume7ETaQaG+cNAs8I1AJGqOHOFmKMBcrb/JSfdyVECQg0aitnTNwZURRgoMoS0BMYs3E38ODVnrevAjCc8X50s+xYLeIYbWTyq0jcjY6O7zzy2c9edEqSV6RULm8AFnsGCQFstJW0Gph4E1Ji2N8qcfexcOsBNeEaSkMCDY1eA4HpbT30/wEA/V1kQE3pmwAAAABJRU5ErkJggg==" alt="">
+<div class="wc-name">AcreMiles</div><div class="wc-tag">每筆消費，都值得有回報</div></div></div>
+<script>
+  (function(){
+    var done = false;
+    window.__acremilesWelcomeDismiss = function(immediate){
+      if (done) return;
+      done = true;
+      var welcome = document.getElementById('welcome');
+      if (!welcome) return;
+      if (immediate){
+        if (welcome.parentNode) welcome.parentNode.removeChild(welcome);
+        return;
+      }
+      welcome.classList.add('out');
+      setTimeout(function(){ if (welcome.parentNode) welcome.parentNode.removeChild(welcome); }, 260);
+    };
+    setTimeout(function(){ window.__acremilesWelcomeDismiss(false); }, 3000);
+  })();
+</script>
 
 <!-- 免責聲明（首次必讀） -->
 <div class="modal-bg" id="disclaimer" hidden>
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="dc-title">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="dc-title" aria-describedby="dc-summary" tabindex="-1">
     <h2 id="dc-title">在開始之前</h2>
-    <ul>
-      <li><b>AcreMiles 係教育及規劃工具，唔係財務、信貸、法律、稅務或旅遊預訂建議。</b>計算同推薦係按你輸入嘅資料及已列明假設作估算，唔保證係最抵、最完整或一定獲批／換到。</li>
-      <li><b>卡資料同優惠會變。</b>迎新、賺里率、年費、資格同排除交易可能過時或有錯；申請或簽賬前<b>必須</b>開銀行最新產品頁、KFS 同條款再確認。</li>
-      <li><b>申請信用卡會影響信貸紀錄（TU）。</b>請量力而為——一旦找唔清卡數，利息開支會遠遠超過里數價值。</li>
-      <li><b>環球票路線只係教學示例。</b>票規通過唔代表指定日期有班次、獎勵位或一定獲客服接受；最終以航空公司正式確認同出票結果為準。</li>
+    <p class="dc-lead" id="dc-summary">開始前，請先確認以下四點：</p>
+    <ul class="dc-core">
+      <li><b>工具性質：</b>AcreMiles 只提供教育及規劃估算，唔係財務、信貸、法律、稅務或旅遊預訂建議，亦唔保證批卡或兌換結果。</li>
+      <li><b>官方條款會變：</b>申請或簽賬前，請自行開銀行、航空公司及平台最新官方條款再確認。</li>
+      <li><b>信貸及還款風險：</b>申請信用卡會影響信貸紀錄；一旦未能全數還款，利息開支可遠高於里數價值。</li>
+      <li><b>私隱選擇：</b>核心資料存喺本機；只有你接受匿名改善，先會載入 GA／Sentry。</li>
     </ul>
-    <div class="dc-priv"><b>🔒 你嘅私隱：</b>計劃、行程同設定只存喺<b>你自己部機</b>。揀「接受匿名改善」先會載入 Google Analytics（使用統計）同 Sentry（錯誤診斷）；揀「只限必要」就唔會載入兩者，全部核心功能照用。你主動訂閱時，email 先會傳畀 MailerLite。詳情見私隱政策。</div>
-    <p style="font-size:13px;color:var(--mut);margin-bottom:16px">利益披露：本 app 目前<b>冇任何</b> referral 或聯盟收益。日後如有，會喺當眼位置清楚標明。</p>
+    <div class="dc-priv"><b>申請前請自行確認迎新資格。</b>已持有同一銀行信用卡、過往領取迎新、申請時段、卡種及銀行條款，都可能影響資格。</div>
+    <details class="dc-more" id="dcMore">
+      <summary>完整免責、私隱及利益披露</summary>
+      <div class="dc-more-body">
+        <p>數據只供規劃參考；最終以銀行、信用卡公司、航空公司及平台當時官方條款為準。銀行可更改推廣期、名額、資格、限額及條款。AcreMiles 不保證批卡、迎新入帳、兌換結果或獎勵位，最後責任由用戶自行核實及決定。</p>
+        <p>環球票路線只係教學示例；票規通過唔代表指定日期有班次、獎勵位或一定獲客服接受。計劃、行程同設定只存喺你自己部機；主動訂閱時，email 先會傳畀 MailerLite。</p>
+        <p>本 app 目前冇任何 referral 或聯盟收益；日後如有，會喺當眼位置清楚標明。</p>
+        <div class="dc-more-links"><button type="button" data-open="pgTerms">使用條款</button><button type="button" data-open="pgPriv">私隱政策</button><button type="button" data-open="pgAbout">關於 AcreMiles</button></div>
+      </div>
+    </details>
     <p class="slogan-box">優惠受條款及細則約束，資料只供參考。<br>借定唔借？還得到先好借！</p>
     <div class="dc-btns">
       <button class="cta" id="dc-ok">接受匿名改善並開始</button>
@@ -1073,9 +1282,10 @@ html.dark .scenario-card,html.dark .home-plan-option,html.dark .planner-mode-car
 <header class="hdr" id="hdr">
   <div class="hdr-in hdr2">
     <img class="logo logo-plain" src="data:image/png;base64,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" alt="AcreMiles">
+
     <div class="hdr-btns">
-      <button class="hdr-ico plain" id="robotBtn" type="button" aria-label="畝里小幫手"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.4 9.2a2.7 2.7 0 0 1 5.2 1c0 1.8-2.6 2.2-2.6 3.7M12 17.2h.01"/></svg></button>
-      <button class="hdr-ico plain" id="setBtn" type="button" aria-label="更多選項"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><circle cx="5.5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18.5" cy="12" r="1.7"/></svg></button>
+      <button class="hdr-ico plain profile-btn" id="setBtn" type="button" aria-label="開啟我的 Profile Hub" aria-haspopup="dialog" aria-controls="setSheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.1" r="3.4"/><path d="M5.4 19.2c.7-3.3 3.2-5.2 6.6-5.2s5.9 1.9 6.6 5.2"/></svg></button>
+      <button id="robotBtn" type="button" hidden aria-hidden="true" tabindex="-1">開啟 FAQ／小助手</button>
     </div>
   </div>
   <div class="hero-row">
@@ -1087,8 +1297,8 @@ html.dark .scenario-card,html.dark .home-plan-option,html.dark .planner-mode-car
 
 <nav class="tabs" aria-label="主導覽">
   <div class="tabs-in">
-    <button data-tab="opt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8.5 7.2h7M8.7 11.5h.01M12 11.5h.01M15.3 11.5h.01M8.7 15h.01M12 15h.01M15.3 15v3.4M8.7 18.4h.01M12 18.4h.01"/></svg><span>計算</span></button>
-    <button data-tab="redeem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3 3 10.6l6.4 2.6L12 21l3.2-7.2L21 3z"/><path d="M9.4 13.2 21 3"/></svg><span>規劃</span></button>
+    <button data-tab="opt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8.5 7.2h7M8.7 11.5h.01M12 11.5h.01M15.3 11.5h.01M8.7 15h.01M12 15h.01M15.3 15v3.4M8.7 18.4h.01M12 18.4h.01"/></svg><span>點賺</span></button>
+    <button data-tab="redeem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3 3 10.6l6.4 2.6L12 21l3.2-7.2L21 3z"/><path d="M9.4 13.2 21 3"/></svg><span>點用</span></button>
     <button data-tab="journey" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10.7 12 3.8l8.5 6.9"/><path d="M5.8 9.2v10.3h12.4V9.2M9.5 19.5v-6.2h5v6.2"/></svg><span>首頁</span></button>
     <button data-tab="articles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 12.1 12 20.3 3.8 12V3.8H12l8.2 8.3z"/><circle cx="7.6" cy="7.6" r="1.25"/></svg><span>優惠</span></button>
     <button data-tab="guides"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5.5C10 4 7.5 3.6 5 3.9v13.7c2.5-.3 5 .1 7 1.6 2-1.5 4.5-1.9 7-1.6V3.9c-2.5-.3-5 .1-7 1.6z"/><path d="M12 5.5V19.2"/></svg><span>攻略</span></button>
@@ -1104,16 +1314,20 @@ html.dark .scenario-card,html.dark .home-plan-option,html.dark .planner-mode-car
 
   <!-- 子頁：今次消費（保留原優化器引擎，介面逐步顯示） -->
   <div id="esub-opt">
-  <div class="panel">
-    <div class="calc-stepbar"><b>1</b><span>先講今次會簽幾多</span></div>
+  <div class="panel earn-start">
+    <div class="calc-stepbar"><b>1</b><span>先入消費金額，即時睇完整結果</span></div>
     <div class="field">
       <div class="eyebrow">今次會簽幾多？</div>
       <div class="amt-wrap"><span class="cur">HK$</span><input id="amount" type="text" inputmode="numeric" placeholder="200,000" aria-label="總消費金額（港幣）"></div>
       <div class="hint" id="amountHint">買手機、傢俬、旅行、結婚或裝修——入可以用卡簽嘅部分。資料只會存喺你部機。</div>
     </div>
-    <button class="cta" id="calcContinue" type="button">下一步：睇適合我嘅選項</button>
-    <div id="calcDetails" class="calc-detail-block" hidden>
-    <div class="calc-stepbar"><b>2</b><span>幫你隔走唔適合嘅卡；唔填都可以繼續</span></div>
+    <div class="earn-auto-status" id="earnAutoStatus" role="status" aria-live="polite">輸入金額後會自動計算；其他設定可喺結果下面再調整。</div>
+  </div>
+
+    <details id="calcDetails" class="earn-refinements">
+    <summary>調整條件及偏好</summary>
+    <div class="earn-refinements-body">
+    <div class="calc-stepbar"><b>2</b><span>用實際條件收窄結果；每次修改會重新計算</span></div>
     <div class="field">
       <div class="eyebrow">你嘅年薪（可選）</div>
       <div class="amt-wrap"><span class="cur">HK$</span><input id="income" type="text" inputmode="numeric" placeholder="240,000" aria-label="年薪（港幣）"></div>
@@ -1141,6 +1355,10 @@ html.dark .scenario-card,html.dark .home-plan-option,html.dark .planner-mode-car
       <div class="chips" id="goalChips"></div>
       <div class="hint">Asia Miles 同 Avios 係二揀一——出嚟嘅組合一係全部儲 Asia Miles、一係全部儲 Avios，唔會溝埋。揀「兩樣都睇」會出兩個 plan 畀你並排比較。</div>
     </div>
+    <label class="check-row" for="allowAnnualFee">
+      <input id="allowAnnualFee" type="checkbox">
+      <span><b>包括高年費卡機會</b><small>預設關閉。開啟後只係容許既有 Engine 將高年費卡列入計算；年費會分開顯示，Cost-per-Mile 公式不變。</small></span>
+    </label>
     <details class="calc-advanced" id="calcAdvanced">
       <summary>進階設定</summary>
       <div class="calc-advanced-body">
@@ -1160,17 +1378,21 @@ html.dark .scenario-card,html.dark .home-plan-option,html.dark .planner-mode-car
     </div>
       </div>
     </details>
-    <button class="cta" id="calcBtn">計推薦組合</button>
-    </div><!-- /calcDetails -->
-  </div>
+    <button class="cta" id="calcBtn">更新結果</button>
+    </div>
+    </details><!-- /calcDetails -->
 
   <div id="results" hidden>
     <div class="warn" id="dataWarn"></div>
 
     <div class="summary">
-      <div class="lab" id="sumLab">大約可以儲到</div>
+      <div class="lab" id="sumLab">按現有 Engine 計算</div>
       <div class="big-miles"><span id="totalMiles">0</span> <small>里</small></div>
-      <div class="range-note" id="rangeNote">約 – 里（估算範圍，唔係精確數字）</div>
+      <div class="range-note" id="rangeNote">顯示目前輸入對應嘅 Engine 輸出；實際批核及入賬以官方為準。</div>
+      <div class="earn-summary-lines">
+        <div class="earn-summary-line"><span>今次組合</span><b>新申請 <span id="earnNewCardCount">0</span> 張</b></div>
+        <div class="earn-summary-line"><span>預計回報</span><b>預計可賺 <span id="earnMilesTotal">0</span> 里</b></div>
+      </div>
       <div id="familySplit" hidden style="font-size:12.5px;color:rgba(255,255,255,.92);margin-top:6px"></div>
       <div class="sum-row">
         <div class="sum-cell"><div class="v" id="costPerMile">–</div><div class="k">每賺 1 里需簽賬</div></div>
@@ -1184,6 +1406,7 @@ html.dark .scenario-card,html.dark .home-plan-option,html.dark .planner-mode-car
     <div class="panel result-outcomes" id="redeemList"></div>
 
     <div class="act-row">
+      <button id="carryMilesToRedeem" type="button">帶里數去「點用」</button>
       <button id="sharePlanBtn" type="button">分享呢個計劃</button>
       <button id="savePlanBtn" type="button">儲存呢次計劃</button>
     </div>
@@ -1200,6 +1423,11 @@ html.dark .scenario-card,html.dark .home-plan-option,html.dark .planner-mode-car
     <div id="progCompare"></div>
 
     <div id="resWarnings"></div>
+
+    <details class="opportunity-panel" id="opportunityPanel">
+      <summary>下一步機會</summary>
+      <div class="opportunity-grid" id="opportunityGrid"></div>
+    </details>
 
     <h2 class="sec-title">你嘅推薦卡組合</h2>
     <div id="passList"></div>
@@ -1266,15 +1494,46 @@ html.dark .scenario-card,html.dark .home-plan-option,html.dark .planner-mode-car
 
 <!-- ============ TAB：里數規劃專員（功能三） ============ -->
 <section id="tab-redeem" hidden>
+  <div class="panel redeem-start">
+    <div class="calc-stepbar"><b>1</b><span>先入你而家可以用嘅里數</span></div>
+    <div class="field" style="margin-bottom:0">
+      <div class="eyebrow">可用里數</div>
+      <div class="amt-wrap"><span class="cur">里</span><input id="redeemMiles" type="text" inputmode="numeric" placeholder="50,000" aria-label="可用里數"></div>
+      <button class="btn-sm" id="fillFromOpt" type="button" style="margin-top:10px" hidden>帶入點賺結果：<span id="optMilesLabel"></span> 里</button>
+      <div class="hint">Asia Miles 來回門檻按已核實表；Avios 沿用現有可追溯資料並清楚標示待官方逐格覆核。冇可支持嘅一年平均票價，所以唔會製造現金價值排名。</div>
+    </div>
+    <div class="redeem-mode" id="redeemMode" aria-label="兌換模式">
+      <button type="button" class="on" data-redeem-mode="general" aria-pressed="true">一般兌換</button>
+      <button type="button" data-redeem-mode="rtw" aria-pressed="false">環球票</button>
+    </div>
+  </div>
+
+  <div id="generalRedeem">
+    <div class="panel">
+      <div class="redeem-filters">
+        <div><div class="redeem-filter-label">里數計劃</div><div class="chips" id="generalProgram"><button type="button" class="chip on" data-general-program="am">Asia Miles</button><button type="button" class="chip" data-general-program="avios">Avios</button></div></div>
+        <div><div class="redeem-filter-label">同行人數</div><div class="chips" id="generalParty"><button type="button" class="chip on" data-general-party="1">一個人</button><button type="button" class="chip" data-general-party="2">兩個人</button><button type="button" class="chip" data-general-party="4">家庭（4人）</button></div></div>
+      </div>
+      <div class="coming-grid" aria-label="兌換類型">
+        <div class="coming-card"><b>來回機票</b>V1</div>
+        <div class="coming-card"><b>單程／酒店</b>即將推出</div>
+        <div class="coming-card"><b>其他兌換</b>即將推出</div>
+      </div>
+    </div>
+    <div class="redeem-results" id="generalRedeemResults" aria-live="polite"></div>
+    <p class="redeem-limit">里數只係兌換門檻，未包括稅項、燃油附加費、即時獎勵位或轉分時間。前端只顯示目的地名稱；機場代碼只放喺展開細節。</p>
+  </div>
+
+  <div id="rtwRedeem" hidden>
   <div class="planner-gateway" id="plannerGateway">
     <div class="planner-gateway-hero">
-      <div class="k">行程規劃</div>
-      <h2>你講想去邊，複雜規則交畀系統。</h2>
-      <p>新手可以用城市同活動配對現有已核實示範；熟悉航段、停留同開口，就直接自己砌。</p>
+      <div class="k">環球票</div>
+      <h2>揀一個適合你嘅砌法。</h2>
+      <p>Beginner／Advanced 只屬環球票；一般兌換唔需要先過呢一層。</p>
     </div>
     <div class="planner-gateway-grid">
-      <button type="button" class="planner-mode-card" id="plannerBeginner"><b>幫我規劃</b><span>揀目的地同活動，先睇一至三條接近方案。</span></button>
-      <button type="button" class="planner-mode-card" id="plannerAdvanced"><b>自己砌路線</b><span>直接使用現有航段、機場、航司同規則檢查器。</span></button>
+      <button type="button" class="planner-mode-card" id="plannerBeginner"><b>Beginner／幫我規劃</b><span>揀目的地同活動，配對現有已核實示範。</span></button>
+      <button type="button" class="planner-mode-card" id="plannerAdvanced"><b>Advanced／自己砌</b><span>直接使用航段、機場、航司同規則檢查器。</span></button>
     </div>
     <div class="beginner-builder" id="beginnerBuilder" hidden>
       <h3>想去邊、想做乜？</h3>
@@ -1302,52 +1561,12 @@ html.dark .scenario-card,html.dark .home-plan-option,html.dark .planner-mode-car
       <div class="beginner-results" id="beginnerResults" aria-live="polite"></div>
     </div>
   </div>
-  <div class="warn" style="background:var(--jade-soft);border-color:var(--jade-ink);color:var(--ink)"><b>✅ 國泰標準獎勵（單程／來回）、升艙同寰宇一家環球票嘅里數，已逐格對官方核實（2026-07-11：官方計算機＋官方換算表＋官方 T&C）。</b>Avios 數字、現金稅費同其他參考項目仍未核實——實際換票前，上國泰 Asia Miles／英航 Executive Club 官網確認放位同稅費。</div>
+  </div><!-- /rtwRedeem -->
+  <div class="warn" hidden style="background:var(--jade-soft);border-color:var(--jade-ink);color:var(--ink)"><b>✅ 國泰標準獎勵（單程／來回）、升艙同寰宇一家環球票嘅里數，已逐格對官方核實（2026-07-11：官方計算機＋官方換算表＋官方 T&C）。</b>Avios 數字、現金稅費同其他參考項目仍未核實——實際換票前，上國泰 Asia Miles／英航 Executive Club 官網確認放位同稅費。</div>
 
-  <div class="subtabs" id="redeemSub"><button type="button" class="on" data-rsub="ideas">換咩好？</button><button type="button" data-rsub="oneway">單程／來回</button><button type="button" data-rsub="rtw">環球票</button></div>
+  <div class="subtabs" id="redeemSub" hidden><button type="button" class="on" data-rsub="ideas">換咩好？</button><button type="button" data-rsub="oneway">單程／來回</button><button type="button" data-rsub="rtw">環球票</button></div>
 
-  <div id="rsub-ideas">
-
-  <div class="panel">
-    <div class="field" style="margin-bottom:0">
-      <div class="eyebrow">你而家儲咗幾多分？</div>
-      <div class="amt-wrap"><span class="cur">里/分</span><input id="haveMiles" type="text" inputmode="numeric" placeholder="500,000" aria-label="現有里數／積分"></div>
-      <button class="btn-sm" id="fillFromOpt" style="margin-top:10px" hidden>用賺里數計算器計出嘅 <span id="optMilesLabel"></span> 里填入</button>
-      <div class="hint">Asia Miles 同 Avios 未必分得咁清？先當總池睇下換到啲乜，實際換嗰陣再分。</div>
-    </div>
-  </div>
-
-  <!-- 環球商務 highlight（故事高潮） -->
-  <div class="rtw" id="rtwCard"></div>
-  <button type="button" class="btn-sm" id="goRtwPlanner" style="margin:-4px 0 12px">🌍 自己椌條環球線？去「環球票」規劃器 →</button>
-
-    <h2 class="sec-title">熱門航線・邊個計劃抵？</h2>
-  <p class="fee-note" style="margin:-4px 2px 10px">同一條線，改表後 Asia Miles 同 Avios 各有各抵。呢個係 2026 年核心玩法：分暫存喺「彈性點數卡」，臨出發睇邊邊平先轉。</p>
-  <div id="routeList"></div>
-
-  <div class="panel about" style="margin-top:14px">
-    <h3>換票唔止俾里數：仲有現金</h3>
-    <ul>
-      <li>用里數只係免咗「機票價格」，你仲要俾<b>燃油附加費（YQ）＋政府稅費</b>，呢啲唔用得里數找。</li>
-      <li>YQ 按航段計，越長途越貴：官方 2026 年 7 月起，短途約 HK$290／航段、長途約 HK$1,164／航段。轉機／環球票多航段就幾倍咁疊上去。</li>
-      <li>YQ 每月中會變（跟油價），以出票當日計。知道下月減就遲啲出、下月加就快啲出。</li>
-    </ul>
-    <h3>Asia Miles vs Avios：點揀？</h3>
-    <ul>
-      <li><b>超短途（台北等）</b>：通常 Avios 抵，里數要求低。</li>
-      <li><b>區域１商務（首爾、新加坡）</b>：2026 新制下 Asia Miles 多數有優勢。</li>
-      <li><b>環球票</b>：得 Asia Miles（寰宇一家）先做到一張票遊多站——一張票最多 5 停、9-11 個航段，全程商務艙。</li>
-      <li><b>心法</b>：主力儲喺可轉換嘅彈性點數卡（滙豐／Citi／AMEX），唔好太早鎖死入某一邊，臨出發先轉平嗰邊。</li>
-    </ul>
-    <h3>分有效期（示範，以官網為準）</h3>
-    <ul>
-      <li><b>Asia Miles</b>：一般設有效期，但可透過賺取或使用活動延續——長期唔郁會過期，記得留意戶口。</li>
-      <li><b>Avios</b>：只要戶口 36 個月內有任何賺／用紀錄，通常唔會過期。</li>
-      <li><b>彈性點數（獎賞錢／MR／DBS$）</b>：多數永久有效，所以「遲啲先轉」係安全策略。</li>
-    </ul>
-    <p class="fee-note">以上有效期規則會變，換分或大額消費前請以各計劃官網最新條款為準。</p>
-  </div>
-  </div><!-- /rsub-ideas -->
+  <div id="rsub-ideas" hidden></div>
 
   <div id="rsub-oneway" hidden>
     <div class="panel">
@@ -1374,7 +1593,7 @@ html.dark .scenario-card,html.dark .home-plan-option,html.dark .planner-mode-car
     <div class="ow-intro">
       <div class="ow-intro-t">想環遊世界，飛足五個城市？</div>
       <p class="ow-intro-p">邊有人仲逐程買機票架～ 用 Asia Miles 一次過換一張寰宇一家環球票，<b>5 個目的地 + 橫跨幾大洲</b>。商務艙約 250,000 里起。</p>
-      <p class="ow-intro-p">規矩有啲複雜，所以我做咗呢個規劃器希望幫到你！揀返你想去邊，我幫你計要幾多里。 <button type="button" class="ow-link" data-open="pgG4">新手先睇玩法 →</button></p>
+      <p class="ow-intro-p">規矩有啲複雜，所以我做咗呢個規劃器希望幫到你！揀返目的地，規劃器會按官方里數表即時計算。 <button type="button" class="ow-link" data-open="pgG4">新手先睇玩法 →</button></p>
     </div>
     <div id="owSummary"></div>
     <div class="ow-helpbar">
@@ -1423,69 +1642,67 @@ html.dark .scenario-card,html.dark .home-plan-option,html.dark .planner-mode-car
 
 <!-- ============ TAB：首頁（v6.79 outcome-first） ============ -->
 <section id="tab-journey">
-  <div class="home-kicker">先睇一個例子，再用你自己嘅數字計</div>
-  <section class="outcome-feature" id="outcomeFeature" aria-labelledby="outcomeFeatureTitle">
-    <div class="outcome-badges"><span class="outcome-badge">本週示範</span><span class="outcome-badge verified">已核實資料</span></div>
-    <h2 id="outcomeFeatureTitle">買部 iPhone，可以換到一段旅行。</h2>
-    <div class="of-spend">一筆本來就會發生嘅 HK$8,000 消費</div>
-    <div class="outcome-eq">
-      <div class="eq-box"><span>按現有迎新推算</span><b>約 20,000 里</b></div>
-      <div class="eq-arr" aria-hidden="true">→</div>
-      <div class="eq-box"><span>其中一個可達例子</span><b>台北經濟來回</b></div>
+  <div class="phase2b-eyebrow">ENGINE-GENERATED DEMONSTRATIONS</div>
+  <section class="home-hero" id="homeHero" aria-label="三個消費示範">
+    <div class="home-hero-viewport">
+      <div class="home-hero-track" id="homeHeroTrack" aria-live="polite"></div>
     </div>
-    <div class="outcome-actions">
-      <button type="button" class="primary" data-open="pgG2">睇下點做到</button>
-      <button type="button" class="secondary" id="featureUseAmount">用 HK$8,000 試計</button>
-    </div>
-    <p class="of-note">資料日期：2026-07-09。示範推算唔等於保證；批核、迎新資格、里數到帳、獎勵位、稅費同附加費以官方為準。</p>
-  </section>
-
-  <section class="home-section" id="scenarioSection">
-    <div class="home-section-head"><h2>更多消費示範</h2><span>只顯示仍有效嘅已核實資料</span></div>
-    <div class="scenario-strip" id="scenarioStrip"></div>
-  </section>
-
-  <section class="home-quick" aria-labelledby="homeQuickTitle">
-    <h2 id="homeQuickTitle">你都有一筆消費？</h2>
-    <p>第一步只要金額；年薪、已有卡同偏好可以之後先填。</p>
-    <div class="home-quick-grid">
-      <label class="home-amount"><span>HK$</span><input id="homeAmount" type="text" inputmode="numeric" placeholder="8,000" aria-label="今次消費金額"></label>
-      <button type="button" id="homeCalcStart">睇下可以換到乜</button>
+    <div class="hero-controls">
+      <button class="hero-arrow" id="heroPrev" type="button" aria-label="上一個示範">‹</button>
+      <div class="hero-dots" id="homeHeroDots" aria-label="選擇示範"></div>
+      <button class="hero-arrow" id="heroNext" type="button" aria-label="下一個示範">›</button>
     </div>
   </section>
 
-  <div id="jrOnboard" hidden></div>
-  <div class="jr-sec" id="jrSecEarn" hidden><div class="jr-h">我的消費計劃</div>
-  <div class="panel" id="savedPlansPanel" hidden>
-    <div id="savedPlansList"></div>
-    <div class="hint">開返會用最新卡數據重新計，數字可能同儲嗰陣唔同——迎新成日變。</div>
-  </div>
-  <div id="jrEarnEmpty" hidden></div>
-  </div>
-  <div class="jr-sec" id="jrSecRtw" hidden><div class="jr-h">我的行程</div>
-  <div class="panel" id="rtwSavedPanel" hidden><div id="rtwSavedList"></div></div>
-  <div id="jrRtwEmpty" hidden></div>
-  </div>
-
-  <section class="home-section home-planner" aria-labelledby="homePlannerTitle">
-    <div class="home-section-head"><h2 id="homePlannerTitle">想用里數去邊？</h2><span>先揀簡單程度</span></div>
-    <div class="home-planner-grid">
-      <button type="button" class="home-plan-option" data-plan-entry="single"><b>我只係想去一個地方</b><span>揀城市，睇經濟、商務要幾多里。</span></button>
-      <button type="button" class="home-plan-option" data-plan-entry="multiple"><b>我想去幾個地方</b><span>先揀國家同活動，再配對現有路線。</span></button>
+  <section class="home-section" id="moreSpendExamples" aria-labelledby="moreSpendTitle">
+    <div class="home-section-head"><h2 id="moreSpendTitle">更多消費示範</h2><span>全部由同一 Engine 即時計</span></div>
+    <div class="spend-strip-shell">
+      <div class="spend-strip-controls">
+        <button class="strip-arrow" id="spendPrev" type="button" aria-label="向前瀏覽消費示範">‹</button>
+        <button class="strip-arrow" id="spendNext" type="button" aria-label="向後瀏覽消費示範">›</button>
+      </div>
+      <div class="spend-example-strip" id="scenarioStrip"></div>
     </div>
+    <p class="demo-disclosure">示範金額只係可碌卡部分嘅產品輸入，唔係市場平均價格。使用前要由商戶確認接受信用卡、分卡安排、交易類別同手續費。</p>
   </section>
 
-  <div class="jr-sec" id="jrSecFav" hidden><div class="jr-h">我的收藏</div>
-  <div class="panel"><div id="favList"></div></div>
-  </div>
+  <section class="home-section" id="homeOffers" aria-labelledby="homeOffersTitle">
+    <div class="home-section-head"><h2 id="homeOffersTitle">優惠</h2><span>現行條款分開核對</span></div>
+    <div class="home-offer-list" id="homeOfferList"></div>
+  </section>
 
-  <section class="home-section">
-    <div class="home-section-head"><h2>優惠同攻略</h2><span>繼續睇點樣做到</span></div>
+  <section class="home-user-content" id="homeUserContent" aria-labelledby="homeUserContentTitle">
+    <div class="home-section-head"><h2 id="homeUserContentTitle">我的內容</h2><span>只存喺呢部裝置</span></div>
+    <div id="jrOnboard" hidden></div>
+    <div class="jr-sec" id="jrSecEarn" hidden><div class="jr-h">已儲存計劃</div>
+    <div class="panel" id="savedPlansPanel" hidden>
+      <div id="savedPlansList"></div>
+      <div class="hint">開返會用最新卡數據重新計，數字可能同儲嗰陣唔同——迎新成日變。</div>
+    </div>
+    <div id="jrEarnEmpty" hidden></div>
+    </div>
+    <div class="jr-sec" id="jrSecRtw" hidden><div class="jr-h">我的行程</div>
+      <div class="panel" id="rtwSavedPanel" hidden><div id="rtwSavedList"></div></div>
+      <div id="jrRtwEmpty" hidden></div>
+    </div>
+    <div class="jr-sec" id="jrSecFav" hidden><div class="jr-h">我的收藏</div>
+      <div class="panel"><div id="favList"></div></div>
+    </div>
+    <div class="home-user-empty" id="homeUserEmpty">未有已儲存計劃、行程或收藏；完成結果後就可以留低。</div>
+  </section>
+
+  <section class="home-section" id="homeAdvertisements" aria-labelledby="homeAdsTitle">
+    <div class="home-section-head"><h2 id="homeAdsTitle">精選消息</h2><span>現有廣告輪播</span></div>
     <div class="show-wrap" id="showWrap" hidden>
       <div class="show-row" id="showRow"></div>
       <div class="show-dots" id="showDots" aria-hidden="true"></div>
     </div>
   </section>
+
+  <details class="today-highlights" id="homeTodayHighlights">
+    <summary>今日重點</summary>
+    <div class="today-highlights-body" id="todayHighlightsBody">暫時冇需要即時處理嘅本機項目。限時優惠及官方條款仍要喺申請當日再確認。</div>
+  </details>
 </section>
 
 <section id="tab-articles" hidden>
@@ -1537,52 +1754,84 @@ html.dark .scenario-card,html.dark .home-plan-option,html.dark .planner-mode-car
     <div class="ap-list" id="apList"></div>
   </div>
 </div>
-<!-- v5.0 設定 sheet -->
+<!-- Phase 2A Profile Hub：未登入只顯示通用 Profile；資料仍然 local-first。 -->
 <div class="sheet-bg" id="setBg" hidden></div>
-<section class="sheet" id="setSheet" hidden role="dialog" aria-modal="true" aria-labelledby="setTitle">
+<section class="sheet profile-sheet" id="setSheet" hidden role="dialog" aria-modal="true" aria-labelledby="setTitle">
   <div class="sheet-bar" aria-hidden="true"></div>
-  <div class="sheet-head"><b id="setTitle">更多</b><button id="setClose" type="button" aria-label="閂埋">✕</button></div>
-  <div class="mn-sec">協助</div>
-  <button type="button" class="mn-row" id="mnRobot">畝里小幫手<svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
-  <button type="button" class="mn-row" id="mnContact">聯絡我們<span class="mn-note" id="mnContactNote">開通中</span><svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
-  <div class="mn-sec">關於</div>
-  <button type="button" class="mn-row" data-open="pgAbout">關於 AcreMiles<svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
-  <div class="mn-sec">設定</div>
-  <div class="set-row">
-    <div class="set-k">外觀</div>
-    <div class="seg" id="themeSeg">
-      <button type="button" data-th="auto">跟系統</button>
-      <button type="button" data-th="light">淺色</button>
-      <button type="button" data-th="dark">深色</button>
+  <div class="sheet-head"><b id="setTitle">我的</b><button id="setClose" type="button" aria-label="關閉我的 Profile Hub">✕</button></div>
+
+  <button type="button" class="profile-row" data-profile-target="cards">
+    <span class="profile-row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3 9h18M7 15h4"/></svg></span>
+    <span class="profile-row-copy">我的信用卡<small>已持有卡及現有卡庫</small></span>
+    <svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg>
+  </button>
+  <button type="button" class="profile-row" data-profile-target="journeys">
+    <span class="profile-row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5h16M6.5 16.5 9 5l3 5 2.3-3.5 3.2 10"/></svg></span>
+    <span class="profile-row-copy">我的旅程<small>已儲存計劃及行程</small></span>
+    <svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg>
+  </button>
+  <button type="button" class="profile-row" data-profile-target="favourites">
+    <span class="profile-row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 20.2-7.2-7.1a4.55 4.55 0 0 1 6.4-6.5l.8.8.8-.8a4.55 4.55 0 0 1 6.4 6.5L12 20.2z"/></svg></span>
+    <span class="profile-row-copy">我的收藏<small>信用卡、優惠及攻略收藏</small></span>
+    <svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg>
+  </button>
+  <button type="button" class="profile-row" id="profileSync">
+    <span class="profile-row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18.5h10a4 4 0 0 0 .7-7.9A6 6 0 0 0 6.2 9.2 4.7 4.7 0 0 0 7 18.5z"/></svg></span>
+    <span class="profile-row-copy">跨裝置同步<small>可選功能；現時資料仍只存本機</small></span>
+    <span class="profile-badge">即將推出</span>
+  </button>
+  <button type="button" class="profile-row" id="mnRobot">
+    <span class="profile-row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.4 9.2a2.7 2.7 0 0 1 5.2 1c0 1.8-2.6 2.2-2.6 3.7M12 17.2h.01"/></svg></span>
+    <span class="profile-row-copy">FAQ／小助手<small>常見問題及使用協助</small></span>
+    <svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg>
+  </button>
+
+  <details class="profile-settings" id="profileSettings">
+    <summary class="profile-row">
+      <span class="profile-row-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.2 13.2a7.8 7.8 0 0 0 0-2.4l2-1.5-2-3.4-2.5 1a8 8 0 0 0-2.1-1.2L14.3 3h-4.6l-.4 2.7a8 8 0 0 0-2 1.2l-2.5-1-2 3.4 2 1.5a7.8 7.8 0 0 0 0 2.4l-2 1.5 2 3.4 2.5-1a8 8 0 0 0 2 1.2l.4 2.7h4.6l.4-2.7a8 8 0 0 0 2-1.2l2.5 1 2-3.4-2-1.5z"/></svg></span>
+      <span class="profile-row-copy">設定<small>外觀、畫面縮放、私隱及 App</small></span>
+      <svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg>
+    </summary>
+    <div class="profile-settings-body">
+      <div class="set-row">
+        <div class="set-k">外觀</div>
+        <div class="seg" id="themeSeg">
+          <button type="button" data-th="auto">跟系統</button>
+          <button type="button" data-th="light">淺色</button>
+          <button type="button" data-th="dark">深色</button>
+        </div>
+      </div>
+      <div class="set-row">
+        <div class="set-k">畫面縮放</div>
+        <div class="zoom-ctrl">
+          <span class="za sm" aria-hidden="true">A</span>
+          <input type="range" id="zoomRange" min="70" max="130" step="5" value="100" aria-label="畫面縮放">
+          <span class="za lg" aria-hidden="true">A</span>
+          <span class="zoom-val" id="zoomVal">100%</span>
+        </div>
+        <div class="set-note" style="margin-top:9px">拉條 bar 調整成個 app 大細，100% 係預設。轉完即時生效。</div>
+      </div>
+      <div class="set-row">
+        <div class="set-k">匿名改善（Google Analytics＋Sentry）</div>
+        <div class="seg" id="anaSeg">
+          <button type="button" data-ana="on">開</button>
+          <button type="button" data-ana="off">關</button>
+        </div>
+        <div class="set-note" style="margin-top:9px">開啟後先會載入使用統計同錯誤診斷；轉「關」會即時停止再送新資料。</div>
+      </div>
+      <div class="set-row">
+        <div class="set-k">安裝到主畫面（離線都用到）</div>
+        <button class="set-act" id="pwaBtn" type="button">安裝 App</button>
+        <div class="set-note" id="pwaNote" hidden>iPhone／iPad：用 <b>Safari</b> 開 AcreMiles → 撳底部中間嘅 <b>分享</b> 掣（□↑）→ 揀「<b>加至主畫面</b>」。</div>
+      </div>
+      <div class="mn-sec">法律及關於</div>
+      <button type="button" class="mn-row" data-open="pgTerms">使用條款<svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
+      <button type="button" class="mn-row" data-open="pgPriv">私隱政策<svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
+      <button type="button" class="mn-row" data-open="pgAbout">關於 AcreMiles<svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
+      <button type="button" class="mn-row" id="mnContact">聯絡我們<span class="mn-note" id="mnContactNote">開通中</span><svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
+      <div class="set-row set-about">AcreMiles · v6.80.0<br><span>借定唔借？還得到先好借！</span></div>
     </div>
-  </div>
-  <div class="set-row">
-    <div class="set-k">畫面縮放</div>
-    <div class="zoom-ctrl">
-      <span class="za sm" aria-hidden="true">A</span>
-      <input type="range" id="zoomRange" min="70" max="130" step="5" value="100" aria-label="畫面縮放">
-      <span class="za lg" aria-hidden="true">A</span>
-      <span class="zoom-val" id="zoomVal">100%</span>
-    </div>
-    <div class="set-note" style="margin-top:9px">拉條 bar 調整成個 app 大細，100% 係預設。轉完即時生效。</div>
-  </div>
-  <div class="set-row">
-    <div class="set-k">安裝到主畫面（離線都用到）</div>
-    <button class="set-act" id="pwaBtn" type="button">安裝 App</button>
-    <div class="set-note" id="pwaNote" hidden>iPhone／iPad：用 <b>Safari</b> 開 AcreMiles → 撳底部中間嘅 <b>分享</b> 掣（□↑）→ 揀「<b>加至主畫面</b>」。</div>
-  </div>
-  <div class="set-row">
-    <div class="set-k">匿名改善（Google Analytics＋Sentry）</div>
-    <div class="seg" id="anaSeg">
-      <button type="button" data-ana="on">開</button>
-      <button type="button" data-ana="off">關</button>
-    </div>
-    <div class="set-note" style="margin-top:9px">開啟後先會載入使用統計同錯誤診斷；已設定為唔主動收集表單內容、金額、年薪、行程或 email，並移除 query、headers、cookies 同 user 欄位。轉「關」即時停止再送新資料。</div>
-  </div>
-  <div class="mn-sec">法律</div>
-  <button type="button" class="mn-row" data-open="pgTerms">使用條款<svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
-  <button type="button" class="mn-row" data-open="pgPriv">私隱政策<svg class="mn-chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
-  <div class="set-row set-about">AcreMiles · v6.79.0<br><span>借定唔借？還得到先好借！</span></div>
+  </details>
 </section>
 
 <!-- v6.79：儲存計劃／行程低頻操作集中喺 bottom sheet。 -->
@@ -3336,6 +3585,38 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     return period.validUntil < hkToday(now);
   }
   window.channelOfferIsCurrent = channelOfferIsCurrent;
+  /* Phase 2A：modal／sheet 共用 scroll lock。保存原本位置及 inline style，
+     關閉最後一層 overlay 後準確還原，避免手機頁面跳頂／跳底。 */
+  (function setupOverlayScrollLock(){
+    var owners = {}, savedY = 0, savedBodyStyle = '';
+    function hasOwners(){ return Object.keys(owners).length > 0; }
+    function lock(owner){
+      owner = owner || 'overlay';
+      if (owners[owner]) return;
+      if (!hasOwners()){
+        savedY = window.scrollY || window.pageYOffset || 0;
+        savedBodyStyle = document.body.getAttribute('style') || '';
+        document.body.classList.add('overlay-scroll-locked');
+        document.body.style.position = 'fixed';
+        document.body.style.top = (-savedY) + 'px';
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.width = '100%';
+        document.body.style.overflow = 'hidden';
+      }
+      owners[owner] = true;
+    }
+    function unlock(owner){
+      owner = owner || 'overlay';
+      delete owners[owner];
+      if (hasOwners()) return;
+      document.body.setAttribute('style', savedBodyStyle);
+      if (!savedBodyStyle) document.body.removeAttribute('style');
+      document.body.classList.remove('overlay-scroll-locked');
+      window.scrollTo(0, savedY);
+    }
+    window.AcreMilesOverlayScroll = {lock:lock, unlock:unlock};
+  })();
   /* 對話框基本鍵盤支援：開啟時聚焦、Tab 留喺框內、Escape 關閉可關嘅框。 */
   (function setupDialogA11y(){
     var ids = ['cardDetail','apPicker','subSheet','setSheet','disclaimer'];
@@ -3357,7 +3638,15 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       new MutationObserver(function(){
         if (!root.hidden){
           root._returnFocus = document.activeElement;
-          setTimeout(function(){ var f = focusable(root); if (f[0]) f[0].focus(); }, 0);
+          setTimeout(function(){
+            if (id === 'disclaimer'){
+              var dialog = root.querySelector('[role="dialog"]');
+              if (dialog) dialog.focus({preventScroll:true});
+            } else {
+              var f = focusable(root);
+              if (f[0]) f[0].focus();
+            }
+          }, 0);
         } else if (root._returnFocus && root._returnFocus.focus && document.contains(root._returnFocus)){
           root._returnFocus.focus();
         }
@@ -3463,7 +3752,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   function sec(title){
     return '<div style="font-weight:800;font-size:13px;color:var(--jade-ink);margin:18px 0 8px;padding-left:9px;border-left:3px solid var(--jade)">' + title + '</div>';
   }
-  function openCardDetail(cardId){
+  function openCardDetailLegacy(cardId){
     var c = _cardById[cardId] || _cardById[(cardId||'').split('@')[0]];
     if (!c) return;
     var esc2 = esc;
@@ -3472,7 +3761,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
     /* 頭：卡名 + banner */
     var head = '<div class="card-detail-head">' +
-      '<div class="card-detail-title"><h2 id="cd-name" style="font-size:21px;font-weight:900;line-height:1.2">' + esc2(c.name) + '</h2>' +
+      '<div class="card-detail-title"><h2 id="legacy-card-detail-name" style="font-size:21px;font-weight:900;line-height:1.2">' + esc2(c.name) + '</h2>' +
       '<div style="font-size:13px;color:var(--mut);margin-top:3px">' + esc2(c.bank) + ' · ' + programTag(c.program) + ' · 批核約 ' + c.applyWeeks + ' 週</div></div>' +
       '<div class="card-detail-actions"><span class="vbadge ' + (c.verified ? 'yes">✓ 主要資料已核實' : 'no">⚠ 未核實') + '</span>' +
       favHeart('cards', cardBaseId, c.name) + '<button type="button" class="share-icon-btn" data-share-card="' + esc2(cardBaseId) + '" aria-label="分享 ' + esc2(c.name) + '">' + SHARE_SVG + '</button></div></div>';
@@ -3623,10 +3912,84 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     var m = $('cardDetail'); m.hidden = false;
     var mc = m.querySelector('.modal'); if (mc) mc.scrollTop = 0;
   }
+  var _cardDetailReturnFocus = null;
+  function closeCardDetail(){
+    var m = $('cardDetail');
+    if (!m || m.hidden) return;
+    m.hidden = true;
+    if (window.AcreMilesOverlayScroll) window.AcreMilesOverlayScroll.unlock('card-detail');
+    if (_cardDetailReturnFocus && document.contains(_cardDetailReturnFocus)){
+      try{ _cardDetailReturnFocus.focus({preventScroll:true}); }catch(e){ _cardDetailReturnFocus.focus(); }
+    }
+    _cardDetailReturnFocus = null;
+  }
+  function openCardDetail(cardId){
+    var c = _cardById[cardId] || _cardById[(cardId || '').split('@')[0]];
+    if (!c) return;
+    var cardBaseId = (c.id || cardId || '').split('@')[0];
+    var w = c.welcome || {};
+    var pd = c.publicDetails || {};
+    var tiers = Array.isArray(w.tiers) ? w.tiers : [];
+    var finalTier = tiers.length ? tiers[tiers.length - 1] : null;
+    var officialDocs = Array.isArray(c.sourceDocs) ? c.sourceDocs : [];
+    var currentOffers = (BM.CHANNEL_OFFERS[cardBaseId] || []).filter(function(o){
+      return o.verified === true && channelOfferIsCurrent(o, new Date());
+    });
+    var applicationURL = currentOffers.length && currentOffers[0].link
+      ? currentOffers[0].link
+      : (c.url || (officialDocs.length ? officialDocs[0].url : ''));
+    function list(items, empty){
+      return Array.isArray(items) && items.length
+        ? '<ul>' + items.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>'
+        : '<p>' + esc(empty) + '</p>';
+    }
+    function block(key, title, body){
+      return '<section class="card-detail-section" data-card-section="' + key + '"><h3>' + title + '</h3>' + body + '</section>';
+    }
+    var head = '<div class="card-detail-head"><div class="card-detail-title"><h2 id="cd-name">' + esc(c.name) + '</h2>' +
+      '<div style="font-size:12.5px;color:var(--mut);margin-top:4px">' + esc(c.bank) + '・' + programTag(c.program) + '</div></div>' +
+      '<div class="card-detail-actions">' + favHeart('cards', cardBaseId, c.name) + '</div></div>';
+    var explanation = block('education','點解會喺結果出現',
+      '<p>' + esc(c.note || '結果由現有 Cost-per-Mile Engine 按迎新、基本賺里率同實際輸入分配；唔代表批核或全市場最佳。') + '</p>');
+    var eligibility = block('eligibility','官方申請資格',
+      '<p>最低年薪：<b>HK$' + BM.fmt(c.minIncome || 0) + '</b>' + (c.incomeVerified ? '' : '（此欄待官方覆核）') + '</p>' +
+      list(pd.eligibility, '其他新客資格請在申請日開官方條款確認。'));
+    var welcome = block('welcome','迎新優惠',
+      finalTier
+        ? '<p>指定期內累積簽 HK$' + BM.fmt(finalTier.spend) + '，現有資料層記錄最多 ' + BM.fmt(finalTier.miles) + ' 里；Engine 會按實際簽賬逐浸計。</p>' +
+          (w.prereq ? '<p>前提：' + esc(w.prereq) + '</p>' : '')
+        : '<p>目前冇可計入 Engine 嘅有效迎新。</p>');
+    var fees = block('annual-fee','年費',
+      '<p>首年：<b>' + ((c.annualFeeFirst || 0) ? 'HK$' + BM.fmt(c.annualFeeFirst) : '豁免') + '</b><br>續期：<b>HK$' + BM.fmt(c.feeRenewal || 0) + '</b>' +
+      (c.feeWaivable ? '・' + esc(c.waiveNote || '可申請豁免') : '・不可豁免') + '</p>');
+    var deadline = block('deadline','期限',
+      '<p>' + (w.deadline ? esc(w.deadline) + ' 前申請；' : '目前資料冇獨立申請截止日；') +
+      '資料最後核對：' + esc(c.sourceVerifiedAt || BM.DATA_AS_OF) + '。申請當日必須重開官方頁。</p>');
+    var exclusions = block('exclusions','排除及注意交易',
+      list(pd.exclusions, '官方資料未列出可在此安全重述嘅完整排除清單；請直接核對條款。'));
+    var official = '<section class="card-source-scope official" data-card-section="official-source" data-source-scope="official"><strong>銀行官方資料</strong>' +
+      (officialDocs.length
+        ? officialDocs.map(function(d){ return '<a class="link-btn" href="' + esc(d.url) + '" target="_blank" rel="noopener">' + esc(d.label) + ' ↗</a>'; }).join(' ')
+        : '<span>官方連結暫未提供。</span>') + '</section>';
+    var channel = '<section class="card-source-scope channel" data-card-section="application-channel" data-source-scope="channel"><strong>申請渠道／推薦資料（與銀行官方資料分開）</strong>' +
+      (currentOffers.length
+        ? currentOffers.map(function(o){ return '<p><b>' + esc(o.platform) + '</b>：' + esc(o.bonus || '現行渠道') + (o.expiry ? '・到期 ' + esc(o.expiry) : '') + '</p>'; }).join('')
+        : '<p>目前冇已確認嘅現行第三方渠道優惠；主 CTA 會使用銀行官方頁。</p>') + '</section>';
+    var cta = '<div id="cardApplyCta">' + (applicationURL
+      ? '<a class="card-apply-cta" href="' + esc(applicationURL) + '" target="_blank" rel="noopener">立即申請</a>'
+      : '<button class="card-apply-cta" type="button" disabled>立即申請</button>') + '</div>';
+    $('cardDetailBody').innerHTML = head + explanation + eligibility + welcome + fees + deadline + exclusions + official + channel + cta;
+    _cardDetailReturnFocus = document.activeElement;
+    var m = $('cardDetail');
+    m.hidden = false;
+    if (window.AcreMilesOverlayScroll) window.AcreMilesOverlayScroll.lock('card-detail');
+    var modal = m.querySelector('.modal');
+    if (modal){ modal.scrollTop = 0; modal.setAttribute('tabindex','-1'); try{ modal.focus({preventScroll:true}); }catch(e){ modal.focus(); } }
+  }
   (function(){
     var m = $('cardDetail');
-    $('cdX').addEventListener('click', function(){ $('cardDetail').hidden = true; });
-    m.addEventListener('click', function(e){ if (e.target === m) m.hidden = true; });
+    $('cdX').addEventListener('click', closeCardDetail);
+    m.addEventListener('click', function(e){ if (e.target === m) closeCardDetail(); });
   })();
 
   /* ---------- 卡庫（v2.5 起純唯讀） ----------
@@ -3645,6 +4008,12 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
   /* ---------- 狀態 ---------- */
   var saved = store.get('bm_input') || {};
+  var MODEL_CONFLICT_CARD_IDS = ['sc-cathay','amex-explorer'];
+  var restoredConflictCards = Array.isArray(saved.restoredConflictCards) ? saved.restoredConflictCards.slice() : [];
+  var savedExcludedCards = Array.isArray(saved.excludedCards) ? saved.excludedCards.slice() : [];
+  MODEL_CONFLICT_CARD_IDS.forEach(function(id){
+    if (restoredConflictCards.indexOf(id) < 0 && savedExcludedCards.indexOf(id) < 0) savedExcludedCards.push(id);
+  });
   var state = {
     amount: typeof saved.amount === 'number' ? saved.amount : 0,
     income: typeof saved.income === 'number' ? saved.income : 0,
@@ -3656,7 +4025,9 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     income2: typeof saved.income2 === 'number' ? saved.income2 : 0,
     owned2: Array.isArray(saved.owned2) ? saved.owned2 : [],
     maxNewCards: typeof saved.maxNewCards === 'number' ? saved.maxNewCards : 6,
-    excludedCards: Array.isArray(saved.excludedCards) ? saved.excludedCards : [],
+    excludedCards: savedExcludedCards,
+    restoredConflictCards: restoredConflictCards,
+    allowAnnualFee: !!saved.allowAnnualFee,
     preferProgram: saved.preferProgram === 'avios' ? 'avios' : 'am'
   };
   var lastRes = null;
@@ -3682,13 +4053,15 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       function(id){
         state.spendPattern = id;
         renderPatternChips();
+        store.set('bm_input', state);
+        if (lastRes) runCalc(false);
       });
   }
   function renderGoalChips(){
     chipRow($('goalChips'),
       [{id:'am', label:'淨儲 Asia Miles'},{id:'avios', label:'淨儲 Avios'},{id:'any', label:'兩樣都睇', sub:'並排比較'}],
       function(it){ return it.id === state.goal; },
-      function(id){ state.goal = id; renderGoalChips(); });
+      function(id){ state.goal = id; renderGoalChips(); store.set('bm_input', state); if (lastRes) runCalc(false); });
   }
   function renderOwnedChips(){
     chipRow($('ownedChips'),
@@ -3698,6 +4071,8 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         var i = state.owned.indexOf(id);
         if (i >= 0) state.owned.splice(i, 1); else state.owned.push(id);
         renderOwnedChips();
+        store.set('bm_input', state);
+        if (lastRes) runCalc(false);
       });
   }
   function renderFamilyChips(){
@@ -3731,11 +4106,21 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         var i = state.owned2.indexOf(id);
         if (i >= 0) state.owned2.splice(i, 1); else state.owned2.push(id);
         renderOwnedChipsB();
+        store.set('bm_input', state);
+        if (lastRes) runCalc(false);
       });
   }
 
   /* ---------- 金額輸入格式化 ---------- */
   var amountEl = $('amount');
+  var earnAutoTimer = null;
+  function scheduleEarnRecalc(){
+    if (earnAutoTimer) clearTimeout(earnAutoTimer);
+    earnAutoTimer = setTimeout(function(){
+      earnAutoTimer = null;
+      if (parseAmount() > 0) runCalc(false);
+    }, 220);
+  }
   function parseAmount(){
     var n = Number(String(amountEl.value).replace(/[^0-9]/g, ''));
     return isFinite(n) ? n : 0;
@@ -3743,6 +4128,13 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   amountEl.addEventListener('input', function(){
     var n = parseAmount();
     amountEl.value = n ? BM.fmt(n) : '';
+    if (n){
+      $('earnAutoStatus').textContent = '計算中…';
+      scheduleEarnRecalc();
+    } else {
+      $('results').hidden = true;
+      $('earnAutoStatus').textContent = '輸入金額後會自動計算；其他設定可喺結果下面再調整。';
+    }
   });
   if (state.amount > 0) amountEl.value = BM.fmt(state.amount);
 
@@ -3754,6 +4146,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   incomeEl.addEventListener('input', function(){
     var n = parseIncome();
     incomeEl.value = n ? BM.fmt(n) : '';
+    if (parseAmount() > 0) scheduleEarnRecalc();
   });
   if (state.income > 0) incomeEl.value = BM.fmt(state.income);
 
@@ -3765,6 +4158,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   incomeBEl.addEventListener('input', function(){
     var n = parseIncomeB();
     incomeBEl.value = n ? BM.fmt(n) : '';
+    if (parseAmount() > 0) scheduleEarnRecalc();
   });
   if (state.income2 > 0) incomeBEl.value = BM.fmt(state.income2);
   /* 家庭模式還原顯示 */
@@ -3774,6 +4168,13 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     $('ownedLabA').textContent = '申請人 A 已經有嘅卡（唔會再計迎新）';
     $('amountHint').textContent = '呢個係你哋兩個人一齊簽嘅總數——系統會自動分畀 A 同 B，唔係要求每人各簽咁多。';
   }
+  var allowAnnualFeeEl = $('allowAnnualFee');
+  allowAnnualFeeEl.checked = !!state.allowAnnualFee;
+  allowAnnualFeeEl.addEventListener('change', function(){
+    state.allowAnnualFee = !!allowAnnualFeeEl.checked;
+    store.set('bm_input', state);
+    if (parseAmount() > 0) runCalc(false);
+  });
 
   /* 統一組裝 optimize 輸入（主計算＋what-if 共用） */
   /* goal='any'（兩樣都睇）時，主組合都要 either/or——用 preferProgram 決定出 AM plan 定 Avios plan。
@@ -3784,7 +4185,8 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   function optInput(amt, months, goalOverride){
     return {amount:amt, months:months, goal:goalOverride || effectiveGoal(), owned:state.owned, income:state.income,
             spendPattern:state.spendPattern, family:state.family, income2:state.income2,
-            owned2:state.owned2, maxNewCards:state.maxNewCards, excludedCards:state.excludedCards};
+            owned2:state.owned2, maxNewCards:state.maxNewCards, excludedCards:state.excludedCards,
+            allowHighFee:!!state.allowAnnualFee};
   }
   function optInputNoExclude(amt, months, goalOverride){
     var o = optInput(amt, months, goalOverride);
@@ -3813,6 +4215,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         var id = btn.getAttribute('data-restore');
         var i = state.excludedCards.indexOf(id);
         if (i >= 0) state.excludedCards.splice(i, 1);
+        if (MODEL_CONFLICT_CARD_IDS.indexOf(id) >= 0 && state.restoredConflictCards.indexOf(id) < 0) state.restoredConflictCards.push(id);
         store.set('bm_input', state);
         runCalc(false);
       });
@@ -3840,18 +4243,73 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     return Math.round(n / 100) * 100;
   }
 
+  function renderOpportunities(res){
+    var host = $('opportunityGrid');
+    if (!host) return;
+    var next = [];
+    res.rows.forEach(function(r){
+      if (r.isNew && r.nextTier && r.nextTier.addSpend > 0 && r.nextTier.addMiles > 0){
+        next.push({card:r.card.name, addSpend:r.nextTier.addSpend, addMiles:r.nextTier.addMiles, cost:r.nextTier.cost});
+      }
+    });
+    next.sort(function(a,b){ return a.cost - b.cost; });
+    var threshold = next.length
+      ? '「' + esc(next[0].card) + '」再簽 HK$' + BM.fmt(next[0].addSpend) + '，Engine 記錄嘅下一浸會增加 ' + BM.fmt(next[0].addMiles) + ' 里（HK$' + next[0].cost.toFixed(2) + '/里）。'
+      : '目前組合冇可追蹤嘅下一浸門檻；唔會自行估一個數。';
+
+    var spouse;
+    if (res.family){
+      spouse = '已按兩位申請人分開計算；家庭總結果係 ' + BM.fmt(Math.round(res.total)) + ' 里。';
+    } else if (state.income2 > 0){
+      var spouseInput = optInput(res.amount, res.months);
+      spouseInput.family = true;
+      var spouseRes = BM.optimize(spouseInput, cards);
+      var spouseDelta = Math.round(spouseRes.total - res.total);
+      spouse = spouseDelta > 0
+        ? '用現有第二位申請人資料重計，家庭模式增加 ' + BM.fmt(spouseDelta) + ' 里；批核仍以銀行為準。'
+        : '用現有第二位申請人資料重計，未有正數增幅。';
+    } else {
+      spouse = '未有第二位申請人年薪，呢個機會暫不顯示數字；展開條件後可填資料再計。';
+    }
+
+    var feeInput = optInput(res.amount, res.months);
+    feeInput.allowHighFee = !state.allowAnnualFee;
+    var feeCompare = BM.optimize(feeInput, cards);
+    var feeBase = state.allowAnnualFee ? feeCompare : res;
+    var feePlan = state.allowAnnualFee ? res : feeCompare;
+    var feeDelta = Math.round(feePlan.total - feeBase.total);
+    var cashDelta = Math.round((feePlan.newFees || 0) - (feeBase.newFees || 0));
+    var feeOpportunity = feeDelta > 0
+      ? (state.allowAnnualFee ? '已包括高年費卡：' : '開啟後，既有 Engine 可增加 ') + BM.fmt(feeDelta) + ' 里，同時首年年費增加 HK$' + BM.fmt(Math.max(0,cashDelta)) + '。Cost-per-Mile 公式冇加年費。'
+      : (state.allowAnnualFee ? '高年費卡已容許入場，但今次 Engine 冇產生正數里數增幅。' : '今次開啟高年費卡亦冇正數里數增幅。');
+
+    var step = Math.max(5000, Math.round(res.amount * 0.1 / 1000) * 1000);
+    var moreRes = BM.optimize(optInput(res.amount + step, res.months), cards);
+    var marginalMiles = Math.max(0, moreRes.total - res.total);
+    var marginalCost = marginalMiles > 0 ? step / marginalMiles : 0;
+    var diminishing = marginalMiles > 0
+      ? '再增加 HK$' + BM.fmt(step) + '，同一 Engine 多 ' + BM.fmt(Math.round(marginalMiles)) + ' 里（邊際 HK$' + marginalCost.toFixed(2) + '/里）' +
+        (res.costPerMile > 0 && marginalCost > res.costPerMile ? '；邊際成本高過目前平均，回報開始遞減。' : '；暫未高過目前平均成本。')
+      : '再增加 HK$' + BM.fmt(step) + ' 未產生可顯示嘅正數邊際里數；唔會推算未有嘅回報。';
+
+    host.innerHTML =
+      '<div class="opportunity-item"><b>下一個消費門檻</b><span>' + threshold + '</span></div>' +
+      '<div class="opportunity-item"><b>第二位申請人／配偶</b><span>' + spouse + '</span></div>' +
+      '<div class="opportunity-item"><b>高年費卡機會</b><span>' + feeOpportunity + '</span></div>' +
+      '<div class="opportunity-item"><b>回報遞減</b><span>' + diminishing + '</span></div>';
+  }
+
   function renderResults(res, animate){
     lastRes = res;
     $('results').hidden = false;
 
     $('dataWarn').innerHTML = res.unverified
       ? '<b>注意：結果包含未核實數據，唔應該用作申請決定。</b>請上銀行官網逐項核對。'
-      : '<b>比較範圍有限：</b>只比較 AcreMiles 現時收錄並通過推薦資料門檻嘅 ' + recommendableCards.length + ' 張卡（截至 ' + esc(BM.DATA_AS_OF) + '），唔代表全市場最佳；個別上限、資格、商戶定義同即時優惠仍要喺申請前對銀行官網。';
+      : '<b>比較範圍有限：</b>只比較 AcreMiles 現時收錄並通過推薦資料門檻嘅 ' + recommendableCards.length + ' 張卡（截至 ' + esc(BM.DATA_AS_OF) + '）。排序完全沿用既有 Cost-per-Mile Engine；其啟發式並未證明為全市場絕對最優，UI 冇另行改公式或重排。';
 
-    var approx = roundApprox(res.total);
-    var lo = roundApprox(res.total * 0.9);
-    var hi = roundApprox(res.total * 1.1);
-    $('sumLab').textContent = res.family ? '以家庭計，你哋合共大約儲到' : '大約可以儲到';
+    var exactMiles = Math.round(res.total);
+    var newCardCount = res.rows.filter(function(r){ return r.isNew; }).length;
+    $('sumLab').textContent = res.family ? '家庭 Engine 結果' : 'Engine 完成結果';
     var fsEl = $('familySplit');
     if (fsEl){
       if (res.family){
@@ -3870,10 +4328,12 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
         fsEl.hidden = true; fsEl.innerHTML = '';
       }
     }
-    if (animate) countUp($('totalMiles'), approx);
-    else $('totalMiles').textContent = BM.fmt(approx);
+    if (animate) countUp($('totalMiles'), exactMiles);
+    else $('totalMiles').textContent = BM.fmt(exactMiles);
+    $('earnMilesTotal').textContent = BM.fmt(exactMiles);
+    $('earnNewCardCount').textContent = BM.fmt(newCardCount);
     $('rangeNote').textContent = res.total > 0
-      ? '約 ' + BM.fmt(lo) + ' – ' + BM.fmt(hi) + ' 里（估算範圍，實際睇你嗰陣嘅迎新同賺里率）'
+      ? '目前輸入嘅精確 Engine 輸出（四捨五入至整里）；實際批核、合資格交易及入賬以官方為準。'
       : '入返上面嘅資料先計到';
     $('costPerMile').textContent = res.total > 0 ? 'HK$' + res.costPerMile.toFixed(2) : '–';
     $('welcomeShare').textContent = res.total > 0 ? Math.round(res.welcomeTotal / res.total * 100) + '%' : '–';
@@ -3885,14 +4345,22 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
                '<span><b>' + BM.fmt(r.welcomeMiles + r.baseMiles) + '</b> 里</span></div>';
       }).join('') +
       '<div class="row2" style="border-top:1px solid rgba(255,255,255,.15);margin-top:6px;padding-top:8px"><span>簽賬總額</span><span><b>HK$' + BM.fmt(res.amount) + '</b></span></div>' +
-      '<div style="margin-top:8px;color:rgba(255,255,255,.85)">呢個數 = 每張卡「迎新 + 基本賺里 × 簽賬額」加埋。迎新同賺里率截至 ' + esc(BM.DATA_AS_OF) + '，銀行隨時靜靜雞調，所以先話你知範圍，唔淨係一個死數。</div>'
+      '<div style="margin-top:8px;color:rgba(255,255,255,.85)">呢個數 = 每張卡「迎新 + 基本賺里」加埋；介面直接顯示同一個 Engine 結果，冇再加估算範圍。資料截至 ' + esc(BM.DATA_AS_OF) + '，申請前仍要重新核對官方條款。</div>'
     ) : '';
 
+    var gatedConflicts = MODEL_CONFLICT_CARD_IDS.filter(function(id){ return state.excludedCards.indexOf(id) >= 0; });
+    var restoredConflicts = MODEL_CONFLICT_CARD_IDS.filter(function(id){ return state.excludedCards.indexOf(id) < 0; });
     $('resWarnings').innerHTML = res.warnings.map(function(w){
       return '<div class="warn">' + esc(w) + '</div>';
     }).join('') + (res.butlerNotes || []).map(function(t){
       return '<div style="padding:11px 13px;background:var(--gold-soft);border:1px solid var(--gold);border-radius:10px;font-size:13px;line-height:1.55;margin-bottom:8px;color:var(--gold-deep)">' + esc(t) + '</div>';
-    }).join('') + butlerTipsTop(res);
+    }).join('') +
+      (gatedConflicts.length
+        ? '<div class="engine-gate"><b>模型安全閘：</b>' + gatedConflicts.length + ' 張有已知重複計算衝突嘅卡保持灰色可見，但暫不計入；可以手動加返。</div>' : '') +
+      (restoredConflicts.length
+        ? '<div class="warn"><b>已手動恢復模型衝突卡：</b>目前結果可能包含已記錄嘅基本里數重複計算；只可作測試比較，唔應當作已核實結果。</div>' : '') +
+      butlerTipsTop(res);
+    renderOpportunities(res);
 
     /* 結果頂：加人建議（大額＋單人先提） */
     function butlerTipsTop(res){
@@ -4101,7 +4569,14 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       btn.addEventListener('click', function(){
         var id = btn.getAttribute('data-toggle');
         var i = state.excludedCards.indexOf(id);
-        if (i >= 0) state.excludedCards.splice(i, 1); else state.excludedCards.push(id);
+        if (i >= 0){
+          state.excludedCards.splice(i, 1);
+          if (MODEL_CONFLICT_CARD_IDS.indexOf(id) >= 0 && state.restoredConflictCards.indexOf(id) < 0) state.restoredConflictCards.push(id);
+        } else {
+          state.excludedCards.push(id);
+          var ri = state.restoredConflictCards.indexOf(id);
+          if (ri >= 0) state.restoredConflictCards.splice(ri, 1);
+        }
         store.set('bm_input', state);
         runCalc(false);
       });
@@ -4335,25 +4810,10 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   });
   /* v2.5.1：WHAT-IF「簽賬期」stepper 已刪（Robert 拍板冇用）；wif.months 固定跟計算時嘅 months */
 
-  /* 主計算共用：優化 ＋ 踢卡替補升級。
-     升級規則：你踢走咗卡、而免年費嘅卡冇一張頂到上（新卡零增加）→ 開 allowHighFee 再計，
-     畀高年費卡入場做替補（照計簽賬迎新、紅框年費警告照出）——你親眼見到要年費，自然識返轉頭撳「加返」。 */
+  /* 主計算共用：直接傳入既有 Engine。高年費卡只由明示 checkbox 控制，
+     UI 唔會因為替補結果而靜靜改 allowHighFee，亦唔會改 Cost-per-Mile 公式。 */
   function computePlan(amt, months){
-    var res = BM.optimize(optInput(amt, months), cards);
-    if (state.excludedCards.length){
-      var fullR0 = BM.optimize(optInputNoExclude(amt, months), cards);
-      var fullNewSet = {};
-      fullR0.rows.forEach(function(r){ if (r.isNew) fullNewSet[(r.card._person || '_') + '|' + (r.card._baseId || r.card.id)] = true; });
-      var freeCameIn = res.rows.some(function(r){ return r.isNew && !fullNewSet[(r.card._person || '_') + '|' + (r.card._baseId || r.card.id)]; });
-      if (!freeCameIn){
-        var inHF = optInput(amt, months);
-        inHF.allowHighFee = true;
-        var resHF = BM.optimize(inHF, cards);
-        var hfCameIn = resHF.rows.some(function(r){ return r.isNew && BM.isHighFeeCard(r.card); });
-        if (hfCameIn) res = resHF;
-      }
-    }
-    return res;
+    return BM.optimize(optInput(amt, months), cards);
   }
 
   function runCalc(scroll){
@@ -4371,89 +4831,41 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     renderResults(res, true);
     setupWhatIf(res);
     syncPlanSaveButton();
+    $('earnAutoStatus').textContent = '已用目前設定完成計算；修改金額會自動更新。';
     if (scroll) $('results').scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', block:'start'});
   }
-  $('calcContinue').addEventListener('click', function(){
-    var amt = parseAmount();
-    if (amt <= 0){ amountEl.focus(); toast('先輸入今次消費金額'); return; }
-    state.amount = amt;
-    store.set('bm_input', state);
-    $('calcDetails').hidden = false;
-    this.hidden = true;
-    setTimeout(function(){ $('calcDetails').scrollIntoView({behavior:reduceMotion ? 'auto' : 'smooth', block:'start'}); }, 30);
-  });
   $('calcBtn').addEventListener('click', function(){ runCalc(true); });
 
   /* ---------- 「里數規劃專員」render（功能三） ---------- */
-  var haveMilesEl = $('haveMiles');
+  var haveMilesEl = $('redeemMiles');
+  var generalRedeemState = {mode:'general', program:'am', party:1};
+  var REDEEM_AIRPORT_DETAIL = {
+    tpe:'HKG ⇄ TPE／KHH', 'icn-y':'HKG ⇄ ICN／BKK', 'nrt-y':'HKG ⇄ NRT／HND／KIX'
+  };
   function parseHave(){
     var n = Number(String(haveMilesEl.value).replace(/[^0-9]/g, ''));
     return isFinite(n) ? n : 0;
   }
   function renderRedeem(){
     var have = parseHave();
+    var key = generalRedeemState.program === 'avios' ? 'avios' : 'asiaMiles';
+    var programLabel = generalRedeemState.program === 'avios' ? 'Avios' : 'Asia Miles';
+    var list = BM.REDEMPTIONS.filter(function(r){
+      return r.trip === '來回' && r[key] != null;
+    }).map(function(r){
+      return {r:r, need:r[key] * generalRedeemState.party};
+    }).sort(function(a,b){ return a.need - b.need; });
+    $('generalRedeemResults').innerHTML = list.length ? list.map(function(x){
+      var human = x.r.route.replace(/^香港\s*⇄\s*/, '');
+      var enough = have > 0 && have >= x.need;
+      var status = have <= 0 ? '輸入可用里數後會顯示差額。'
+        : (enough ? '✓ 里數足夠兌換' : '尚欠 ' + BM.fmt(x.need - have) + ' 里');
+      return '<article class="redeem-result-card" data-redemption="' + esc(x.r.id) + '">' +
+        '<div class="redeem-result-top"><h3>' + esc(human) + '・' + esc(x.r.cabin) + '來回</h3><div class="need">' + BM.fmt(x.need) + ' 里</div></div>' +
+        '<p>' + programLabel + (key === 'avios' ? '（現有可追溯資料；待官方逐格覆核）' : '（官方表已核實）') + '・' + generalRedeemState.party + ' 人。' + status + '</p>' +
+        '<details><summary>航線細節</summary><div>機場代碼：' + esc(REDEEM_AIRPORT_DETAIL[x.r.id] || '以官方搜尋結果為準') + '。每人需要 ' + BM.fmt(x.r[key]) + ' 里；稅費及獎勵位未包括。</div></details></article>';
+    }).join('') : '<div class="panel">目前呢個計劃冇已核實嘅來回 V1 結果。</div>';
 
-    /* 環球商務 highlight */
-    var rtw = null;
-    BM.REDEMPTIONS.forEach(function(r){ if (r.highlight) rtw = r; });
-    if (rtw){
-      var goal = rtw.asiaMiles;
-      var pct = goal > 0 ? Math.min(100, have / goal * 100) : 0;
-      var done = have >= goal;
-      var gap = Math.max(0, goal - have);
-      $('rtwCard').innerHTML =
-        '<div class="tag-top">終極目標</div>' +
-        '<h3>' + esc(rtw.route) + '・全商務</h3>' +
-        '<div class="sub">' + esc(rtw.trip) + '，Asia Miles 寰宇一家環球票</div>' +
-        '<div class="need">需要 <b>' + BM.fmt(goal) + '</b> 里' +
-          (have > 0 ? '　·　你有 ' + BM.fmt(have) : '') + '</div>' +
-        '<div class="pbar"><span style="width:' + pct.toFixed(1) + '%"></span></div>' +
-        '<div class="pmsg' + (done ? ' done' : '') + '">' +
-          (have <= 0 ? '入你嘅里數，睇下仲差幾遠。' :
-           done ? '✓ 夠喇！你已經儲夠換一張寰宇一家環球商務票。' :
-           '仲差 ' + BM.fmt(gap) + ' 里。') +
-        '</div>' +
-        '<div class="pmsg" style="margin-top:8px;font-size:12.5px;color:#E4D6BC">⚠ 里數唔等於免費：環球票每個航段都要俾燃油附加費＋稅，全程隨時 <b style="color:var(--gold)">HK$' + BM.fmt(rtw.cashCost) + '+</b> 現金。長途每航段 YQ 約 HK$1,164，轉幾程就幾倍。</div>';
-    }
-
-    /* 航線對比 */
-    $('routeList').innerHTML = BM.REDEMPTIONS.filter(function(r){ return !r.highlight; }).map(function(r){
-      var cheap = BM.cheaperProgram(r);
-      var amWin = cheap.best === 'am', avWin = cheap.best === 'avios';
-      var minMi = Math.min(r.asiaMiles == null ? Infinity : r.asiaMiles,
-                           r.avios == null ? Infinity : r.avios);
-      var canDo = have > 0 && have >= minMi;
-
-      function side(prog, val, win){
-        return '<div class="vs-side' + (win ? ' win' : '') + '">' +
-          '<div class="p">' + prog + '</div>' +
-          (val == null ? '<div class="n na">唔提供</div>'
-                       : '<div class="n">' + BM.fmt(val) + '</div>') +
-          (win ? '<div class="best">較抵</div>' : '') +
-        '</div>';
-      }
-
-      return '<div class="route">' +
-        '<div class="route-top"><div class="route-name">' + esc(r.route) + '</div>' +
-        '<div class="route-cabin">' + esc(r.cabin) + '・' + esc(r.trip) + '</div></div>' +
-        '<div class="route-note">' + esc(r.note) + '</div>' +
-        '<div class="vs">' +
-          side('Asia Miles', r.asiaMiles, amWin) +
-          '<div class="vs-mid">vs</div>' +
-          side('Avios', r.avios, avWin) +
-        '</div>' +
-        (r.cashCost > 0
-          ? '<div class="cash-note">＋另需現金約 <b>HK$' + BM.fmt(r.cashCost) + '</b>（燃油附加費＋稅，唔用得里數找）</div>'
-          : '') +
-        (have > 0
-          ? '<div class="route-have ' + (canDo ? 'ok' : 'no') + '">' +
-            (canDo ? '✓ 你有 ' + BM.fmt(have) + ' 里，換到' + (amWin || avWin ? '（用' + (avWin ? 'Avios' : 'Asia Miles') + '最抵）' : '')
-                   : '仲差 ' + BM.fmt(minMi - have) + ' 里') + '</div>'
-          : '') +
-      '</div>';
-    }).join('');
-
-    /* 連動優化器 */
     if (lastOptTotal > 0){
       $('fillFromOpt').hidden = false;
       $('optMilesLabel').textContent = BM.fmt(lastOptTotal);
@@ -4470,6 +4882,41 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     haveMilesEl.value = BM.fmt(lastOptTotal);
     renderRedeem();
   });
+  $('carryMilesToRedeem').addEventListener('click', function(){
+    haveMilesEl.value = BM.fmt(Math.round(lastOptTotal));
+    var tab = document.querySelector('.tabs button[data-tab="redeem"]');
+    if (tab) tab.click();
+    setRedeemMode('general');
+    renderRedeem();
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-general-program]'), function(b){
+    b.addEventListener('click', function(){
+      generalRedeemState.program = b.getAttribute('data-general-program');
+      Array.prototype.forEach.call(document.querySelectorAll('[data-general-program]'), function(x){ x.classList.toggle('on', x === b); });
+      renderRedeem();
+    });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-general-party]'), function(b){
+    b.addEventListener('click', function(){
+      generalRedeemState.party = Number(b.getAttribute('data-general-party')) || 1;
+      Array.prototype.forEach.call(document.querySelectorAll('[data-general-party]'), function(x){ x.classList.toggle('on', x === b); });
+      renderRedeem();
+    });
+  });
+  function setRedeemMode(mode){
+    generalRedeemState.mode = mode === 'rtw' ? 'rtw' : 'general';
+    $('generalRedeem').hidden = generalRedeemState.mode !== 'general';
+    $('rtwRedeem').hidden = generalRedeemState.mode !== 'rtw';
+    if (generalRedeemState.mode !== 'rtw') $('rsub-rtw').hidden = true;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-redeem-mode]'), function(b){
+      var on = b.getAttribute('data-redeem-mode') === generalRedeemState.mode;
+      b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-redeem-mode]'), function(b){
+    b.addEventListener('click', function(){ setRedeemMode(b.getAttribute('data-redeem-mode')); });
+  });
+  window._setRedeemMode = setRedeemMode;
 
   /* ---------- 「日常儲分」邏輯（功能二） ---------- */
   var _d0 = store.get('bm_daily') || {};
@@ -5069,21 +5516,26 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     ];
     var beginnerState = {destinations:[],activities:[]};
     function openPlannerGateway(openBuilder){
-      $('tab-redeem').classList.add('planner-gateway-mode');
+      if (window._setRedeemMode) window._setRedeemMode('rtw');
       $('plannerGateway').hidden = false;
+      $('rsub-rtw').hidden = true;
       $('beginnerBuilder').hidden = !openBuilder;
       if (openBuilder) setTimeout(function(){ $('beginnerBuilder').scrollIntoView({behavior:'smooth',block:'start'}); }, 40);
     }
     function openPlannerAdvanced(templateKey, sub){
-      $('tab-redeem').classList.remove('planner-gateway-mode');
+      if (sub && sub !== 'rtw'){
+        if (window._setRedeemMode) window._setRedeemMode('general');
+        toast('單程同其他兌換即將推出；而家先顯示來回票。');
+        return;
+      }
+      if (window._setRedeemMode) window._setRedeemMode('rtw');
       $('plannerGateway').hidden = true;
-      var target = sub || 'rtw';
-      var rb = document.querySelector('#redeemSub [data-rsub="' + target + '"]'); if (rb) rb.click();
+      $('rsub-rtw').hidden = false;
       if (templateKey && OW_ZONE_DEMOS[templateKey]) owLoadDemo(OW_ZONE_DEMOS[templateKey]);
     }
     window._openPlannerGateway = openPlannerGateway;
     window._openPlannerAdvanced = function(templateKey, sub){ openPlannerAdvanced(templateKey, sub); };
-    openPlannerGateway(false);
+    if (window._setRedeemMode) window._setRedeemMode('general');
     $('plannerBeginner').addEventListener('click', function(){ openPlannerGateway(true); });
     $('plannerAdvanced').addEventListener('click', function(){ openPlannerAdvanced(null, 'rtw'); });
     document.addEventListener('click', function(e){
@@ -5202,8 +5654,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     Array.prototype.forEach.call(document.querySelectorAll('#redeemSub button'), function(b){
       b.addEventListener('click', function(){ showSub(b.getAttribute('data-rsub')); });
     });
-    var savedSub = store.get('bm_rsub');
-    if (savedSub && SUBS[savedSub]) showSub(savedSub);
+    Object.keys(SUBS).forEach(function(k){ var legacy = $(SUBS[k]); if (legacy) legacy.hidden = true; });
     var goBtn = $('goRtwPlanner');
     if (goBtn) goBtn.addEventListener('click', function(){
       showSub('rtw');
@@ -5331,7 +5782,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       });
       el.classList.toggle('on', el.getAttribute('data-satrip') === saState.trip);
     });
-    var hm = $('haveMiles');
+    var hm = $('redeemMiles');
     if (hm) hm.addEventListener('input', renderSa);
     /* 上次揀開嘅目的地：自動跳返佢個區 */
     if (saState.dest){
@@ -5444,7 +5895,9 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     if (tb) tb.click();
   });
   function renderJourney(){
+    renderHomeHero();
     renderSpendScenarios();
+    renderHomeOffers();
     renderShowcase();
     if (typeof renderSavedPlans === 'function') renderSavedPlans();
     renderSavedRedeem();
@@ -5454,6 +5907,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     $('jrSecEarn').hidden = getSavedPlans().length === 0;
     $('jrSecRtw').hidden = getSavedRedeem().length === 0;
     $('jrSecFav').hidden = favN === 0;
+    if ($('homeUserEmpty')) $('homeUserEmpty').hidden = getSavedPlans().length > 0 || getSavedRedeem().length > 0 || favN > 0;
     if ($('jrOnboard')) $('jrOnboard').hidden = true;
   }
   function getSavedRedeem(){
@@ -5664,7 +6118,10 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
   /* menu 行為 */
   (function(){
-    function closeMenu(){ $('setSheet').hidden = true; $('setBg').hidden = true; }
+    function closeMenu(){
+      if (window.closeProfileHub) window.closeProfileHub();
+      else { $('setSheet').hidden = true; $('setBg').hidden = true; }
+    }
     if ($('mnRobot')) $('mnRobot').addEventListener('click', function(){ closeMenu(); $('robotBtn').click(); });
     if ($('mnContact')){
       var note = $('mnContactNote');
@@ -5760,12 +6217,6 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   })();
   loadGA();
 
-  (function(){
-    var el = $('heroAsk'); if (!el) return;
-    var lines = ['先規劃想去邊，再計點儲里', '由想去邊開始，我幫你計', '砌好行程，再反推要幾多里'];
-    el.textContent = lines[Math.floor(Math.random() * lines.length)];
-  })();
-
   /* ══════════ BM_BACK_V2：返回鍵＝上一頁（tab stack）＋輸入保護＋浮層優先 ══════════ */
   (function(){
     var HOME = 'journey';
@@ -5803,7 +6254,9 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       for (var j = 0; j < ov.length; j++){
         var o = $(ov[j]);
         if (o && !o.hidden){
-          o.hidden = true;
+          if (ov[j] === 'setSheet' && window.closeProfileHub) window.closeProfileHub();
+          else if (ov[j] === 'cardDetail') closeCardDetail();
+          else o.hidden = true;
           if ((ov[j] === 'subSheet' || ov[j] === 'setSheet') && $('setBg')) $('setBg').hidden = true;
           return true;
         }
@@ -5852,60 +6305,189 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
   /* ══════════ v6.1 SHOWCASE（旅程頂宣傳輪播）＋統一浮層行為 ══════════ */
   var SOCIAL_LINKS = {ig: 'https://www.instagram.com/acremiles', fb: ''}; /* IG 已填(@acremiles)；FB 頁 URL 待 Robert 畀確實 slug；兩者皆空先 toast */
-  /* v6.79：首頁示範集中資料層。正式畫面只 render verified 且未過期項目。 */
-  var SPEND_SCENARIOS = [
-    {id:'iphone-8000', context:'生活消費', title:'買部 iPhone', amountHKD:8000, rewardMiles:20000, rewardExample:'台北經濟來回', rewardThreshold:'14,000 里', sourceDate:'2026-07-09', verified:true, articleId:'pgG2'},
-    {id:'everymile-25000', context:'一筆消費', title:'簽 HK$25,000 食 base＋flash', amountHKD:25000, rewardMiles:45000, rewardExample:'日本經濟來回', rewardThreshold:'26,000 里', sourceDate:'2026-07-23', expires:'2026-07-31', verified:true, articleId:'pgO2'},
-    {id:'explorer-30000', context:'旅行或購物', title:'簽 HK$30,000（最少 HK$15,000 本地＋已登記）', amountHKD:30000, rewardMiles:26000, rewardExample:'日本經濟來回', rewardThreshold:'26,000 里', sourceDate:'2026-07-23', expires:'2026-08-31', verified:true, articleId:'pgO4'}
+  /* Phase 2B demonstrations：金額、假設、資料日期同 Engine input 全部集中；
+     畫面只顯示 BM.optimize 即時計出嘅輸出，唔保存 marketing 手填里數。 */
+  var PHASE2B_HERO_SCENARIOS = [
+    {id:'iphone', context:'官方價格已核實', title:'iPhone 17・512GB', amountLabel:'Apple 香港官方售價', amountHKD:8599,
+      spendPattern:'lump', exclusions:['sc-cathay','amex-explorer','citi-pm'], asOf:'2026-07-23', verifiedUntil:'2026-07-31',
+      sourceType:'official-price', sourceURL:'https://www.apple.com/hk-zh/shop/buy-iphone/iphone-17',
+      paymentURL:'https://www.apple.com/hk-zh/shop/help/payments',
+      detail:'單一 Apple Pay 信用卡交易；未建模發卡行服務費。'},
+    {id:'car', context:'條件式可行示範', title:'買車', amountLabel:'可碌卡訂金＋尾數', amountHKD:100000,
+      spendPattern:'spread', exclusions:['sc-cathay','amex-explorer'], asOf:'2026-07-23', verifiedUntil:'2026-07-31',
+      sourceType:'authored-demo', detail:'示範輸入；商戶須確認直接碌卡、分卡同手續費。'},
+    {id:'wedding', context:'條件式可行示範', title:'Wedding／結婚', amountLabel:'可碌卡供應商付款', amountHKD:150000,
+      spendPattern:'spread', exclusions:['sc-cathay','amex-explorer'], asOf:'2026-07-23', verifiedUntil:'2026-07-31',
+      sourceType:'authored-demo', detail:'示範輸入；供應商須確認交易屬合資格零售簽賬。'}
   ];
-  function startSpendCalculator(amount){
-    var a = Number(amount) || 0;
-    if (a > 0){
-      state.amount = a;
-      $('amount').value = BM.fmt(a);
-      store.set('bm_input', state);
+  var PHASE2B_SPEND_EXAMPLES = [
+    {id:'renovation', title:'裝修分段付款', amountHKD:120000},
+    {id:'furniture', title:'傢俬組合', amountHKD:50000},
+    {id:'appliances', title:'電器套裝', amountHKD:30000},
+    {id:'travel-hotel', title:'機票／酒店', amountHKD:40000},
+    {id:'tuition', title:'學費', amountHKD:80000},
+    {id:'medical-dental', title:'醫療／牙科', amountHKD:60000},
+    {id:'online-shopping', title:'大型網購', amountHKD:20000}
+  ].map(function(x){
+    x.context = '可碌卡部分';
+    x.amountLabel = '產品示範輸入';
+    x.spendPattern = 'spread';
+    x.exclusions = ['sc-cathay','amex-explorer'];
+    x.asOf = '2026-07-23';
+    x.verifiedUntil = '2026-07-31';
+    x.sourceType = 'authored-demo';
+    x.detail = '唔係市場平均價格；商戶及發卡行條件須另行確認。';
+    return x;
+  });
+  function phase2bDemoInput(s){
+    return {amount:s.amountHKD, income:300000, months:6, goal:'am', spendPattern:s.spendPattern,
+      owned:[], family:false, income2:0, owned2:[], maxNewCards:2,
+      excludedCards:s.exclusions.slice(), allowHighFee:false};
+  }
+  function phase2bDemoResult(s){
+    return BM.optimize(phase2bDemoInput(s), cards);
+  }
+  function phase2bScenario(id){
+    var all = PHASE2B_HERO_SCENARIOS.concat(PHASE2B_SPEND_EXAMPLES), found = null;
+    all.forEach(function(s){ if (s.id === id) found = s; });
+    return found;
+  }
+  window.ACREMILES_PHASE2B_DEMOS = {
+    hero:PHASE2B_HERO_SCENARIOS,
+    additional:PHASE2B_SPEND_EXAMPLES,
+    input:phase2bDemoInput,
+    result:phase2bDemoResult
+  };
+
+  function startSpendCalculator(ref){
+    var s = typeof ref === 'string' ? phase2bScenario(ref) : null;
+    var a = s ? s.amountHKD : (Number(ref) || 0);
+    if (a <= 0) return;
+    state.amount = a;
+    if (s){
+      state.income = 300000;
+      state.months = 6;
+      state.goal = 'am';
+      state.preferProgram = 'am';
+      state.spendPattern = s.spendPattern;
+      state.owned = [];
+      state.family = false;
+      state.income2 = 0;
+      state.owned2 = [];
+      state.maxNewCards = 2;
+      state.excludedCards = s.exclusions.slice();
+      state.restoredConflictCards = [];
+      state.allowAnnualFee = false;
     }
-    if ($('calcDetails')) $('calcDetails').hidden = true;
-    if ($('calcContinue')) $('calcContinue').hidden = false;
+    $('amount').value = BM.fmt(a);
+    $('income').value = state.income ? BM.fmt(state.income) : '';
+    $('incomeB').value = '';
+    $('allowAnnualFee').checked = !!state.allowAnnualFee;
+    $('incomeBField').hidden = !state.family;
+    $('ownedBField').hidden = !state.family;
+    $('ownedLabA').textContent = state.family ? '申請人 A 已經有嘅卡（唔會再計迎新）' : '已經有嘅卡（唔會再計迎新）';
+    $('amountHint').textContent = state.family
+      ? '呢個係你哋兩個人一齊簽嘅總數——系統會自動分畀 A 同 B。'
+      : '入可以用卡簽嘅部分；示範前先確認商戶、交易類別同手續費。';
+    renderPatternChips(); renderGoalChips(); renderOwnedChips(); renderFamilyChips(); renderMaxCardChips(); renderOwnedChipsB();
+    store.set('bm_input', state);
+    $('calcDetails').open = false;
     var b = document.querySelector('.tabs button[data-tab="opt"]');
     if (b) b.click();
     var e = document.querySelector('#earnSub [data-esub="opt"]'); if (e) e.click();
-    setTimeout(function(){ if ($('amount')) $('amount').focus(); }, 60);
+    runCalc(false);
+    setTimeout(function(){ $('results').scrollIntoView({behavior:reduceMotion ? 'auto' : 'smooth', block:'start'}); }, 50);
   }
+
+  var _heroTimer = null, _heroIndex = 0;
+  function renderHomeHero(){
+    var track = $('homeHeroTrack'), dots = $('homeHeroDots'); if (!track || !dots) return;
+    track.innerHTML = PHASE2B_HERO_SCENARIOS.map(function(s){
+      var res = phase2bDemoResult(s);
+      var newCards = res.rows.filter(function(r){ return r.isNew; }).length;
+      return '<article class="home-hero-slide" data-hero-scenario="' + esc(s.id) + '" data-engine-miles="' + Math.round(res.total) + '">' +
+        '<div><div class="hero-proof"><span>現行規則核實可行情境</span><span>資料 ' + esc(s.asOf) + '</span></div>' +
+        '<div class="hero-scenario-k">' + esc(s.context) + '</div><h2>' + esc(s.title) + '</h2>' +
+        '<div class="hero-amount">' + esc(s.amountLabel) + '・HK$' + BM.fmt(s.amountHKD) + '</div></div>' +
+        '<div><div class="hero-result"><span>同一個 Cost-per-Mile Engine 即時計算</span><b>' + BM.fmt(Math.round(res.total)) + ' 里</b><small>新申請 ' + newCards + ' 張<br>首年年費 HK$' + BM.fmt(res.newFees || 0) + '</small></div>' +
+        '<button type="button" class="hero-cta" data-hero-earn="' + esc(s.id) + '">點做到？</button>' +
+        '<p class="hero-fine">' + esc(s.detail) + ' 已預先閘走兩張有已知重複計算衝突嘅卡；可喺結果灰色卡片手動加返。</p></div></article>';
+    }).join('');
+    dots.innerHTML = PHASE2B_HERO_SCENARIOS.map(function(s,i){
+      return '<button type="button" data-hero-dot="' + i + '" class="' + (i === 0 ? 'on' : '') + '" aria-label="顯示 ' + esc(s.title) + '" aria-current="' + (i === 0 ? 'true' : 'false') + '"></button>';
+    }).join('');
+    function syncHero(){
+      var w = track.clientWidth || 1;
+      _heroIndex = Math.max(0, Math.min(PHASE2B_HERO_SCENARIOS.length - 1, Math.round(track.scrollLeft / w)));
+      Array.prototype.forEach.call(dots.children, function(d,i){
+        d.classList.toggle('on', i === _heroIndex);
+        d.setAttribute('aria-current', i === _heroIndex ? 'true' : 'false');
+      });
+    }
+    function goHero(i, behavior){
+      _heroIndex = (i + PHASE2B_HERO_SCENARIOS.length) % PHASE2B_HERO_SCENARIOS.length;
+      track.scrollTo({left:_heroIndex * track.clientWidth, behavior:behavior || 'smooth'});
+      syncHero();
+    }
+    track.onscroll = syncHero;
+    $('heroPrev').onclick = function(){ goHero(_heroIndex - 1); };
+    $('heroNext').onclick = function(){ goHero(_heroIndex + 1); };
+    dots.onclick = function(e){
+      var d = e.target.closest('[data-hero-dot]'); if (d) goHero(Number(d.getAttribute('data-hero-dot')));
+    };
+    if (_heroTimer) clearInterval(_heroTimer);
+    if (!reduceMotion){
+      _heroTimer = setInterval(function(){
+        if (!document.hidden && !$('tab-journey').hidden) goHero(_heroIndex + 1);
+      }, 5200);
+      track.onpointerdown = function(){ if (_heroTimer){ clearInterval(_heroTimer); _heroTimer = null; } };
+    }
+  }
+
+  function bindHorizontalScroller(host, prev, next){
+    if (!host) return;
+    function step(dir){ host.scrollBy({left:dir * Math.max(240, host.clientWidth * .78), behavior:'smooth'}); }
+    if (prev) prev.onclick = function(){ step(-1); };
+    if (next) next.onclick = function(){ step(1); };
+    host.onwheel = function(e){
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)){ e.preventDefault(); host.scrollLeft += e.deltaY; }
+    };
+    var active = false, startX = 0, startLeft = 0;
+    host.onpointerdown = function(e){ if (e.pointerType === 'mouse'){ active = true; startX = e.clientX; startLeft = host.scrollLeft; host.classList.add('dragging'); host.setPointerCapture(e.pointerId); } };
+    host.onpointermove = function(e){ if (active) host.scrollLeft = startLeft - (e.clientX - startX); };
+    host.onpointerup = host.onpointercancel = function(){ active = false; host.classList.remove('dragging'); };
+  }
+
   function renderSpendScenarios(){
-    var host = $('scenarioStrip'), section = $('scenarioSection'); if (!host || !section) return;
+    var host = $('scenarioStrip'); if (!host) return;
+    host.innerHTML = PHASE2B_SPEND_EXAMPLES.map(function(s){
+      var res = phase2bDemoResult(s);
+      return '<article class="spend-example" data-spend-example="' + esc(s.id) + '" data-engine-miles="' + Math.round(res.total) + '">' +
+        '<div class="demo-tag">' + esc(s.context) + '</div><h3>' + esc(s.title) + '</h3>' +
+        '<div class="demo-numbers"><div><span>示範金額</span><b>HK$' + BM.fmt(s.amountHKD) + '</b></div><div><span>Engine 結果</span><b>' + BM.fmt(Math.round(res.total)) + ' 里</b></div></div>' +
+        '<button type="button" data-example-earn="' + esc(s.id) + '">用完整結果試改</button></article>';
+    }).join('');
+    bindHorizontalScroller(host, $('spendPrev'), $('spendNext'));
+  }
+
+  function renderHomeOffers(){
+    var host = $('homeOfferList'); if (!host || !Array.isArray(ARTICLES_ORIG)) return;
     var today = hkToday();
-    var list = SPEND_SCENARIOS.filter(function(s){ return s.verified && (!s.expires || s.expires >= today); });
-    section.hidden = list.length === 0;
-    host.innerHTML = list.map(function(s){
-      return '<article class="scenario-card"><div class="sc-context">' + esc(s.context) + '</div><h3>' + esc(s.title) + '</h3>' +
-        '<div class="sc-flow"><div><span>消費</span><b>HK$' + BM.fmt(s.amountHKD) + '</b></div><i aria-hidden="true">→</i><div><span>可達例子</span><b>' + esc(s.rewardExample) + '</b></div></div>' +
-        '<div class="sc-meta"><span>約 ' + BM.fmt(s.rewardMiles) + ' 里</span><span>資料 ' + esc(s.sourceDate) + '</span></div>' +
-        '<div style="display:flex;gap:7px;margin-top:10px"><button type="button" class="btn-sm pri" data-scenario-calc="' + s.amountHKD + '">用呢個金額計</button><button type="button" class="btn-sm" data-open="' + esc(s.articleId) + '">睇計法</button></div></article>';
+    var current = ARTICLES_ORIG.filter(function(a){ return !a.expire || a.expire >= today; }).slice(0,4);
+    host.innerHTML = current.map(function(a){
+      return '<button type="button" class="home-offer-card" data-open="' + esc(a.pg || '') + '"><span>' + esc(a.tag || '優惠') + (a.expire ? '・至 ' + esc(a.expire) : '') + '</span><b>' + esc(a.t) + '</b></button>';
     }).join('');
   }
+
   document.addEventListener('click', function(e){
-    var c = e.target.closest ? e.target.closest('[data-scenario-calc]') : null;
-    if (c){ startSpendCalculator(Number(c.getAttribute('data-scenario-calc'))); return; }
-    var p = e.target.closest ? e.target.closest('[data-plan-entry]') : null;
-    if (p){
-      var tb = document.querySelector('.tabs button[data-tab="redeem"]'); if (tb) tb.click();
-      if (p.getAttribute('data-plan-entry') === 'single'){
-        if (window._openPlannerAdvanced) window._openPlannerAdvanced(null, 'oneway');
-      } else if (window._openPlannerGateway) window._openPlannerGateway(true);
-    }
-  });
-  if ($('featureUseAmount')) $('featureUseAmount').addEventListener('click', function(){ startSpendCalculator(8000); });
-  if ($('homeCalcStart')) $('homeCalcStart').addEventListener('click', function(){
-    var n = Number(String($('homeAmount').value || '').replace(/[^0-9]/g, ''));
-    if (!n){ $('homeAmount').focus(); toast('先輸入今次消費金額'); return; }
-    startSpendCalculator(n);
+    var c = e.target.closest ? e.target.closest('[data-hero-earn],[data-example-earn]') : null;
+    if (c){ startSpendCalculator(c.getAttribute('data-hero-earn') || c.getAttribute('data-example-earn')); }
   });
   function buildShowcase(){
     /* v6.44：Robert 指定四格。四張圖全部已 baked 大標題文字 → 一律 bare，唔再疊 tag/標題落去（會重疊）。 */
     var s = [];
-    s.push({tag: '攻略',   act: 'pg', pg: 'pgG2',  bg: 'g1', img: 'img/thumb-pgG2.webp', bare: true, alt: '信用卡砌卡組合：用啱卡買部 iPhone 即賺北海道來回機票'});
     s.push({tag: '優惠',   act: 'pg', pg: 'pgO2',  bg: 'g2', img: 'img/thumb-pgO2.webp',  bare: true, alt: '滙豐 EveryMile 全年 base 同 7 月 flash 分開計，合資格新客共 45,000 里'});
+    s.push({tag: '攻略',   act: 'pg', pg: 'pgG4',  bg: 'g1', img: 'img/pgG4-hero.jpg', bare: true, alt: '寰宇一家多航空公司獎勵玩法'});
     s.push({tag: '路線',   act: 'pg', pg: 'pgW11', bg: 'g3', img: 'img/thumb-pgW11.webp', bare: true, alt: '區11 遠洲探索候選路線：馬爾代夫、多哈、開羅、紐約、洛杉磯'});
     s.push({tag: 'Follow', act: 'social',          bg: 'g4', img: 'img/thumb-banner-follow.webp', bare: true, alt: 'Follow 我哋 social'});
     return s.slice(0, 5);
@@ -6011,6 +6593,8 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       var tab = btn.getAttribute('data-tab');
       Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function(b){
         b.classList.toggle('on', b === btn);
+        if (b === btn) b.setAttribute('aria-current', 'page');
+        else b.removeAttribute('aria-current');
       });
       Object.keys(TABS).forEach(function(k){
         $(TABS[k]).hidden = (tab !== k);
@@ -6022,6 +6606,10 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
       window.scrollTo({top:0, behavior:'auto'});
     });
   });
+  (function syncInitialTabA11y(){
+    var current = document.querySelector('.tabs button.on');
+    if (current) current.setAttribute('aria-current', 'page');
+  })();
 
   /* v6.33：collapsing 頂 bar——同一個 header 隨 scroll 真.縮（大 hero 縮成 slim bar），唔 crossfade。
      關鍵防 cyber psycho：.hdr 用 position:fixed（唔佔文件流）＋ main 留固定頂 padding＝header 全高，
@@ -6060,7 +6648,15 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
   })();
 
   /* ---------- 免責 modal ---------- */
-  function showDc(){ $('disclaimer').hidden = false; }
+  function showDc(){
+    var bg = $('disclaimer'), modal = bg && bg.querySelector('.modal');
+    if (!bg) return;
+    if ($('dcMore')) $('dcMore').open = false;
+    if (modal) modal.scrollTop = 0;
+    bg.hidden = false;
+    if (window.AcreMilesOverlayScroll) window.AcreMilesOverlayScroll.lock('consent');
+    requestAnimationFrame(function(){ if (modal) modal.scrollTop = 0; });
+  }
   $('howBtn').addEventListener('click', function(){
     var open = !$('howDetail').hidden;
     $('howDetail').hidden = open;
@@ -6070,6 +6666,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     store.set('bm_ok', true);
     store.set('bm_consent', {analytics: !!ana, ts: Date.now()});
     $('disclaimer').hidden = true;
+    if (window.AcreMilesOverlayScroll) window.AcreMilesOverlayScroll.unlock('consent');
     syncAna();
     if (ana){
       loadGA();
@@ -6234,7 +6831,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     window.addEventListener('scroll', hide, true);
   })();
 
-  /* ══════════ v4.5 welcome 開場（4 秒自動入；載唔到唔會卡） ══════════ */
+  /* ══════════ Phase 2A welcome：2240ms 後開始 260ms fade，正常約 2.5 秒；最遲由 3000ms head fallback 清走。 ══════════ */
   (function(){
     /* BM_WELCOME_ONCE：同一日 or 4 個鐘內開過，唔再播開場（1C） */
     var w = $('welcome');
@@ -6250,19 +6847,15 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     }
     var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce || skipWelcome()){
-      if (w.parentNode) w.parentNode.removeChild(w);
+      if (window.__acremilesWelcomeDismiss) window.__acremilesWelcomeDismiss(true);
+      else if (w.parentNode) w.parentNode.removeChild(w);
       return;
     }
     try{ store.set('bm_welcome_ts', Date.now()); }catch(e){}
-    var done = false;
-    function go(){
-      if (done) return;
-      done = true;
-      w.classList.add('out');
-      setTimeout(function(){ if (w.parentNode) w.parentNode.removeChild(w); }, 500);
-    }
-    /* v6.9.2：純 CSS 開場動畫，唔再用 <video>（避免 Android 媒體通知）；2 秒淡出 */
-    setTimeout(go, 2000);
+    setTimeout(function(){
+      if (window.__acremilesWelcomeDismiss) window.__acremilesWelcomeDismiss(false);
+      else if (w.parentNode) w.parentNode.removeChild(w);
+    }, 2240);
   })();
 
   /* ══════════ v3.9 賺里數計算器子頁＋卡庫摺疊 ══════════ */
@@ -6291,7 +6884,7 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
 
   /* ══════════ v2.5 新功能模組 ══════════ */
 
-  var APP_VERSION = 'v6.79.0 · build 2026-07-21'; /* 同第一行 build marker 一齊改 */
+  var APP_VERSION = 'v6.80.0 · build 2026-07-23'; /* 同第一行 build marker 一齊改 */
 
   /* ---------- toast ---------- */
   var toastTimer = null;
@@ -6577,11 +7170,16 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     state.owned = Array.isArray(sn.owned) ? sn.owned.slice() : [];
     state.owned2 = Array.isArray(sn.owned2) ? sn.owned2.slice() : [];
     state.excludedCards = Array.isArray(sn.excludedCards) ? sn.excludedCards.slice() : [];
+    state.restoredConflictCards = Array.isArray(sn.restoredConflictCards) ? sn.restoredConflictCards.slice() : [];
+    MODEL_CONFLICT_CARD_IDS.forEach(function(cid){
+      if (state.restoredConflictCards.indexOf(cid) < 0 && state.excludedCards.indexOf(cid) < 0) state.excludedCards.push(cid);
+    });
+    state.allowAnnualFee = !!sn.allowAnnualFee;
     $('amount').value = state.amount ? BM.fmt(state.amount) : '';
     $('income').value = state.income ? BM.fmt(state.income) : '';
     $('incomeB').value = state.income2 ? BM.fmt(state.income2) : '';
-    if ($('calcDetails')) $('calcDetails').hidden = false;
-    if ($('calcContinue')) $('calcContinue').hidden = true;
+    if ($('calcDetails')) $('calcDetails').open = true;
+    if ($('allowAnnualFee')) $('allowAnnualFee').checked = state.allowAnnualFee;
     if ($('calcAdvanced')) $('calcAdvanced').open = true;
     renderPatternChips(); renderGoalChips(); renderMaxCardChips();
     renderFamilyChips(); renderOwnedChips(); renderOwnedChipsB();
@@ -6960,12 +7558,47 @@ if (typeof module !== 'undefined' && module.exports){ module.exports = BM; }
     /* 問候（時段） */
     /* sheet 開閂 */
     function sheetShow(yes){
-      $('setSheet').hidden = !yes;
-      $('setBg').hidden = !yes;
+      var sheet = $('setSheet');
+      if (yes){
+        $('setBg').hidden = false;
+        sheet.hidden = false;
+        sheet.scrollTop = 0;
+        if (window.AcreMilesOverlayScroll) window.AcreMilesOverlayScroll.lock('profile');
+      } else {
+        sheet.hidden = true;
+        $('setBg').hidden = true;
+        if (window.AcreMilesOverlayScroll) window.AcreMilesOverlayScroll.unlock('profile');
+      }
     }
+    window.closeProfileHub = function(){ sheetShow(false); };
     $('setBtn').addEventListener('click', function(){ sheetShow(true); syncSeg(); applyZoom(); setPwa(); });
     $('setClose').addEventListener('click', function(){ sheetShow(false); });
     $('setBg').addEventListener('click', function(){ sheetShow(false); });
+    Array.prototype.forEach.call(document.querySelectorAll('#setSheet [data-profile-target]'), function(b){
+      b.addEventListener('click', function(){
+        var target = b.getAttribute('data-profile-target');
+        sheetShow(false);
+        if (target === 'cards'){
+          var earn = document.querySelector('.tabs button[data-tab="opt"]');
+          if (earn) earn.click();
+          var body = $('cardLibBody'), toggle = $('cardLibToggle');
+          if (body && body.hidden && toggle) toggle.click();
+          setTimeout(function(){ if ($('cardLibBlock')) $('cardLibBlock').scrollIntoView({block:'start'}); }, 0);
+        } else {
+          var home = document.querySelector('.tabs button[data-tab="journey"]');
+          if (home) home.click();
+          var dest = target === 'favourites' ? $('jrSecFav') : ($('jrSecEarn').hidden ? $('jrSecRtw') : $('jrSecEarn'));
+          if (dest && !dest.hidden) setTimeout(function(){ dest.scrollIntoView({block:'start'}); }, 0);
+          else toast(target === 'favourites' ? '未有收藏；撳卡、優惠或攻略嘅心形就會收喺呢度。' : '未有已儲存旅程或計劃。');
+        }
+      });
+    });
+    $('profileSync').addEventListener('click', function(){
+      toast('跨裝置同步即將推出；呢個係可選功能，現時資料仍只存本機。');
+    });
+    $('setSheet').addEventListener('click', function(e){
+      if (e.target && e.target.closest && e.target.closest('[data-open]')) sheetShow(false);
+    });
     /* 外觀三段（沿用 bm_theme＋applyTheme） */
     var segBtns = $('themeSeg').querySelectorAll('button');
     function syncSeg(){

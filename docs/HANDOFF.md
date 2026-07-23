@@ -1,17 +1,19 @@
 # AcreMiles 新對話交接
 
-交接時間：2026-07-22
+交接時間：2026-07-23
 適用版本：正式網站 v6.79.0
 接手目標：新 AI 喺冇舊對話內容嘅情況下，能夠安全判斷現況、繼續開發及避免重做已完成工作。
 
-## 0. v6.79.0／Phase 1 當前交接
+## 0. v6.79.0／combined Phase 2A＋Phase 2B Draft 當前交接
 
 - 法律、安全及官方資料真確性規則最高；最新產品方向以 [`ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md`](ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md) 為準，其後係 [`ACREMILES_PRODUCT_BLUEPRINT_V2.md`](ACREMILES_PRODUCT_BLUEPRINT_V2.md)、[`ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md`](ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md) 同 Safety Hardened。
-- Phase 0 已獲 Founder 批准並合併；Phase 1 `main` baseline 係 `ba8f6db0b087275f63785468ccec424a9d5ad1e2`，正式產品仍係 v6.79.0。
-- backup branch：`backup/pre-phase1-card-data-20260722`；Phase 1 feature branch：`agent/acremiles-phase1-card-data-20260722`。
-- Phase 1A 已以 commit `a704abbb82fdfe401b45dac0b2f2968d4e5c15b6` 完成銀行卡、渠道優惠及來源 registry 零 drift 搬遷。Phase 1B 候選只處理 2026-07-23 已核實嘅到期官方／渠道資料，完整差異見 [`PHASE1-CARD-DATA-VERIFICATION.md`](PHASE1-CARD-DATA-VERIFICATION.md)。
-- Stage B 候選嘅 `source-registry` schema 2 有 19 個官方 records（17 active*），`card-channels` schema 3 有 17 個渠道 records（12 active、3 unknown、2 historical-unverified）；精確時間優惠用帶 `+08:00` 嘅 `startsAt`／`expiresAt`，其餘按香港日曆日判定。
-- Phase 1 未經 Founder 批准前只可保持 Draft PR；不可 merge、deploy、開始新 IA／UI、Google Login 或 Phase 2。
+- Phase 0 同 Phase 1 已獲 Founder 批准並合併；Phase 2A `main` baseline 精確係 `c2e1ffdaaa766872308fb987f9829d68ddbb2d0a`。
+- Phase 2A backup branch：`backup/pre-phase2a-shell-ui-20260723`；feature branch：`agent/acremiles-phase2a-shell-ui-20260723`。
+- Phase 1 銀行卡、渠道優惠及來源 registry 已正式由 `data/cards-official.js`、`data/card-channels.js`、`data/source-registry.js` 提供；combined Draft仍以三者、Engine公式、22 fixtures、卡頁及分享頁為 protected baseline。
+- 已合併資料嘅 `source-registry` schema 2 有 19 個官方 records（17 active*），`card-channels` schema 3 有 17 個渠道 records（12 active、3 unknown、2 historical-unverified）；精確時間優惠用帶 `+08:00` 嘅 `startsAt`／`expiresAt`，其餘按香港日曆日判定。
+- Phase 2A shell及 correction證據見 [`PHASE2A-SHELL-UI-VERIFICATION.md`](PHASE2A-SHELL-UI-VERIFICATION.md)。Founder已指示將最後 Header cleanup同 Phase 2B core UI合併喺同一 branch／Draft PR #10，避免另一輪獨立 review；呢個指示唔等於批准成果。
+- Phase 2B候選實作／限制／待填證據見 [`PHASE2B-CORE-UI-VERIFICATION.md`](PHASE2B-CORE-UI-VERIFICATION.md)。
+- PR #10必須保持 Open Draft；不可 merge、mark Ready、production deploy、另開 PR、加 Google Login／真正 cloud sync／notifications。
 - v6.79.0 歷史發布來源：`feature/outcome-first-v1`／PR #7；當時 baseline：`1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049`。
 - 已完成 Outcome First 首頁、分層計算入口、compact saved cards、優惠文章首屏、Beginner／Advanced planner gateway，同時保留現有計算及 RTW 引擎。
 - 新示範只使用 repo 內可追溯資料；未接 AI API，Beginner planner 係現有 template 嘅 rule-based matching。
@@ -76,23 +78,39 @@
 
 ## 3. 現時工作面
 
-### P0：Phase 1 Card Data Source Extraction + Expiring Offers
+### P0：Combined Phase 2A correction＋Phase 2B core UI
 
-狀態：`STAGE A COMMITTED；STAGE B CANDIDATE — DRAFT ONLY`
+狀態：`FOUNDER REVIEW — DRAFT ONLY`
 
-- Phase 1A 資料搬遷由 `data/cards-official.js`、`data/card-channels.js`、`data/source-registry.js` 承擔；`index.html`、generator、freshness、verifier 同 regression 直接讀資料來源。
-- v6.79.0 搬遷 fixture 鎖定 9 張卡及渠道資料；五段舊渠道展示文案喺渠道層重組，銀行官方 raw records 不再混入平台聲稱。
-- Phase 1B 已保存 DBS Q3 現行 offer，但以 `engineEligible:false` 隔離已知 basic-miles double-count；HSBC base／flash 已分 component，SC／AE marketed-total 衝突亦已披露，冇改 Engine 公式。
-- HSBC EveryMile flash 只要求流動電話付款；QR 條件只屬 Pulse／UnionPay，官方直申碼係 `HSBCFLASH`。現有客 HK$200 RC 因 Red Hot campaign 頁同 base PDF 衝突、而且冇獨立日期，保持 `excluded-conflict`。
-- HSBC／DBS 2026 海外條件式優惠已各自保存為官方 records，但因登記、門檻及上限，Engine 分別繼續用基本 HK$5／HK$4 每里。
-- DBS Q3 已拆新客 12 個月資格、多卡規則、DAYCROWN alternative、Flexi Shopping 2,000 里同現有客 HK$50；MoneyHero 只保存 Card+ 申請路徑，HK$50 係 issuer claim，唔係平台固定賞。
-- AE Explorer 26,000 里要 HK$30,000 當中至少 HK$15,000 合資格本地港幣簽賬並成功登記 Local Spend Bonus；Citi Prestige 已記錄 12 個月新客、1 個月內啟動實體卡，以及 HK$1,200 現金 component 每月最少一宗交易。
-- 渠道 schema 已將平台條件式上限、issuer claim、抽獎、promo code、日期、條件同可否疊加分開；里先生 88 MM Credit 係最高 38 新會員＋50 成功批卡填表，唔係人人固定 88。SC MoneyHero 及 AE Explorer MoneySmart／MoneyHero 因資料不完整保持 `unknown`／`active:false`。
-- 完成兩個獨立 commits 後只開新 Draft PR，提供 preview 同完整差異證據，等 Founder 回覆「Phase 1 approved」。未獲批准不得 merge、deploy 或開始 Phase 2。
+- Welcome 使用「每筆消費，都值得有回報」；2240ms 後開始 260ms fade，正常約 2.5 秒離場，另有獨立 3000ms 安全 fallback；只用 fade／glow，reduced motion 即時離場。
+- Consent 第一層只保留四項重要資訊；原有法律、私隱及 analytics gating 不削弱。共用 modal scroll lock 會保存及還原原頁位置，dialog 由頂開始並取得 focus。
+- Header 保留 large→compact 行為，以單一通用 Profile icon 取代兩個右上角入口；冇假登入或假頭像。
+- Profile Hub 依 canonical 次序提供我的信用卡、旅程、收藏、本機同步說明、FAQ 同完整設定入口；跨裝置同步只標「即將推出／可選／資料仍存本機」。
+- Bottom Navigation固定為「點賺／點用／首頁／優惠／攻略」；tab IDs、Consent、Profile Hub、analytics gate、localStorage reset同大型 Header collapse保持。
+- Phase 2B已按 Founder今輪授權喺同一 Draft實作 Homepage、Hero、direct-to-result、點賺 core、點用 core、Card Detail同必要連接；Engine公式冇改。
+- 必須保持 Open Draft，等 Founder實際睇完整 combined Preview；未有批准字句前唔可以 merge、deploy或開始下一 Phase。
+
+目前 Phase 2B candidate：
+
+- Hero Carousel只包含 iPhone、買車、Wedding；每個 `點做到？`直接打開完成可編輯點賺結果。
+- 「更多消費示範」使用裝修、傢俬、電器、旅行／酒店、學費、醫療／牙科、大型網購，冇重複 Hero。
+- Homepage次序係 Hero → 更多消費示範 → 優惠 → 本機內容 → 現有廣告 → 預設收起今日重點。
+- 點賺金額先行、result-first；年費checkbox、灰色 excluded cards、四項 Opportunity都只使用現有 Engine或明示 comparison run。
+- 點用里數先行；第一層只係一般兌換／環球票；一般V1只顯示來回，Beginner／Advanced只存在環球票。
+- Card Detail係 overlay，關閉唔改結果 state，官方同渠道資料分開。
+
+必須保留嘅限制：
+
+- `costPerMile = amount / totalMiles`冇改，年費唔包含喺公式。
+- CPM／total value／practical constraints新優先次序未有同既有 heuristic正式等價；UI只 disclosure gate，唔聲稱新排序已完成。
+- `sc-cathay`／`amex-explorer` model conflict預設灰色排除，可手動恢復但要顯示未解決警告。
+- Avios未完成逐航線逐格官方覆核。
+- 冇一年平均現金票價 dataset，因此冇 cash-value ranking。
+- Final tests、SHA、Preview同 screenshots只可以喺 exact final PR tree產生後填入 verification report。
 
 ### 營運 P0：信用卡資料新鮮度
 
-Phase 1B 候選於 2026-07-23 執行 `audit-freshness`：9 張卡、19 個官方 records（17 active*）、17 個渠道 records（12 active），0 errors、17 reminders。提醒包括 7 月 23、29、30、31 日及之後獨立期限；若接手日期已過：
+Phase 1B 已合併資料於 2026-07-23 執行 `audit-freshness`：9 張卡、19 個官方 records（17 active*）、17 個渠道 records（12 active），0 errors、17 reminders。提醒包括 7 月 23、29、30、31 日及之後獨立期限；若接手日期已過：
 
 1. 先查銀行官方產品頁、最新 T&C、KFS／收費表。
 2. 再查平台加碼；唔好用平台文案取代銀行條款。
@@ -152,6 +170,8 @@ v6.79.0 尚欠：
 | 資料規則 | 影響推薦嘅資格、迎新、冷河期、年費、兌換等必須 official-only；未知就標 unknown／不入推薦，唔估 |
 | 雲端同步 | local-only 係基本模式；Google Login／cloud sync 屬後期獨立 Phase，不可混入今次 |
 | 推薦器 | 輔助估算；唔宣稱最佳、保證或全市場最抵 |
+| Phase 2B Engine gate | 既有公式同 heuristic不變；新排序衝突只披露／gate，唔偷偷重排 |
+| 兌換價值 | Avios逐格官方覆核未完成；冇一年平均現金票價資料就唔顯示 cash-value ranking |
 | RTW | 全部係教學示例；最終以官方條款、班表、獎勵位及客服出票為準 |
 | 區 6 | 接受 GMP→ICN 自行接駁，保留風險提示 |
 | 區 8 | 接受兩個自費開口作教學選項 |

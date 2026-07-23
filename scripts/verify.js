@@ -409,18 +409,20 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
     /data-plan-action="rename"/.test(src) && /data-plan-action="pin"/.test(src) &&
     /data-plan-action="delete"/.test(src) && /window\.confirm\('刪除「'/.test(src) &&
     !/class="saved-action delete"/.test(src));
-  ok('Outcome First 首頁先展示可理解結果再問金額',
-    /每筆消費，都值得有回報。/.test(src) && /id="outcomeFeature"/.test(src) &&
-    /HK\$8,000[\s\S]*?約 20,000 里[\s\S]*?台北經濟來回/.test(src) &&
-    src.indexOf('id="outcomeFeature"') < src.indexOf('id="homeAmount"'));
-  ok('首頁示範集中資料層並按核實及香港到期日過濾',
-    /var SPEND_SCENARIOS\s*=\s*\[/.test(src) &&
-    /SPEND_SCENARIOS\.filter\(function\(s\)\{ return s\.verified && \(!s\.expires \|\| s\.expires >= today\); \}\)/.test(src));
+  ok('Phase 2B 首頁先展示三個 Engine Hero 結果',
+    /id="homeHero"/.test(src) && /var PHASE2B_HERO_SCENARIOS\s*=\s*\[/.test(src) &&
+    /id:'iphone'[\s\S]*?id:'car'[\s\S]*?id:'wedding'/.test(src) &&
+    /data-hero-earn/.test(src) && /phase2bDemoResult\(s\)/.test(src));
+  ok('更多消費示範集中資料層且不重複 Hero',
+    /var PHASE2B_SPEND_EXAMPLES\s*=\s*\[/.test(src) &&
+    /id:'renovation'/.test(src) && /id:'online-shopping'/.test(src) &&
+    /PHASE2B_HERO_SCENARIOS\.concat\(PHASE2B_SPEND_EXAMPLES\)/.test(src));
   ok('Bottom navigation 中間顯示首頁而且保留原 journey id',
     /<button data-tab="journey" class="on">[\s\S]*?<span>首頁<\/span><\/button>/.test(src));
-  ok('計算器第一層只問金額，其他條件逐步顯示',
-    /id="calcContinue"/.test(src) && /id="calcDetails"[^>]*hidden/.test(src) &&
-    /id="calcAdvanced"/.test(src) && /calcDetails'\)\.hidden = false/.test(src));
+  ok('點賺以金額先行並自動顯示完成結果',
+    /id="amount"[^>]*inputmode="numeric"/.test(src) && !/id="calcContinue"/.test(src) &&
+    /id="earnAutoStatus"/.test(src) && /scheduleEarnRecalc/.test(src) &&
+    /#esub-opt>#results\{order:2\}/.test(src) && /#esub-opt>#calcDetails\{order:3\}/.test(src));
   ok('計算結果緊接 summary 顯示可以換到乜',
     src.indexOf('id="redeemList"') > src.indexOf('id="totalMiles"') &&
     src.indexOf('id="redeemList"') < src.indexOf('id="passList"'));
@@ -428,11 +430,14 @@ BM.DEFAULT_CARDS.filter(c => c.verified === true && !c.pending && BM.hasCap(c)).
     (src.match(/class="outcome-tier"/g) || []).length >= 2 &&
     (src.match(/class="outcome-disclosure"/g) || []).length >= 3 &&
     /id="pgO2"[\s\S]*?資料更新：2026-07-23[\s\S]*?flash 期限：2026-07-31/.test(src));
-  ok('規劃器有 Beginner／Advanced gateway，Beginner 只配對現有 template',
+  ok('點用第一層只得一般兌換／環球票，Beginner／Advanced 留在環球票',
+    /id="redeemMiles"/.test(src) && /id="redeemMode"/.test(src) &&
+    (src.match(/data-redeem-mode=/g) || []).length === 2 &&
+    src.indexOf('id="rtwRedeem"') < src.indexOf('id="plannerBeginner"') &&
     /id="plannerBeginner"/.test(src) && /id="plannerAdvanced"/.test(src) &&
     /var BEGINNER_TEMPLATES\s*=\s*\[/.test(src) && /OW_ZONE_DEMOS\[templateKey\]/.test(src) &&
     /第一版只會配對現有路線模板，唔會假裝自由生成/.test(src));
-  ok('v6.79 冇新增外部 AI API',
+  ok('Phase 2B 冇新增外部 AI API',
     !/api\.openai\.com|anthropic\.com\/v1|generativelanguage\.googleapis\.com/.test(src));
   ok('收藏列表有文章縮圖同過期灰階狀態', /class="fav-thumb/.test(src) && /已完結 · 保留作參考/.test(src) && /\.fav-thumb\.expired img/.test(src));
   ok('信用卡頁有官方原文、分享掣、canonical 同 Open Graph 圖', productCardPages.length === 9 && productCardPages.every(p => /銀行官方原文/.test(p) && /id="sharePage"/.test(p) && /rel="canonical"/.test(p) && /property="og:image"/.test(p) && /property="og:image:alt"/.test(p)));

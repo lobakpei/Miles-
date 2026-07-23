@@ -25,10 +25,10 @@
     "bm_daily": 3,
     "bm_esub": 3,
     "bm_favs": 3,
-    "bm_input": 11,
+    "bm_input": 15,
     "bm_ok": 3,
     "bm_ow": 4,
-    "bm_rsub": 3,
+    "bm_rsub": 2,
     "bm_sa": 5,
     "bm_saved_plans": 5,
     "bm_saved_redeem": 9,
@@ -69,6 +69,7 @@
     },
     "bm_favs": "Record<cards|offers|guides, Record<id,{n,ts}>>",
     "bm_input": {
+      "allowAnnualFee": "boolean",
       "amount": "number",
       "excludedCards": "string[]",
       "family": "boolean",
@@ -80,6 +81,7 @@
       "owned": "string[]",
       "owned2": "string[]",
       "preferProgram": "string",
+      "restoredConflictCards": "string[]",
       "spendPattern": "lump|spread"
     },
     "bm_ow": {

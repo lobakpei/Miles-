@@ -45,7 +45,17 @@ const header = fragment('<header class="hdr"', '<nav class="tabs"');
 check((header.match(/id="setBtn"/g) || []).length === 1 && header.includes('profile-btn'), 'Header exposes one generic Profile control');
 check(header.includes('id="robotBtn"') && header.includes('hidden'), 'FAQ runtime trigger stays hidden from Header');
 check(header.includes('每筆消費，都值得有回報。'), 'Header retains the canonical brand line');
-check(!html.includes('砌好行程，再反推要幾多里'), 'old Header sentence is absent from the full HTML and every runtime path');
+const legacyHeaderFragments = [
+  '\u7531\u60f3\u53bb\u908a\u958b\u59cb\uff0c\u6211\u5e6b\u4f60\u8a08',
+  '\u7531\u60f3\u53bb\u908a\u958b\u59cb',
+  '\u6211\u5e6b\u4f60\u8a08',
+  '\u782c\u597d\u884c\u7a0b\uff0c\u518d\u53cd\u63a8\u8981\u5e7e\u591a\u91cc',
+  '\u782c\u597d\u884c\u7a0b',
+  '\u518d\u53cd\u63a8\u8981\u5e7e\u591a\u91cc'
+];
+legacyHeaderFragments.forEach((text, index) => {
+  check(!html.includes(text), 'legacy Header fragment ' + (index + 1) + ' is absent from the full HTML and every runtime path');
+});
 check(!html.includes("var lines = ['先規劃想去邊，再計點儲里'"), 'Header no longer swaps in travel-first slogans at runtime');
 
 const hub = fragment('<section class="sheet profile-sheet" id="setSheet"', '<!-- v6.79：儲存計劃');

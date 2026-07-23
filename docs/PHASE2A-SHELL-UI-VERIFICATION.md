@@ -21,7 +21,7 @@ Founder correction baseline／原 PR head：`b1fac1ec7894490c5c2c94b035244b422d5
 - Consent 第一層集中工具性質、條款會變、信貸／還款風險、私隱選擇；完整法律／私隱內容保留喺展開及現有頁面。
 - Consent／Profile Hub 共用 background scroll lock：保存原 `scrollY`、固定 body、overlay 自己 scroll、關閉後還原原位置；dialog 開啟時由頂開始並取得 focus。
 - 接受匿名改善先載入 GA／Sentry；只限必要保持核心功能但第三方 analytics script 數量為 0。
-- Header large／compact 行為保留，原問號／三點入口整合成單一通用 Profile icon；舊句「砌好行程，再反推要幾多里」已由完整 HTML 及 runtime text array 移除，Header 不再動態換入 travel-first slogan；冇假姓名、假頭像、Google Login 或登入狀態。
+- Header large／compact 行為保留，原問號／三點入口整合成單一通用 Profile icon；Founder 指定嘅六組 legacy Header fragments 已由完整 repository、HTML 及 runtime text paths 移除，Header 不再動態換入 travel-first slogan；冇假姓名、假頭像、Google Login 或登入狀態。
 - Profile Hub 次序固定：我的、我的信用卡、我的旅程、我的收藏、跨裝置同步、FAQ／小助手、設定。跨裝置同步只顯示即將推出、可選、資料仍存本機。
 - Bottom Navigation 固定為點賺、點用、首頁、優惠、攻略，對應既有 `opt`、`redeem`、`journey`、`articles`、`guides`。
 

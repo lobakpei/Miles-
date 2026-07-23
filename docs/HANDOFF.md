@@ -81,12 +81,18 @@
 
 狀態：`FOUNDER REVIEW — DRAFT ONLY`
 
-- Welcome 使用「每筆消費，都值得有回報」，正常約 1.16 秒離場，另有獨立 1.6 秒安全 fallback；只用 fade／glow，reduced motion 快速離場。
+- Welcome 使用「每筆消費，都值得有回報」；2240ms 後開始 260ms fade，正常約 2.5 秒離場，另有獨立 3000ms 安全 fallback；只用 fade／glow，reduced motion 即時離場。
 - Consent 第一層只保留四項重要資訊；原有法律、私隱及 analytics gating 不削弱。共用 modal scroll lock 會保存及還原原頁位置，dialog 由頂開始並取得 focus。
 - Header 保留 large→compact 行為，以單一通用 Profile icon 取代兩個右上角入口；冇假登入或假頭像。
 - Profile Hub 依 canonical 次序提供我的信用卡、旅程、收藏、本機同步說明、FAQ 同完整設定入口；跨裝置同步只標「即將推出／可選／資料仍存本機」。
 - Bottom Navigation 固定為「點賺／點用／首頁／優惠／攻略」；只改 shell label／入口，內部 tab IDs、首頁 Hero、點賺／點用內容及 Engine 不變。
 - 必須保持 Open Draft，等 Founder 實際睇 HTTPS Preview 後明確回覆 `Phase 2A approved`；不得自行開始 Phase 2B。
+
+Phase 2B acceptance requirement（只記錄，Phase 2A 不實作）：
+
+- Hero Carousel 必須只包含：iPhone、買車、Wedding。
+- 「更多消費示範」必須使用另外一組例子，不可重複以上三個 Hero scenarios。
+- Phase 2A correction 不可修改 Homepage Hero、carousel、scenario cards 或 Homepage section order。
 
 ### 營運 P0：信用卡資料新鮮度
 

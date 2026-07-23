@@ -22,7 +22,7 @@
 | Phase 0 | Canonical Sync + Regression Lock | `COMPLETED`；已獲 Founder 批准並合併至 `main` |
 | Phase 1 | Card Data Source Extraction＋到期官方／渠道更新 | `COMPLETED`；PR #9 已獲 Founder 批准並合併至 `main` |
 | Phase 2A | Welcome＋Consent＋Header＋Profile Hub＋Bottom Navigation | `FOUNDER REVIEW`；Open Draft＋隔離 HTTPS Preview；不改 Hero／Engine／資料 |
-| Phase 2B | Homepage Hero／Greeting 及其後已批准 UX 工作 | `HOLD`；必須等 Phase 2A 另行批准，Phase 2A agent 不可自行開始 |
+| Phase 2B | Homepage Hero／Greeting 及其後已批准 UX 工作 | `HOLD`；必須等 Phase 2A 另行批准，Phase 2A agent 不可自行開始；Hero Carousel 只含 iPhone／買車／Wedding，「更多消費示範」使用另一組且不得重複三個 Hero scenarios |
 | Phase 3 | 點賺 V1 | `HOLD`；金額先行、result-first、逐浸結果、timeline，同固定「點賺」責任一致 |
 | Phase 4 | 點用 V1 | `HOLD`；里數先行；一般兌換／環球票第一層分流；Beginner／Advanced 只放環球票內 |
 | Phase 5 | Content／SEO CMS | `LATER`；同一內容來源供 App 同可索引頁 |

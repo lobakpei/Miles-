@@ -149,6 +149,7 @@ AcreMiles **唔係**：
 1. Phase 0 同 Phase 1 已獲 Founder 批准並合併；Phase 2A 正式 `main` baseline 為 `c2e1ffdaaa766872308fb987f9829d68ddbb2d0a`。
 2. Phase 1 已由 PR #9 合併至 `main`；三個資料來源、9 張卡、22 optimizer fixtures 同生成輸出係 Phase 2A protected baseline。
 3. Phase 2A 只處理 Welcome、Consent 第一層、Header shell、Profile Hub、Bottom Navigation 同必要 scroll／focus helpers；不得開始 Phase 2B、重做 Homepage Hero／Greeting，或修改點賺／點用內部流程。
+   - Phase 2B acceptance requirement（只記錄，未開始）：Hero Carousel 只可包含 iPhone、買車、Wedding；「更多消費示範」要用另一組例子，不可重複三個 Hero scenarios。
 4. v6.79.0 發布後 production QA：最新 PageSpeed、真 WhatsApp／Facebook 分享預覽、手機／平板／桌面回歸。
 5. 核實 GA4 管理頁設定已真正按「儲存」；現有截圖顯示事件 2 個月、使用者 14 個月、活動時重設。
 6. ICO 加 trading name，並按需要同步已確認 UK Postbox 公開服務地址。

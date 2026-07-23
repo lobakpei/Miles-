@@ -24,9 +24,11 @@ function fragment(start, end) {
 const welcome = fragment('<div id="welcome"', '<!-- 免責聲明');
 check(welcome.includes('每筆消費，都值得有回報'), 'Welcome uses the canonical slogan');
 check(!welcome.includes('畝・里') && !welcome.includes('香港里數優化') && !welcome.includes('誠・里'), 'legacy Welcome copy is absent');
-check(/setTimeout\(function\(\)\{[\s\S]*__acremilesWelcomeDismiss\(false\)[\s\S]*\}, 900\)/.test(html), 'normal Welcome dismissal starts at 900ms');
-check(/__acremilesWelcomeDismiss\(false\); \}, 1600\)/.test(html), 'independent 1600ms Welcome fallback exists');
+check(/setTimeout\(function\(\)\{[\s\S]*__acremilesWelcomeDismiss\(false\)[\s\S]*\}, 2240\)/.test(html), 'normal Welcome fade starts at 2240ms');
+check(/setTimeout\(function\(\)\{ if \(welcome\.parentNode\)[\s\S]*\}, 260\)/.test(welcome), 'Welcome fade removes the overlay after 260ms');
+check(/__acremilesWelcomeDismiss\(false\); \}, 3000\)/.test(html), 'independent 3000ms Welcome fallback exists after normal dismissal');
 check(/prefers-reduced-motion:reduce[\s\S]*#welcome/.test(html), 'reduced-motion handling covers Welcome');
+check(/if \(reduce \|\| skipWelcome\(\)\)\{[\s\S]*__acremilesWelcomeDismiss\(true\)/.test(html), 'reduced-motion Welcome path dismisses immediately');
 
 const consent = fragment('<div class="modal-bg" id="disclaimer"', '<div class="modal-bg" id="cardDetail"');
 check(/role="dialog"[\s\S]*aria-modal="true"[\s\S]*aria-labelledby="dc-title"[\s\S]*aria-describedby="dc-summary"/.test(consent), 'Consent has dialog name and description');
@@ -42,6 +44,9 @@ check(consent.includes('tabindex="-1"') && html.includes("dialog.focus({preventS
 const header = fragment('<header class="hdr"', '<nav class="tabs"');
 check((header.match(/id="setBtn"/g) || []).length === 1 && header.includes('profile-btn'), 'Header exposes one generic Profile control');
 check(header.includes('id="robotBtn"') && header.includes('hidden'), 'FAQ runtime trigger stays hidden from Header');
+check(header.includes('每筆消費，都值得有回報。'), 'Header retains the canonical brand line');
+check(!html.includes('砌好行程，再反推要幾多里'), 'old Header sentence is absent from the full HTML and every runtime path');
+check(!html.includes("var lines = ['先規劃想去邊，再計點儲里'"), 'Header no longer swaps in travel-first slogans at runtime');
 
 const hub = fragment('<section class="sheet profile-sheet" id="setSheet"', '<!-- v6.79：儲存計劃');
 const orderedHubLabels = ['我的信用卡', '我的旅程', '我的收藏', '跨裝置同步', 'FAQ／小助手', '設定'];

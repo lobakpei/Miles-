@@ -268,12 +268,12 @@
       "count": 1,
       "files": [
         {
-          "bytes": 643149,
+          "bytes": 642951,
           "file": "index.html",
-          "sha256": "c76293d20259dcc0d81083c1b172fb7f073d12aa46457b4e5b516b12f0ce2db6"
+          "sha256": "3be70c42e828b0c44289d170a8b179d22a978bb3f881ae2f26cf88a5f5c5c047"
         }
       ],
-      "treeSha256": "e7f2f0b6d059ffa5a745ac124adf2c5e09495dc5dcc22e5c1df3f6c46e4e848f"
+      "treeSha256": "2f49db42866dbc293c7fd8e0ddf0541618de430b7f53b53d36d6cf6ebd6427ef"
     },
     "manifest": {
       "count": 1,

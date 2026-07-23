@@ -9,10 +9,11 @@
 |---|---|
 | 正式版本 | **v6.79.0 — Outcome First Big Picture V1** |
 | 發布分支 | `feature/outcome-first-v1` → PR #7 → `main` |
-| 最新 `main` 基準 commit | `ba8f6db0b087275f63785468ccec424a9d5ad1e2` |
+| 最新 `main` 基準 commit | `c2e1ffdaaa766872308fb987f9829d68ddbb2d0a` |
 | Phase 0 狀態 | `COMPLETED`；Canonical Sync + Regression Lock 已獲 Founder 批准並合併 |
-| Phase 1 狀態 | Stage A 已 commit；Stage B 係未發布候選，只可留喺 Draft PR 等 Founder 核對 |
-| 正式產品狀態 | v6.79.0 仍然上線；Phase 1 branch 未 merge／deploy，正式 UI、計算公式及 PWA 未變 |
+| Phase 1 狀態 | `COMPLETED`；PR #9 已按 approved head 合併，三個資料來源已上線 |
+| Phase 2A 狀態 | Welcome、Consent、Header、Profile Hub、Bottom Navigation 候選；只可留喺 Draft PR 等 Founder Preview 核對 |
+| 正式產品狀態 | v6.79.0＋Phase 1 data sources 已上線；Phase 2A 未 merge／deploy，計算公式及資料未變 |
 
 本節記錄 v6.79.0 發布狀態；舊 v6.79.0-draft QA 只屬歷史候選紀錄。
 
@@ -28,7 +29,7 @@
 | 上一產品發布 merge | v6.78.0：PR #6，commit `1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049` |
 | 部署方式 | GitHub Pages；合併到 `main` 後自動部署 |
 | 主程式 | 單一 `index.html`，Vanilla HTML／CSS／JavaScript |
-| 資料日期 | 正式卡庫 `DATA_AS_OF = 2026-07-20`；Phase 1 候選核對至 2026-07-23 |
+| 資料日期 | 正式卡庫 `DATA_AS_OF = 2026-07-23`；Phase 1 資料已合併 |
 | 語言／市場 | 香港繁體中文、香港信用卡及飛行里數 |
 
 重要：部分本地工作目錄嘅 `origin/main` 可能停留喺舊 commit。判斷正式版本時，要以 GitHub `main`、正式網站 build marker 同本表三者核對，唔可以單靠本地 remote ref。
@@ -65,11 +66,11 @@ AcreMiles **唔係**：
 - oneworld RTW 規劃器：距離、艙等、停留、轉機、開口、航司組合及逐段航線核實。
 - 已儲存計劃同行程；v6.77.0 已統一為「開啟／分享／刪除」。
 
-### 3.2 正式資料及 Phase 1 候選
+### 3.2 正式資料及 Phase 1
 
 - 9 張信用卡公開資料頁；其中 8 張可以按現有模型進入推薦，HSBC Visa Signature 只供參考。
 - DBS Black Q2 已完結並保留歷史；Q3 已由 2026-07-07 接續至 10-05。因官方總里數包括 basic DBS$、現有 Engine 會 double-count，Q3 迎新候選以 `engineEligible:false` 隔離；卡仍可按基本賺里率參與。
-- Phase 1 候選以 `source-registry` schema 2 保存 19 個官方 offer records（17 active*），以 `card-channels` schema 3 保存 17 個渠道 records（12 active、3 unknown、2 historical-unverified）；未發布前唔代表 production 已更新。
+- Phase 1 已以 `source-registry` schema 2 保存 19 個官方 offer records（17 active*），以 `card-channels` schema 3 保存 17 個渠道 records（12 active、3 unknown、2 historical-unverified），並由 PR #9 合併至 production。
 - 20 個文章／路線／優惠分享 metadata 項目。
 - 5 條 RTW 教學示例：區 6、8、10、11、13。
 - 過期優惠不刪除，會轉灰及標示「歷史優惠／已完結」。
@@ -145,9 +146,9 @@ AcreMiles **唔係**：
 
 ## 6. 當前未完成事項
 
-1. Phase 0 已獲 Founder 批准並合併；正式 `main` baseline 為 `ba8f6db0b087275f63785468ccec424a9d5ad1e2`。
-2. Phase 1 只做 Card Data Source Extraction 同到期官方／渠道更新；Stage A／B 必須分開 commits，不可混入 UI 或公式修改。
-3. Phase 1A 已以獨立 commit `a704abbb82fdfe401b45dac0b2f2968d4e5c15b6` 完成零 drift 搬遷；Phase 1B 已按 2026-07-23 香港日期整理候選更新，必須保持 Draft PR 等 Founder 核對，未批准不可 merge／deploy。
+1. Phase 0 同 Phase 1 已獲 Founder 批准並合併；Phase 2A 正式 `main` baseline 為 `c2e1ffdaaa766872308fb987f9829d68ddbb2d0a`。
+2. Phase 1 已由 PR #9 合併至 `main`；三個資料來源、9 張卡、22 optimizer fixtures 同生成輸出係 Phase 2A protected baseline。
+3. Phase 2A 只處理 Welcome、Consent 第一層、Header shell、Profile Hub、Bottom Navigation 同必要 scroll／focus helpers；不得開始 Phase 2B、重做 Homepage Hero／Greeting，或修改點賺／點用內部流程。
 4. v6.79.0 發布後 production QA：最新 PageSpeed、真 WhatsApp／Facebook 分享預覽、手機／平板／桌面回歸。
 5. 核實 GA4 管理頁設定已真正按「儲存」；現有截圖顯示事件 2 個月、使用者 14 個月、活動時重設。
 6. ICO 加 trading name，並按需要同步已確認 UK Postbox 公開服務地址。

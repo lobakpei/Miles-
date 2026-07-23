@@ -20,8 +20,9 @@
 | Phase | 範圍 | 狀態／閘門 |
 |---|---|---|
 | Phase 0 | Canonical Sync + Regression Lock | `COMPLETED`；已獲 Founder 批准並合併至 `main` |
-| Phase 1 | Card Data Source Extraction＋到期官方／渠道更新 | `FOUNDER REVIEW`；Stage A 已零 drift commit，Stage B 候選待 Draft PR 核對；唔改公式／UI |
-| Phase 2 | Immediate UX Repair | `HOLD`；修 Welcome／Consent／header／profile／nav 等已確認問題，不改 Engine 公式 |
+| Phase 1 | Card Data Source Extraction＋到期官方／渠道更新 | `COMPLETED`；PR #9 已獲 Founder 批准並合併至 `main` |
+| Phase 2A | Welcome＋Consent＋Header＋Profile Hub＋Bottom Navigation | `FOUNDER REVIEW`；Open Draft＋隔離 HTTPS Preview；不改 Hero／Engine／資料 |
+| Phase 2B | Homepage Hero／Greeting 及其後已批准 UX 工作 | `HOLD`；必須等 Phase 2A 另行批准，Phase 2A agent 不可自行開始 |
 | Phase 3 | 點賺 V1 | `HOLD`；金額先行、result-first、逐浸結果、timeline，同固定「點賺」責任一致 |
 | Phase 4 | 點用 V1 | `HOLD`；里數先行；一般兌換／環球票第一層分流；Beginner／Advanced 只放環球票內 |
 | Phase 5 | Content／SEO CMS | `LATER`；同一內容來源供 App 同可索引頁 |
@@ -45,7 +46,7 @@
 
 ### R1. Phase 1 信用卡資料來源及每週更新
 
-狀態：`FOUNDER REVIEW — Stage A committed／Stage B verified candidate`
+狀態：`COMPLETED — merged by PR #9；之後按每週流程維護`
 原因：2026-07-23 香港核實已完成；07-23、07-29、07-30、07-31、08-31、10-05 仍有獨立官方／渠道期限，必須逐 record 維護。
 
 工作：

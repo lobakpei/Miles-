@@ -1,17 +1,18 @@
 # AcreMiles 新對話交接
 
-交接時間：2026-07-22
+交接時間：2026-07-23
 適用版本：正式網站 v6.79.0
 接手目標：新 AI 喺冇舊對話內容嘅情況下，能夠安全判斷現況、繼續開發及避免重做已完成工作。
 
-## 0. v6.79.0／Phase 1 當前交接
+## 0. v6.79.0／Phase 2A 當前交接
 
 - 法律、安全及官方資料真確性規則最高；最新產品方向以 [`ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md`](ACREMILES_20260722_DECISION_SOURCE_OF_TRUTH.md) 為準，其後係 [`ACREMILES_PRODUCT_BLUEPRINT_V2.md`](ACREMILES_PRODUCT_BLUEPRINT_V2.md)、[`ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md`](ACREMILES_CURRENT_ARCHITECTURE_MAP_V1.md) 同 Safety Hardened。
-- Phase 0 已獲 Founder 批准並合併；Phase 1 `main` baseline 係 `ba8f6db0b087275f63785468ccec424a9d5ad1e2`，正式產品仍係 v6.79.0。
-- backup branch：`backup/pre-phase1-card-data-20260722`；Phase 1 feature branch：`agent/acremiles-phase1-card-data-20260722`。
-- Phase 1A 已以 commit `a704abbb82fdfe401b45dac0b2f2968d4e5c15b6` 完成銀行卡、渠道優惠及來源 registry 零 drift 搬遷。Phase 1B 候選只處理 2026-07-23 已核實嘅到期官方／渠道資料，完整差異見 [`PHASE1-CARD-DATA-VERIFICATION.md`](PHASE1-CARD-DATA-VERIFICATION.md)。
-- Stage B 候選嘅 `source-registry` schema 2 有 19 個官方 records（17 active*），`card-channels` schema 3 有 17 個渠道 records（12 active、3 unknown、2 historical-unverified）；精確時間優惠用帶 `+08:00` 嘅 `startsAt`／`expiresAt`，其餘按香港日曆日判定。
-- Phase 1 未經 Founder 批准前只可保持 Draft PR；不可 merge、deploy、開始新 IA／UI、Google Login 或 Phase 2。
+- Phase 0 同 Phase 1 已獲 Founder 批准並合併；Phase 2A `main` baseline 精確係 `c2e1ffdaaa766872308fb987f9829d68ddbb2d0a`。
+- Phase 2A backup branch：`backup/pre-phase2a-shell-ui-20260723`；feature branch：`agent/acremiles-phase2a-shell-ui-20260723`。
+- Phase 1 銀行卡、渠道優惠及來源 registry 已正式由 `data/cards-official.js`、`data/card-channels.js`、`data/source-registry.js` 提供；Phase 2A 對三者、Engine、22 fixtures、卡頁及分享頁零修改。
+- 已合併資料嘅 `source-registry` schema 2 有 19 個官方 records（17 active*），`card-channels` schema 3 有 17 個渠道 records（12 active、3 unknown、2 historical-unverified）；精確時間優惠用帶 `+08:00` 嘅 `startsAt`／`expiresAt`，其餘按香港日曆日判定。
+- Phase 2A 候選只修改 Welcome、Consent 第一層、Header shell、Profile Hub、Bottom Navigation 同必要 scroll／focus helpers；完整證據見 [`PHASE2A-SHELL-UI-VERIFICATION.md`](PHASE2A-SHELL-UI-VERIFICATION.md)。
+- 未經 Founder Preview 批准只可保持 Draft PR；不可 merge、production deploy、開始 Phase 2B、Google Login 或真正 cloud sync。
 - v6.79.0 歷史發布來源：`feature/outcome-first-v1`／PR #7；當時 baseline：`1c7228bcd1e0aa2b194c9c62e1fba61de6e0e049`。
 - 已完成 Outcome First 首頁、分層計算入口、compact saved cards、優惠文章首屏、Beginner／Advanced planner gateway，同時保留現有計算及 RTW 引擎。
 - 新示範只使用 repo 內可追溯資料；未接 AI API，Beginner planner 係現有 template 嘅 rule-based matching。
@@ -76,23 +77,20 @@
 
 ## 3. 現時工作面
 
-### P0：Phase 1 Card Data Source Extraction + Expiring Offers
+### P0：Phase 2A Welcome + Consent + Header + Profile Hub + Bottom Navigation
 
-狀態：`STAGE A COMMITTED；STAGE B CANDIDATE — DRAFT ONLY`
+狀態：`FOUNDER REVIEW — DRAFT ONLY`
 
-- Phase 1A 資料搬遷由 `data/cards-official.js`、`data/card-channels.js`、`data/source-registry.js` 承擔；`index.html`、generator、freshness、verifier 同 regression 直接讀資料來源。
-- v6.79.0 搬遷 fixture 鎖定 9 張卡及渠道資料；五段舊渠道展示文案喺渠道層重組，銀行官方 raw records 不再混入平台聲稱。
-- Phase 1B 已保存 DBS Q3 現行 offer，但以 `engineEligible:false` 隔離已知 basic-miles double-count；HSBC base／flash 已分 component，SC／AE marketed-total 衝突亦已披露，冇改 Engine 公式。
-- HSBC EveryMile flash 只要求流動電話付款；QR 條件只屬 Pulse／UnionPay，官方直申碼係 `HSBCFLASH`。現有客 HK$200 RC 因 Red Hot campaign 頁同 base PDF 衝突、而且冇獨立日期，保持 `excluded-conflict`。
-- HSBC／DBS 2026 海外條件式優惠已各自保存為官方 records，但因登記、門檻及上限，Engine 分別繼續用基本 HK$5／HK$4 每里。
-- DBS Q3 已拆新客 12 個月資格、多卡規則、DAYCROWN alternative、Flexi Shopping 2,000 里同現有客 HK$50；MoneyHero 只保存 Card+ 申請路徑，HK$50 係 issuer claim，唔係平台固定賞。
-- AE Explorer 26,000 里要 HK$30,000 當中至少 HK$15,000 合資格本地港幣簽賬並成功登記 Local Spend Bonus；Citi Prestige 已記錄 12 個月新客、1 個月內啟動實體卡，以及 HK$1,200 現金 component 每月最少一宗交易。
-- 渠道 schema 已將平台條件式上限、issuer claim、抽獎、promo code、日期、條件同可否疊加分開；里先生 88 MM Credit 係最高 38 新會員＋50 成功批卡填表，唔係人人固定 88。SC MoneyHero 及 AE Explorer MoneySmart／MoneyHero 因資料不完整保持 `unknown`／`active:false`。
-- 完成兩個獨立 commits 後只開新 Draft PR，提供 preview 同完整差異證據，等 Founder 回覆「Phase 1 approved」。未獲批准不得 merge、deploy 或開始 Phase 2。
+- Welcome 使用「每筆消費，都值得有回報」，正常約 1.16 秒離場，另有獨立 1.6 秒安全 fallback；只用 fade／glow，reduced motion 快速離場。
+- Consent 第一層只保留四項重要資訊；原有法律、私隱及 analytics gating 不削弱。共用 modal scroll lock 會保存及還原原頁位置，dialog 由頂開始並取得 focus。
+- Header 保留 large→compact 行為，以單一通用 Profile icon 取代兩個右上角入口；冇假登入或假頭像。
+- Profile Hub 依 canonical 次序提供我的信用卡、旅程、收藏、本機同步說明、FAQ 同完整設定入口；跨裝置同步只標「即將推出／可選／資料仍存本機」。
+- Bottom Navigation 固定為「點賺／點用／首頁／優惠／攻略」；只改 shell label／入口，內部 tab IDs、首頁 Hero、點賺／點用內容及 Engine 不變。
+- 必須保持 Open Draft，等 Founder 實際睇 HTTPS Preview 後明確回覆 `Phase 2A approved`；不得自行開始 Phase 2B。
 
 ### 營運 P0：信用卡資料新鮮度
 
-Phase 1B 候選於 2026-07-23 執行 `audit-freshness`：9 張卡、19 個官方 records（17 active*）、17 個渠道 records（12 active），0 errors、17 reminders。提醒包括 7 月 23、29、30、31 日及之後獨立期限；若接手日期已過：
+Phase 1B 已合併資料於 2026-07-23 執行 `audit-freshness`：9 張卡、19 個官方 records（17 active*）、17 個渠道 records（12 active），0 errors、17 reminders。提醒包括 7 月 23、29、30、31 日及之後獨立期限；若接手日期已過：
 
 1. 先查銀行官方產品頁、最新 T&C、KFS／收費表。
 2. 再查平台加碼；唔好用平台文案取代銀行條款。
